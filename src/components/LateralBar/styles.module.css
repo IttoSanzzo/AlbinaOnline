@@ -1,0 +1,47 @@
+.lateralBarContainer {
+	background-color: var(--cl-gray-800);
+	border-right: 1px solid var(--cl-gray-700);
+	height: 100vh;
+	width: var(--sp-52);
+
+	padding: var(--sp-3);
+}
+
+.headerContainer {
+	border: 1px solid var(--cl-gray-600);
+	padding: 5px;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-700);
+
+	& a {
+		text-decoration: none;
+		color: var(--cl-gray-100);
+	}
+}
+
+.albinaTitle {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+
+	& h6 {
+		font-size: var(--fs-xl);
+	}
+	& img {
+		border-radius: var(--rd-sm);
+	}
+}
+
+.activePageTitle {
+	text-align: center;
+	font-size: var(--fs-md);
+	color: var(--cl-gray-200);
+}
+
+.indexedPageGroups {
+	margin-top: var(--sp-6);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-10);
+}

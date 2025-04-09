@@ -1,0 +1,35 @@
+.indexedPagesGroupContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+
+	& > h6 {
+		color: var(--cl-gray-100);
+		font-size: var(--fs-xs);
+		margin-bottom: 5px;
+	}
+}
+
+.indexedPageLink {
+	background-color: var(--cl-gray-800);
+	transition: 0.25s linear background;
+	border-radius: var(--rd-md);
+	padding: 6px 6px 6px 10px;
+	overflow: scroll;
+
+	& img {
+		border-radius: var(--rd-xs);
+		margin-right: 6px;
+	}
+	& a {
+		width: 100%;
+		text-decoration: none;
+		color: var(--cl-gray-200);
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+	&:hover {
+		background-color: var(--cl-gray-700);
+	}
+}

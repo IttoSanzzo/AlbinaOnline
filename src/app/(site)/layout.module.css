@@ -1,0 +1,11 @@
+.globalContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.mainContainer {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	height: 100%;
+}

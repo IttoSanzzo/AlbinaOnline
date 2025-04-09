@@ -1,0 +1,25 @@
+.breadcrumbContainer {
+	color: var(--cl-gray-400);
+
+	& a {
+		padding: var(--sp-1);
+		border-radius: var(--rd-md);
+		color: var(--cl-gray-200);
+		font-size: var(--fs-lg);
+		text-decoration: none;
+		transition: 0.2s linear background;
+	}
+
+	& a:hover {
+		background-color: var(--cl-gray-700);
+	}
+
+	& span:not(:first-child) {
+		margin-left: var(--sp-2);
+	}
+
+	& span span {
+		font-size: var(--fs-xl);
+		font-weight: var(--fw-bold);
+	}
+}

@@ -1,0 +1,9 @@
+.profileButtonContainer {
+	height: 32px;
+	width: 32px;
+
+	& img {
+		border: 1px solid var(--cl-gray-200);
+		border-radius: var(--rd-full);
+	}
+}

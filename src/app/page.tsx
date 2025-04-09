@@ -1,1 +1,3 @@
-export { default } from "./Home/page";
+export default function Root() {
+	return <>Root</>;
+}
