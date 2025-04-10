@@ -1,23 +1,24 @@
 import FavoriteButton from "../FavoriteButton";
 import ProfileButton from "../ProfileButton";
 import Breadcrumb from "./components/Breadcrumb";
+import HideSideBarButton from "./components/HideSideBarButton";
 import LastEditDate from "./components/LastEditDate";
 import {
 	NavBarContainer,
 	NavMiscsContainer,
-	PageMiscsButton,
 	ProfileButtonContainer,
 } from "./styledComponents";
 
 export default function NavBar() {
 	return (
 		<NavBarContainer>
-			<Breadcrumb />
+			<NavMiscsContainer>
+				<HideSideBarButton />
+				<Breadcrumb />
+			</NavMiscsContainer>
 			<NavMiscsContainer>
 				<LastEditDate />
-				<>Share</>
 				<FavoriteButton />
-				<PageMiscsButton>...</PageMiscsButton>
 				<ProfileButtonContainer>
 					<ProfileButton />
 				</ProfileButtonContainer>

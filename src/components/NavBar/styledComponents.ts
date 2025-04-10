@@ -8,4 +8,3 @@ export const NavMiscsContainer = newStyledComponent.div(
 export const ProfileButtonContainer = newStyledComponent.div(
 	styles.profileButtonContainer
 );
-export const PageMiscsButton = newStyledComponent.div(styles.pageMiscsButton);

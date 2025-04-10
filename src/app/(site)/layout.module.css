@@ -8,4 +8,9 @@
 	flex-direction: column;
 	flex: 1;
 	height: 100%;
+	margin-left: var(--sp-52);
+	transition: 0.25s ease-out margin;
+}
+:root[data-hidden-sidebar="true"] .mainContainer {
+	margin-left: 0;
 }

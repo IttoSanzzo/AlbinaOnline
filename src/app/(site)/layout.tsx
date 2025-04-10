@@ -1,4 +1,4 @@
-import LateralBar from "@/components/LateralBar";
+import SideBar from "@/components/SideBar";
 import NavBar from "@/components/NavBar";
 import { newStyledComponent } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
@@ -14,7 +14,7 @@ const MainContainer = newStyledComponent.div(styles.mainContainer);
 export default function Layout({ children }: LayoutProps) {
 	return (
 		<GlobalContainer>
-			<LateralBar />
+			<SideBar />
 			<MainContainer>
 				<NavBar />
 				{children}

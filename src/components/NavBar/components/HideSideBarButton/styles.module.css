@@ -1,0 +1,12 @@
+.hideSideBarButtonContainer {
+	background-color: transparent;
+	border: 0;
+	font-size: 0;
+	padding: var(--sp-2);
+	border-radius: var(--rd-sm);
+
+	&:hover {
+		background-color: var(--cl-gray-700);
+		/* background-color: var(--cl-red); */
+	}
+}

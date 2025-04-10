@@ -1,0 +1,118 @@
+.sideBarActivationArea {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	max-height: 100vh;
+	width: var(--sp-52);
+	background-color: transparent;
+	display: flex;
+	flex: 1;
+	transition: 0.25s ease-out left;
+}
+
+.sideBarContainer {
+	background-color: var(--cl-gray-800);
+	border-right: 2px solid var(--cl-gray-700);
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: var(--sp-3);
+}
+:root[data-hidden-sidebar="true"] .sideBarActivationArea {
+	transition: 0.25s ease-out left, 0.25s ease-out height;
+	left: calc(var(--sp-52) * -1);
+	width: calc(var(--sp-52) + 120px);
+	padding-right: 120px;
+	height: 75vh;
+	top: 50%;
+	transform: translateY(-50%);
+
+	& .sideBarContainer {
+		border-top-right-radius: var(--rd-lg);
+		border-bottom-right-radius: var(--rd-lg);
+		/* margin-left: 10px; */
+	}
+
+	&:hover {
+		left: 0;
+		padding-right: 0;
+	}
+}
+
+.headerContainer {
+	border: 1px solid var(--cl-gray-600);
+	padding: 5px;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-700);
+
+	& a {
+		text-decoration: none;
+		color: var(--cl-gray-100);
+	}
+}
+.albinaTitle {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 5px;
+
+	& h6 {
+		font-size: var(--fs-xl);
+	}
+	& img {
+		border-radius: var(--rd-sm);
+	}
+}
+.activePageTitle {
+	text-align: center;
+	font-size: var(--fs-md);
+	color: var(--cl-gray-200);
+}
+
+.indexedPageGroups {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--sp-10);
+	overflow: scroll;
+	margin-top: var(--sp-6);
+	margin-bottom: var(--sp-6);
+}
+
+.footerContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 5px;
+
+	& a {
+		text-decoration: none;
+	}
+
+	& div {
+		background-color: var(--cl-gray-700);
+		padding: var(--sp-1) var(--sp-2);
+		border-radius: var(--rd-lg);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		& img {
+			border-radius: var(--rd-xs);
+			margin-right: 4px;
+		}
+
+		& a {
+			font-size: var(--fs-md);
+			color: var(--cl-gray-200);
+		}
+	}
+
+	& footer {
+		text-align: center;
+		font-size: var(--fs-xs);
+		color: var(--cl-gray-500);
+	}
+}
