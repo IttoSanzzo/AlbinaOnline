@@ -10,7 +10,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@setsu-tp/styled-components": "^1.0.0",
+		"@setsu-tp/styled-components": "^1.1.0",
 		"next": "15.2.4",
 		"phosphor-react": "^1.4.1",
 		"react": "^19.0.0",

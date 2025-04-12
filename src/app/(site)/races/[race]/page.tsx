@@ -1,4 +1,4 @@
-import { RaceContainer } from "./styledComponents";
+import GenericPageContainer from "@/components/(Design)/GenericPageContainer/componentIndex";
 
 interface RaceData {
 	name: string;
@@ -11,7 +11,7 @@ interface RaceProps {
 export default async function Race({ params }: RaceProps) {
 	const { race } = await params;
 
-	return <RaceContainer>{race}</RaceContainer>;
+	return <GenericPageContainer>{race}</GenericPageContainer>;
 }
 
 export async function generateStaticParams() {
