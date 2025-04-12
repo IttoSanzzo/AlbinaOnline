@@ -1,0 +1,10 @@
+.pageBannerContainer {
+	width: 100%;
+	height: 18vh;
+
+	& img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}

@@ -1,0 +1,23 @@
+.pageHeaderContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 20px;
+
+	& img {
+		height: var(--sp-30);
+		width: var(--sp-30);
+		padding: var(--sp-1);
+		border-radius: var(--rd-md);
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+	}
+	& h1 {
+		font-size: var(--fs-6xl);
+		color: var(--cl-gray-100);
+		text-shadow: 0 0 6px var(--cl-gray-900);
+	}
+}

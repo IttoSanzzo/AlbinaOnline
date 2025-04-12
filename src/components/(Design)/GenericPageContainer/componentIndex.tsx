@@ -1,17 +1,32 @@
 import { ReactNode } from "react";
-import { BackgroundContainer, MainContainer } from "./styledElements";
+import { ContentsContainer, MainContainer } from "./styledElements";
+import PageBanner from "./subComponents/PageBanner/componentIndex";
+import PageHeader from "./subComponents/PageHeader/componentIndex";
+import { StaticImageData } from "next/image";
 
 interface GenericPageContainerProps {
 	children: ReactNode;
+	banner: string | StaticImageData;
+	favicon: string | StaticImageData;
+	title: string;
 }
 
 export default function GenericPageContainer({
 	children,
+	title,
+	banner,
+	favicon,
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
-			<BackgroundContainer />
-			{children}
+			<PageBanner src={banner} />
+			<ContentsContainer>
+				<PageHeader
+					title={title}
+					src={favicon}
+				/>
+				{children}
+			</ContentsContainer>
 		</MainContainer>
 	);
 }

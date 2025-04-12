@@ -32,8 +32,12 @@
 	--sp-8: 2rem;
 	--sp-10: 2.5rem;
 	--sp-12: 3rem;
+	--sp-15: 3.75rem;
 	--sp-16: 4rem;
+	--sp-17: 4.25rem;
+	--sp-18: 4.5rem;
 	--sp-20: 5rem;
+	--sp-30: 7.5rem;
 	--sp-40: 10rem;
 	--sp-52: 13rem;
 	--sp-64: 16rem;
@@ -75,6 +79,9 @@
 	--rd-sm: 6px;
 	--rd-md: 8px;
 	--rd-lg: 16px;
+	--rd-xl: 32px;
+	--rd-2xl: 64px;
+	--rd-3xl: 128px;
 	--rd-full: 50%;
 
 	/* Old */
@@ -90,6 +97,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	font-family: sans-serif;
 }
 
 html,
