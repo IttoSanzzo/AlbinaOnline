@@ -1,0 +1,22 @@
+.notion2ColumnsContainer {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	gap: 2px;
+}
+
+.columContainer {
+	display: flex;
+	flex: 1;
+	padding: var(--sp-2) var(--sp-1) 0;
+	word-break: break-all;
+	overflow: scroll;
+
+	transition: 0.3s linear border;
+	border-radius: var(--rd-md);
+	border: 2px solid transparent;
+	/* box-shadow: 0 0 1px red; */
+	&:hover {
+		border: 2px solid var(--cl-gray-600);
+	}
+}

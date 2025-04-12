@@ -7,6 +7,7 @@ import {
 } from "@/utils/NotionBasedUtils";
 import NotionHeader from "@/components/(NotionBased)/NotionHeader/componentIndex";
 import NotionCallout from "@/components/(NotionBased)/NotionCallout/componentIndex";
+import Notion2Columns from "@/components/(NotionBased)/Notion2Columns/componentIndex";
 
 interface RaceData {
 	name: string;
@@ -33,6 +34,14 @@ export default async function Race({ params }: RaceProps) {
 				🏮Informações Gerais🏮
 			</NotionHeader>
 
+			<Notion2Columns
+				colum1={<>aa</>}
+				colum2={<>bb</>}
+				justifyContent1="right"
+				justifyContent2="left"
+				divisionRatio={0}
+			/>
+
 			<NotionCallout
 				icon={AlbinaLogo}
 				title={
@@ -42,31 +51,40 @@ export default async function Race({ params }: RaceProps) {
 						⫷Tipologia⫸
 					</NotionText>
 				}>
-				<NotionCallout
-					backgroundColor={NotionBackgroundColor.Pink}
-					icon={AlbinaLogo}
-					title={
-						<NotionText
-							textColor={NotionTextColor.Red}
-							withItalic={true}
-							withUnderline={true}>
-							💮Árvore:
-						</NotionText>
-					}>
-					Hello
-				</NotionCallout>
-				<NotionCallout
-					backgroundColor={NotionBackgroundColor.Yellow}
-					icon={AlbinaLogo}
-					title={
-						<NotionText
-							textColor={NotionTextColor.Red}
-							withUnderline={true}>
-							🏵️Relação:
-						</NotionText>
-					}>
-					Hello
-				</NotionCallout>
+				<Notion2Columns
+					divisionRatio={0}
+					colum1={
+						<NotionCallout
+							backgroundColor={NotionBackgroundColor.Pink}
+							icon={AlbinaLogo}
+							title={
+								<NotionText
+									textColor={NotionTextColor.Red}
+									withItalic={true}
+									withUnderline={true}>
+									💮Árvore:
+								</NotionText>
+							}>
+							Hello
+						</NotionCallout>
+					}
+					colum2={
+						<NotionCallout
+							backgroundColor={NotionBackgroundColor.Pink}
+							icon={AlbinaLogo}
+							title={
+								<NotionText
+									textColor={NotionTextColor.Red}
+									withUnderline={true}>
+									🏵️Relação:
+								</NotionText>
+							}>
+							Hello
+						</NotionCallout>
+					}
+					// justifyContent1="right"
+					// justifyContent2="left"
+				/>
 			</NotionCallout>
 
 			<NotionText textColor={NotionTextColor.Yellow}>
