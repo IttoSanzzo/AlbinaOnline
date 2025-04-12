@@ -16,7 +16,7 @@ export default function NotionText({
 	textAlign,
 }: NotionTextProps) {
 	const style: CSSProperties = {
-		color: textColor,
+		...(textColor && { color: textColor }),
 		...(backgroundColor && { backgroundColor: backgroundColor }),
 		...(withBold && { fontWeight: "bold" }),
 		...(withItalic && { fontStyle: "italic" }),
