@@ -1,14 +1,15 @@
 import GenericPageContainer from "@/components/(Design)/GenericPageContainer/componentIndex";
-import NotionText from "@/components/(NotionBased)/NotionText/componentIndex";
+import NotionText from "@/components/(NotionBased)/NotionText";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import {
 	NotionBackgroundColor,
 	NotionTextColor,
 } from "@/utils/NotionBasedUtils";
-import NotionHeader from "@/components/(NotionBased)/NotionHeader/componentIndex";
-import NotionCallout from "@/components/(NotionBased)/NotionCallout/componentIndex";
-import Notion2Columns from "@/components/(NotionBased)/Notion2Columns/componentIndex";
-import NotionToggle from "@/components/(NotionBased)/NotionToggle/componentIndex";
+import NotionHeader from "@/components/(NotionBased)/NotionHeader";
+import NotionCallout from "@/components/(NotionBased)/NotionCallout";
+import Notion2Columns from "@/components/(NotionBased)/Notion2Columns";
+import NotionToggle from "@/components/(NotionBased)/NotionToggle";
+import NotionQuote from "@/components/(NotionBased)/NotionQuote";
 
 interface RaceData {
 	name: string;
@@ -43,10 +44,19 @@ export default async function Race({ params }: RaceProps) {
 			</NotionToggle>
 			<NotionToggle
 				title={<>Banana</>}
-				// backgroundColor={NotionBackgroundColor.Gray}
-			>
+				backgroundColor={NotionBackgroundColor.Gray}>
 				Nuttela
 			</NotionToggle>
+
+			<NotionQuote backgroundColor={NotionBackgroundColor.Gray}>
+				Quote
+				<NotionQuote backgroundColor={NotionBackgroundColor.Gray}>
+					Quote
+					<NotionQuote backgroundColor={NotionBackgroundColor.Gray}>
+						Quote
+					</NotionQuote>
+				</NotionQuote>
+			</NotionQuote>
 
 			<NotionCallout
 				icon={AlbinaLogo}

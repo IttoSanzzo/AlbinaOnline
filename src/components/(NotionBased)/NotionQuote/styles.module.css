@@ -1,0 +1,16 @@
+.notionQuoteContainer {
+	display: flex;
+	flex-direction: row;
+	word-break: break-all;
+	padding: 3px 0;
+	margin: var(--sp-2) 0;
+}
+
+.beforeBar {
+	display: inline-block;
+	width: 3px;
+	margin-right: 15px;
+	margin-top: -3px;
+	margin-bottom: -3px;
+	border-radius: var(--rd-sm);
+}
