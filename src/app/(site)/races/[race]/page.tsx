@@ -8,6 +8,7 @@ import {
 import NotionHeader from "@/components/(NotionBased)/NotionHeader/componentIndex";
 import NotionCallout from "@/components/(NotionBased)/NotionCallout/componentIndex";
 import Notion2Columns from "@/components/(NotionBased)/Notion2Columns/componentIndex";
+import NotionToggle from "@/components/(NotionBased)/NotionToggle/componentIndex";
 
 interface RaceData {
 	name: string;
@@ -34,13 +35,18 @@ export default async function Race({ params }: RaceProps) {
 				🏮Informações Gerais🏮
 			</NotionHeader>
 
-			<Notion2Columns
-				colum1={<>aa</>}
-				colum2={<>bb</>}
-				justifyContent1="right"
-				justifyContent2="left"
-				divisionRatio={0}
-			/>
+			<NotionToggle
+				title={<>Banana</>}
+				backgroundColor={NotionBackgroundColor.Gray}
+				textColor={NotionTextColor.Blue}>
+				Nuttela
+			</NotionToggle>
+			<NotionToggle
+				title={<>Banana</>}
+				// backgroundColor={NotionBackgroundColor.Gray}
+			>
+				Nuttela
+			</NotionToggle>
 
 			<NotionCallout
 				icon={AlbinaLogo}
