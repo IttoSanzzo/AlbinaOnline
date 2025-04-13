@@ -10,7 +10,7 @@ import {
 } from "./styledElements";
 import albinaLogo from "@/../public/AlbinaLogo.png";
 import Link from "next/link";
-import IndexedPagesGroup from "./subComponents/IndexedPagesGroup/componentIndex";
+import IndexedPagesGroup from "./subComponents/IndexedPagesGroup";
 
 export default function LateralBar() {
 	return (

@@ -1,4 +1,4 @@
-import GenericPageContainer from "@/components/(Design)/GenericPageContainer/componentIndex";
+import GenericPageContainer from "@/components/(Design)/GenericPageContainer";
 import NotionText from "@/components/(NotionBased)/NotionText";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import {

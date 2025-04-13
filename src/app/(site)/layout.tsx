@@ -1,5 +1,5 @@
-import SideBar from "@/components/(HUD)/SideBar/componentIndex";
-import NavBar from "@/components/(HUD)/NavBar/componentIndex";
+import SideBar from "@/components/(HUD)/SideBar";
+import NavBar from "@/components/(HUD)/NavBar";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
 import { ReactNode } from "react";

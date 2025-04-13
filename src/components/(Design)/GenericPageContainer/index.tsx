@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ContentsContainer, MainContainer } from "./styledElements";
-import PageBanner from "./subComponents/PageBanner/componentIndex";
-import PageHeader from "./subComponents/PageHeader/componentIndex";
+import PageBanner from "./subComponents/PageBanner";
+import PageHeader from "./subComponents/PageHeader";
 import { StaticImageData } from "next/image";
 
 interface GenericPageContainerProps {

@@ -1,8 +1,8 @@
-import FavoriteButton from "../FavoriteButton/componentIndex";
-import ProfileButton from "../ProfileButton/componentIndex";
-import Breadcrumb from "./subComponents/Breadcrumb/componentIndex";
-import HideSideBarButton from "./subComponents/HideSideBarButton/componentIndex";
-import LastEditDate from "./subComponents/LastEditDate/componentIndex";
+import FavoriteButton from "../FavoriteButton";
+import ProfileButton from "../ProfileButton";
+import Breadcrumb from "./subComponents/Breadcrumb";
+import HideSideBarButton from "./subComponents/HideSideBarButton";
+import LastEditDate from "./subComponents/LastEditDate";
 import {
 	NavBarContainer,
 	NavMiscsContainer,
