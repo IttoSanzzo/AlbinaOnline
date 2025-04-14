@@ -14,3 +14,7 @@
 	margin-bottom: -3px;
 	border-radius: var(--rd-sm);
 }
+
+.contentContainer {
+	width: 100%;
+}

@@ -10,6 +10,8 @@ import NotionCallout from "@/components/(NotionBased)/NotionCallout";
 import Notion2Columns from "@/components/(NotionBased)/Notion2Columns";
 import NotionToggle from "@/components/(NotionBased)/NotionToggle";
 import NotionQuote from "@/components/(NotionBased)/NotionQuote";
+import NotionTable from "@/components/(NotionBased)/NotionTable";
+import { ReactNode } from "react";
 
 interface RaceData {
 	name: string;
@@ -23,6 +25,16 @@ export default async function Race({ params }: RaceProps) {
 	const { race } = await params;
 	console.log(race);
 
+	const tableTest: any = {
+		rows: [
+			[<>Vitalidade</>, <>🔸</>],
+			[<>Vigor</>, <>🔸</>],
+			[<>Manapool</>, <>🔺</>],
+			[<>Poder Fisico</>, <>🔸</>],
+			[<>Poder Magico</>, <>🔻</>],
+		],
+	};
+
 	return (
 		<GenericPageContainer
 			title={`Raça - ${race}`}
@@ -35,6 +47,13 @@ export default async function Race({ params }: RaceProps) {
 				textAlign="center">
 				🏮Informações Gerais🏮
 			</NotionHeader>
+
+			<NotionTable
+				direction="colum"
+				fixedLinePosition={2}
+				fixedLineSize={10}
+				tableData={tableTest}
+			/>
 
 			<NotionToggle
 				title={<>Banana</>}
@@ -82,6 +101,12 @@ export default async function Race({ params }: RaceProps) {
 								</NotionText>
 							}>
 							Hello
+							<NotionTable
+								direction="row"
+								fixedLinePosition={2}
+								fixedLineSize={10}
+								tableData={tableTest}
+							/>
 						</NotionCallout>
 					}
 					colum2={
@@ -96,6 +121,12 @@ export default async function Race({ params }: RaceProps) {
 								</NotionText>
 							}>
 							Hello
+							<NotionTable
+								direction="row"
+								fixedLinePosition={2}
+								fixedLineSize={10}
+								tableData={tableTest}
+							/>
 						</NotionCallout>
 					}
 					// justifyContent1="right"
