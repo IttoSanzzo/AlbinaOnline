@@ -1,6 +1,6 @@
 "use client";
 
-import { Star } from "phosphor-react";
+import { Star } from "@phosphor-icons/react/Star";
 import { FavoriteButtonContainer } from "./styledElements";
 
 export default function FavoriteButton() {

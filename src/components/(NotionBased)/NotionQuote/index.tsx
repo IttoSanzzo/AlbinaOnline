@@ -1,4 +1,8 @@
-import { NotionPropsColor, NotionTextColor } from "@/utils/NotionBasedUtils";
+import {
+	NotionBackgroundColor,
+	NotionPropsColor,
+	NotionTextColor,
+} from "@/utils/NotionBasedUtils";
 import {
 	BeforeBar,
 	ContentContainer,
@@ -7,7 +11,7 @@ import {
 import { CSSProperties, ReactNode } from "react";
 
 interface NotionQuoteProps extends NotionPropsColor {
-	children: ReactNode;
+	children?: ReactNode;
 }
 
 export default function NotionQuote({
@@ -16,15 +20,19 @@ export default function NotionQuote({
 	backgroundColor,
 }: NotionQuoteProps) {
 	const style: CSSProperties = {
-		...(textColor && { color: textColor }),
-		...(backgroundColor && { backgroundColor: backgroundColor }),
+		...(textColor && { color: NotionTextColor[textColor] }),
+		...(backgroundColor && {
+			backgroundColor: NotionBackgroundColor[backgroundColor],
+		}),
 	};
 
 	return (
 		<NotionQuoteContainer style={style}>
 			<BeforeBar
 				style={{
-					backgroundColor: textColor ? textColor : NotionTextColor.Default,
+					backgroundColor: textColor
+						? NotionTextColor[textColor]
+						: NotionTextColor.default,
 				}}
 			/>
 			<ContentContainer>{children}</ContentContainer>

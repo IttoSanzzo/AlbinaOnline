@@ -1,23 +1,27 @@
-import { NotionPropsColor } from "@/utils/NotionBasedUtils";
+import {
+	NotionBackgroundColor,
+	NotionPropsColor,
+	NotionTextColor,
+} from "@/utils/NotionBasedUtils";
 import {
 	NotionVerticalTableContainer,
 	NotionHorizontalTableContainer,
 } from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
 
-interface NotionTableData {
-	rows: [colums: ReactNode[]];
+export interface NotionTableData {
+	tableLanes: Array<ReactNode[]>;
 }
 
 interface NotionTableProps extends NotionPropsColor {
 	tableData: NotionTableData;
-	direction?: "row" | "colum";
+	direction?: "row" | "column";
 	fixedLinePosition?: number;
 	fixedLineSize?: number;
 }
 
 export default function NotionTable({
-	tableData,
+	tableData: { tableLanes },
 	direction = "row",
 	fixedLinePosition = 1,
 	fixedLineSize,
@@ -25,17 +29,19 @@ export default function NotionTable({
 	backgroundColor,
 }: NotionTableProps) {
 	const baseStyle: CSSProperties = {
-		...(textColor && { color: textColor }),
-		...(backgroundColor && { backgroundColor: backgroundColor }),
+		...(textColor && { color: NotionTextColor[textColor] }),
+		...(backgroundColor && {
+			backgroundColor: NotionBackgroundColor[backgroundColor],
+		}),
 	};
 
 	if (direction === "row") {
 		return (
 			<NotionHorizontalTableContainer style={baseStyle}>
 				<tbody>
-					{tableData.rows.map((row, index) => (
+					{tableLanes.map((row, index) => (
 						<tr key={index}>
-							{row.map((colum, index) => {
+							{row.map((column, index) => {
 								const contentStyle =
 									fixedLineSize && index === fixedLinePosition - 1
 										? { width: `${fixedLineSize}%` }
@@ -45,7 +51,7 @@ export default function NotionTable({
 										<th
 											key={index}
 											style={contentStyle}>
-											{colum}
+											{column}
 										</th>
 									);
 								}
@@ -53,7 +59,7 @@ export default function NotionTable({
 									<td
 										key={index}
 										style={contentStyle}>
-										{colum}
+										{column}
 									</td>
 								);
 							})}
@@ -63,23 +69,35 @@ export default function NotionTable({
 			</NotionHorizontalTableContainer>
 		);
 	}
+
+	const reordenedTable: Array<ReactNode[]> = Array.from(
+		{ length: tableLanes.length },
+		() => []
+	);
+
+	tableLanes.forEach((column, columnIndex) => {
+		for (var i = 0; i < column.length; ++i) {
+			reordenedTable[i][columnIndex] = column[i];
+		}
+	});
+
 	return (
 		<NotionVerticalTableContainer style={baseStyle}>
 			<thead>
 				<tr>
-					<th>Name 1</th>
-					<th>Name 2</th>
+					{reordenedTable[0].map((content, index) => (
+						<th key={index}>{content}</th>
+					))}
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Itto</td>
-					<td>Sanzzo</td>
-				</tr>
-				<tr>
-					<td>Envest</td>
-					<td>Drean</td>
-				</tr>
+				{reordenedTable.slice(1).map((column, index) => (
+					<tr key={index}>
+						{column.map((columnContent, index) => (
+							<td key={index}>{columnContent}</td>
+						))}
+					</tr>
+				))}
 			</tbody>
 		</NotionVerticalTableContainer>
 	);

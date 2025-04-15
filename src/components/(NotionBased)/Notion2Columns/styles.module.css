@@ -14,9 +14,4 @@
 
 	transition: 0.3s linear border;
 	border-radius: var(--rd-md);
-	border: 2px solid transparent;
-	/* box-shadow: 0 0 1px red; */
-	&:hover {
-		border: 2px solid var(--cl-gray-600);
-	}
 }

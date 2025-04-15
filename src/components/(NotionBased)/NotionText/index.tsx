@@ -1,4 +1,9 @@
-import { NotionPropsColor, NotionPropsText } from "@/utils/NotionBasedUtils";
+import {
+	NotionBackgroundColor,
+	NotionPropsColor,
+	NotionPropsText,
+	NotionTextColor,
+} from "@/utils/NotionBasedUtils";
 import { NotionTextContainer } from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
 
@@ -16,8 +21,10 @@ export default function NotionText({
 	textAlign,
 }: NotionTextProps) {
 	const style: CSSProperties = {
-		...(textColor && { color: textColor }),
-		...(backgroundColor && { backgroundColor: backgroundColor }),
+		...(textColor && { color: NotionTextColor[textColor] }),
+		...(backgroundColor && {
+			backgroundColor: NotionBackgroundColor[backgroundColor],
+		}),
 		...(withBold && { fontWeight: "bold" }),
 		...(withItalic && { fontStyle: "italic" }),
 		...(withUnderline && { textDecoration: "underline" }),

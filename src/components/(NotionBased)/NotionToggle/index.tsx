@@ -1,13 +1,17 @@
 "use client";
 
-import { NotionPropsColor } from "@/utils/NotionBasedUtils";
+import {
+	NotionBackgroundColor,
+	NotionPropsColor,
+	NotionTextColor,
+} from "@/utils/NotionBasedUtils";
 import {
 	ContentContainer,
 	HeaderContainer,
 	NotionToggleContainer,
 } from "./styledElements";
 import { CSSProperties, ReactNode, useState } from "react";
-import { Triangle } from "phosphor-react";
+import { Triangle } from "@phosphor-icons/react/Triangle";
 
 interface NotionToggleProps extends NotionPropsColor {
 	children: ReactNode;
@@ -28,8 +32,10 @@ export default function NotionToggle({
 	}
 
 	const style: CSSProperties = {
-		...(textColor && { color: textColor }),
-		...(backgroundColor && { backgroundColor: backgroundColor }),
+		...(textColor && { color: NotionTextColor[textColor] }),
+		...(backgroundColor && {
+			backgroundColor: NotionBackgroundColor[backgroundColor],
+		}),
 	};
 
 	return (
@@ -39,7 +45,9 @@ export default function NotionToggle({
 					<Triangle
 						size={11}
 						weight="fill"
-						color={textColor}
+						color={
+							textColor ? NotionTextColor[textColor] : NotionTextColor.default
+						}
 						style={{ rotate: arrowRotationDegree }}
 					/>
 				</button>

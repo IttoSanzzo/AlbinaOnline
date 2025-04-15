@@ -1,6 +1,6 @@
 "use client";
 
-import { List } from "phosphor-react";
+import { List } from "@phosphor-icons/react/List";
 import { HideSideBarButtonContainer } from "./styledElements";
 import { useEffect } from "react";
 import { setCssAttribute } from "@/utils/CssPropertyUtils";

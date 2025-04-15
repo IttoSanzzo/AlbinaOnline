@@ -1,36 +1,37 @@
-import { NotionPropsColor } from "@/utils/NotionBasedUtils";
+import {
+	NotionBackgroundColor,
+	NotionPropsColor,
+	NotionTextColor,
+} from "@/utils/NotionBasedUtils";
 import { HeaderContainer, NotionCalloutContainer } from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
-import Image, { StaticImageData } from "next/image";
+import { StpIcon, StpIconProps } from "../../../../libs/stp@icons";
 
 interface NotionCalloutProps extends NotionPropsColor {
 	children?: ReactNode;
 	title?: ReactNode;
-	icon?: string | StaticImageData;
+	icon?: StpIconProps;
 }
 
 export default function NotionCallout({
 	title,
-	icon = "",
+	icon = { name: "Article" },
 	children,
 	textColor,
 	backgroundColor,
 }: NotionCalloutProps) {
 	const style: CSSProperties = {
-		...(textColor && { color: textColor }),
+		...(textColor && { color: NotionTextColor[textColor] }),
 		...(backgroundColor && {
-			backgroundColor: backgroundColor,
-			borderColor: backgroundColor,
+			backgroundColor: NotionBackgroundColor[backgroundColor],
+			borderColor: `${NotionTextColor[backgroundColor]}15`,
 		}),
 	};
 
 	return (
 		<NotionCalloutContainer style={style}>
 			<HeaderContainer>
-				<Image
-					src={icon}
-					alt=""
-				/>
+				{StpIcon(icon)}
 				{title}
 			</HeaderContainer>
 			<div>{children}</div>

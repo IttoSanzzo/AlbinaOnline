@@ -1,7 +1,7 @@
 .notionCalloutContainer {
 	display: flex;
 	flex-direction: column;
-	padding: var(--sp-4) var(--sp-5) var(--sp-3);
+	padding: var(--sp-3) var(--sp-4) var(--sp-2);
 	border: 2px solid var(--cl-gray-600);
 	border-radius: var(--rd-md);
 	margin-bottom: var(--sp-3);
@@ -15,11 +15,10 @@
 	gap: 10px;
 	margin-bottom: var(--sp-2);
 	width: 100%;
-	& img {
+	& svg {
 		width: 30px;
 		height: 30px;
 		border-radius: var(--rd-sm);
-		box-shadow: 0 0 1px var(--cl-gray-200);
 	}
 	& > :nth-child(2) {
 		width: 100%;
