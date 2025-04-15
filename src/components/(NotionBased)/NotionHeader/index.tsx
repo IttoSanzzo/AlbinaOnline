@@ -10,7 +10,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 
 interface NotionHeaderProps extends NotionPropsColor, NotionPropsText {
 	children: ReactNode;
-	headerType?: "h1" | "h2" | "h3";
+	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
 }
 
 export default function NotionHeader({

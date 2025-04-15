@@ -1,6 +1,7 @@
 export enum NotionTextColor {
 	"default" = "#DFDFDF",
-	"gray" = "#37352F",
+	"gray" = "#989898",
+	"darkGray" = "#37352F",
 	"brown" = "#9F6B53",
 	"orange" = "#D9730D",
 	"yellow" = "#CB912F",

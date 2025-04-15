@@ -9,7 +9,6 @@
 	display: flex;
 	flex: 1;
 	padding: var(--sp-2) var(--sp-1) 0;
-	word-break: break-all;
 	overflow: scroll;
 
 	transition: 0.3s linear border;

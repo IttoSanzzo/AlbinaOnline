@@ -25,3 +25,15 @@
 		font-size: var(--fs-lg);
 	}
 }
+
+.titleArrayContainer {
+	display: flex;
+	flex-direction: row;
+	margin-left: -40px;
+
+	& div {
+		display: flex;
+		flex: 1;
+		justify-content: center;
+	}
+}

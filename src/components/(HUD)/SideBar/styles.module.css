@@ -24,8 +24,8 @@
 :root[data-hidden-sidebar="true"] .sideBarActivationArea {
 	transition: 0.25s ease-out left, 0.25s ease-out height;
 	left: calc(var(--sp-52) * -1);
-	width: calc(var(--sp-52) + 120px);
-	padding-right: 120px;
+	width: calc(var(--sp-52) + 7vw);
+	padding-right: 7vw;
 	height: 75vh;
 	top: 50%;
 	transform: translateY(-50%);
@@ -33,7 +33,6 @@
 	& .sideBarContainer {
 		border-top-right-radius: var(--rd-lg);
 		border-bottom-right-radius: var(--rd-lg);
-		/* margin-left: 10px; */
 	}
 
 	&:hover {

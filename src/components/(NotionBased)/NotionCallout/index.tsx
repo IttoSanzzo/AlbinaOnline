@@ -3,19 +3,26 @@ import {
 	NotionPropsColor,
 	NotionTextColor,
 } from "@/utils/NotionBasedUtils";
-import { HeaderContainer, NotionCalloutContainer } from "./styledElements";
+import {
+	HeaderContainer,
+	NotionCalloutContainer,
+	TitleArrayContainer,
+} from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
 import { StpIcon, StpIconProps } from "../../../../libs/stp@icons";
+import NotionText from "../NotionText";
 
 interface NotionCalloutProps extends NotionPropsColor {
 	children?: ReactNode;
-	title?: ReactNode;
+	title?: ReactNode | string | string[];
+	titleColor?: keyof typeof NotionTextColor;
 	icon?: StpIconProps;
 }
 
 export default function NotionCallout({
 	title,
-	icon = { name: "Article" },
+	titleColor,
+	icon = { name: "Note" },
 	children,
 	textColor,
 	backgroundColor,
@@ -28,11 +35,26 @@ export default function NotionCallout({
 		}),
 	};
 
+	const finalTitle =
+		typeof title === "string" ? (
+			<NotionText textColor={titleColor}>{title}</NotionText>
+		) : Array.isArray(title) ? (
+			<TitleArrayContainer>
+				{title.map((title) => (
+					<div key={title}>
+						<NotionText textColor={titleColor}>{title}</NotionText>
+					</div>
+				))}
+			</TitleArrayContainer>
+		) : (
+			title
+		);
+
 	return (
 		<NotionCalloutContainer style={style}>
 			<HeaderContainer>
 				{StpIcon(icon)}
-				{title}
+				{finalTitle}
 			</HeaderContainer>
 			<div>{children}</div>
 		</NotionCalloutContainer>

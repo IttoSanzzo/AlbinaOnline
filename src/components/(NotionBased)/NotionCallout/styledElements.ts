@@ -5,3 +5,6 @@ export const NotionCalloutContainer = newStyledElement.div(
 	styles.notionCalloutContainer
 );
 export const HeaderContainer = newStyledElement.div(styles.headerContainer);
+export const TitleArrayContainer = newStyledElement.div(
+	styles.titleArrayContainer
+);

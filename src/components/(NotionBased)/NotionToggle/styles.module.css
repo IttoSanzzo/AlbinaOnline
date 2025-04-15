@@ -36,4 +36,7 @@
 .contentContainer {
 	margin-top: var(--sp-1);
 	margin-left: 25px;
+	min-height: var(--fs-md);
+	overflow: hidden;
+	transition: 0.5s ease-in-out height, 0.5s ease-in-out min-height;
 }

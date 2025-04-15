@@ -11,6 +11,7 @@ import NotionTable, {
 } from "@/components/(NotionBased)/NotionTable";
 import { StpIcon } from "@/../libs/stp@icons";
 import NotionDivisor from "@/components/(NotionBased)/NotionDivisor";
+import GenericPageFooter from "@/components/(Design)/GenericPageFooter";
 
 interface RaceData {
 	name: string;
@@ -36,7 +37,7 @@ export default async function Race({ params }: RaceProps) {
 
 	return (
 		<GenericPageContainer
-			title={`Raça - ${race}`}
+			title={`Raça - ${race.replace("-", " ")}`}
 			banner={AlbinaLogo}
 			favicon={AlbinaLogo}>
 			<NotionHeader
@@ -46,16 +47,17 @@ export default async function Race({ params }: RaceProps) {
 				textAlign="center">
 				🏮Informações Gerais🏮
 			</NotionHeader>
-
 			<NotionCallout
 				icon={{ name: "Shuffle", color: "purple" }}
-				title={<NotionText textColor="red">⫷Tipologia⫸</NotionText>}>
+				titleColor="purple"
+				title={"⫷Tipologia⫸"}>
 				<Notion2Columns
 					colum1={
 						<NotionCallout
 							icon={{ name: "TreeEvergreen", color: "pink" }}
 							backgroundColor="pink"
-							title={<NotionText textColor="pink">💮Árvore:</NotionText>}>
+							titleColor="pink"
+							title={"💮Árvore:"}>
 							<NotionText
 								textColor="pink"
 								withBold
@@ -68,7 +70,8 @@ export default async function Race({ params }: RaceProps) {
 						<NotionCallout
 							icon={{ name: "TreeEvergreen", color: "yellow" }}
 							backgroundColor="yellow"
-							title={<NotionText textColor="yellow">🏵️Relação:</NotionText>}>
+							titleColor="yellow"
+							title={"🏵️Relação:"}>
 							<NotionText
 								textColor="yellow"
 								withBold
@@ -79,18 +82,15 @@ export default async function Race({ params }: RaceProps) {
 					}
 				/>
 			</NotionCallout>
-
 			<NotionCallout
 				icon={{ name: "Cards", color: "red" }}
-				title={<NotionText textColor="red">⫷Informações Gerais⫸</NotionText>}>
+				titleColor="red"
+				title={"⫷Informações Gerais⫸"}>
 				<NotionDivisor />
 				<NotionCallout
 					icon={{ name: "BookOpen", color: "yellow", style: "fill" }}
-					title={
-						<NotionText textColor="yellow">
-							Cultura, Comunidade e Curiosidades..:
-						</NotionText>
-					}>
+					titleColor="yellow"
+					title={"Cultura, Comunidade e Curiosidades..:"}>
 					<NotionToggle
 						textColor="orange"
 						title={
@@ -222,12 +222,9 @@ export default async function Race({ params }: RaceProps) {
 					</NotionToggle>
 				</NotionCallout>
 				<NotionCallout
-					icon={{ name: "BookOpen", color: "yellow", style: "fill" }}
-					title={
-						<NotionText textColor="yellow">
-							Aparência e Fisiologia..:
-						</NotionText>
-					}>
+					icon={{ name: "PersonArmsSpread", color: "yellow", style: "fill" }}
+					titleColor="yellow"
+					title={"Aparência e Fisiologia..:"}>
 					<NotionToggle
 						textColor="orange"
 						title={
@@ -276,6 +273,136 @@ export default async function Race({ params }: RaceProps) {
 					</NotionToggle>
 				</NotionCallout>
 			</NotionCallout>
+
+			<NotionHeader
+				textColor={"orange"}
+				backgroundColor={"gray"}
+				withUnderline={true}
+				textAlign="center">
+				🏮Características🏮
+			</NotionHeader>
+			<NotionCallout
+				icon={{ name: "SketchLogo", color: "yellow" }}
+				titleColor="yellow"
+				title={["⫦Parâmetros⫣", "⫦Gerais⫣"]}>
+				<Notion2Columns
+					colum1={
+						<NotionTable
+							tableData={{
+								tableLanes: [
+									["Vitalidade", "🔸"],
+									["Vigor", "🔸"],
+									["Manapool", "🔺"],
+									["Poder Físico", "🔸"],
+									["Poder Mágico", "🔻"],
+								],
+							}}
+							fixedLineSize={95}
+						/>
+					}
+					colum2={
+						<NotionTable
+							tableData={{
+								tableLanes: [
+									["📏 Altura Média", "》 1,60m → 1,90m"],
+									["⚓ Peso Médio", "》 55Kg"],
+									["⏳ Longevidade", "》 ~120 anos"],
+									["🥾 Deslocamento", "》 5m"],
+									["🗣️ Língua Comum", "》 Feérico"],
+								],
+							}}
+						/>
+					}
+				/>
+			</NotionCallout>
+
+			<NotionHeader
+				textColor={"orange"}
+				backgroundColor={"gray"}
+				withUnderline={true}
+				textAlign="center">
+				🏮Traços Raciais🏮
+			</NotionHeader>
+			<NotionCallout
+				icon={{ name: "UserCircle", color: "yellow" }}
+				titleColor="brown"
+				title={"⪼ Outros Traços"}>
+				<NotionQuote textColor="default">
+					Sangue Feérico Puro : Fadas costumam receber um favorecimento comum de
+					espíritos e além de um corpo absurdamente compatível à diferentes
+					formas de mana e magia, de quase qualquer natureza.
+				</NotionQuote>
+				<NotionQuote textColor="default">
+					[Traço - Asas de
+					Fada](https://www.notion.so/Tra-o-Asas-de-Fada-1340e0548e9e4e43889db7d5871ec3aa?pvs=21):
+					As asas das fadas são majoritariamente mana, e podem ser expostas, e
+					retraídas do corpo magicamente, além de armazenarem uma quantidade
+					substancial de mana, que costuma estar imprópria para uso comum.
+				</NotionQuote>
+			</NotionCallout>
+			<NotionCallout
+				icon={{ name: "UserCircleGear", color: "yellow" }}
+				titleColor="brown"
+				title={"⪼ Resistências & Fraquezas & Imunidades"}>
+				<Notion2Columns
+					colum1={
+						<NotionCallout
+							icon={{ name: "ShieldChevron", color: "orange" }}
+							textColor="orange"
+							title={"⫷Resistências⫸"}>
+							<NotionQuote textColor="default"></NotionQuote>
+						</NotionCallout>
+					}
+					colum2={
+						<NotionCallout
+							icon={{ name: "ShieldWarning", color: "red" }}
+							textColor="red"
+							title={"⫷Fraqueza⫸"}>
+							<NotionQuote textColor="default"></NotionQuote>
+						</NotionCallout>
+					}
+				/>
+				<NotionCallout
+					icon={{ name: "ShieldCheck", color: "blue" }}
+					textColor="blue"
+					title={"⫷Imunidades⫸"}>
+					<NotionQuote textColor="default"></NotionQuote>
+				</NotionCallout>
+			</NotionCallout>
+
+			<NotionHeader
+				textColor={"orange"}
+				backgroundColor={"gray"}
+				withUnderline={true}
+				textAlign="center">
+				🏮Habilidades Raciais🏮
+			</NotionHeader>
+			<NotionCallout
+				icon={{ name: "ShootingStar", color: "orange" }}
+				titleColor="orange"
+				title={"》Essência Feérica"}>
+				<NotionQuote></NotionQuote>
+			</NotionCallout>
+			<NotionCallout
+				icon={{ name: "ShootingStar", color: "orange" }}
+				titleColor="orange"
+				title={"》Taumaturgia Feérica"}>
+				<NotionQuote>
+					[Skill - Taumaturgia
+					Feérica](https://www.notion.so/Skill-Taumaturgia-Fe-rica-f64eb53801b4480abcbaa58272569eb6?pvs=21)
+				</NotionQuote>
+			</NotionCallout>
+			<NotionCallout
+				icon={{ name: "ShootingStar", color: "orange" }}
+				titleColor="orange"
+				title={"》Voo Feérico"}>
+				<NotionQuote>
+					[Skill - Impulso
+					Feérico](https://www.notion.so/Skill-Impulso-Fe-rico-ec7a8bb9a9124132b45eed0d31a6c3f9?pvs=21)
+				</NotionQuote>
+			</NotionCallout>
+
+			<GenericPageFooter version="6.4.7" />
 		</GenericPageContainer>
 	);
 }

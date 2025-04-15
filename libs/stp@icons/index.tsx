@@ -18,7 +18,7 @@ enum IconColor {
 type PhosphorKey = keyof typeof Phosphor;
 
 export interface StpIconProps {
-	name: PhosphorKey;
+	name: PhosphorKey | "";
 	color?: keyof typeof IconColor;
 	style?: IconWeight;
 }
@@ -29,7 +29,9 @@ export function StpIcon({
 	color = "default",
 	style = "duotone",
 }: StpIconProps): StpIcon {
-	const PhosphorIcon = Phosphor[name] as React.FC<IconProps>;
+	const PhosphorIcon = Phosphor[
+		name !== "" ? name : "Note"
+	] as React.FC<IconProps>;
 
 	return (
 		<PhosphorIcon
