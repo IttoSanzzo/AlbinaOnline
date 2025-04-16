@@ -1,13 +1,17 @@
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
-import GenericPageContainer from "@/components/(Design)/GenericPageContainer";
-import GenericPageFooter from "@/components/(Design)/GenericPageFooter";
-import Notion2Columns from "@/components/(NotionBased)/Notion2Columns";
-import NotionCallout from "@/components/(NotionBased)/NotionCallout";
-import NotionDivisor from "@/components/(NotionBased)/NotionDivisor";
-import NotionHeader from "@/components/(NotionBased)/NotionHeader";
-import NotionQuote from "@/components/(NotionBased)/NotionQuote";
-import NotionTable from "@/components/(NotionBased)/NotionTable";
-import NotionToggle from "@/components/(NotionBased)/NotionToggle";
+import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
+import {
+	NotionHeader,
+	Notion2Columns,
+	NotionCallout,
+	NotionQuote,
+	NotionToggle,
+	NotionDivisor,
+	NotionTable,
+} from "@/components/(NotionBased)";
+import { getPageData } from "./(routeInfra)";
+
+export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
 interface MasteryData {
 	name: string;
@@ -19,6 +23,7 @@ interface MasteryProps {
 
 export default async function Mastery({ params }: MasteryProps) {
 	const { mastery } = await params;
+	const pageData = getPageData(mastery);
 
 	return (
 		<GenericPageContainer
@@ -28,9 +33,9 @@ export default async function Mastery({ params }: MasteryProps) {
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"
-				textAlign="center">
-				¤ Especificações ¤
-			</NotionHeader>
+				textAlign="center"
+				children={"¤ Especificações ¤"}
+			/>
 			<Notion2Columns
 				colum1={
 					<NotionCallout
@@ -93,9 +98,9 @@ export default async function Mastery({ params }: MasteryProps) {
 			<NotionHeader
 				textColor="orange"
 				backgroundColor="gray"
-				textAlign="center">
-				🏮 Efeitos 🏮
-			</NotionHeader>
+				textAlign="center"
+				children={"🏮 Efeitos 🏮"}
+			/>
 			<NotionCallout
 				icon={{ name: "PlusCircle", color: "purple" }}
 				titleColor="purple"
@@ -109,15 +114,4 @@ export default async function Mastery({ params }: MasteryProps) {
 			<GenericPageFooter version="6.4.8" />
 		</GenericPageContainer>
 	);
-}
-
-export async function generateStaticParams() {
-	if (process.env.NODE_ENV === "development") return [];
-	return [
-		{ mastery: "acrobacia" },
-		{ mastery: "alerta" },
-		{ mastery: "arcanismo" },
-		{ mastery: "atletismo" },
-		{ mastery: "atraencia" },
-	];
 }

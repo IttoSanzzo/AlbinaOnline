@@ -1,17 +1,17 @@
-import GenericPageContainer from "@/components/(Design)/GenericPageContainer";
-import NotionText from "@/components/(NotionBased)/NotionText";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
-import NotionHeader from "@/components/(NotionBased)/NotionHeader";
-import NotionCallout from "@/components/(NotionBased)/NotionCallout";
-import Notion2Columns from "@/components/(NotionBased)/Notion2Columns";
-import NotionToggle from "@/components/(NotionBased)/NotionToggle";
-import NotionQuote from "@/components/(NotionBased)/NotionQuote";
-import NotionTable, {
-	NotionTableData,
-} from "@/components/(NotionBased)/NotionTable";
-import { StpIcon } from "@/../libs/stp@icons";
-import NotionDivisor from "@/components/(NotionBased)/NotionDivisor";
-import GenericPageFooter from "@/components/(Design)/GenericPageFooter";
+import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
+import {
+	NotionText,
+	NotionHeader,
+	Notion2Columns,
+	NotionCallout,
+	NotionQuote,
+	NotionToggle,
+	NotionDivisor,
+	NotionTable,
+} from "@/components/(NotionBased)";
+
+export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
 interface RaceData {
 	name: string;
@@ -23,17 +23,6 @@ interface RaceProps {
 
 export default async function Race({ params }: RaceProps) {
 	const { race } = await params;
-	// console.log(race);
-
-	// const tableTest: NotionTableData = {
-	// 	tableLanes: [
-	// 		[<>Vitalidade</>, <>🔸</>, <>🔸</>],
-	// 		[<>Vigor</>, <>🔸</>, <>🔸</>],
-	// 		[<>Manapool</>, <>10</>, <>🔸</>],
-	// 		[<>Poder Fisico</>, <>🔸</>, <>🔸</>],
-	// 		[<>Poder Magico</>, <>🔻</>, <>🔸</>],
-	// 	],
-	// };
 
 	return (
 		<GenericPageContainer
@@ -405,58 +394,4 @@ export default async function Race({ params }: RaceProps) {
 			<GenericPageFooter version="6.4.7" />
 		</GenericPageContainer>
 	);
-}
-
-export async function generateStaticParams() {
-	if (process.env.NODE_ENV === "development") return [];
-	return [
-		{ race: "humano" },
-		{ race: "bestial" },
-		{ race: "pequenino" },
-		{ race: "dwarf" },
-		{ race: "halbelf" },
-		{ race: "maketsu" },
-		{ race: "alarion" },
-		{ race: "draknir" },
-		{ race: "fada" },
-		{ race: "hochelf" },
-		{ race: "mondelf" },
-		{ race: "sonnelf" },
-		{ race: "dokkalfar" },
-		{ race: "waldelf" },
-		{ race: "zwergelf" },
-		{ race: "faedra" },
-		{ race: "tita" },
-		{ race: "troll" },
-		{ race: "dragao-verdadeiro" },
-		{ race: "wyvern" },
-		{ race: "wyrm" },
-		{ race: "drake" },
-		{ race: "draconato" },
-		{ race: "demonio-puro" },
-		{ race: "ogro" },
-		{ race: "oni" },
-		{ race: "imp" },
-		{ race: "nephilim" },
-		{ race: "anjo-puro" },
-		{ race: "platenario" },
-		{ race: "empirico" },
-		{ race: "ljosalfar" },
-		{ race: "sishen" },
-		{ race: "deva" },
-		{ race: "licht" },
-		{ race: "kiishu" },
-		{ race: "fitopheles" },
-		{ race: "demen" },
-		{ race: "seirei" },
-		{ race: "driade" },
-		{ race: "feral" },
-		{ race: "nezhit" },
-		{ race: "vampiro-verdadeiro" },
-		{ race: "espectro" },
-		{ race: "takroiy" },
-		{ race: "nekri" },
-		{ race: "lich" },
-		{ race: "goblin" },
-	];
 }
