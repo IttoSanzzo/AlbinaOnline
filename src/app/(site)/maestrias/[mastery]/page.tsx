@@ -1,21 +1,20 @@
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
-import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
+import {
+	GenericEffectsDisplay,
+	GenericInfoCallout,
+	GenericPageContainer,
+	GenericPageFooter,
+} from "@/components/(Design)";
 import {
 	NotionHeader,
 	Notion2Columns,
 	NotionCallout,
 	NotionQuote,
-	NotionToggle,
-	NotionDivisor,
-	NotionTable,
 } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
+import MasteryTypologyCallout from "./subComponents/TypologyCallout";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
-
-interface MasteryData {
-	name: string;
-}
 
 interface MasteryProps {
 	params: Promise<{ mastery: string }>;
@@ -23,7 +22,11 @@ interface MasteryProps {
 
 export default async function Mastery({ params }: MasteryProps) {
 	const { mastery } = await params;
-	const pageData = getPageData(mastery);
+	const MasteryPageData = await getPageData(mastery);
+	if (MasteryPageData.masteryData == undefined) {
+		return <></>;
+	}
+	const { masteryData } = MasteryPageData;
 
 	return (
 		<GenericPageContainer
@@ -38,80 +41,16 @@ export default async function Mastery({ params }: MasteryProps) {
 			/>
 			<Notion2Columns
 				colum1={
-					<NotionCallout
-						icon={{
-							name: "IdentificationCard",
-							color: "purple",
-						}}
-						titleColor="gray"
-						title={"Tipologia"}>
-						<NotionTable
-							tableData={{
-								tableLanes: [
-									["💮Perícia", "🪡"],
-									["🦵🏻⸙ Agilidade ⸙ ", "⊱🦵🏻"],
-								],
-							}}
-						/>
-					</NotionCallout>
+					<MasteryTypologyCallout
+						type={masteryData.type}
+						status={masteryData.data.status}
+					/>
 				}
-				colum2={
-					<NotionCallout
-						icon={{
-							name: "Info",
-							color: "purple",
-						}}
-						titleColor="gray"
-						title={"Info"}>
-						<NotionToggle
-							titleColor="blue"
-							title={"🪄|Resumo|🪄"}>
-							<NotionDivisor />
-							<NotionQuote
-								children={
-									"Capacidade e preparação física para performar diferentes movimentações incomuns, tais como mortais, cambalhotas, e demais artifícios."
-								}></NotionQuote>
-							<NotionDivisor />
-						</NotionToggle>
-						<NotionToggle
-							titleColor="blue"
-							title={"🔎|Descrição Geral|🔎"}>
-							<NotionDivisor />
-							<NotionQuote
-								children={
-									"Essa Perícia é mais apropriada para movimentações que requerem uma resolução rápida de uma enrascada, e pode muitas vezes se requisitada juntamente a outra, como salto, equilíbrio, escalada, e afins."
-								}
-							/>
-							<NotionDivisor />
-						</NotionToggle>
-						<NotionToggle
-							titleColor="blue"
-							title={"💮|Miscelâneas|💮"}>
-							<NotionDivisor />
-							<NotionQuote children={""} />
-							<NotionDivisor />
-						</NotionToggle>
-					</NotionCallout>
-				}
+				colum2={<GenericInfoCallout info={masteryData.data.info} />}
 			/>
 
-			<NotionHeader
-				textColor="orange"
-				backgroundColor="gray"
-				textAlign="center"
-				children={"🏮 Efeitos 🏮"}
-			/>
-			<NotionCallout
-				icon={{ name: "PlusCircle", color: "purple" }}
-				titleColor="purple"
-				title={"primario"}>
-				<NotionQuote
-					children={
-						"Per Level: +1 de bônus para jogadas em testes nessa perícia."
-					}
-				/>
-			</NotionCallout>
-			<GenericPageFooter version="6.4.8" />
+			<GenericEffectsDisplay effects={masteryData.data.effects} />
+			<GenericPageFooter version={masteryData.albinaVersion} />
 		</GenericPageContainer>
 	);
 }

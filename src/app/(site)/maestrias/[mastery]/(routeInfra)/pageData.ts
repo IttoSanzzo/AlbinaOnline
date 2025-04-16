@@ -1,6 +1,47 @@
-type MasteryData = {};
+export type GenericInfo = {
+	summary: string[];
+	description: string[];
+	miscellaneous: string[];
+};
 
-export function getPageData(masterySlug: string): MasteryData {
-	if (!masterySlug) return {};
-	return {};
+export type GenericEffect = {
+	name: string;
+	info: string[];
+};
+
+type MasteryData = {
+	id: number;
+	slug: string;
+	type: string;
+	creationDate: string;
+	lastUpdate: string;
+	albinaVersion: string;
+	data: {
+		name: string;
+		status: string;
+		info: GenericInfo;
+		effects: GenericEffect[];
+	};
+};
+
+type GetDataError = {
+	message: string;
+};
+
+type MasteryPageData = {
+	masteryData?: MasteryData;
+};
+
+export async function getPageData(
+	masterySlug: string
+): Promise<MasteryPageData> {
+	if (!masterySlug) return { masteryData: undefined };
+
+	const response = await fetch(
+		`${process.env.ALBINA_API}/masteries/${masterySlug}`
+	);
+	if (!response.ok) return { masteryData: undefined };
+	const masteryData: MasteryData = await response.json();
+
+	return { masteryData };
 }
