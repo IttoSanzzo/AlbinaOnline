@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ProfileButtonContainer } from "./styledElements";
 
-export function ProfileButton() {
+export default function ProfileButton() {
 	return (
 		<ProfileButtonContainer>
 			<Image

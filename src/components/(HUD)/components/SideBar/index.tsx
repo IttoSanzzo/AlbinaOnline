@@ -30,6 +30,7 @@ export function SideBar() {
 						<ActivePageTitle>Home</ActivePageTitle>
 					</Link>
 				</HeaderContainer>
+
 				<IndexedPageGroups>
 					<IndexedPagesGroup
 						groupName="Favorites"

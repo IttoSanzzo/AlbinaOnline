@@ -1,21 +1,19 @@
 .indexedPagesGroupContainer {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-sm);
 
-	& > h6 {
-		color: var(--cl-gray-100);
-		font-size: var(--fs-xs);
-		margin-bottom: 5px;
+	& h6 {
+		font-size: var(--fs-lg);
 	}
 }
 
 .indexedPageLink {
-	background-color: var(--cl-gray-800);
+	background-color: var(--cl-gray-700);
 	transition: 0.25s linear background;
 	border-radius: var(--rd-md);
-	padding: 6px 6px 6px 10px;
+	padding: 4px 6px 4px 0;
 	overflow: scroll;
+	font-size: var(--fs-sm);
 
 	& img {
 		border-radius: var(--rd-xs);
@@ -30,6 +28,6 @@
 		justify-content: flex-start;
 	}
 	&:hover {
-		background-color: var(--cl-gray-700);
+		background-color: var(--cl-gray-600);
 	}
 }

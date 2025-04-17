@@ -18,11 +18,13 @@ interface NotionToggleProps extends NotionPropsColor {
 	children?: ReactNode;
 	title?: ReactNode | string;
 	titleColor?: keyof typeof NotionTextColor;
+	contentMargin?: "none" | "middle" | "full";
 }
 
 export function NotionToggle({
 	children,
 	title,
+	contentMargin,
 	titleColor,
 	textColor,
 	backgroundColor,
@@ -42,6 +44,10 @@ export function NotionToggle({
 		}),
 	};
 	const contentStyle: CSSProperties = {
+		...(contentMargin &&
+			contentMargin != "full" && {
+				marginLeft: contentMargin == "middle" ? "12.5px" : 0,
+			}),
 		...(!isOpen && {
 			height: 0,
 			minHeight: 0,

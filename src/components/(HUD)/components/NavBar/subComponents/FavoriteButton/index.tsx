@@ -4,7 +4,7 @@ import { Star } from "@phosphor-icons/react/Star";
 import { FavoriteButtonContainer } from "./styledElements";
 import { useState } from "react";
 
-export function FavoriteButton() {
+export default function FavoriteButton() {
 	const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
 	function handleAddFavorite() {
