@@ -5,9 +5,21 @@ import {
 } from "@/components/(NotionBased)";
 import { GenericEffectsDisplayContainer } from "./styledElements";
 import { GenericEffect } from "@/app/(site)/maestrias/[mastery]/(routeInfra)/pageData";
+import { StpIconProps } from "@/libs/stp@icons";
 
 interface GenericEffectsDisplayProps {
 	effects: GenericEffect[];
+}
+
+function getIconProps(name: string): StpIconProps {
+	switch (name) {
+		case "Primário":
+			return { name: "PlusCircle", color: "purple" };
+		case "Up":
+			return { name: "ArrowFatLineUp", color: "purple" };
+		default:
+			return { name: "Sun", color: "default" };
+	}
 }
 
 export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
@@ -19,20 +31,23 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 				textAlign="center"
 				children={"🏮 Efeitos 🏮"}
 			/>
-			{effects.map((effect, index) => (
-				<NotionCallout
-					key={index}
-					icon={{ name: "PlusCircle", color: "purple" }}
-					titleColor="purple"
-					title={effect.name}>
-					{effect.info.map((info, index) => (
-						<NotionQuote
-							key={index}
-							children={info}
-						/>
-					))}
-				</NotionCallout>
-			))}
+			{effects.map((effect, index) => {
+				const iconProps = getIconProps(effect.name);
+				return (
+					<NotionCallout
+						key={index}
+						icon={iconProps}
+						titleColor={iconProps.color}
+						title={effect.name}>
+						{effect.info.map((info, index) => (
+							<NotionQuote
+								key={index}
+								children={info}
+							/>
+						))}
+					</NotionCallout>
+				);
+			})}
 		</GenericEffectsDisplayContainer>
 	);
 }

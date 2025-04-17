@@ -1,4 +1,5 @@
 .favoriteButtonContainer {
+	margin-bottom: -3px;
 	& button {
 		cursor: pointer;
 		background: transparent;
