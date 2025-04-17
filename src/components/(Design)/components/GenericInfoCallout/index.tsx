@@ -17,6 +17,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 				titleColor="gray"
 				title={"Info"}>
 				<NotionToggle
+					memoryId="InfoSummary"
 					titleColor="blue"
 					title={"🪄|Resumo|🪄"}>
 					<NotionQuoteList
@@ -25,6 +26,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 					/>
 				</NotionToggle>
 				<NotionToggle
+					memoryId="InfoDescription"
 					titleColor="blue"
 					title={"🔎|Descrição Geral|🔎"}>
 					<NotionQuoteList
@@ -33,6 +35,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 					/>
 				</NotionToggle>
 				<NotionToggle
+					memoryId="InfoMiscs"
 					titleColor="blue"
 					title={"💮|Miscelâneas|💮"}>
 					<NotionQuoteList

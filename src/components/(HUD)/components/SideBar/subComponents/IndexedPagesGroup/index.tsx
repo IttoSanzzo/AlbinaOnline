@@ -22,6 +22,8 @@ export default function IndexedPagesGroup({
 	return (
 		<IndexedPagesGroupContainer>
 			<NotionToggle
+				memoryId={`IndexedPages/${groupName}`}
+				routeSensitiveMemory={false}
 				contentMargin="middle"
 				textColor="orange"
 				title={<h6>{groupName}</h6>}>

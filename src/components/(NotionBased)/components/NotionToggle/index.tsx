@@ -5,7 +5,7 @@ import {
 	HeaderContainer,
 	NotionToggleContainer,
 } from "./styledElements";
-import { CSSProperties, ReactNode, useRef, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 import { Triangle } from "@phosphor-icons/react/Triangle";
 import {
 	NotionText,
@@ -13,29 +13,52 @@ import {
 	NotionPropsColor,
 	NotionTextColor,
 } from "../../index";
+import { routeStorage } from "@/utils/Storage";
+import { usePathname } from "next/navigation";
 
 interface NotionToggleProps extends NotionPropsColor {
 	children?: ReactNode;
 	title?: ReactNode | string;
 	titleColor?: keyof typeof NotionTextColor;
 	contentMargin?: "none" | "middle" | "full";
+	memoryId?: string;
+	routeSensitiveMemory?: boolean;
 }
 
 export function NotionToggle({
 	children,
 	title,
 	contentMargin,
+	memoryId,
+	routeSensitiveMemory = true,
 	titleColor,
 	textColor,
 	backgroundColor,
 }: NotionToggleProps) {
+	const memoryName =
+		memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
+	const pathname = routeSensitiveMemory ? usePathname() : "";
 
 	function handleOpenButton() {
+		if (memoryName) {
+			if (isOpen) routeStorage.removeItem(pathname, memoryName);
+			else routeStorage.setItem(pathname, memoryName, true);
+		}
 		setIsOpen(!isOpen);
 	}
+
+	useEffect(() => {
+		if (memoryName) {
+			const memoryState = routeStorage.getItem(pathname, memoryName);
+			if (memoryState) {
+				const isMemoryStateOpen = memoryState === "true" ? true : false;
+				setIsOpen(isMemoryStateOpen);
+			}
+		}
+	}, []);
 
 	const style: CSSProperties = {
 		...(textColor && { color: NotionTextColor[textColor] }),
