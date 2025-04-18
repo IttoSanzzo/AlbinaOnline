@@ -5,6 +5,9 @@ function getTabulatedType(type: string) {
 		case "expertise":
 			return ["💮Perícia", "🪡"];
 			break;
+		case "knowledge":
+			return ["💮Conhecimento", "📖"];
+			break;
 		default:
 			return ["Unknown", "?"];
 			break;
@@ -15,8 +18,29 @@ function getTabulatedStatus(status: string) {
 		case "agility":
 			return ["🦵🏻⸙Agilidade⸙", "⊱🦵🏻"];
 			break;
+		case "intelligence":
+			return ["🧠⸙Inteligência⸙", "⊱🧠"];
+			break;
+		case "strenght":
+			return ["💪🏻⸙Força⸙", "⊱💪🏻"];
+			break;
+		case "constitution":
+			return ["⊱🍻⸙Constituição⸙", "⊱🍻"];
+			break;
+		case "technique":
+			return ["🤏🏻⸙Técnica⸙", "⊱🤏🏻"];
+			break;
+		case "charisma":
+			return ["🎭⸙Carisma⸙", "⊱🎭"];
+			break;
 		case "wisdom":
 			return ["🧙🏻‍♂️⸙Sabedoria⸙", "⊱🧙🏻‍♂️"];
+			break;
+		case "singular":
+			return ["📘⸙Singular⸙", "⊱📘"];
+			break;
+		case "multiple":
+			return ["⊱📚⸙Múltiplo⸙", "⊱⊱📚"];
 			break;
 		default:
 			return ["Unknown", "?"];

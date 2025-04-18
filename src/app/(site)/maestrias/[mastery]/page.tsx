@@ -5,12 +5,7 @@ import {
 	GenericPageContainer,
 	GenericPageFooter,
 } from "@/components/(Design)";
-import {
-	NotionHeader,
-	Notion2Columns,
-	NotionCallout,
-	NotionQuote,
-} from "@/components/(NotionBased)";
+import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/TypologyCallout";
 
@@ -30,7 +25,7 @@ export default async function Mastery({ params }: MasteryProps) {
 
 	return (
 		<GenericPageContainer
-			title={`⩤Maestria - ${mastery.replace("-", " ")}⩥`}
+			title={`⩤Maestria - ${masteryData.data.name}⩥`}
 			banner={AlbinaLogo}
 			favicon={AlbinaLogo}>
 			<NotionHeader
