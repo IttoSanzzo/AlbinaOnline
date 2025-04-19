@@ -9,6 +9,7 @@ interface LayoutProps {
 
 const GlobalContainer = newStyledElement.div(styles.globalContainer);
 const MainContainer = newStyledElement.div(styles.mainContainer);
+const PageContainer = newStyledElement.div(styles.pageContainer);
 
 export default function Layout({ children }: LayoutProps) {
 	return (
@@ -16,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
 			<SideBar />
 			<MainContainer>
 				<NavBar />
-				{children}
+				<PageContainer>{children}</PageContainer>
 			</MainContainer>
 		</GlobalContainer>
 	);

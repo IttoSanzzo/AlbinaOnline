@@ -1,4 +1,8 @@
 .lastEditDateContainer {
 	color: var(--cl-gray-400);
 	font-weight: var(--fw-bold);
+
+	@media (max-width: 480px) {
+		display: none;
+	}
 }

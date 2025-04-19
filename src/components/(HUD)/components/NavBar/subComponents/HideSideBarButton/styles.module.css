@@ -21,8 +21,8 @@
 	}
 }
 
-:root[data-hidden-sidebar="false"] .hideSideBarButtonContainer {
-	@media (max-width: 480px) {
+@media (max-width: 480px) {
+	:root[data-hidden-sidebar="false"] .hideSideBarButtonContainer {
 		width: 100vw;
 		height: 100vh;
 		top: 0;
