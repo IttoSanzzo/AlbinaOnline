@@ -1,4 +1,6 @@
 .navBarContainer {
+	position: sticky;
+	top: 0;
 	background-color: var(--cl-black-3);
 	border-bottom: 1px solid var(--cl-gray-700);
 	padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-3);

@@ -9,7 +9,7 @@ export type GenericEffect = {
 	info: string[];
 };
 
-type MasteryData = {
+export type MasteryData = {
 	id: number;
 	slug: string;
 	type: string;
@@ -19,6 +19,7 @@ type MasteryData = {
 	data: {
 		name: string;
 		status: string;
+		iconUrl: string;
 		info: GenericInfo;
 		effects: GenericEffect[];
 	};

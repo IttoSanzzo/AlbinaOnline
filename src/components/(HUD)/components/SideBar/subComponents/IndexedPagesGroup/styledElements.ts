@@ -4,4 +4,6 @@ import styles from "./styles.module.css";
 export const IndexedPagesGroupContainer = newStyledElement.div(
 	styles.indexedPagesGroupContainer
 );
-export const IndexedPageLink = newStyledElement.div(styles.indexedPageLink);
+export const IndexedPageLinksContainer = newStyledElement.div(
+	styles.indexedPageLinksContainer
+);

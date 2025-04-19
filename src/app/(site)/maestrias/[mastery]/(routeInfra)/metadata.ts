@@ -1,5 +1,5 @@
-import { capitalizeAll } from "@/utils/StringUtils";
 import { Metadata } from "next";
+import { getPageData } from "./pageData";
 
 export async function generateMetadata({
 	params,
@@ -7,18 +7,16 @@ export async function generateMetadata({
 	params: Promise<{ mastery: string }>;
 }): Promise<Metadata> {
 	const { mastery } = await params;
-	const title: string = `Maestria - ${capitalizeAll(
-		mastery.replace("-", " ")
-	)}`;
+	const MasteryPageData = await getPageData(mastery);
+	if (MasteryPageData.masteryData == undefined) {
+		return { title: "Not Found" };
+	}
+	const { masteryData } = MasteryPageData;
+
+	const title = `Maestria - ${masteryData.data.name}`;
 
 	return {
 		title,
-		// icons: {
-		// icon: `https://meusite.com/api/icone?slug=${mastery}`,
-		// },
-		// openGraph: {
-		// title: `Produto: ${slug}`,
-		// images: [`https://meusite.com/api/imagem?slug=${slug}`],
-		// },
+		icons: { icon: masteryData.data.iconUrl },
 	};
 }

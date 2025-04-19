@@ -35,23 +35,22 @@ export function SideBar() {
 					<IndexedPagesGroup
 						groupName="Favorites"
 						indexedPages={[
-							{ name: "1", link: "1", image: albinaLogo },
-							{ name: "2", link: "2", image: albinaLogo },
-							{ name: "3", link: "3", image: albinaLogo },
-							{ name: "4", link: "4", image: albinaLogo },
+							{ name: "1", link: "1" },
+							{ name: "2", link: "2" },
+							{ name: "3", link: "3" },
+							{ name: "4", link: "4" },
 						]}
 					/>
 					<IndexedPagesGroup
 						groupName="Core Hub"
 						indexedPages={[
-							{ name: "Races", link: "/races", image: albinaLogo },
+							{ name: "Maestrias", link: "/maestrias" },
+							{ name: "Raças", link: "/racas" },
 						]}
 					/>
 					<IndexedPagesGroup
 						groupName="Your Chars"
-						indexedPages={[
-							{ name: "Albina Online", link: "/", image: albinaLogo },
-						]}
+						indexedPages={[{ name: "Albina Online", link: "/" }]}
 					/>
 				</IndexedPageGroups>
 				<FooterContainer>

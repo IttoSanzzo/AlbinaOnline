@@ -1,12 +1,13 @@
-import { ReactNode } from "react";
-import { IndexedPageLink, IndexedPagesGroupContainer } from "./styledElements";
-import Image, { StaticImageData } from "next/image";
-import Link from "next/link";
+import {
+	IndexedPageLinksContainer,
+	IndexedPagesGroupContainer,
+} from "./styledElements";
 import { NotionToggle } from "@/components/(NotionBased)";
+import { StyledLink } from "@/components/(Design)";
 
 export interface IndexedPage {
 	name: string;
-	image: string | StaticImageData;
+	image?: string;
 	link: string;
 }
 
@@ -24,22 +25,20 @@ export default function IndexedPagesGroup({
 			<NotionToggle
 				memoryId={`IndexedPages/${groupName}`}
 				routeSensitiveMemory={false}
-				contentMargin="middle"
+				contentMargin="none"
 				textColor="orange"
 				title={<h6>{groupName}</h6>}>
-				{indexedPages.map((indexedPage) => (
-					<IndexedPageLink key={indexedPage.link}>
-						<Link href={indexedPage.link}>
-							<Image
-								src={indexedPage.image}
-								alt=""
-								width={18}
-								height={18}
-							/>
-							<span>{indexedPage.name}</span>
-						</Link>
-					</IndexedPageLink>
-				))}
+				<IndexedPageLinksContainer>
+					{indexedPages.map((indexedPage) => (
+						<StyledLink
+							key={indexedPage.link}
+							title={indexedPage.name}
+							href={indexedPage.link}
+							icon={indexedPage.image}
+							display="flexbox"
+						/>
+					))}
+				</IndexedPageLinksContainer>
 			</NotionToggle>
 		</IndexedPagesGroupContainer>
 	);

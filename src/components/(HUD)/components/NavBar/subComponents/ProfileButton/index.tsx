@@ -11,6 +11,7 @@ export default function ProfileButton() {
 				alt="Profile image"
 				width={32}
 				height={32}
+				priority
 			/>
 		</ProfileButtonContainer>
 	);

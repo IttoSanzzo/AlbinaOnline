@@ -8,6 +8,9 @@ function getTabulatedType(type: string) {
 		case "knowledge":
 			return ["💮Conhecimento", "📖"];
 			break;
+		case "craft":
+			return ["💮Ofício", "👜"];
+			break;
 		default:
 			return ["Unknown", "?"];
 			break;
@@ -17,34 +20,30 @@ function getTabulatedStatus(status: string) {
 	switch (status) {
 		case "agility":
 			return ["🦵🏻⸙Agilidade⸙", "⊱🦵🏻"];
-			break;
 		case "intelligence":
 			return ["🧠⸙Inteligência⸙", "⊱🧠"];
-			break;
 		case "strenght":
 			return ["💪🏻⸙Força⸙", "⊱💪🏻"];
-			break;
 		case "constitution":
 			return ["⊱🍻⸙Constituição⸙", "⊱🍻"];
-			break;
 		case "technique":
 			return ["🤏🏻⸙Técnica⸙", "⊱🤏🏻"];
-			break;
 		case "charisma":
 			return ["🎭⸙Carisma⸙", "⊱🎭"];
-			break;
 		case "wisdom":
 			return ["🧙🏻‍♂️⸙Sabedoria⸙", "⊱🧙🏻‍♂️"];
-			break;
 		case "singular":
 			return ["📘⸙Singular⸙", "⊱📘"];
-			break;
 		case "multiple":
-			return ["⊱📚⸙Múltiplo⸙", "⊱⊱📚"];
-			break;
+			return ["📚⸙Múltiplo⸙", "⊱📚"];
+		case "general":
+			return ["👔⸙Geral⸙", "⊱👔"];
+		case "combatant":
+			return ["🥋⸙Combatente⸙", "⊱🥋"];
+		case "production":
+			return ["🥽⸙Produção⸙", "⊱🥽"];
 		default:
 			return ["Unknown", "?"];
-			break;
 	}
 }
 

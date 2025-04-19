@@ -10,8 +10,10 @@ export function PageHeader({ title, src }: PageHeaderProps) {
 	return (
 		<PageHeaderContainer>
 			<Image
-				src={src}
+				src={`${src}?size=64`}
 				alt="Page's favicon"
+				width={64}
+				height={64}
 			/>
 			<PageTitle>{title}</PageTitle>
 		</PageHeaderContainer>

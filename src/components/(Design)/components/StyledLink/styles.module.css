@@ -1,0 +1,30 @@
+.styledLinkContainer {
+	display: flexbox;
+	border-radius: var(--rd-sm);
+	background-color: var(--cl-gray-800);
+
+	& a {
+		padding: 1px var(--sp-1);
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		text-decoration: none;
+		color: var(--cl-gray-200);
+
+		& img {
+			border-radius: var(--rd-sm);
+		}
+		& span {
+			display: inline;
+			font-family: Inter;
+		}
+	}
+
+	&:hover {
+		background-color: var(--cl-gray-700);
+
+		& a {
+			color: var(--cl-gray-100);
+		}
+	}
+}
