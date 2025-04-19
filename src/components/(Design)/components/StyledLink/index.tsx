@@ -16,11 +16,17 @@ export function StyledLink({
 	icon,
 	display = "inline-flex",
 }: StyledLinkProps) {
+	const finalIcon = icon
+		? icon[0] === "@"
+			? icon
+			: `${icon}?size=21`
+		: AlbinaLogo;
+
 	return (
 		<StyledLinkContainer style={{ display }}>
 			<Link href={href}>
 				<Image
-					src={icon ? `${icon}?size=21` : AlbinaLogo}
+					src={finalIcon}
 					width={21}
 					height={21}
 					alt=""

@@ -3,11 +3,12 @@ import { ContentsContainer, MainContainer } from "./styledElements";
 import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
 import { StaticImageData } from "next/image";
+import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 
 interface GenericPageContainerProps {
 	children: ReactNode;
-	banner: string | StaticImageData;
-	favicon: string | StaticImageData;
+	banner?: string | StaticImageData;
+	favicon?: string;
 	title: string;
 }
 
@@ -19,11 +20,11 @@ export function GenericPageContainer({
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
-			<PageBanner src={banner} />
+			<PageBanner src={banner ? banner : AlbinaLogo} />
 			<ContentsContainer>
 				<PageHeader
 					title={title}
-					src={favicon}
+					icon={favicon ? favicon : "/Mock/AlbinaLogo.png"}
 				/>
 				{children}
 			</ContentsContainer>

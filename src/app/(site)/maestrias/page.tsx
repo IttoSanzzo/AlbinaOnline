@@ -1,7 +1,7 @@
 import { MasteryData } from "./[mastery]/(routeInfra)/pageData";
 import { MasterysContainer } from "./styledElements";
 import { NotionHeader, NotionQuote } from "@/components/(NotionBased)";
-import { StyledLink } from "@/components/(Design)";
+import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 
 export default async function Masterys() {
 	const response = await fetch(`${process.env.ALBINA_API}/masteries`);
@@ -21,66 +21,68 @@ export default async function Masterys() {
 	);
 
 	return (
-		<MasterysContainer>
-			<NotionHeader
-				textAlign="center"
-				backgroundColor="gray"
-				children={"Perícias"}
-			/>
-			{allExpertiseMasteries.map((masteryData) => {
-				return (
-					<NotionQuote
-						key={masteryData.id}
-						children={
-							<StyledLink
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
-							/>
-						}
-					/>
-				);
-			})}
+		<GenericPageContainer title="Maestrias">
+			<MasterysContainer>
+				<NotionHeader
+					textAlign="center"
+					backgroundColor="gray"
+					children={"Perícias"}
+				/>
+				{allExpertiseMasteries.map((masteryData) => {
+					return (
+						<NotionQuote
+							key={masteryData.id}
+							children={
+								<StyledLink
+									title={masteryData.data.name}
+									href={`/maestrias/${masteryData.slug}`}
+									icon={masteryData.data.iconUrl}
+								/>
+							}
+						/>
+					);
+				})}
 
-			<NotionHeader
-				textAlign="center"
-				backgroundColor="gray"
-				children={"Conhecimentos"}
-			/>
-			{allKnowledgeMasteries.map((masteryData) => {
-				return (
-					<NotionQuote
-						key={masteryData.id}
-						children={
-							<StyledLink
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
-							/>
-						}
-					/>
-				);
-			})}
+				<NotionHeader
+					textAlign="center"
+					backgroundColor="gray"
+					children={"Conhecimentos"}
+				/>
+				{allKnowledgeMasteries.map((masteryData) => {
+					return (
+						<NotionQuote
+							key={masteryData.id}
+							children={
+								<StyledLink
+									title={masteryData.data.name}
+									href={`/maestrias/${masteryData.slug}`}
+									icon={masteryData.data.iconUrl}
+								/>
+							}
+						/>
+					);
+				})}
 
-			<NotionHeader
-				textAlign="center"
-				backgroundColor="gray"
-				children={"Ofícios"}
-			/>
-			{allCraftMasteries.map((masteryData) => {
-				return (
-					<NotionQuote
-						key={masteryData.id}
-						children={
-							<StyledLink
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
-							/>
-						}
-					/>
-				);
-			})}
-		</MasterysContainer>
+				<NotionHeader
+					textAlign="center"
+					backgroundColor="gray"
+					children={"Ofícios"}
+				/>
+				{allCraftMasteries.map((masteryData) => {
+					return (
+						<NotionQuote
+							key={masteryData.id}
+							children={
+								<StyledLink
+									title={masteryData.data.name}
+									href={`/maestrias/${masteryData.slug}`}
+									icon={masteryData.data.iconUrl}
+								/>
+							}
+						/>
+					);
+				})}
+			</MasterysContainer>
+		</GenericPageContainer>
 	);
 }

@@ -3,14 +3,15 @@ import { PageHeaderContainer, PageTitle } from "./styledElements";
 
 interface PageHeaderProps {
 	title: string;
-	src: string | StaticImageData;
+	icon: string;
 }
 
-export function PageHeader({ title, src }: PageHeaderProps) {
+export function PageHeader({ title, icon }: PageHeaderProps) {
+	const finalIcon = icon[0] === "/" ? icon : `${icon}?size=64`;
 	return (
 		<PageHeaderContainer>
 			<Image
-				src={`${src}?size=64`}
+				src={finalIcon}
 				alt="Page's favicon"
 				width={64}
 				height={64}
