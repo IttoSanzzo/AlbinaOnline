@@ -1,5 +1,5 @@
 .sideBarActivationArea {
-	z-index: 1;
+	z-index: 10;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -21,6 +21,12 @@
 	justify-content: space-between;
 	padding: var(--sp-3);
 }
+:root[data-hidden-sidebar="false"] .sideBarActivationArea {
+	@media (max-width: 480px) {
+		position: fixed;
+	}
+}
+
 :root[data-hidden-sidebar="true"] .sideBarActivationArea {
 	transition: 0.25s ease-out left, 0.25s ease-out height;
 	left: calc(var(--sp-52) * -1);

@@ -13,6 +13,11 @@
 		margin-bottom: 30px;
 		text-transform: capitalize;
 	}
-
 	word-break: keep-all;
+}
+
+@media (max-width: 480px) {
+	.contentsContainer {
+		width: 90%;
+	}
 }

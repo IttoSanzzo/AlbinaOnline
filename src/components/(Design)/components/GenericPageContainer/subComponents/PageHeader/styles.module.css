@@ -20,5 +20,16 @@
 		color: var(--cl-gray-100);
 		text-shadow: 0 0 6px var(--cl-gray-900);
 		font-family: Inter;
+		text-align: center;
+	}
+}
+
+@media (max-width: 480px) {
+	.pageHeaderContainer {
+		gap: 0;
+
+		& .pageTitle {
+			font-size: var(--fs-4xl);
+		}
 	}
 }

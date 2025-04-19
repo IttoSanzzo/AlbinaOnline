@@ -1,5 +1,6 @@
 .breadcrumbContainer {
 	color: var(--cl-gray-400);
+	margin-left: 40px;
 
 	& a {
 		padding: var(--sp-1);

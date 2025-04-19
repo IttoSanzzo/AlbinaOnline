@@ -25,7 +25,7 @@ export default async function Mastery({ params }: MasteryProps) {
 
 	return (
 		<GenericPageContainer
-			title={`⩤Maestria - ${masteryData.data.name}⩥`}
+			title={`⩤Maestria⩥ ${masteryData.data.name}`}
 			banner={AlbinaLogo}
 			favicon={masteryData.data.iconUrl}>
 			<NotionHeader

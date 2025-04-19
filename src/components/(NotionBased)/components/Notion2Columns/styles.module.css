@@ -14,3 +14,9 @@
 	transition: 0.3s linear border;
 	border-radius: var(--rd-md);
 }
+
+@media (max-width: 480px) {
+	.notion2ColumnsContainer {
+		flex-direction: column;
+	}
+}

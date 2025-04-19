@@ -1,6 +1,7 @@
 .globalContainer {
 	display: flex;
 	flex-direction: row;
+	overflow-x: hidden;
 }
 
 .mainContainer {
@@ -11,6 +12,11 @@
 	height: 100%;
 	margin-left: var(--sp-52);
 	transition: 0.25s ease-out margin;
+}
+@media (max-width: 480px) {
+	.mainContainer {
+		margin-left: 0;
+	}
 }
 :root[data-hidden-sidebar="true"] .mainContainer {
 	margin-left: 0;

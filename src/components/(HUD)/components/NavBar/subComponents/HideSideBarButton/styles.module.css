@@ -1,4 +1,15 @@
+@keyframes fadeInBg {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.6;
+	}
+}
+
 .hideSideBarButtonContainer {
+	z-index: 9;
+	position: fixed;
 	background-color: transparent;
 	border: 0;
 	font-size: 0;
@@ -7,6 +18,19 @@
 
 	&:hover {
 		background-color: var(--cl-gray-700);
-		/* background-color: var(--cl-red); */
+	}
+}
+
+:root[data-hidden-sidebar="false"] .hideSideBarButtonContainer {
+	@media (max-width: 480px) {
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		background-color: var(--cl-black-3);
+		animation: fadeInBg 0.25s linear forwards;
+
+		& svg {
+			display: none;
+		}
 	}
 }

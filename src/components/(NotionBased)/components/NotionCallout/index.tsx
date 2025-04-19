@@ -35,27 +35,34 @@ export function NotionCallout({
 		}),
 	};
 
-	const finalTitle =
-		typeof title === "string" ? (
-			<NotionText textColor={titleColor}>{title}</NotionText>
-		) : Array.isArray(title) ? (
-			<TitleArrayContainer>
-				{title.map((title) => (
-					<div key={title}>
-						<NotionText textColor={titleColor}>{title}</NotionText>
-					</div>
-				))}
-			</TitleArrayContainer>
-		) : (
-			title
-		);
+	if (title) {
+		const finalTitle =
+			typeof title === "string" ? (
+				<NotionText textColor={titleColor}>{title}</NotionText>
+			) : Array.isArray(title) ? (
+				<TitleArrayContainer>
+					{title.map((title) => (
+						<div key={title}>
+							<NotionText textColor={titleColor}>{title}</NotionText>
+						</div>
+					))}
+				</TitleArrayContainer>
+			) : (
+				title
+			);
 
+		return (
+			<NotionCalloutContainer style={style}>
+				<HeaderContainer>
+					{StpIcon(icon)}
+					{finalTitle}
+				</HeaderContainer>
+				<div>{children}</div>
+			</NotionCalloutContainer>
+		);
+	}
 	return (
 		<NotionCalloutContainer style={style}>
-			<HeaderContainer>
-				{StpIcon(icon)}
-				{finalTitle}
-			</HeaderContainer>
 			<div>{children}</div>
 		</NotionCalloutContainer>
 	);
