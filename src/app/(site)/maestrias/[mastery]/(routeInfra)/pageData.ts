@@ -39,7 +39,10 @@ export async function getPageData(
 	if (!masterySlug) return { masteryData: undefined };
 
 	const response = await fetch(
-		`${process.env.ALBINA_API}/masteries/${masterySlug}`
+		`${process.env.ALBINA_API}/maestrias/${masterySlug}`,
+		{
+			cache: "force-cache",
+		}
 	);
 	if (!response.ok) return { masteryData: undefined };
 	const masteryData: MasteryData = await response.json();

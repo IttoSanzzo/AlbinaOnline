@@ -9,7 +9,9 @@ import {
 import { NotionGridList } from "@/components/(UTILS)";
 
 export default async function Masterys() {
-	const response = await fetch(`${process.env.ALBINA_API}/masteries`);
+	const response = await fetch(`${process.env.ALBINA_API}/maestrias`, {
+		cache: "force-cache",
+	});
 	const allRawMasteries: MasteryData[] = await response.json();
 	const allMasteries: MasteryData[] = allRawMasteries.sort((a, b) =>
 		a.data.name.localeCompare(b.data.name)
@@ -36,17 +38,15 @@ export default async function Masterys() {
 				<NotionGridList
 					backgroundColor="purple"
 					columns={5}>
-					{allExpertiseMasteries.map((masteryData) => {
-						return (
-							<StyledLink
-								key={masteryData.id}
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								display="flexbox"
-								icon={masteryData.data.iconUrl}
-							/>
-						);
-					})}
+					{allExpertiseMasteries.map((masteryData) => (
+						<StyledLink
+							key={masteryData.id}
+							title={masteryData.data.name}
+							href={`/maestrias/${masteryData.slug}`}
+							icon={masteryData.data.iconUrl}
+							display="flexbox"
+						/>
+					))}
 				</NotionGridList>
 
 				<NotionHeader
@@ -57,17 +57,15 @@ export default async function Masterys() {
 				<NotionGridList
 					backgroundColor="purple"
 					columns={5}>
-					{allKnowledgeMasteries.map((masteryData) => {
-						return (
-							<StyledLink
-								key={masteryData.id}
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								display="flexbox"
-								icon={masteryData.data.iconUrl}
-							/>
-						);
-					})}
+					{allKnowledgeMasteries.map((masteryData) => (
+						<StyledLink
+							key={masteryData.id}
+							title={masteryData.data.name}
+							href={`/maestrias/${masteryData.slug}`}
+							icon={masteryData.data.iconUrl}
+							display="flexbox"
+						/>
+					))}
 				</NotionGridList>
 
 				<NotionHeader
@@ -78,17 +76,15 @@ export default async function Masterys() {
 				<NotionGridList
 					backgroundColor="purple"
 					columns={5}>
-					{allCraftMasteries.map((masteryData) => {
-						return (
-							<StyledLink
-								key={masteryData.id}
-								title={masteryData.data.name}
-								href={`/maestrias/${masteryData.slug}`}
-								display="flexbox"
-								icon={masteryData.data.iconUrl}
-							/>
-						);
-					})}
+					{allCraftMasteries.map((masteryData) => (
+						<StyledLink
+							key={masteryData.id}
+							title={masteryData.data.name}
+							href={`/maestrias/${masteryData.slug}`}
+							icon={masteryData.data.iconUrl}
+							display="flexbox"
+						/>
+					))}
 				</NotionGridList>
 				<GenericPageFooter version="7.0.0" />
 			</MasterysContainer>
