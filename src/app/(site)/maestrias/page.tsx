@@ -1,7 +1,11 @@
 import { MasteryData } from "./[mastery]/(routeInfra)/pageData";
 import { MasterysContainer } from "./styledElements";
 import { NotionHeader, NotionQuote } from "@/components/(NotionBased)";
-import { GenericPageContainer, StyledLink } from "@/components/(Design)";
+import {
+	GenericPageContainer,
+	GenericPageFooter,
+	StyledLink,
+} from "@/components/(Design)";
 import { NotionGridList } from "@/components/(UTILS)";
 
 export default async function Masterys() {
@@ -86,6 +90,7 @@ export default async function Masterys() {
 						);
 					})}
 				</NotionGridList>
+				<GenericPageFooter version="7.0.0" />
 			</MasterysContainer>
 		</GenericPageContainer>
 	);

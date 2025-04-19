@@ -10,6 +10,7 @@
 .hideSideBarButtonContainer {
 	z-index: 9;
 	position: fixed;
+	top: 7px;
 	background-color: transparent;
 	border: 0;
 	font-size: 0;
