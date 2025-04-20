@@ -1,3 +1,4 @@
+import { SmartText } from "@/components/(UTILS)";
 import {
 	NotionBackgroundColor,
 	NotionPropsColor,
@@ -8,7 +9,7 @@ import { NotionTextContainer } from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
 
 interface NotionTextProps extends NotionPropsColor, NotionPropsText {
-	children: ReactNode;
+	children?: string;
 }
 
 export function NotionText({
@@ -31,5 +32,9 @@ export function NotionText({
 		...(textAlign && { textAlign: textAlign }),
 	};
 
-	return <NotionTextContainer style={style}>{children}</NotionTextContainer>;
+	return (
+		<NotionTextContainer style={style}>
+			<SmartText content={children} />
+		</NotionTextContainer>
+	);
 }

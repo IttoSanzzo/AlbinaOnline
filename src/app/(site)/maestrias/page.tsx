@@ -44,7 +44,6 @@ export default async function Masterys() {
 							title={masteryData.data.name}
 							href={`/maestrias/${masteryData.slug}`}
 							icon={masteryData.data.iconUrl}
-							display="flexbox"
 						/>
 					))}
 				</NotionGridList>
@@ -63,7 +62,6 @@ export default async function Masterys() {
 							title={masteryData.data.name}
 							href={`/maestrias/${masteryData.slug}`}
 							icon={masteryData.data.iconUrl}
-							display="flexbox"
 						/>
 					))}
 				</NotionGridList>
@@ -82,7 +80,6 @@ export default async function Masterys() {
 							title={masteryData.data.name}
 							href={`/maestrias/${masteryData.slug}`}
 							icon={masteryData.data.iconUrl}
-							display="flexbox"
 						/>
 					))}
 				</NotionGridList>

@@ -1,4 +1,4 @@
 .notionTextContainer {
-	display: inline;
+	display: inline-block;
 	font-family: Inter;
 }

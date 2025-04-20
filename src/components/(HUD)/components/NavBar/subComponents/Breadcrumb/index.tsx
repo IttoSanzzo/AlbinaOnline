@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { BreadcrumbContainer } from "./styledElements";
 import { usePathname } from "next/navigation";
-import { capitalize } from "@/utils/StringUtils";
+import { capitalize, capitalizeAll } from "@/utils/StringUtils";
 
 export default function Breadcrumb() {
 	const pathName = usePathname();
@@ -17,7 +17,7 @@ export default function Breadcrumb() {
 
 	const crumbs = Array.from({ length: allLinks.length }, (_, i) => {
 		return {
-			name: capitalize(allRoutes[i].replace("-", " ")),
+			name: capitalizeAll(allRoutes[i].replace(/[-]+/g, " ")),
 			link: allLinks[i],
 		};
 	});

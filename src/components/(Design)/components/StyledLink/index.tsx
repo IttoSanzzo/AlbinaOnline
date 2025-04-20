@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { StyledLinkContainer } from "./styledElements";
+import styles from "./styles.module.css";
 import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 
@@ -7,14 +8,14 @@ interface StyledLinkProps {
 	title: string;
 	href: string;
 	icon?: string;
-	display?: "inline-flex" | "flexbox";
+	textMode?: boolean;
 }
 
 export function StyledLink({
 	title,
 	href,
 	icon,
-	display = "inline-flex",
+	textMode = false,
 }: StyledLinkProps) {
 	const finalIcon = icon
 		? icon[0] === "@"
@@ -23,7 +24,8 @@ export function StyledLink({
 		: AlbinaLogo;
 
 	return (
-		<StyledLinkContainer style={{ display }}>
+		<StyledLinkContainer
+			className={textMode ? styles.styledLinkInTextMode : undefined}>
 			<Link href={href}>
 				<Image
 					src={finalIcon}

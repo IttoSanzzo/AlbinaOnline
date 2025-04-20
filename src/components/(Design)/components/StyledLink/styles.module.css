@@ -4,11 +4,11 @@
 	background-color: var(--cl-gray-800);
 
 	& a {
-		padding: 1px var(--sp-1);
+		text-decoration: none;
+		padding: var(--sp-1);
 		display: flex;
 		align-items: center;
 		gap: 5px;
-		text-decoration: none;
 		color: var(--cl-gray-200);
 
 		& img {
@@ -26,6 +26,25 @@
 
 		& a {
 			color: var(--cl-gray-100);
+		}
+	}
+}
+
+.styledLinkInTextMode {
+	display: inline;
+
+	& a {
+		display: inline-flex;
+		padding: 0 0.2rem 0 0.1rem;
+		align-items: center;
+		vertical-align: sub;
+
+		& img {
+			height: 18px;
+			width: 18px;
+		}
+		& span {
+			font-size: var(--fs-md);
 		}
 	}
 }

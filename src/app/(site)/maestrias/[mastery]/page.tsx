@@ -4,10 +4,16 @@ import {
 	GenericInfoCallout,
 	GenericPageContainer,
 	GenericPageFooter,
+	StyledLink,
 } from "@/components/(Design)";
-import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
+import {
+	NotionHeader,
+	Notion2Columns,
+	NotionDivisor,
+} from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/TypologyCallout";
+import { SmartText } from "@/components/(UTILS)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -43,7 +49,6 @@ export default async function Mastery({ params }: MasteryProps) {
 				}
 				colum2={<GenericInfoCallout info={masteryData.data.info} />}
 			/>
-
 			<GenericEffectsDisplay effects={masteryData.data.effects} />
 			<GenericPageFooter version={masteryData.albinaVersion} />
 		</GenericPageContainer>

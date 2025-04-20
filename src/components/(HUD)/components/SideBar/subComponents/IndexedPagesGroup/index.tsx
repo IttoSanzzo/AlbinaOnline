@@ -35,7 +35,6 @@ export default function IndexedPagesGroup({
 							title={indexedPage.name}
 							href={indexedPage.link}
 							icon={indexedPage.image}
-							display="flexbox"
 						/>
 					))}
 				</IndexedPageLinksContainer>

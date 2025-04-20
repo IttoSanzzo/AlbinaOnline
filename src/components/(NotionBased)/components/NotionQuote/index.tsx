@@ -1,6 +1,7 @@
 import {
 	NotionBackgroundColor,
 	NotionPropsColor,
+	NotionText,
 	NotionTextColor,
 } from "../../index";
 import {
@@ -11,7 +12,7 @@ import {
 import { CSSProperties, ReactNode } from "react";
 
 interface NotionQuoteProps extends NotionPropsColor {
-	children?: ReactNode;
+	children?: ReactNode | string;
 }
 
 export function NotionQuote({
@@ -35,7 +36,13 @@ export function NotionQuote({
 						: NotionTextColor.default,
 				}}
 			/>
-			<ContentContainer>{children}</ContentContainer>
+			<ContentContainer>
+				{typeof children === "string" ? (
+					<NotionText>{children}</NotionText>
+				) : (
+					children
+				)}
+			</ContentContainer>
 		</NotionQuoteContainer>
 	);
 }
