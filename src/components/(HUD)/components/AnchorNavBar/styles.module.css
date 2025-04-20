@@ -3,6 +3,7 @@
 	right: 0;
 	top: 10vh;
 	border-radius: var(--rd-md);
+	transition: 0.1s linear opacity;
 }
 
 .anchorLines {
@@ -16,6 +17,19 @@
 	&:hover {
 		& .tableOfContents {
 			right: 10px;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	:root[data-hidden-sidebar="false"] .anchorNavBarContainer {
+		opacity: 0.3;
+	}
+	:root[data-hidden-sidebar="false"] .anchorLines {
+		&:hover {
+			& .tableOfContents {
+				right: -200px;
+			}
 		}
 	}
 }
