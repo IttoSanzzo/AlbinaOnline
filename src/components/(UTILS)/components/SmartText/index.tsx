@@ -47,17 +47,18 @@ export function SmartText({ content }: SmartTextProps) {
 	if (!content) return <></>;
 
 	const parts = [];
-	let index = -1;
+	let index = 0;
 	let lastIndex = 0;
 
-	while (++index < content.length) {
-		if (content[index] && isSmartOpeningTrigger(content, index)) {
+	while (index < content.length) {
+		if (content[index] === "[" && isSmartOpeningTrigger(content, index)) {
 			const start = index;
 			let depth = 1;
 			index += 3;
 
 			while (index < content.length && depth > 0) {
-				if (content[index] && isSmartOpeningTrigger(content, index)) ++depth;
+				if (content[index] === "[" && isSmartOpeningTrigger(content, index))
+					++depth;
 				else if (isSmartClosingTrigger(content, index)) --depth;
 				++index;
 			}
@@ -79,6 +80,7 @@ export function SmartText({ content }: SmartTextProps) {
 				continue;
 			}
 		}
+		++index;
 	}
 
 	if (lastIndex < content.length) {
@@ -86,33 +88,3 @@ export function SmartText({ content }: SmartTextProps) {
 	}
 	return <SmartTextContainer>{parts}</SmartTextContainer>;
 }
-
-// const linkRegex = /\[([@Q]\/[^\]]+)\]/g;
-
-// export function SmartText({ content }: SmartTextProps) {
-// 	if (!content) return <></>;
-
-// 	const parts = [];
-// 	let lastIndex = 0;
-// 	let match;
-
-// 	while ((match = linkRegex.exec(content)) != null) {
-// 		const [full, reference] = match;
-// 		const start = match.index;
-
-// 		parts.push(content.slice(lastIndex, start));
-// 		switch (reference[0]) {
-// 			case "@":
-// 				parts.push(getSmartLink(reference.slice(1)));
-// 				break;
-// 			case "Q":
-// 				parts.push(getSmartQuote(reference.slice(2), start));
-// 				break;
-// 		}
-
-// 		lastIndex = start + full.length;
-// 	}
-// 	parts.push(content.slice(lastIndex));
-
-// 	return <SmartTextContainer>{parts}</SmartTextContainer>;
-// }
