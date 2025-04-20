@@ -93,42 +93,6 @@ export default async function Masterys() {
 					))}
 				</NotionGridList>
 
-				<NotionGridList
-					backgroundColor="purple"
-					columns={5}>
-					{allCraftMasteries.map((masteryData) => (
-						<StyledLink
-							key={masteryData.id}
-							title={masteryData.data.name}
-							href={`/maestrias/${masteryData.slug}`}
-							icon={masteryData.data.iconUrl}
-						/>
-					))}
-				</NotionGridList>
-				<NotionGridList
-					backgroundColor="purple"
-					columns={5}>
-					{allCraftMasteries.map((masteryData) => (
-						<StyledLink
-							key={masteryData.id}
-							title={masteryData.data.name}
-							href={`/maestrias/${masteryData.slug}`}
-							icon={masteryData.data.iconUrl}
-						/>
-					))}
-				</NotionGridList>
-				<NotionGridList
-					backgroundColor="purple"
-					columns={5}>
-					{allCraftMasteries.map((masteryData) => (
-						<StyledLink
-							key={masteryData.id}
-							title={masteryData.data.name}
-							href={`/maestrias/${masteryData.slug}`}
-							icon={masteryData.data.iconUrl}
-						/>
-					))}
-				</NotionGridList>
 				<GenericPageFooter version="7.0.0" />
 			</MasterysContainer>
 		</GenericPageContainer>
