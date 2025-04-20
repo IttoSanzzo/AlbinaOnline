@@ -1,12 +1,19 @@
 import { MasteryData } from "./[mastery]/(routeInfra)/pageData";
 import { MasterysContainer } from "./styledElements";
-import { NotionHeader, NotionQuote } from "@/components/(NotionBased)";
+import { NotionHeader } from "@/components/(NotionBased)";
 import {
 	GenericPageContainer,
 	GenericPageFooter,
 	StyledLink,
 } from "@/components/(Design)";
 import { NotionGridList } from "@/components/(UTILS)";
+import { AnchorProps } from "@/components/(HUD)";
+
+const pageAnchors: AnchorProps[] = [
+	{ name: "Perícias", id: "Perícias" },
+	{ name: "Conhecimentos", id: "Conhecimentos" },
+	{ name: "Ofícios", id: "Ofícios" },
+];
 
 export default async function Masterys() {
 	const response = await fetch(`${process.env.ALBINA_API}/maestrias`, {
@@ -28,7 +35,9 @@ export default async function Masterys() {
 	);
 
 	return (
-		<GenericPageContainer title="Maestrias">
+		<GenericPageContainer
+			title="Maestrias"
+			anchors={pageAnchors}>
 			<MasterysContainer>
 				<NotionHeader
 					textAlign="center"
@@ -83,6 +92,7 @@ export default async function Masterys() {
 						/>
 					))}
 				</NotionGridList>
+
 				<GenericPageFooter version="7.0.0" />
 			</MasterysContainer>
 		</GenericPageContainer>

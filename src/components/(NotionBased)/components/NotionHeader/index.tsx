@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
 
 interface NotionHeaderProps extends NotionPropsColor, NotionPropsText {
-	children: ReactNode;
+	children: ReactNode | string;
 	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
 }
 
@@ -37,5 +37,11 @@ export function NotionHeader({
 		styles.notionHeaderContainer
 	);
 
-	return <HeaderElement style={style}>{children}</HeaderElement>;
+	return (
+		<HeaderElement
+			id={typeof children === "string" ? children : undefined}
+			style={style}>
+			{children}
+		</HeaderElement>
+	);
 }

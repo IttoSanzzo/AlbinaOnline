@@ -1,0 +1,90 @@
+.anchorNavBarContainer {
+	position: fixed;
+	right: 0;
+	top: 10vh;
+	border-radius: var(--rd-md);
+}
+
+.anchorLines {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	justify-content: right;
+	align-items: center;
+	padding: var(--sp-4);
+
+	&:hover {
+		& .tableOfContents {
+			right: 10px;
+		}
+	}
+}
+
+.anchorLine {
+	width: 25px;
+	height: 2px;
+	background-color: var(--cl-gray-500);
+	border-radius: var(--rd-xs);
+}
+
+.tableOfContents {
+	position: fixed;
+	right: -200px;
+	top: 10vh;
+	background-color: var(--cl-gray-800);
+	border: 2px solid var(--cl-gray-600);
+	border-radius: var(--rd-md);
+	padding: var(--sp-5) var(--sp-4);
+	transition: 0.25s linear right;
+
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.anchorItem {
+	& a {
+		border-radius: var(--rd-sm);
+		padding: 2px var(--sp-4);
+		text-decoration: none;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		color: var(--cl-gray-200);
+
+		& div {
+			display: flex;
+			flex: 1;
+		}
+		&:hover {
+			background-color: var(--cl-gray-700);
+			color: var(--cl-gray-100);
+		}
+	}
+}
+
+.activeAnchorLine {
+	background-color: var(--cl-gray-100);
+	box-shadow: 0px 0px 5px white;
+}
+
+.activeAnchorItem {
+	& a {
+		background-color: var(--cl-blue-900);
+		color: var(--cl-blue-400);
+		&:hover {
+			background-color: var(--cl-blue-800);
+			color: var(--cl-blue-200);
+		}
+	}
+}
+
+@media (max-height: 480px) {
+	.anchorNavBarContainer {
+		top: 15vh;
+	}
+	.tableOfContents {
+		top: 15vh;
+	}
+}
