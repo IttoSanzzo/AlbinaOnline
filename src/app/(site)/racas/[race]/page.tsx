@@ -28,7 +28,7 @@ export default async function Race({ params }: RaceProps) {
 		<GenericPageContainer
 			title={`Raça - ${race.replace("-", " ")}`}
 			banner={AlbinaLogo}
-			favicon={"/Mock/AlbinaLogo.png"}>
+			icon={"/Mock/AlbinaLogo.png"}>
 			<NotionHeader
 				textColor={"orange"}
 				backgroundColor={"gray"}

@@ -5,7 +5,13 @@ import {
 	GenericPageContainer,
 	GenericPageFooter,
 } from "@/components/(Design)";
-import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
+import {
+	NotionHeader,
+	Notion2Columns,
+	NotionToggle,
+	NotionToggleHeader,
+	NotionCallout,
+} from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/TypologyCallout";
 
@@ -21,13 +27,14 @@ export default async function Mastery({ params }: MasteryProps) {
 	if (MasteryPageData.masteryData == undefined) {
 		return <></>;
 	}
-	const { masteryData } = MasteryPageData;
+	const { masteryData, borderColor } = MasteryPageData;
 
 	return (
 		<GenericPageContainer
 			title={`⩤Maestria⩥ ${masteryData.data.name}`}
 			banner={AlbinaLogo}
-			favicon={masteryData.data.iconUrl}>
+			icon={masteryData.data.iconUrl}
+			borderColor={borderColor}>
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"

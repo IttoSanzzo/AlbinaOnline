@@ -1,57 +1,61 @@
-import { NotionCallout, NotionTable } from "@/components/(NotionBased)";
+import {
+	NotionCallout,
+	NotionTable,
+	NotionText,
+} from "@/components/(NotionBased)";
 
 function getTabulatedType(type: string) {
 	switch (type) {
 		case "proficiency":
-			return ["💮Proficiência", "🌟"];
+			return "🌟[@/maestrias#proficiencias]";
 		case "expertise":
-			return ["💮Perícia", "🪡"];
+			return "🪡[@/maestrias#pericias]";
 		case "knowledge":
-			return ["💮Conhecimento", "📖"];
+			return "📖[@/maestrias#conhecimentos]";
 		case "craft":
-			return ["💮Ofício", "👜"];
+			return "👜[@/maestrias#oficios]";
 		default:
-			return ["Unknown", "?"];
+			return "Unknown?";
 	}
 }
-function getTabulatedStatus(status: string) {
-	switch (status) {
+function getTabulatedCategory(category: string) {
+	switch (category) {
 		case "agility":
-			return ["🦵🏻⸙Agilidade⸙", "⊱🦵🏻"];
+			return "⊱🦵🏻⸙Agilidade⸙";
 		case "intelligence":
-			return ["🧠⸙Inteligência⸙", "⊱🧠"];
-		case "strenght":
-			return ["💪🏻⸙Força⸙", "⊱💪🏻"];
+			return "⊱🧠⸙Inteligência⸙";
+		case "strength":
+			return "⊱💪🏻⸙Força⸙";
 		case "constitution":
-			return ["⊱🍻⸙Constituição⸙", "⊱🍻"];
+			return "⊱🍻⸙Constituição⸙";
 		case "technique":
-			return ["🤏🏻⸙Técnica⸙", "⊱🤏🏻"];
+			return "⊱🤏🏻⸙Técnica⸙";
 		case "charisma":
-			return ["🎭⸙Carisma⸙", "⊱🎭"];
+			return "⊱🎭⸙Carisma⸙";
 		case "wisdom":
-			return ["🧙🏻‍♂️⸙Sabedoria⸙", "⊱🧙🏻‍♂️"];
+			return "⊱🧙🏻‍♂️⸙Sabedoria⸙";
 		case "singular":
-			return ["📘⸙Singular⸙", "⊱📘"];
+			return "⊱📘⸙Singular⸙";
 		case "multiple":
-			return ["📚⸙Múltiplo⸙", "⊱📚"];
+			return "⊱📚⸙Múltiplo⸙";
 		case "general":
-			return ["👔⸙Geral⸙", "⊱👔"];
+			return "⊱👔⸙Geral⸙";
 		case "combatant":
-			return ["🥋⸙Combatente⸙", "⊱🥋"];
+			return "⊱🥋⸙Combatente⸙";
 		case "production":
-			return ["🥽⸙Produção⸙", "⊱🥽"];
+			return "⊱🥽⸙Produção⸙";
 		case "armed":
-			return ["⚔️⸙Armada⸙", "⊱⚔️"];
+			return "⊱⚔️⸙Armada⸙";
 		case "armored":
-			return ["🛡️⸙Defensiva⸙", "⊱🛡️"];
+			return "⊱🛡️⸙Defensiva⸙";
 		case "focus":
-			return ["🪄⸙Foco⸙", "⊱🪄"];
+			return "⊱🪄⸙Foco⸙";
 		case "combatStyle":
-			return ["⊱🎖️⸙Estilo de Combate⸙", "⊱🎖️"];
+			return "⊱🎖️⸙Estilo de Combate⸙";
 		case "tool":
-			return ["🛠️⸙Ferramenta⸙", "⊱🛠️"];
+			return "⊱🛠️⸙Ferramenta⸙";
 		default:
-			return ["Unknown", "?"];
+			return "⊱Unknown?";
 	}
 }
 
@@ -63,8 +67,14 @@ export default function MasteryTypologyCallout({
 	type,
 	category,
 }: MasteryTypologyCalloutProps) {
-	const tableType = getTabulatedType(type);
-	const tableStatus = getTabulatedStatus(category);
+	const tableType = [
+		"💮Tipo",
+		<NotionText>{getTabulatedType(type)}</NotionText>,
+	];
+	const tableStatus = [
+		"Categoria",
+		<NotionText>{getTabulatedCategory(category)}</NotionText>,
+	];
 
 	return (
 		<>

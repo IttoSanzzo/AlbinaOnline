@@ -9,7 +9,8 @@ import { AnchorNavBar, AnchorProps } from "@/components/(HUD)";
 interface GenericPageContainerProps {
 	children: ReactNode;
 	banner?: string | StaticImageData;
-	favicon?: string;
+	icon?: string;
+	borderColor?: string;
 	title: string;
 	anchors?: AnchorProps[];
 }
@@ -18,7 +19,8 @@ export function GenericPageContainer({
 	children,
 	title,
 	banner,
-	favicon,
+	icon,
+	borderColor,
 	anchors = [],
 }: GenericPageContainerProps) {
 	return (
@@ -27,7 +29,8 @@ export function GenericPageContainer({
 			<ContentsContainer>
 				<PageHeader
 					title={title}
-					icon={favicon ? favicon : "/Mock/AlbinaLogo.png"}
+					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
+					borderColor={borderColor}
 				/>
 				{children}
 			</ContentsContainer>

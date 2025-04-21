@@ -18,22 +18,16 @@ export function NotionGridList({
 	minColumnWidth,
 	backgroundColor,
 }: NotionGridListProps) {
-	const style: CSSProperties = {
-		...(backgroundColor && {
-			backgroundColor: NotionBackgroundColor[backgroundColor],
-		}),
-	};
-
 	const columnsStyle: CSSProperties = {
 		...(columns && { columnCount: columns }),
 		...(minColumnWidth && { columnWidth: minColumnWidth }),
 	};
 
 	return (
-		<NotionGridListContainer style={style}>
-			<NotionCallout>
+		<NotionCallout backgroundColor={backgroundColor}>
+			<NotionGridListContainer>
 				<ContentContainer style={columnsStyle}>{children}</ContentContainer>
-			</NotionCallout>
-		</NotionGridListContainer>
+			</NotionGridListContainer>
+		</NotionCallout>
 	);
 }

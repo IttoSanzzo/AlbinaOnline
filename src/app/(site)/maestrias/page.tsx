@@ -28,6 +28,16 @@ export default async function Masterys() {
 	const allProficiencyMasteries = allMasteries.filter(
 		(mastery) => mastery.type === "proficiency"
 	);
+	const allProficiencyMasteriesOrdened: MasteryData[] = [];
+	["armed", "armored", "focus", "combatStyle", "tool"].forEach(
+		(proficiencyCategory) => {
+			allProficiencyMasteries.forEach((mastery) => {
+				if (mastery.data.category == proficiencyCategory)
+					allProficiencyMasteriesOrdened.push(mastery);
+			});
+		}
+	);
+
 	const allExpertiseMasteries = allMasteries.filter(
 		(mastery) => mastery.type === "expertise"
 	);
@@ -51,7 +61,7 @@ export default async function Masterys() {
 				<NotionGridList
 					backgroundColor="purple"
 					columns={5}>
-					{allProficiencyMasteries.map((masteryData) => (
+					{allProficiencyMasteriesOrdened.map((masteryData) => (
 						<StyledLink
 							key={masteryData.id}
 							title={masteryData.data.name}

@@ -2,6 +2,7 @@
 	display: flexbox;
 	border-radius: var(--rd-sm);
 	background-color: var(--cl-gray-800);
+	page-break-inside: avoid;
 
 	& a {
 		text-decoration: none;
@@ -18,7 +19,6 @@
 			display: inline;
 			font-family: Inter;
 			font-size: var(--fs-lg);
-			/* text-transform: capitalize; */
 		}
 	}
 

@@ -1,5 +1,4 @@
 .notionGridListContainer {
-	border-radius: var(--rd-md);
 }
 .contentContainer {
 	column-count: 5;

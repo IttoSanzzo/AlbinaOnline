@@ -3,18 +3,22 @@ import { SmartTextContainer } from "./styledElements";
 import { capitalizeTitle } from "@/utils/StringUtils";
 import { ReactNode } from "react";
 import { NotionBullet, NotionQuote } from "@/components/(NotionBased)";
+import { title } from "process";
 
 function getSmartLink(href: string, key: any): ReactNode {
-	const title = capitalizeTitle(
-		href.slice(href.lastIndexOf("/") + 1).replace(/-+/g, " ")
-	);
+	const hrefIsId = href.includes("#");
+	const title = hrefIsId
+		? capitalizeTitle(href.slice(href.lastIndexOf("#") + 1).replace(/-/g, " "))
+		: capitalizeTitle(href.slice(href.lastIndexOf("/") + 1).replace(/-/g, " "));
+
+	const iconUrl = hrefIsId ? href.slice(0, href.lastIndexOf("#")) : href;
 
 	return (
 		<StyledLink
 			key={key}
 			title={title}
 			href={href}
-			icon={`${process.env.ALBINA_API}/favicon${href}`}
+			icon={`${process.env.ALBINA_API}/favicon${iconUrl}`}
 			textMode={true}
 		/>
 	);
