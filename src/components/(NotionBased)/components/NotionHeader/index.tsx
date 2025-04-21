@@ -7,6 +7,7 @@ import {
 import { CSSProperties, ReactNode } from "react";
 import styles from "./styles.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
+import { idfyString } from "@/utils/StringUtils";
 
 interface NotionHeaderProps extends NotionPropsColor, NotionPropsText {
 	children: ReactNode | string;
@@ -39,7 +40,7 @@ export function NotionHeader({
 
 	return (
 		<HeaderElement
-			id={typeof children === "string" ? children : undefined}
+			id={typeof children === "string" ? idfyString(children) : undefined}
 			style={style}>
 			{children}
 		</HeaderElement>

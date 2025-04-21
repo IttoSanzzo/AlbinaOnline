@@ -10,6 +10,7 @@ import { NotionGridList } from "@/components/(UTILS)";
 import { AnchorProps } from "@/components/(HUD)";
 
 const pageAnchors: AnchorProps[] = [
+	{ name: "Proficiências", id: "Proficiências" },
 	{ name: "Perícias", id: "Perícias" },
 	{ name: "Conhecimentos", id: "Conhecimentos" },
 	{ name: "Ofícios", id: "Ofícios" },
@@ -24,6 +25,9 @@ export default async function Masterys() {
 		a.data.name.localeCompare(b.data.name)
 	);
 
+	const allProficiencyMasteries = allMasteries.filter(
+		(mastery) => mastery.type === "proficiency"
+	);
 	const allExpertiseMasteries = allMasteries.filter(
 		(mastery) => mastery.type === "expertise"
 	);
@@ -39,6 +43,24 @@ export default async function Masterys() {
 			title="Maestrias"
 			anchors={pageAnchors}>
 			<MasterysContainer>
+				<NotionHeader
+					textAlign="center"
+					backgroundColor="gray"
+					children={"Proficiências"}
+				/>
+				<NotionGridList
+					backgroundColor="purple"
+					columns={5}>
+					{allProficiencyMasteries.map((masteryData) => (
+						<StyledLink
+							key={masteryData.id}
+							title={masteryData.data.name}
+							href={`/maestrias/${masteryData.slug}`}
+							icon={masteryData.data.iconUrl}
+						/>
+					))}
+				</NotionGridList>
+
 				<NotionHeader
 					textAlign="center"
 					backgroundColor="gray"

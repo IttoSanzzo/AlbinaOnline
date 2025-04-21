@@ -10,6 +10,7 @@ import {
 } from "./styledElements";
 import styles from "./styles.module.css";
 import { useVisibleSections } from "@/utils/Hooks";
+import { idfyString } from "@/utils/StringUtils";
 
 export type AnchorProps = {
 	name: string;
@@ -22,6 +23,10 @@ interface AnchorNavBarProps {
 
 export function AnchorNavBar({ anchors }: AnchorNavBarProps) {
 	if (anchors.length == 0) return <AnchorNavBarContainer />;
+	anchors.forEach((anchor) => {
+		anchor.id = idfyString(anchor.id);
+		console.log(anchor.id);
+	});
 
 	const visibleId = useVisibleSections(anchors.map((anchor) => anchor.id));
 

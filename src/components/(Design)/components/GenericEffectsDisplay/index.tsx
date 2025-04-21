@@ -32,17 +32,17 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 				children={"🏮 Efeitos 🏮"}
 			/>
 			{effects.map((effect, index) => {
-				const iconProps = getIconProps(effect.name);
+				const iconProps = getIconProps(effect.role);
 				return (
 					<NotionCallout
 						key={index}
 						icon={iconProps}
 						titleColor={iconProps.color}
-						title={effect.name}>
-						{effect.info.map((info, index) => (
+						title={effect.role}>
+						{effect.contents.map((content, index) => (
 							<NotionQuote
 								key={index}
-								children={info}
+								children={content.value}
 							/>
 						))}
 					</NotionCallout>

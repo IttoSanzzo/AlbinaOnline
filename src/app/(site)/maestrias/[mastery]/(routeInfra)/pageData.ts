@@ -4,21 +4,25 @@ export type GenericInfo = {
 	miscellaneous: string[];
 };
 
+export type GenericEffectContent = {
+	type: string;
+	value: string;
+};
+
 export type GenericEffect = {
-	name: string;
-	info: string[];
+	id: number;
+	role: string;
+	contents: GenericEffectContent[];
 };
 
 export type MasteryData = {
 	id: number;
 	slug: string;
 	type: string;
-	creationDate: string;
-	lastUpdate: string;
 	albinaVersion: string;
 	data: {
 		name: string;
-		status: string;
+		category: string;
 		iconUrl: string;
 		info: GenericInfo;
 		effects: GenericEffect[];
