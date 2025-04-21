@@ -11,7 +11,6 @@
 	& > :first-child {
 		margin-top: calc(var(--sp-17) * -1);
 		margin-bottom: 30px;
-		text-transform: capitalize;
 	}
 	word-break: keep-all;
 }

@@ -1,11 +1,13 @@
 import { StyledLink } from "@/components/(Design)";
 import { SmartTextContainer } from "./styledElements";
-import { capitalizeAll } from "@/utils/StringUtils";
+import { capitalizeTitle } from "@/utils/StringUtils";
 import { ReactNode } from "react";
 import { NotionBullet, NotionQuote } from "@/components/(NotionBased)";
 
 function getSmartLink(href: string, key: any): ReactNode {
-	const title = capitalizeAll(href.slice(href.lastIndexOf("/") + 1));
+	const title = capitalizeTitle(
+		href.slice(href.lastIndexOf("/") + 1).replace(/-+/g, " ")
+	);
 
 	return (
 		<StyledLink
