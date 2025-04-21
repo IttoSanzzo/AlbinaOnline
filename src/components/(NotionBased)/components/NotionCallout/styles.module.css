@@ -37,3 +37,8 @@
 		justify-content: center;
 	}
 }
+
+.contentContainer {
+	max-width: 80vw;
+	overflow: hidden;
+}

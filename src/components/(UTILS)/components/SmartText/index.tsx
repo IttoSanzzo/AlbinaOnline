@@ -2,14 +2,14 @@ import { StyledLink } from "@/components/(Design)";
 import { SmartTextContainer } from "./styledElements";
 import { capitalizeAll } from "@/utils/StringUtils";
 import { ReactNode } from "react";
-import { NotionQuote } from "@/components/(NotionBased)";
+import { NotionBullet, NotionQuote } from "@/components/(NotionBased)";
 
-function getSmartLink(href: string): ReactNode {
+function getSmartLink(href: string, key: any): ReactNode {
 	const title = capitalizeAll(href.slice(href.lastIndexOf("/") + 1));
 
 	return (
 		<StyledLink
-			key={href}
+			key={key}
 			title={title}
 			href={href}
 			icon={`${process.env.ALBINA_API}/favicon${href}`}
@@ -25,8 +25,16 @@ function getSmartQuote(quote: string, key: any): ReactNode {
 		/>
 	);
 }
+function getSmartBullet(item: string, key: any): ReactNode {
+	return (
+		<NotionBullet
+			key={key}
+			children={item}
+		/>
+	);
+}
 
-const smartTriggerCharacters = "@Q";
+const smartTriggerCharacters = "@QB";
 function isSmartOpeningTrigger(characters: string, index: number): boolean {
 	if (
 		smartTriggerCharacters.includes(characters[index + 1]) &&
@@ -67,11 +75,18 @@ export function SmartText({ content }: SmartTextProps) {
 
 				switch (content[start + 1]) {
 					case "@":
-						parts.push(getSmartLink(content.slice(start + 2, index - 1)));
+						parts.push(
+							getSmartLink(content.slice(start + 2, index - 1), index)
+						);
 						break;
 					case "Q":
 						parts.push(
 							getSmartQuote(content.slice(start + 3, index - 1), index)
+						);
+						break;
+					case "B":
+						parts.push(
+							getSmartBullet(content.slice(start + 3, index - 1), index)
 						);
 						break;
 				}

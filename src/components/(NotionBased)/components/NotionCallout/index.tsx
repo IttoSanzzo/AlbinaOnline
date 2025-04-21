@@ -1,4 +1,5 @@
 import {
+	ContentContainer,
 	HeaderContainer,
 	NotionCalloutContainer,
 	TitleArrayContainer,
@@ -57,13 +58,13 @@ export function NotionCallout({
 					{StpIcon(icon)}
 					{finalTitle}
 				</HeaderContainer>
-				<div>{children}</div>
+				<ContentContainer>{children}</ContentContainer>
 			</NotionCalloutContainer>
 		);
 	}
 	return (
 		<NotionCalloutContainer style={style}>
-			<div>{children}</div>
+			<ContentContainer>{children}</ContentContainer>
 		</NotionCalloutContainer>
 	);
 }
