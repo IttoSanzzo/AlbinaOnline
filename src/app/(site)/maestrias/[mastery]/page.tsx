@@ -11,6 +11,7 @@ import {
 	NotionToggle,
 	NotionToggleHeader,
 	NotionCallout,
+	NotionBox,
 } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/TypologyCallout";

@@ -72,7 +72,7 @@ export default function MasteryTypologyCallout({
 		<NotionText>{getTabulatedType(type)}</NotionText>,
 	];
 	const tableStatus = [
-		"Categoria",
+		"🏷️Categoria",
 		<NotionText>{getTabulatedCategory(category)}</NotionText>,
 	];
 

@@ -1,6 +1,6 @@
 .notionHorizontalTableContainer {
 	overflow-x: scroll;
-	width: 100%;
+	width: fit-content;
 	max-width: 100%;
 	background-color: var(--cl-gray-700);
 	margin-bottom: var(--sp-2);

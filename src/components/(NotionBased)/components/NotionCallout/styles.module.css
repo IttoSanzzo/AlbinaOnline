@@ -40,5 +40,5 @@
 
 .contentContainer {
 	max-width: 80vw;
-	overflow: hidden;
+	/* overflow: hidden; */
 }

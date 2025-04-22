@@ -1,16 +1,15 @@
 import {
 	ContentContainer,
 	HeaderContainer,
-	NotionCalloutContainer,
 	TitleArrayContainer,
 } from "./styledElements";
-import { CSSProperties, ReactNode } from "react";
+import { ReactNode } from "react";
 import { StpIcon, StpIconProps } from "@/libs/stp@icons";
 import {
 	NotionText,
-	NotionBackgroundColor,
 	NotionPropsColor,
 	NotionTextColor,
+	NotionBox,
 } from "../../index";
 
 interface NotionCalloutProps extends NotionPropsColor {
@@ -28,14 +27,6 @@ export function NotionCallout({
 	textColor,
 	backgroundColor,
 }: NotionCalloutProps) {
-	const style: CSSProperties = {
-		...(textColor && { color: NotionTextColor[textColor] }),
-		...(backgroundColor && {
-			backgroundColor: NotionBackgroundColor[backgroundColor],
-			borderColor: `${NotionTextColor[backgroundColor]}15`,
-		}),
-	};
-
 	if (title) {
 		const finalTitle =
 			typeof title === "string" ? (
@@ -53,18 +44,24 @@ export function NotionCallout({
 			);
 
 		return (
-			<NotionCalloutContainer style={style}>
-				<HeaderContainer>
-					{StpIcon(icon)}
-					{finalTitle}
-				</HeaderContainer>
-				<ContentContainer>{children}</ContentContainer>
-			</NotionCalloutContainer>
+			<NotionBox backgroundColor={backgroundColor}>
+				<ContentContainer
+					style={textColor ? { color: NotionTextColor[textColor] } : undefined}>
+					<HeaderContainer>
+						{StpIcon(icon)}
+						{finalTitle}
+					</HeaderContainer>
+					{children}
+				</ContentContainer>
+			</NotionBox>
 		);
 	}
 	return (
-		<NotionCalloutContainer style={style}>
-			<ContentContainer>{children}</ContentContainer>
-		</NotionCalloutContainer>
+		<NotionBox backgroundColor={backgroundColor}>
+			<ContentContainer
+				style={textColor ? { color: NotionTextColor[textColor] } : undefined}>
+				{children}
+			</ContentContainer>
+		</NotionBox>
 	);
 }

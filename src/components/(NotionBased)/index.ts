@@ -1,3 +1,4 @@
+export { NotionBox } from "./components/NotionBox";
 export { NotionDivisor } from "./components/NotionDivisor";
 export { NotionText } from "./components/NotionText";
 export { NotionQuote } from "./components/NotionQuote";

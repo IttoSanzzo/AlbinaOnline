@@ -1,9 +1,6 @@
 import { CSSProperties, ReactNode } from "react";
 import { ContentContainer, NotionGridListContainer } from "./styledElements";
-import {
-	NotionBackgroundColor,
-	NotionCallout,
-} from "@/components/(NotionBased)";
+import { NotionBackgroundColor, NotionBox } from "@/components/(NotionBased)";
 
 interface NotionGridListProps {
 	children: ReactNode;
@@ -24,10 +21,10 @@ export function NotionGridList({
 	};
 
 	return (
-		<NotionCallout backgroundColor={backgroundColor}>
+		<NotionBox backgroundColor={backgroundColor}>
 			<NotionGridListContainer>
 				<ContentContainer style={columnsStyle}>{children}</ContentContainer>
 			</NotionGridListContainer>
-		</NotionCallout>
+		</NotionBox>
 	);
 }
