@@ -2,16 +2,22 @@ import { StyledLink } from "@/components/(Design)";
 import { SmartTextContainer } from "./styledElements";
 import { capitalizeTitle } from "@/utils/StringUtils";
 import { ReactNode } from "react";
-import { NotionBullet, NotionQuote } from "@/components/(NotionBased)";
-import { title } from "process";
+import {
+	NotionBullet,
+	NotionQuote,
+	NotionToggle,
+} from "@/components/(NotionBased)";
 
-function getSmartLink(href: string, key: any): ReactNode {
-	const hrefIsId = href.includes("#");
-	const title = hrefIsId
-		? capitalizeTitle(href.slice(href.lastIndexOf("#") + 1).replace(/-/g, " "))
-		: capitalizeTitle(href.slice(href.lastIndexOf("/") + 1).replace(/-/g, " "));
+function getSmartLink(smartSlice: string, key: any): ReactNode {
+	if (smartSlice[0] !== "[") return <p key={key}>"-SmartLinkError-"</p>;
 
-	const iconUrl = hrefIsId ? href.slice(0, href.lastIndexOf("#")) : href;
+	const titleEnd = smartSlice.indexOf("]");
+	const title = smartSlice.slice(1, titleEnd);
+
+	const href = `/${smartSlice.slice(titleEnd + 1)}`;
+	const indexOfId = href.lastIndexOf("#");
+	const iconUrl =
+		indexOfId !== -1 ? href.slice(0, href.lastIndexOf("#")) : href;
 
 	return (
 		<StyledLink
@@ -20,6 +26,21 @@ function getSmartLink(href: string, key: any): ReactNode {
 			href={href}
 			icon={`${process.env.ALBINA_API}/favicon${iconUrl}`}
 			textMode={true}
+		/>
+	);
+}
+function getSmartToggle(smartSlice: string, key: any): ReactNode {
+	if (smartSlice[0] !== "[") return <p key={key}>"-SmartToggleError-"</p>;
+
+	const titleEnd = smartSlice.indexOf("]");
+	const title = smartSlice.slice(1, titleEnd);
+	const content = smartSlice.slice(titleEnd + 1);
+
+	return (
+		<NotionToggle
+			key={key}
+			title={title}
+			children={content}
 		/>
 	);
 }
@@ -40,17 +61,13 @@ function getSmartBullet(item: string, key: any): ReactNode {
 	);
 }
 
-const smartTriggerCharacters = "@QB";
+const smartTriggerCharacters = "@QBT";
 function isSmartOpeningTrigger(characters: string, index: number): boolean {
 	if (
 		smartTriggerCharacters.includes(characters[index + 1]) &&
 		characters[index + 2] === "/"
 	)
 		return true;
-	return false;
-}
-function isSmartClosingTrigger(characters: string, index: number): boolean {
-	if (characters[index] === "]") return true;
 	return false;
 }
 
@@ -71,9 +88,8 @@ export function SmartText({ content }: SmartTextProps) {
 			index += 3;
 
 			while (index < content.length && depth > 0) {
-				if (content[index] === "[" && isSmartOpeningTrigger(content, index))
-					++depth;
-				else if (isSmartClosingTrigger(content, index)) --depth;
+				if (content[index] === "[") ++depth;
+				else if (content[index] === "]") --depth;
 				++index;
 			}
 			if (depth === 0) {
@@ -82,7 +98,7 @@ export function SmartText({ content }: SmartTextProps) {
 				switch (content[start + 1]) {
 					case "@":
 						parts.push(
-							getSmartLink(content.slice(start + 2, index - 1), index)
+							getSmartLink(content.slice(start + 3, index - 1), index)
 						);
 						break;
 					case "Q":
@@ -93,6 +109,11 @@ export function SmartText({ content }: SmartTextProps) {
 					case "B":
 						parts.push(
 							getSmartBullet(content.slice(start + 3, index - 1), index)
+						);
+						break;
+					case "T":
+						parts.push(
+							getSmartToggle(content.slice(start + 3, index - 1), index)
 						);
 						break;
 				}

@@ -7,13 +7,13 @@ import {
 function getTabulatedType(type: string) {
 	switch (type) {
 		case "proficiency":
-			return "🌟[@/maestrias#proficiencias]";
+			return "🌟[@/[Proficiências]maestrias#proficiencias]";
 		case "expertise":
-			return "🪡[@/maestrias#pericias]";
+			return "🪡[@/[Perícias]maestrias#pericias]";
 		case "knowledge":
-			return "📖[@/maestrias#conhecimentos]";
+			return "📖[@/[Conhecimentos]maestrias#conhecimentos]";
 		case "craft":
-			return "👜[@/maestrias#oficios]";
+			return "👜[@/[Ofícios]maestrias#oficios]";
 		default:
 			return "Unknown?";
 	}
