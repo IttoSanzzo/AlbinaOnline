@@ -1,37 +1,4 @@
-export type GenericInfo = {
-	summary: string[];
-	description: string[];
-	miscellaneous: string[];
-};
-
-export type GenericEffectContent = {
-	type: string;
-	value: string;
-};
-
-export type GenericEffect = {
-	id: number;
-	role: string;
-	contents: GenericEffectContent[];
-};
-
-export type MasteryData = {
-	id: number;
-	slug: string;
-	name: string;
-	category: string;
-	type: string;
-	albinaVersion: string;
-	data: {
-		iconUrl: string;
-		info: GenericInfo;
-		effects: GenericEffect[];
-	};
-};
-
-type GetDataError = {
-	message: string;
-};
+import { MasteryData } from "@/libs/stp@types";
 
 type MasteryPageData = {
 	masteryData?: MasteryData;

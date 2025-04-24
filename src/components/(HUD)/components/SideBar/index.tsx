@@ -46,6 +46,7 @@ export function SideBar() {
 						indexedPages={[
 							{ name: "Maestrias", link: "/maestrias" },
 							{ name: "Raças", link: "/racas" },
+							{ name: "Items", link: "/items" },
 						]}
 					/>
 					<IndexedPagesGroup

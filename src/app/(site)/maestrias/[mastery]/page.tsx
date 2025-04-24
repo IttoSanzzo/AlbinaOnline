@@ -5,14 +5,7 @@ import {
 	GenericPageContainer,
 	GenericPageFooter,
 } from "@/components/(Design)";
-import {
-	NotionHeader,
-	Notion2Columns,
-	NotionToggle,
-	NotionToggleHeader,
-	NotionCallout,
-	NotionBox,
-} from "@/components/(NotionBased)";
+import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/TypologyCallout";
 
@@ -34,7 +27,7 @@ export default async function Mastery({ params }: MasteryProps) {
 		<GenericPageContainer
 			title={`⩤Maestria⩥ ${masteryData.name}`}
 			banner={AlbinaLogo}
-			icon={masteryData.data.iconUrl}
+			icon={masteryData.iconUrl}
 			borderColor={borderColor}>
 			<NotionHeader
 				textColor="purple"
@@ -49,9 +42,9 @@ export default async function Mastery({ params }: MasteryProps) {
 						category={masteryData.category}
 					/>
 				}
-				colum2={<GenericInfoCallout info={masteryData.data.info} />}
+				colum2={<GenericInfoCallout info={masteryData.info} />}
 			/>
-			<GenericEffectsDisplay effects={masteryData.data.effects} />
+			<GenericEffectsDisplay effects={masteryData.effects} />
 			<GenericPageFooter version={masteryData.albinaVersion} />
 		</GenericPageContainer>
 	);

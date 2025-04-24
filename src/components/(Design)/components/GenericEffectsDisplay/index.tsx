@@ -4,8 +4,8 @@ import {
 	NotionQuote,
 } from "@/components/(NotionBased)";
 import { GenericEffectsDisplayContainer } from "./styledElements";
-import { GenericEffect } from "@/app/(site)/maestrias/[mastery]/(routeInfra)/pageData";
 import { StpIconProps } from "@/libs/stp@icons";
+import { GenericEffect } from "@/libs/stp@types";
 
 interface GenericEffectsDisplayProps {
 	effects: GenericEffect[];

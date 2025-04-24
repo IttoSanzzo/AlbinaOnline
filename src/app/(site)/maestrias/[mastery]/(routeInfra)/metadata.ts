@@ -17,6 +17,6 @@ export async function generateMetadata({
 
 	return {
 		title,
-		icons: { icon: masteryData.data.iconUrl },
+		icons: { icon: masteryData.iconUrl },
 	};
 }

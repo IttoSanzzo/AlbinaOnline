@@ -1,10 +1,8 @@
-import { MasteryData } from "./[mastery]/(routeInfra)/pageData";
 import { MasterysContainer } from "./styledElements";
 import {
 	NotionBox,
 	NotionCallout,
 	NotionDivisor,
-	NotionHeader,
 	NotionQuote,
 	NotionTable,
 	NotionText,
@@ -21,6 +19,7 @@ import {
 	NotionQuoteList,
 } from "@/components/(UTILS)";
 import { AnchorProps } from "@/components/(HUD)";
+import { MasteryData } from "@/libs/stp@types";
 
 const pageAnchors: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },
@@ -155,7 +154,7 @@ export default async function Masterys() {
 								key={masteryData.id}
 								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
+								icon={masteryData.iconUrl}
 							/>
 						))}
 					</NotionGridList>
@@ -254,7 +253,7 @@ export default async function Masterys() {
 								key={masteryData.id}
 								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
+								icon={masteryData.iconUrl}
 							/>
 						))}
 					</NotionGridList>
@@ -337,7 +336,7 @@ export default async function Masterys() {
 								key={masteryData.id}
 								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
+								icon={masteryData.iconUrl}
 							/>
 						))}
 					</NotionGridList>
@@ -428,7 +427,7 @@ export default async function Masterys() {
 								key={masteryData.id}
 								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
-								icon={masteryData.data.iconUrl}
+								icon={masteryData.iconUrl}
 							/>
 						))}
 					</NotionGridList>

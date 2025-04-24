@@ -1,6 +1,6 @@
-import { GenericInfo } from "@/app/(site)/maestrias/[mastery]/(routeInfra)/pageData";
 import { NotionCallout, NotionToggle } from "@/components/(NotionBased)";
 import { NotionQuoteList } from "@/components/(UTILS)";
+import { GenericInfo } from "@/libs/stp@types";
 
 interface GenericInfoCalloutProps {
 	info: GenericInfo;
