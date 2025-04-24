@@ -32,7 +32,7 @@ export default async function Mastery({ params }: MasteryProps) {
 
 	return (
 		<GenericPageContainer
-			title={`⩤Maestria⩥ ${masteryData.data.name}`}
+			title={`⩤Maestria⩥ ${masteryData.name}`}
 			banner={AlbinaLogo}
 			icon={masteryData.data.iconUrl}
 			borderColor={borderColor}>
@@ -46,7 +46,7 @@ export default async function Mastery({ params }: MasteryProps) {
 				colum1={
 					<MasteryTypologyCallout
 						type={masteryData.type}
-						category={masteryData.data.category}
+						category={masteryData.category}
 					/>
 				}
 				colum2={<GenericInfoCallout info={masteryData.data.info} />}

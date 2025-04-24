@@ -35,7 +35,7 @@ export default async function Masterys() {
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
 	const allMasteries: MasteryData[] = allRawMasteries.sort((a, b) =>
-		a.data.name.localeCompare(b.data.name)
+		a.name.localeCompare(b.name)
 	);
 
 	const allProficiencyMasteries = allMasteries.filter(
@@ -45,7 +45,7 @@ export default async function Masterys() {
 	["armed", "armored", "focus", "combatStyle", "tool"].forEach(
 		(proficiencyCategory) => {
 			allProficiencyMasteries.forEach((mastery) => {
-				if (mastery.data.category == proficiencyCategory)
+				if (mastery.category == proficiencyCategory)
 					allProficiencyMasteriesOrdened.push(mastery);
 			});
 		}
@@ -153,7 +153,7 @@ export default async function Masterys() {
 						{allProficiencyMasteriesOrdened.map((masteryData) => (
 							<StyledLink
 								key={masteryData.id}
-								title={masteryData.data.name}
+								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
 								icon={masteryData.data.iconUrl}
 							/>
@@ -252,7 +252,7 @@ export default async function Masterys() {
 						{allExpertiseMasteries.map((masteryData) => (
 							<StyledLink
 								key={masteryData.id}
-								title={masteryData.data.name}
+								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
 								icon={masteryData.data.iconUrl}
 							/>
@@ -335,7 +335,7 @@ export default async function Masterys() {
 						{allKnowledgeMasteries.map((masteryData) => (
 							<StyledLink
 								key={masteryData.id}
-								title={masteryData.data.name}
+								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
 								icon={masteryData.data.iconUrl}
 							/>
@@ -426,7 +426,7 @@ export default async function Masterys() {
 						{allCraftMasteries.map((masteryData) => (
 							<StyledLink
 								key={masteryData.id}
-								title={masteryData.data.name}
+								title={masteryData.name}
 								href={`/maestrias/${masteryData.slug}`}
 								icon={masteryData.data.iconUrl}
 							/>

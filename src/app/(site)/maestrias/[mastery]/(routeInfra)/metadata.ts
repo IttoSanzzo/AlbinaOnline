@@ -13,7 +13,7 @@ export async function generateMetadata({
 	}
 	const { masteryData } = MasteryPageData;
 
-	const title = `Maestria - ${masteryData.data.name}`;
+	const title = `Maestria - ${masteryData.name}`;
 
 	return {
 		title,

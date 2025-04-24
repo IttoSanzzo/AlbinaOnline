@@ -18,11 +18,11 @@ export type GenericEffect = {
 export type MasteryData = {
 	id: number;
 	slug: string;
+	name: string;
+	category: string;
 	type: string;
 	albinaVersion: string;
 	data: {
-		name: string;
-		category: string;
 		iconUrl: string;
 		info: GenericInfo;
 		effects: GenericEffect[];
@@ -95,6 +95,6 @@ export async function getPageData(
 
 	return {
 		masteryData,
-		borderColor: getCategoryBorderColor(masteryData.data.category),
+		borderColor: getCategoryBorderColor(masteryData.category),
 	};
 }
