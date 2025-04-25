@@ -15,6 +15,7 @@ export enum NotionTextColor {
 export enum NotionBackgroundColor {
 	"default" = "",
 	"gray" = "#272624",
+	"darkGray" = "#1E1E1D",
 	"brown" = "#2D2622",
 	"orange" = "#352718",
 	"yellow" = "#332B1D",

@@ -18,6 +18,7 @@ interface NotionTableProps extends NotionPropsColor {
 	direction?: "row" | "column";
 	fixedLinePosition?: number;
 	fixedLineSize?: number;
+	withHeaderRow?: boolean;
 }
 
 export function NotionTable({
@@ -25,6 +26,7 @@ export function NotionTable({
 	direction = "row",
 	fixedLinePosition = 1,
 	fixedLineSize,
+	withHeaderRow = false,
 	textColor,
 	backgroundColor,
 }: NotionTableProps) {
@@ -39,17 +41,23 @@ export function NotionTable({
 		return (
 			<NotionHorizontalTableContainer style={baseStyle}>
 				<tbody>
-					{tableLanes.map((row, index) => (
-						<tr key={index}>
-							{row.map((column, index) => {
-								const contentStyle =
-									fixedLineSize && index === fixedLinePosition - 1
-										? { width: `${fixedLineSize}%` }
-										: {};
-								if (index === 0) {
+					{tableLanes.map((row, laneIndex) => (
+						<tr key={laneIndex}>
+							{row.map((column, rowIndex) => {
+								const contentStyle = {
+									...(fixedLineSize &&
+										rowIndex === fixedLinePosition - 1 && {
+											width: `${fixedLineSize}%`,
+										}),
+									...(withHeaderRow &&
+										laneIndex === 0 && {
+											backgroundColor: "#202024",
+										}),
+								};
+								if (rowIndex === 0) {
 									return (
 										<th
-											key={index}
+											key={rowIndex}
 											style={contentStyle}>
 											{column}
 										</th>
@@ -57,7 +65,7 @@ export function NotionTable({
 								}
 								return (
 									<td
-										key={index}
+										key={rowIndex}
 										style={contentStyle}>
 										{column}
 									</td>
@@ -70,8 +78,9 @@ export function NotionTable({
 		);
 	}
 
+	const newTableLength = tableLanes.length === 1 ? 2 : tableLanes.length;
 	const reordenedTable: Array<ReactNode[]> = Array.from(
-		{ length: tableLanes.length },
+		{ length: newTableLength },
 		() => []
 	);
 

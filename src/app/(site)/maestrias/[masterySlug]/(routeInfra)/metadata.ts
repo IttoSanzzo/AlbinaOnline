@@ -4,10 +4,10 @@ import { getPageData } from "./pageData";
 export async function generateMetadata({
 	params,
 }: {
-	params: Promise<{ mastery: string }>;
+	params: Promise<{ masterySlug: string }>;
 }): Promise<Metadata> {
-	const { mastery } = await params;
-	const MasteryPageData = await getPageData(mastery);
+	const { masterySlug } = await params;
+	const MasteryPageData = await getPageData(masterySlug);
 	if (MasteryPageData.masteryData == undefined) {
 		return { title: "Not Found" };
 	}

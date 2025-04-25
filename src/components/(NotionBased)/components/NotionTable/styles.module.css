@@ -26,6 +26,9 @@
 	& tr:last-child th {
 		border-bottom-left-radius: var(--rd-md);
 	}
+	& tr:first-child td:last-child {
+		border-top-right-radius: var(--rd-md);
+	}
 }
 
 .notionVerticalTableContainer {

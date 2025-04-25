@@ -7,17 +7,17 @@ import {
 } from "@/components/(Design)";
 import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
-import MasteryTypologyCallout from "./subComponents/TypologyCallout";
+import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
 interface MasteryProps {
-	params: Promise<{ mastery: string }>;
+	params: Promise<{ masterySlug: string }>;
 }
 
 export default async function Mastery({ params }: MasteryProps) {
-	const { mastery } = await params;
-	const MasteryPageData = await getPageData(mastery);
+	const { masterySlug } = await params;
+	const MasteryPageData = await getPageData(masterySlug);
 	if (MasteryPageData.masteryData == undefined) {
 		return <></>;
 	}

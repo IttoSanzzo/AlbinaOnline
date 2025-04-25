@@ -23,6 +23,7 @@ function getIconProps(name: string): StpIconProps {
 }
 
 export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
+	if (effects.length == 0) return <></>;
 	return (
 		<GenericEffectsDisplayContainer>
 			<NotionHeader

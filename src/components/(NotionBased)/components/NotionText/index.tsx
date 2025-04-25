@@ -6,10 +6,14 @@ import {
 	NotionTextColor,
 } from "../../index";
 import { NotionTextContainer } from "./styledElements";
-import { CSSProperties, ReactNode } from "react";
+import { CSSProperties } from "react";
 
-interface NotionTextProps extends NotionPropsColor, NotionPropsText {
+interface NotionTextProps extends NotionPropsColor {
 	children?: string;
+	withBold?: boolean;
+	withItalic?: boolean;
+	withUnderline?: boolean;
+	textAlign?: "left" | "center" | "right" | "flex-center";
 }
 
 export function NotionText({
@@ -29,7 +33,9 @@ export function NotionText({
 		...(withBold && { fontWeight: "bold" }),
 		...(withItalic && { fontStyle: "italic" }),
 		...(withUnderline && { textDecoration: "underline" }),
-		...(textAlign && { textAlign: textAlign }),
+		...(textAlign && textAlign === "flex-center"
+			? { display: "flex", justifyContent: "center" }
+			: { textAlign: textAlign }),
 	};
 
 	return (
