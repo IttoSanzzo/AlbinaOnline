@@ -1,4 +1,5 @@
 import { GenericPageContainer, StyledLink } from "@/components/(Design)";
+import { NotionGridList } from "@/components/(UTILS)";
 import { ItemData } from "@/libs/stp@types";
 
 // type ItemData
@@ -14,15 +15,17 @@ export default async function Items() {
 
 	return (
 		<GenericPageContainer title="Todos os Items">
-			{allItems.map((item) => {
-				return (
-					<StyledLink
-						key={item.id}
-						title={item.name}
-						href={`items/${item.slug}`}
-					/>
-				);
-			})}
+			<NotionGridList
+				children={allItems.map((item) => {
+					return (
+						<StyledLink
+							key={item.id}
+							title={item.name}
+							href={`items/${item.slug}`}
+						/>
+					);
+				})}
+			/>
 		</GenericPageContainer>
 	);
 }

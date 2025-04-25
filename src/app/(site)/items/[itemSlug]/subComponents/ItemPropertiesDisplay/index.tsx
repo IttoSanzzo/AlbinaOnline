@@ -146,8 +146,8 @@ export default function ItemPropertiesDisplay({
 									/>,
 								],
 								...itemProperties.extras.map((extra) => [
-									<NotionText>{extra[0]}</NotionText>,
-									<NotionText>{extra[1]}</NotionText>,
+									<NotionText>{`⦇ ${extra[0]} ⦈`}</NotionText>,
+									<NotionText>{`⪩ ${extra[1]}`}</NotionText>,
 								]),
 							],
 						}}

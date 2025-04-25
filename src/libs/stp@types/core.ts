@@ -12,5 +12,7 @@ export type GenericEffectContent = {
 export type GenericEffect = {
 	id: number;
 	role: string;
+	title?: string;
+	titleColor: string;
 	contents: GenericEffectContent[];
 };

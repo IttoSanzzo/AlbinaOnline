@@ -24,22 +24,6 @@ export default async function Item({ params }: ItemProps) {
 	}
 	const { itemData, borderColor } = ItemPageData;
 
-	itemData.properties = {
-		attribute: "Mundano",
-		slot: "1 Mão",
-		// equipmentStats: {
-		// 	damage: "1",
-		// 	accuracy: "1",
-		// 	defense: "1",
-		// 	range: "1 Posição",
-		// 	damageType: "Cortante",
-		// },
-		extras: [
-			// ["Banana", "split"],
-			// ["Que", "[@/[Maravilha]maestrias/arco-curto]"],
-		],
-	};
-
 	return (
 		<GenericPageContainer
 			title={itemData.name}
