@@ -2,6 +2,7 @@ import {
 	NotionCallout,
 	NotionHeader,
 	NotionQuote,
+	NotionText,
 } from "@/components/(NotionBased)";
 import { GenericEffectsDisplayContainer } from "./styledElements";
 import { StpIconProps } from "@/libs/stp@icons";
@@ -34,16 +35,32 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 			/>
 			{effects.map((effect, index) => {
 				const iconProps = getIconProps(effect.role);
+				const fullTitle = effect.title ? (
+					<div style={{ display: "flex", gap: "0.5rem" }}>
+						<NotionText
+							textColor={iconProps.color}
+							children={`${effect.role} -`}
+						/>
+						<NotionText
+							textColor={effect.titleColor}
+							children={effect.title}
+						/>
+					</div>
+				) : (
+					effect.role
+				);
+
 				return (
 					<NotionCallout
 						key={index}
 						icon={iconProps}
 						titleColor={iconProps.color}
-						title={effect.role}>
+						title={fullTitle}>
 						{effect.contents.map((content, index) => (
 							<NotionQuote
 								key={index}
 								children={content.value}
+								textColor={content.color}
 							/>
 						))}
 					</NotionCallout>

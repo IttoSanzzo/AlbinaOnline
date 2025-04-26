@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import {
 	NotionBullet,
 	NotionQuote,
+	NotionText,
+	NotionTextColor,
 	NotionToggle,
 } from "@/components/(NotionBased)";
 
@@ -60,8 +62,23 @@ function getSmartBullet(item: string, key: any): ReactNode {
 		/>
 	);
 }
+function getSmartColor(smartSlice: string, key: any): ReactNode {
+	if (smartSlice[0] !== "[") return <p key={key}>"-SmartColorError-"</p>;
 
-const smartTriggerCharacters = "@QBT";
+	const colorEnd = smartSlice.indexOf("]");
+	const color = smartSlice.slice(1, colorEnd);
+	const content = smartSlice.slice(colorEnd + 1);
+
+	return (
+		<NotionText
+			key={key}
+			children={content}
+			textColor={color as keyof typeof NotionTextColor}
+		/>
+	);
+}
+
+const smartTriggerCharacters = "@QBTC";
 function isSmartOpeningTrigger(characters: string, index: number): boolean {
 	if (
 		smartTriggerCharacters.includes(characters[index + 1]) &&
@@ -114,6 +131,11 @@ export function SmartText({ content }: SmartTextProps) {
 					case "T":
 						parts.push(
 							getSmartToggle(content.slice(start + 3, index - 1), index)
+						);
+						break;
+					case "C":
+						parts.push(
+							getSmartColor(content.slice(start + 3, index - 1), index)
 						);
 						break;
 				}
