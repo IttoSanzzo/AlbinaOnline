@@ -16,55 +16,91 @@ export default async function Items() {
 		a.name.localeCompare(b.name)
 	);
 
-	const allArmaments = allItems.filter((item) => item.type === "armament");
-	const allFocuses = allItems.filter((item) => item.type === "focus");
-	const allShieldings = allItems.filter((item) => item.type === "shielding");
-	const allFrames = allItems.filter((item) => item.type === "frame");
-	const allWearables = allItems.filter((item) => item.type === "wearable");
-	const allAccessories = allItems.filter((item) => item.type === "accessory");
-	const allConsumables = allItems.filter((item) => item.type === "consumable");
-	const allSpecials = allItems.filter((item) => item.type === "special");
-	const allMiscellaneous = allItems.filter(
-		(item) => item.type === "miscellaneous"
-	);
-
 	return (
-		<GenericPageContainer title="Todos os Items">
+		<GenericPageContainer
+			title="Todos os Items"
+			anchors={[
+				{ name: "Armamentos", id: "armamentos" },
+				{ name: "Focus", id: "focus" },
+				{ name: "Escudos", id: "escudos" },
+				{ name: "Frames", id: "frames" },
+				{ name: "Vestimentas Auxiliares", id: "vestimentas-auxiliares" },
+				{ name: "Acessórios", id: "acessorios" },
+				{ name: "Consumíveis", id: "consumiveis" },
+				{ name: "Miscelaneos", id: "miscelaneos" },
+				{ name: "Especiais", id: "especiais" },
+			]}>
 			<ItemTypeDisplay
 				title="Armamentos"
-				items={allArmaments}
+				allItems={allItems}
+				type="armament"
+				subTypesOrder={[
+					"shordBlade",
+					"sword",
+					"axe",
+					"bow",
+					"crossbow",
+					"polearm",
+					"concussiveWeapon",
+					"fireWeapon",
+					"tetheredWeapon",
+					"bluntWeapon",
+				]}
 			/>
 			<ItemTypeDisplay
 				title="Focus"
-				items={allFocuses}
+				allItems={allItems}
+				type="focus"
+				subTypesOrder={["grimoire", "staff", "scepter", "wand", "orb"]}
 			/>
 			<ItemTypeDisplay
 				title="Escudos"
-				items={allShieldings}
+				allItems={allItems}
+				type="shielding"
+				subTypesOrder={["lightShield", "mediumShield", "heavyShield"]}
 			/>
 			<ItemTypeDisplay
 				title="Frames"
-				items={allFrames}
+				allItems={allItems}
+				type="frame"
+				subTypesOrder={["lightFrame", "mediumFrame", "heavyFrame"]}
 			/>
 			<ItemTypeDisplay
-				title="Vestimentas Complementares"
-				items={allWearables}
+				title="Vestimentas Auxiliares"
+				allItems={allItems}
+				type="wearable"
+				subTypesOrder={[
+					"footGear",
+					"headGear",
+					"handGear",
+					"armGear",
+					"robe",
+					"cape",
+				]}
 			/>
 			<ItemTypeDisplay
 				title="Acessórios"
-				items={allAccessories}
+				allItems={allItems}
+				type="accessory"
+				subTypesOrder={["mask", "earring", "necklace", "ring", "other"]}
 			/>
 			<ItemTypeDisplay
 				title="Consumíveis"
-				items={allConsumables}
-			/>
-			<ItemTypeDisplay
-				title="Especiais"
-				items={allSpecials}
+				allItems={allItems}
+				type="consumable"
+				subTypesOrder={["ammo", "potion", "medicine", "scroll", "food"]}
 			/>
 			<ItemTypeDisplay
 				title="Miscelâneos"
-				items={allMiscellaneous}
+				allItems={allItems}
+				type="miscellaneous"
+				subTypesOrder={["tool", "kit", "ingredient", "material", "book"]}
+			/>
+			<ItemTypeDisplay
+				title="Especiais"
+				allItems={allItems}
+				type="special"
+				subTypesOrder={["token", "relic", "other"]}
 			/>
 		</GenericPageContainer>
 	);

@@ -43,7 +43,7 @@
 
 .tableOfContents {
 	position: fixed;
-	right: -200px;
+	right: -250px;
 	top: 10vh;
 	background-color: var(--cl-gray-800);
 	border: 2px solid var(--cl-gray-600);

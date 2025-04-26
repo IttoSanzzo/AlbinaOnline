@@ -4,14 +4,49 @@ import { NotionGridList } from "@/components/(UTILS)";
 import { ItemData } from "@/libs/stp@types";
 
 interface ItemTypeDisplayProps {
+	allItems: ItemData[];
+	type: string;
+	subTypesOrder?: string[];
 	title: string;
-	items: ItemData[];
 }
 
 export default function ItemTypeDisplay({
-	items,
+	allItems,
+	type,
+	subTypesOrder,
 	title,
 }: ItemTypeDisplayProps) {
+	const allItemsFromThisType = allItems.filter((item) => item.type === type);
+	if (!subTypesOrder)
+		return (
+			<NotionBox
+				backgroundColor="gray"
+				withoutPadding>
+				<NotionHeader
+					textAlign="center"
+					children={title}
+				/>
+				<NotionGridList
+					backgroundColor="purple"
+					children={allItemsFromThisType.map((item) => {
+						return (
+							<StyledLink
+								key={item.id}
+								title={item.name}
+								href={`items/${item.slug}`}
+							/>
+						);
+					})}
+				/>
+			</NotionBox>
+		);
+	const allItemsFromThisTypeOrdened: ItemData[] = [];
+	subTypesOrder.forEach((subType) => {
+		allItemsFromThisType.forEach((item) => {
+			if (item.subType === subType) allItemsFromThisTypeOrdened.push(item);
+		});
+	});
+
 	return (
 		<NotionBox
 			backgroundColor="gray"
@@ -22,7 +57,7 @@ export default function ItemTypeDisplay({
 			/>
 			<NotionGridList
 				backgroundColor="purple"
-				children={items.map((item) => {
+				children={allItemsFromThisTypeOrdened.map((item) => {
 					return (
 						<StyledLink
 							key={item.id}
