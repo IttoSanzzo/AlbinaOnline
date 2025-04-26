@@ -20,6 +20,7 @@ import {
 } from "@/components/(UTILS)";
 import { AnchorProps } from "@/components/(HUD)";
 import { MasteryData } from "@/libs/stp@types";
+import { getCacheMode } from "@/utils/Cache";
 
 const pageAnchors: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },
@@ -30,7 +31,7 @@ const pageAnchors: AnchorProps[] = [
 
 export default async function Masterys() {
 	const response = await fetch(`${process.env.ALBINA_API}/maestrias`, {
-		cache: "force-cache",
+		cache: await getCacheMode(),
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
 	const allMasteries: MasteryData[] = allRawMasteries.sort((a, b) =>

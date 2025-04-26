@@ -1,12 +1,13 @@
 import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 import { NotionGridList } from "@/components/(UTILS)";
 import { ItemData } from "@/libs/stp@types";
+import { getCacheMode } from "@/utils/Cache";
 
 // type ItemData
 
 export default async function Items() {
 	const response = await fetch(`${process.env.ALBINA_API}/items`, {
-		// cache: "force-cache",
+		cache: await getCacheMode(),
 	});
 	const allRawItems: ItemData[] = await response.json();
 	const allItems: ItemData[] = allRawItems.sort((a, b) =>

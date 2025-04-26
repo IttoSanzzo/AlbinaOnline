@@ -1,4 +1,5 @@
 import { MasteryData } from "@/libs/stp@types";
+import { getCacheMode } from "@/utils/Cache";
 
 type MasteryPageData = {
 	masteryData?: MasteryData;
@@ -54,7 +55,7 @@ export async function getPageData(
 	const response = await fetch(
 		`${process.env.ALBINA_API}/maestrias/${masterySlug}`,
 		{
-			cache: "force-cache",
+			cache: await getCacheMode(),
 		}
 	);
 	if (!response.ok) return { masteryData: undefined, borderColor: "" };
