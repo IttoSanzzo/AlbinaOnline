@@ -8,6 +8,7 @@ export type MasteryData = {
 	category: string;
 	albinaVersion: string;
 	iconUrl: string;
+	bannerUrl: string;
 	info: GenericInfo;
 	effects: GenericEffect[];
 };

@@ -131,6 +131,7 @@ export default function ItemPropertiesDisplay({
 					<NotionTable
 						withHeaderRow
 						textColor="gray"
+						fixedLineSize={25}
 						tableData={{
 							tableLanes: [
 								[

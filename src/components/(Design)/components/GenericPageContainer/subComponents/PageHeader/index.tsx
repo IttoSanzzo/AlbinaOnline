@@ -14,8 +14,8 @@ export function PageHeader({ title, icon, borderColor }: PageHeaderProps) {
 			<Image
 				src={finalIcon}
 				alt="Page's favicon"
-				width={64}
-				height={64}
+				width={512}
+				height={512}
 				style={
 					borderColor ? { backgroundColor: `${borderColor}40` } : undefined
 				}

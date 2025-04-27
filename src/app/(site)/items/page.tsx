@@ -15,6 +15,8 @@ export default async function Items() {
 	return (
 		<GenericPageContainer
 			title="Todos os Items"
+			icon={`${process.env.ALBINA_API}/favicon/items`}
+			banner={`${process.env.ALBINA_API}/banner/items`}
 			anchors={[
 				{ name: "Armamentos", id: "armamentos" },
 				{ name: "Focus", id: "focus" },
@@ -30,18 +32,18 @@ export default async function Items() {
 				title="Armamentos"
 				allItems={allItems}
 				type="armament"
-				subTypesOrder={[
-					"shordBlade",
-					"sword",
-					"axe",
-					"bow",
-					"crossbow",
-					"polearm",
-					"concussiveWeapon",
-					"fireWeapon",
-					"tetheredWeapon",
-					"bluntWeapon",
-				]}
+				// subTypesOrder={[
+				// 	"shortBlade",
+				// 	"sword",
+				// 	"axe",
+				// 	"bow",
+				// 	"crossbow",
+				// 	"polearm",
+				// 	"concussiveWeapon",
+				// 	"fireWeapon",
+				// 	"tetheredWeapon",
+				// 	"bluntWeapon",
+				// ]}
 			/>
 			<ItemTypeDisplay
 				title="Focus"

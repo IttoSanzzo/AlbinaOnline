@@ -13,10 +13,6 @@ import {
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
-interface RaceData {
-	name: string;
-}
-
 interface RaceProps {
 	params: Promise<{ race: string }>;
 }

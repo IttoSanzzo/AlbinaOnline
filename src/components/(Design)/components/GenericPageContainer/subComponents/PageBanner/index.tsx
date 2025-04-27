@@ -11,6 +11,8 @@ export function PageBanner({ src }: PageBannerProps) {
 			<Image
 				src={src}
 				alt="Page's banner"
+				width={1720}
+				height={260}
 			/>
 		</PageBannerContainer>
 	);

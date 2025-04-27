@@ -6,7 +6,6 @@ import {
 } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
-import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import MasteryTypologyCallout from "./subComponents/ItemTypologyCallout";
 import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
 
@@ -27,7 +26,7 @@ export default async function Item({ params }: ItemProps) {
 	return (
 		<GenericPageContainer
 			title={itemData.name}
-			banner={AlbinaLogo}
+			banner={itemData.bannerUrl}
 			icon={itemData.iconUrl}
 			borderColor={borderColor}>
 			<NotionHeader

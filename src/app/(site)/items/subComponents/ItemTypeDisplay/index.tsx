@@ -17,6 +17,7 @@ export default function ItemTypeDisplay({
 	title,
 }: ItemTypeDisplayProps) {
 	const allItemsFromThisType = allItems.filter((item) => item.type === type);
+
 	if (!subTypesOrder)
 		return (
 			<NotionBox
@@ -34,6 +35,7 @@ export default function ItemTypeDisplay({
 								key={item.id}
 								title={item.name}
 								href={`items/${item.slug}`}
+								icon={item.iconUrl}
 							/>
 						);
 					})}
@@ -63,6 +65,7 @@ export default function ItemTypeDisplay({
 							key={item.id}
 							title={item.name}
 							href={`items/${item.slug}`}
+							icon={item.iconUrl}
 						/>
 					);
 				})}

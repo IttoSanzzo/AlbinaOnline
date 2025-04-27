@@ -23,6 +23,7 @@ export type ItemData = {
 	subType: string;
 	albinaVersion: string;
 	iconUrl: string;
+	bannerUrl: string;
 	info: GenericInfo;
 	properties?: ItemProperties;
 	effects: GenericEffect[];
