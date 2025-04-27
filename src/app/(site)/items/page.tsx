@@ -1,11 +1,7 @@
-import { GenericPageContainer, StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { GenericPageContainer } from "@/components/(Design)";
 import { ItemData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import ItemTypeDisplay from "./subComponents/ItemTypeDisplay";
-
-// type ItemData
 
 export default async function Items() {
 	const response = await fetch(`${process.env.ALBINA_API}/items`, {
