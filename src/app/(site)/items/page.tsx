@@ -49,56 +49,56 @@ export default async function Items() {
 				title="Focus"
 				allItems={allItems}
 				type="focus"
-				subTypesOrder={["grimoire", "staff", "scepter", "wand", "orb"]}
+				// subTypesOrder={["grimoire", "staff", "scepter", "wand", "orb"]}
 			/>
 			<ItemTypeDisplay
 				title="Escudos"
 				allItems={allItems}
 				type="shielding"
-				subTypesOrder={["lightShield", "mediumShield", "heavyShield"]}
+				// subTypesOrder={["lightShield", "mediumShield", "heavyShield"]}
 			/>
 			<ItemTypeDisplay
 				title="Frames"
 				allItems={allItems}
 				type="frame"
-				subTypesOrder={["lightFrame", "mediumFrame", "heavyFrame"]}
+				// subTypesOrder={["lightFrame", "mediumFrame", "heavyFrame"]}
 			/>
 			<ItemTypeDisplay
 				title="Vestimentas Auxiliares"
 				allItems={allItems}
 				type="wearable"
-				subTypesOrder={[
-					"footGear",
-					"headGear",
-					"handGear",
-					"armGear",
-					"robe",
-					"cape",
-				]}
+				// subTypesOrder={[
+				// 	"footGear",
+				// 	"headGear",
+				// 	"handGear",
+				// 	"armGear",
+				// 	"robe",
+				// 	"cape",
+				// ]}
 			/>
 			<ItemTypeDisplay
 				title="Acessórios"
 				allItems={allItems}
 				type="accessory"
-				subTypesOrder={["mask", "earring", "necklace", "ring", "other"]}
+				// subTypesOrder={["mask", "earring", "necklace", "ring", "other"]}
 			/>
 			<ItemTypeDisplay
 				title="Consumíveis"
 				allItems={allItems}
 				type="consumable"
-				subTypesOrder={["ammo", "potion", "medicine", "scroll", "food"]}
+				// subTypesOrder={["ammo", "potion", "medicine", "scroll", "food"]}
 			/>
 			<ItemTypeDisplay
 				title="Miscelâneos"
 				allItems={allItems}
 				type="miscellaneous"
-				subTypesOrder={["tool", "kit", "ingredient", "material", "book"]}
+				// subTypesOrder={["tool", "kit", "ingredient", "material", "book"]}
 			/>
 			<ItemTypeDisplay
 				title="Especiais"
 				allItems={allItems}
 				type="special"
-				subTypesOrder={["token", "relic", "other"]}
+				// subTypesOrder={["token", "relic", "other"]}
 			/>
 		</GenericPageContainer>
 	);
