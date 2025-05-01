@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getPageData } from "./pageData";
+import { getPageData } from ".";
 
 export async function generateMetadata({
 	params,

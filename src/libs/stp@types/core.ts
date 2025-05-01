@@ -19,3 +19,16 @@ export type GenericEffect = {
 	titleColor?: keyof typeof NotionTextColor;
 	contents: GenericEffectContent[];
 };
+
+export type Parameters = {
+	vitality: number;
+	vigor: number;
+	manapool: number;
+	physicalPower: number;
+	magicalPower: number;
+};
+export type DefensiveProfile = {
+	resistences: string[];
+	weaknesses: string[];
+	immunities: string[];
+};
