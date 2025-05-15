@@ -39,7 +39,7 @@ export default async function Mastery({ params }: MasteryProps) {
 				colum1={
 					<MasteryTypologyCallout
 						type={masteryData.type}
-						category={masteryData.category}
+						subType={masteryData.subType}
 					/>
 				}
 				colum2={<GenericInfoCallout info={masteryData.info} />}

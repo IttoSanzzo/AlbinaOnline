@@ -36,28 +36,27 @@ export default async function Masterys() {
 	const allMasteries: MasteryData[] = allRawMasteries.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
-
 	const allProficiencyMasteries = allMasteries.filter(
-		(mastery) => mastery.type === "proficiency"
+		(mastery) => mastery.type === "Proficiency"
 	);
 	const allProficiencyMasteriesOrdened: MasteryData[] = [];
-	["armed", "armored", "focus", "combatStyle", "tool"].forEach(
+	["Armed", "Armored", "Focus", "CombatStyle", "Tool"].forEach(
 		(proficiencyCategory) => {
 			allProficiencyMasteries.forEach((mastery) => {
-				if (mastery.category == proficiencyCategory)
+				if (mastery.subType == proficiencyCategory)
 					allProficiencyMasteriesOrdened.push(mastery);
 			});
 		}
 	);
 
 	const allExpertiseMasteries = allMasteries.filter(
-		(mastery) => mastery.type === "expertise"
+		(mastery) => mastery.type === "Expertise"
 	);
 	const allKnowledgeMasteries = allMasteries.filter(
-		(mastery) => mastery.type === "knowledge"
+		(mastery) => mastery.type === "Knowledge"
 	);
 	const allCraftMasteries = allMasteries.filter(
-		(mastery) => mastery.type === "craft"
+		(mastery) => mastery.type === "Craft"
 	);
 
 	return (

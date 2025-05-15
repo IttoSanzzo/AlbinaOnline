@@ -6,23 +6,23 @@ import {
 
 function getTabulatedType(type: string) {
 	switch (type) {
-		case "armament":
+		case "Armament":
 			return "🌟[@/[Armamento]items#armamentos]";
-		case "focus":
+		case "Focus":
 			return "🌟[@/[Focus]items#focus]";
-		case "shielding":
+		case "Shielding":
 			return "🌟[@/[Escudo]items#escudos]";
-		case "frame":
+		case "Frame":
 			return "🌟[@/[Frame]items#frames]";
-		case "wearable":
+		case "Wearable":
 			return "🌟[@/[Vestimenta Auxiliar]items#vestimentas-auxiliares]";
-		case "accessory":
+		case "Accessory":
 			return "🌟[@/[Acessório]items#acessorios]";
-		case "consumable":
+		case "Consumable":
 			return "🌟[@/[Consumível]items#consumiveis]";
-		case "special":
+		case "Special":
 			return "🌟[@/[Especial]items#especiais]";
-		case "miscellaneous":
+		case "Miscellaneous":
 			return "🌟[@/[Miscelâneo]items#miscelâneos]";
 		default:
 			return "Unknown?";
@@ -30,47 +30,47 @@ function getTabulatedType(type: string) {
 }
 function getTabulatedCategory(subType: string) {
 	switch (subType) {
-		case "grimoire":
+		case "Grimoire":
 			return "⊱⸙Grimório⸙";
-		case "staff":
+		case "Staff":
 			return "⊱⸙Cajado⸙";
 		case "Scepter":
 			return "⊱⸙Cetro⸙";
-		case "wand":
+		case "Wand":
 			return "⊱⸙Varinha⸙";
-		case "orb":
+		case "Orb":
 			return "⊱⸙Orbe⸙";
-		case "shortBlade":
+		case "ShortBlade":
 			return "⊱⸙Lâmina Pequena⸙";
-		case "sword":
+		case "Sword":
 			return "⊱⸙Espada⸙";
-		case "axe":
+		case "Axe":
 			return "⊱⸙Machado⸙";
-		case "bow":
+		case "Bow":
 			return "⊱⸙Arco⸙";
-		case "crossbow":
+		case "Crossbow":
 			return "⊱⸙Besta⸙";
-		case "polearm":
+		case "Polearm":
 			return "⊱⸙Arma de Haste⸙";
-		case "concussiveWeapon":
+		case "ConcussiveWeapon":
 			return "⊱⸙Arma de Concussão⸙";
-		case "fireWeapon":
+		case "FireWeapon":
 			return "⊱⸙Arma de Fogo⸙";
-		case "Tethered Weapon":
+		case "TetheredWeapon":
 			return "⊱⸙Arma Flexível⸙";
-		case "bluntWeapon":
+		case "BluntWeapon":
 			return "⊱⸙Arma Cega⸙";
-		case "lightShield":
+		case "LightShield":
 			return "⊱⸙Escudo Leve⸙";
-		case "mediumShield":
+		case "MediumShield":
 			return "⊱⸙Escudo Médio⸙";
-		case "heavyShield":
+		case "HeavyShield":
 			return "⊱⸙Escudo Pesado⸙";
-		case "lightFrame":
+		case "LightFrame":
 			return "⊱⸙Frame Leve⸙";
-		case "mediumFrame":
+		case "MediumFrame":
 			return "⊱⸙Frame Médio⸙";
-		case "heavyFrame":
+		case "HeavyFrame":
 			return "⊱⸙Frame Pesado⸙";
 		default:
 			return "Unknown?";

@@ -31,7 +31,7 @@ export default async function Items() {
 			<ItemTypeDisplay
 				title="Armamentos"
 				allItems={allItems}
-				type="armament"
+				type="Armament"
 				// subTypesOrder={[
 				// 	"shortBlade",
 				// 	"sword",
@@ -48,25 +48,25 @@ export default async function Items() {
 			<ItemTypeDisplay
 				title="Focus"
 				allItems={allItems}
-				type="focus"
+				type="Focus"
 				// subTypesOrder={["grimoire", "staff", "scepter", "wand", "orb"]}
 			/>
 			<ItemTypeDisplay
 				title="Escudos"
 				allItems={allItems}
-				type="shielding"
+				type="Shielding"
 				// subTypesOrder={["lightShield", "mediumShield", "heavyShield"]}
 			/>
 			<ItemTypeDisplay
 				title="Frames"
 				allItems={allItems}
-				type="frame"
+				type="Frame"
 				// subTypesOrder={["lightFrame", "mediumFrame", "heavyFrame"]}
 			/>
 			<ItemTypeDisplay
 				title="Vestimentas Auxiliares"
 				allItems={allItems}
-				type="wearable"
+				type="Wearable"
 				// subTypesOrder={[
 				// 	"footGear",
 				// 	"headGear",
@@ -79,25 +79,25 @@ export default async function Items() {
 			<ItemTypeDisplay
 				title="Acessórios"
 				allItems={allItems}
-				type="accessory"
+				type="Accessory"
 				// subTypesOrder={["mask", "earring", "necklace", "ring", "other"]}
 			/>
 			<ItemTypeDisplay
 				title="Consumíveis"
 				allItems={allItems}
-				type="consumable"
+				type="Consumable"
 				// subTypesOrder={["ammo", "potion", "medicine", "scroll", "food"]}
 			/>
 			<ItemTypeDisplay
 				title="Miscelâneos"
 				allItems={allItems}
-				type="miscellaneous"
+				type="Miscellaneous"
 				// subTypesOrder={["tool", "kit", "ingredient", "material", "book"]}
 			/>
 			<ItemTypeDisplay
 				title="Especiais"
 				allItems={allItems}
-				type="special"
+				type="Special"
 				// subTypesOrder={["token", "relic", "other"]}
 			/>
 		</GenericPageContainer>

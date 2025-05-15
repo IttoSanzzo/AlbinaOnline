@@ -63,6 +63,6 @@ export async function getPageData(
 
 	return {
 		masteryData,
-		borderColor: getCategoryBorderColor(masteryData.category),
+		borderColor: getCategoryBorderColor(masteryData.subType),
 	};
 }

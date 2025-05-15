@@ -6,53 +6,53 @@ import {
 
 function getTabulatedType(type: string) {
 	switch (type) {
-		case "proficiency":
+		case "Proficiency":
 			return "🌟[@/[Proficiências]maestrias#proficiencias]";
-		case "expertise":
+		case "Expertise":
 			return "🪡[@/[Perícias]maestrias#pericias]";
-		case "knowledge":
+		case "Knowledge":
 			return "📖[@/[Conhecimentos]maestrias#conhecimentos]";
-		case "craft":
+		case "Craft":
 			return "👜[@/[Ofícios]maestrias#oficios]";
 		default:
 			return "Unknown?";
 	}
 }
-function getTabulatedCategory(category: string) {
-	switch (category) {
-		case "agility":
+function getTabulatedCategory(subType: string) {
+	switch (subType) {
+		case "Agility":
 			return "⊱🦵🏻⸙Agilidade⸙";
-		case "intelligence":
+		case "Intelligence":
 			return "⊱🧠⸙Inteligência⸙";
-		case "strength":
+		case "Strength":
 			return "⊱💪🏻⸙Força⸙";
-		case "constitution":
+		case "Constitution":
 			return "⊱🍻⸙Constituição⸙";
-		case "technique":
+		case "Technique":
 			return "⊱🤏🏻⸙Técnica⸙";
-		case "charisma":
+		case "Charisma":
 			return "⊱🎭⸙Carisma⸙";
-		case "wisdom":
+		case "Wisdom":
 			return "⊱🧙🏻‍♂️⸙Sabedoria⸙";
-		case "singular":
+		case "Singular":
 			return "⊱📘⸙Singular⸙";
-		case "multiple":
+		case "Multiple":
 			return "⊱📚⸙Múltiplo⸙";
-		case "general":
+		case "General":
 			return "⊱👔⸙Geral⸙";
-		case "combatant":
+		case "Combatant":
 			return "⊱🥋⸙Combatente⸙";
-		case "production":
+		case "Production":
 			return "⊱🥽⸙Produção⸙";
-		case "armed":
+		case "Armed":
 			return "⊱⚔️⸙Armada⸙";
-		case "armored":
+		case "Armored":
 			return "⊱🛡️⸙Defensiva⸙";
-		case "focus":
+		case "Focus":
 			return "⊱🪄⸙Foco⸙";
-		case "combatStyle":
+		case "CombatStyle":
 			return "⊱🎖️⸙Estilo de Combate⸙";
-		case "tool":
+		case "Tool":
 			return "⊱🛠️⸙Ferramenta⸙";
 		default:
 			return "⊱Unknown?";
@@ -61,11 +61,11 @@ function getTabulatedCategory(category: string) {
 
 interface MasteryTypologyCalloutProps {
 	type: string;
-	category: string;
+	subType: string;
 }
 export default function MasteryTypologyCallout({
 	type,
-	category,
+	subType,
 }: MasteryTypologyCalloutProps) {
 	const tableType = [
 		"💮Tipo",
@@ -73,7 +73,7 @@ export default function MasteryTypologyCallout({
 	];
 	const tableStatus = [
 		"🏷️Categoria",
-		<NotionText>{getTabulatedCategory(category)}</NotionText>,
+		<NotionText>{getTabulatedCategory(subType)}</NotionText>,
 	];
 
 	return (

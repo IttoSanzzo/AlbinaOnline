@@ -15,6 +15,7 @@ export default function ItemPropertiesDisplay({
 	itemProperties,
 }: ItemPropertiesDisplayProps) {
 	if (!itemProperties) return <></>;
+	console.log(itemProperties.stats?.damage);
 	return (
 		<NotionBox
 			backgroundColor="gray"
@@ -57,76 +58,81 @@ export default function ItemPropertiesDisplay({
 						],
 					}}
 				/>
-				{itemProperties.equipmentStats && (
-					<Notion2Columns
-						colum1={
-							<NotionTable
-								tableData={{
-									tableLanes: [
-										[
-											<NotionText
-												textColor="red"
-												children="🗡️Dano"
-											/>,
-											<NotionText
-												textColor="default"
-												children={itemProperties.equipmentStats.damage}
-											/>,
+				{itemProperties.stats &&
+					(itemProperties.stats.accuracy != "" ||
+						itemProperties.stats.damage != "" ||
+						itemProperties.stats.damageType != "" ||
+						itemProperties.stats.defense != "" ||
+						itemProperties.stats.range != "") && (
+						<Notion2Columns
+							colum1={
+								<NotionTable
+									tableData={{
+										tableLanes: [
+											[
+												<NotionText
+													textColor="red"
+													children="🗡️Dano"
+												/>,
+												<NotionText
+													textColor="default"
+													children={itemProperties.stats.damage}
+												/>,
+											],
+											[
+												<NotionText
+													textColor="green"
+													children="🎯Acerto"
+												/>,
+												<NotionText
+													textColor="default"
+													children={itemProperties.stats.accuracy}
+												/>,
+											],
+											[
+												<NotionText
+													textColor="orange"
+													children="🛡️Defesa"
+												/>,
+												<NotionText
+													textColor="default"
+													children={itemProperties.stats.defense}
+												/>,
+											],
 										],
-										[
-											<NotionText
-												textColor="green"
-												children="🎯Acerto"
-											/>,
-											<NotionText
-												textColor="default"
-												children={itemProperties.equipmentStats.accuracy}
-											/>,
+									}}
+								/>
+							}
+							colum2={
+								<NotionTable
+									tableData={{
+										tableLanes: [
+											[
+												<NotionText
+													textColor="gray"
+													children="🗡️Tipo de Dano"
+												/>,
+												<NotionText
+													textColor="gray"
+													children={itemProperties.stats.damageType}
+												/>,
+											],
+											[
+												<NotionText
+													textColor="gray"
+													children="📐Alcance"
+												/>,
+												<NotionText
+													textColor="gray"
+													children={itemProperties.stats.range}
+												/>,
+											],
 										],
-										[
-											<NotionText
-												textColor="orange"
-												children="🛡️Defesa"
-											/>,
-											<NotionText
-												textColor="default"
-												children={itemProperties.equipmentStats.defense}
-											/>,
-										],
-									],
-								}}
-							/>
-						}
-						colum2={
-							<NotionTable
-								tableData={{
-									tableLanes: [
-										[
-											<NotionText
-												textColor="gray"
-												children="🗡️Tipo de Dano"
-											/>,
-											<NotionText
-												textColor="gray"
-												children={itemProperties.equipmentStats.damageType}
-											/>,
-										],
-										[
-											<NotionText
-												textColor="gray"
-												children="📐Alcance"
-											/>,
-											<NotionText
-												textColor="gray"
-												children={itemProperties.equipmentStats.range}
-											/>,
-										],
-									],
-								}}
-							/>
-						}
-					/>
-				)}
+									}}
+								/>
+							}
+						/>
+					)}
 				{itemProperties.extras.length !== 0 && (
 					<NotionTable
 						withHeaderRow
@@ -147,8 +153,8 @@ export default function ItemPropertiesDisplay({
 									/>,
 								],
 								...itemProperties.extras.map((extra) => [
-									<NotionText>{`⦇ ${extra[0]} ⦈`}</NotionText>,
-									<NotionText>{`⪩ ${extra[1]}`}</NotionText>,
+									<NotionText>{`⦇ ${extra.key} ⦈`}</NotionText>,
+									<NotionText>{`⪩ ${extra.value}`}</NotionText>,
 								]),
 							],
 						}}

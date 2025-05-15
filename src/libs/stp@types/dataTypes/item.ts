@@ -1,11 +1,14 @@
 import { GenericEffect, GenericInfo } from "../index";
 
-type ItemExtraProperty = [string, string];
+type ItemExtraProperty = {
+	key: string;
+	value: string;
+};
 
 export type ItemProperties = {
 	slot: string;
 	attribute: string;
-	equipmentStats?: {
+	stats?: {
 		damage: string;
 		accuracy: string;
 		defense: string;
@@ -21,10 +24,12 @@ export type ItemData = {
 	name: string;
 	type: string;
 	subType: string;
-	albinaVersion: string;
 	iconUrl: string;
 	bannerUrl: string;
 	info: GenericInfo;
 	properties?: ItemProperties;
 	effects: GenericEffect[];
+	createdAt: string;
+	updatedAt: string;
+	albinaVersion: string;
 };
