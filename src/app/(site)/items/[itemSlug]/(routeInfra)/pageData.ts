@@ -1,5 +1,6 @@
 import { ItemData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
+import { convertEnumsFromResponse } from "@/utils/Data";
 
 type ItemPageData = {
 	itemData?: ItemData;
@@ -20,7 +21,7 @@ export async function getPageData(itemSlug: string): Promise<ItemPageData> {
 		cache: await getCacheMode(),
 	});
 	if (!response.ok) return { itemData: undefined, borderColor: "" };
-	const itemData: ItemData = await response.json();
+	const itemData = convertEnumsFromResponse<ItemData>(await response.json());
 
 	return {
 		itemData,

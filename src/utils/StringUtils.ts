@@ -45,3 +45,10 @@ export function idfyString(src: string): string {
 		.replace(/\s+/g, "-")
 		.toLowerCase();
 }
+
+export function pascalToCamel(str: string): string {
+	return str[0].toLowerCase() + str.slice(1);
+}
+export function camelToPascal(str: string): string {
+	return str[0].toUpperCase() + str.slice(1);
+}

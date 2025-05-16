@@ -35,15 +35,15 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 			/>
 			{effects.map((effect, index) => {
 				const iconProps = getIconProps(effect.role);
-				const fullTitle = effect.title ? (
+				const fullTitle = effect.name ? (
 					<div style={{ display: "flex", gap: "0.5rem" }}>
 						<NotionText
 							textColor={iconProps.color}
 							children={`${effect.role} -`}
 						/>
 						<NotionText
-							textColor={effect.titleColor}
-							children={effect.title}
+							textColor={effect.color}
+							children={effect.name}
 						/>
 					</div>
 				) : (

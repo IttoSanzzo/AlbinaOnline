@@ -5,9 +5,9 @@
 	"scripts": {
 		"dev": "next dev --turbopack -p 11759",
 		"dev-reset": "rm -rf ./.next && next dev --turbopack -p 11759",
-		"build": "next build",
+		"build": "rm -rf ./.next && next build",
 		"start": "next start -p 11759",
-		"test": "next build && next start -p 11759",
+		"test": "rm -rf ./.next && next build && next start -p 11759",
 		"lint": "next lint"
 	},
 	"dependencies": {

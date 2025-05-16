@@ -1,5 +1,6 @@
 import { MasteryData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
+import { convertEnumsFromResponse } from "@/utils/Data";
 
 type MasteryPageData = {
 	masteryData?: MasteryData;
@@ -59,7 +60,9 @@ export async function getPageData(
 		}
 	);
 	if (!response.ok) return { masteryData: undefined, borderColor: "" };
-	const masteryData: MasteryData = await response.json();
+	const masteryData = convertEnumsFromResponse<MasteryData>(
+		await response.json()
+	);
 
 	return {
 		masteryData,

@@ -15,7 +15,6 @@ export default function ItemPropertiesDisplay({
 	itemProperties,
 }: ItemPropertiesDisplayProps) {
 	if (!itemProperties) return <></>;
-	console.log(itemProperties.stats?.damage);
 	return (
 		<NotionBox
 			backgroundColor="gray"
