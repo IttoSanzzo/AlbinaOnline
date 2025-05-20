@@ -1,20 +1,4 @@
-import { NotionTextColor } from "@/components/(NotionBased)";
-import { DefensiveProfile, GenericEffectContent, Parameters } from "../index";
-
-export type RacialTrait = {
-	id: number;
-	role: string;
-	title?: string;
-	titleColor?: keyof typeof NotionTextColor;
-	contents: GenericEffectContent[];
-};
-export type RacialSkill = {
-	id: number;
-	role: string;
-	title?: string;
-	titleColor?: keyof typeof NotionTextColor;
-	contents: GenericEffectContent[];
-};
+import { Parameters } from "../index";
 
 export type RaceInfo = {
 	introduction: string[];
@@ -35,19 +19,22 @@ export type RaceGenerals = {
 	language: string;
 };
 
+export type RaceParameters = Parameters;
+
 export type RaceData = {
 	id: number;
 	slug: string;
 	name: string;
 	type: string;
 	subType: string;
-	albinaVersion: string;
 	iconUrl: string;
 	bannerUrl: string;
 	info: RaceInfo;
-	parameters: Parameters;
+	parameters: RaceParameters;
 	generals: RaceGenerals;
-	racialTraits: RacialTrait[];
-	racialSkills: RacialSkill[];
-	defensiveProfile: DefensiveProfile;
+	traitSlugs: string[];
+	skillSlugs: string[];
+	createdAt: string;
+	updatedAt: string;
+	albinaVersion: string;
 };

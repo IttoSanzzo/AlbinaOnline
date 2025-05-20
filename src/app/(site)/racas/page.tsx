@@ -8,6 +8,7 @@ export default async function Races() {
 		cache: await getCacheMode(),
 	});
 	const allRawRaces: RaceData[] = await response.json();
+	console.log(allRawRaces);
 	const allRaces: RaceData[] = allRawRaces.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
@@ -21,7 +22,7 @@ export default async function Races() {
 			<RaceTypeDisplay
 				title="Feéricos"
 				allRaces={allRaces}
-				type="fey"
+				type="Fey"
 			/>
 		</GenericPageContainer>
 	);

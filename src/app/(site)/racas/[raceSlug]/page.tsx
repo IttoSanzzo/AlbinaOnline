@@ -294,9 +294,9 @@ export default async function Race({ params }: RaceProps) {
 				icon={{ name: "UserCircle", color: "yellow" }}
 				titleColor="brown"
 				title={"⪼ Outros Traços"}>
-				<GenericEffectsDisplay effects={raceData.racialTraits} />
+				{/* <GenericEffectsDisplay effects={raceData.traitSlugs} /> */}
 			</NotionCallout>
-			<NotionCallout
+			{/* <NotionCallout
 				icon={{ name: "UserCircleGear", color: "yellow" }}
 				titleColor="brown"
 				title={"⪼ Resistências & Fraquezas & Imunidades"}>
@@ -324,7 +324,7 @@ export default async function Race({ params }: RaceProps) {
 					title={"⫷Imunidades⫸"}>
 					<NotionQuoteList quotes={raceData.defensiveProfile.immunities} />
 				</NotionCallout>
-			</NotionCallout>
+			</NotionCallout> */}
 
 			<NotionHeader
 				textColor={"orange"}
@@ -333,11 +333,9 @@ export default async function Race({ params }: RaceProps) {
 				textAlign="center">
 				🏮Habilidades Raciais🏮
 			</NotionHeader>
-			<GenericEffectsDisplay effects={raceData.racialSkills} />
+			{/* <GenericEffectsDisplay effects={raceData.skillSlug} /> */}
 
 			<GenericPageFooter version="6.4.7" />
 		</GenericPageContainer>
 	);
 }
-
-//// icon={{ name: "ShootingStar", color: "orange" }}
