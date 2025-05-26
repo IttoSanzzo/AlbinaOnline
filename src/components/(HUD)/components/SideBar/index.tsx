@@ -47,6 +47,7 @@ export function SideBar() {
 							{ name: "Maestrias", link: "/maestrias" },
 							{ name: "Raças", link: "/racas" },
 							{ name: "Items", link: "/items" },
+							{ name: "Skills", link: "/skills" },
 						]}
 					/>
 					<IndexedPagesGroup

@@ -8,7 +8,6 @@ import {
 	NotionHeader,
 	Notion2Columns,
 	NotionCallout,
-	NotionQuote,
 	NotionToggle,
 	NotionDivisor,
 	NotionTable,

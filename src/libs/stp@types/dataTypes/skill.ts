@@ -1,19 +1,21 @@
 import { GenericEffect, GenericExtraProperty, GenericInfo } from "../index";
 
-export type ItemProperties = {
-	slot: string;
-	attribute: string;
-	stats?: {
-		damage: string;
-		accuracy: string;
-		defense: string;
-		damageType: string;
-		range: string;
-	};
+export type SkillComponents = {
+	mana: string;
+	stamina: string;
+	time: string;
+	duration: string;
+	form: string;
+	range: string;
+	area: string;
+};
+
+export type SkillProperties = {
+	components: SkillComponents;
 	extras: GenericExtraProperty[];
 };
 
-export type ItemData = {
+export type SkillData = {
 	id: number;
 	slug: string;
 	name: string;
@@ -22,7 +24,7 @@ export type ItemData = {
 	iconUrl: string;
 	bannerUrl: string;
 	info: GenericInfo;
-	properties?: ItemProperties;
+	properties?: SkillProperties;
 	effects: GenericEffect[];
 	createdAt: string;
 	updatedAt: string;

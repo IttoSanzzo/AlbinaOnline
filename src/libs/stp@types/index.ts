@@ -4,13 +4,13 @@ export type {
 	GenericEffectContent,
 	Parameters,
 	DefensiveProfile,
+	GenericExtraProperty,
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
 export type { ItemData, ItemProperties } from "./dataTypes/item";
+export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
 export type {
-	RaceData,
-	RaceGenerals,
-	RaceInfo,
-	RacialSkill,
-	RacialTrait,
-} from "./dataTypes/race";
+	SkillData,
+	SkillComponents,
+	SkillProperties,
+} from "./dataTypes/skill";

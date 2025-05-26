@@ -32,3 +32,7 @@ export type DefensiveProfile = {
 	weaknesses: string[];
 	immunities: string[];
 };
+export type GenericExtraProperty = {
+	key: string;
+	value: string;
+};
