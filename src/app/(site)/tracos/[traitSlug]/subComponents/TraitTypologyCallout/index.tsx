@@ -7,27 +7,21 @@ import {
 function getTabulatedType(type: string) {
 	switch (type) {
 		case "Generic":
-			return "🌟[@/[Genérica]skills#genericas]";
-		case "Common":
-			return "🌟[@/[Comum]skills#comuns]";
+			return "🌟[@/[Genérico]tracos#genericos]";
 		case "Racial":
-			return "🌟[@/[Racial]skills#racias]";
+			return "🌟[@/[Racial]tracos#raciais]";
+		case "Talent":
+			return "🌟[@/[Talento]tracos#talentos]";
+		case "Blessing":
+			return "🌟[@/[Benção]tracos#bencaos]";
 		case "Unique":
-			return "🌟[@/[Única]skills#unicas]";
+			return "🌟[@/[Único]tracos#unicos]";
 		default:
 			return "Unknown?";
 	}
 }
 function getTabulatedSubType(subType: string) {
 	switch (subType) {
-		case "MajorAction":
-			return "⊱⸙Ação Maior⸙";
-		case "MinorAction":
-			return "⊱⸙Ação Menor⸙";
-		case "MajorReaction":
-			return "⊱⸙Reação Maior⸙";
-		case "MinorReaction":
-			return "⊱⸙Reação Menor⸙";
 		default:
 			return "Unknown?";
 	}

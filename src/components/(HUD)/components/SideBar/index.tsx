@@ -48,6 +48,7 @@ export function SideBar() {
 							{ name: "Raças", link: "/racas" },
 							{ name: "Items", link: "/items" },
 							{ name: "Skills", link: "/skills" },
+							{ name: "Traços", link: "/tracos" },
 						]}
 					/>
 					<IndexedPagesGroup

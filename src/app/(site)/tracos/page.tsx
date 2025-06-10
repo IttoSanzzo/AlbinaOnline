@@ -1,47 +1,47 @@
 import { GenericPageContainer } from "@/components/(Design)";
-import { SkillData } from "@/libs/stp@types";
+import { TraitData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
-import SkillTypeDisplay from "./subComponents/SkillTypeDisplay";
+import TraitTypeDisplay from "./subComponents/TraitTypeDisplay";
 
 export default async function Items() {
-	const response = await fetch(`${process.env.ALBINA_API}/skills`, {
+	const response = await fetch(`${process.env.ALBINA_API}/traits`, {
 		cache: await getCacheMode(),
 	});
-	const allRawSkills: SkillData[] = await response.json();
+	const allRawTraits: TraitData[] = await response.json();
 
-	const allSkills: SkillData[] = allRawSkills.sort((a, b) =>
+	const allTraits: TraitData[] = allRawTraits.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
 
 	return (
 		<GenericPageContainer
-			title="Todas as Skills"
-			icon={`${process.env.ALBINA_API}/favicon/skills`}
-			banner={`${process.env.ALBINA_API}/banner/skills`}
+			title="Todas as Traits"
+			icon={`${process.env.ALBINA_API}/favicon/tracos`}
+			banner={`${process.env.ALBINA_API}/banner/tracos`}
 			anchors={[
 				{ name: "Genéricas", id: "genericas" },
 				{ name: "Comuns", id: "comuns" },
 				{ name: "Raciais", id: "raciais" },
 				{ name: "Únicas", id: "unicas" },
 			]}>
-			<SkillTypeDisplay
+			<TraitTypeDisplay
 				title="Genéricas"
-				allSkills={allSkills}
+				allTraits={allTraits}
 				type="Generic"
 			/>
-			<SkillTypeDisplay
+			<TraitTypeDisplay
 				title="Comuns"
-				allSkills={allSkills}
+				allTraits={allTraits}
 				type="Common"
 			/>
-			<SkillTypeDisplay
+			<TraitTypeDisplay
 				title="Raciais"
-				allSkills={allSkills}
+				allTraits={allTraits}
 				type="Racial"
 			/>
-			<SkillTypeDisplay
+			<TraitTypeDisplay
 				title="Únicas"
-				allSkills={allSkills}
+				allTraits={allTraits}
 				type="Unique"
 			/>
 		</GenericPageContainer>

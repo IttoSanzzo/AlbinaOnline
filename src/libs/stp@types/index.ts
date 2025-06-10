@@ -14,3 +14,4 @@ export type {
 	SkillComponents,
 	SkillProperties,
 } from "./dataTypes/skill";
+export type { TraitData } from "./dataTypes/trait";

@@ -34,7 +34,11 @@ export default function IndexedPagesGroup({
 							key={indexedPage.link}
 							title={indexedPage.name}
 							href={indexedPage.link}
-							icon={indexedPage.image}
+							icon={
+								indexedPage.link[0] == "/"
+									? `${process.env.ALBINA_API}/favicon/${indexedPage.link}`
+									: indexedPage.image
+							}
 						/>
 					))}
 				</IndexedPageLinksContainer>

@@ -16,12 +16,32 @@ export default async function Races() {
 		<GenericPageContainer
 			title="Raças"
 			anchors={[]}
-			icon={`${process.env.ALBINA_API}/favicon/races`}
-			banner={`${process.env.ALBINA_API}/banner/races`}>
+			icon={`${process.env.ALBINA_API}/favicon/racas`}
+			banner={`${process.env.ALBINA_API}/banner/racas`}>
+			<RaceTypeDisplay
+				title="Humanos"
+				allRaces={allRaces}
+				type="Human"
+			/>
 			<RaceTypeDisplay
 				title="Feéricos"
 				allRaces={allRaces}
 				type="Fey"
+			/>
+			<RaceTypeDisplay
+				title="Demônios"
+				allRaces={allRaces}
+				type="Demon"
+			/>
+			<RaceTypeDisplay
+				title="Dracônicos"
+				allRaces={allRaces}
+				type="Dragon"
+			/>
+			<RaceTypeDisplay
+				title="Seireis"
+				allRaces={allRaces}
+				type="Seirei"
 			/>
 		</GenericPageContainer>
 	);

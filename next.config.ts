@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: "http",
-				hostname: "179.67.38.4",
+				hostname: "179.67.39.190",
 				pathname: "/**",
 			},
 		],
