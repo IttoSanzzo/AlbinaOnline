@@ -88,7 +88,7 @@ export default async function Masterys() {
 					/>
 					<NotionCallout backgroundColor="purple">
 						<NotionTable
-							fixedLineSize={20}
+							fixedLineSize={23}
 							tableData={{
 								tableLanes: [
 									[
@@ -293,7 +293,7 @@ export default async function Masterys() {
 									{"Os conhecimentos são divididos em duas categorias: "}
 									<EmptyLine />
 									<NotionTable
-										fixedLineSize={20}
+										fixedLineSize={23}
 										tableData={{
 											tableLanes: [
 												[
@@ -372,7 +372,7 @@ export default async function Masterys() {
 									{"Os ofícios são divididos em três categorias: "}
 									<EmptyLine />
 									<NotionTable
-										fixedLineSize={20}
+										fixedLineSize={23}
 										tableData={{
 											tableLanes: [
 												[

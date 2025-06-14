@@ -44,8 +44,8 @@ export function SideBar() {
 					<IndexedPagesGroup
 						groupName="Core Hub"
 						indexedPages={[
-							{ name: "Maestrias", link: "/maestrias" },
 							{ name: "Raças", link: "/racas" },
+							{ name: "Maestrias", link: "/maestrias" },
 							{ name: "Items", link: "/items" },
 							{ name: "Skills", link: "/skills" },
 							{ name: "Spells", link: "/spells" },

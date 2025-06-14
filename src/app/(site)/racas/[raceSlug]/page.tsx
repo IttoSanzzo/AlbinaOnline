@@ -245,6 +245,7 @@ export default async function Race({ params }: RaceProps) {
 				<Notion2Columns
 					colum1={
 						<NotionTable
+							fixedLineSize={90}
 							tableData={{
 								tableLanes: [
 									[
@@ -263,7 +264,6 @@ export default async function Race({ params }: RaceProps) {
 									],
 								],
 							}}
-							fixedLineSize={95}
 						/>
 					}
 					colum2={
