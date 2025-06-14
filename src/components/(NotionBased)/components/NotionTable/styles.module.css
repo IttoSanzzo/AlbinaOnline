@@ -10,7 +10,6 @@
 
 	& tbody tr {
 		& th {
-			background-color: var(--cl-gray-800);
 			word-break: break-all;
 			width: auto;
 		}
@@ -28,6 +27,12 @@
 	}
 	& tr:first-child td:last-child {
 		border-top-right-radius: var(--rd-md);
+	}
+	& tr:first-child th:last-child {
+		border-top-right-radius: var(--rd-md);
+	}
+	& tr:last-child th:last-child {
+		border-bottom-right-radius: var(--rd-md);
 	}
 }
 

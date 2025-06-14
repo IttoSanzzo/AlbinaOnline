@@ -14,4 +14,9 @@ export type {
 	SkillComponents,
 	SkillProperties,
 } from "./dataTypes/skill";
+export type {
+	SpellData,
+	SpellComponents,
+	SpellProperties,
+} from "./dataTypes/spell";
 export type { TraitData } from "./dataTypes/trait";

@@ -19,6 +19,7 @@ interface NotionTableProps extends NotionPropsColor {
 	fixedLinePosition?: number;
 	fixedLineSize?: number;
 	withHeaderRow?: boolean;
+	withHeaderColumn?: boolean;
 }
 
 export function NotionTable({
@@ -27,6 +28,7 @@ export function NotionTable({
 	fixedLinePosition = 1,
 	fixedLineSize,
 	withHeaderRow = false,
+	withHeaderColumn = true,
 	textColor,
 	backgroundColor,
 }: NotionTableProps) {
@@ -51,6 +53,10 @@ export function NotionTable({
 										}),
 									...(withHeaderRow &&
 										laneIndex === 0 && {
+											backgroundColor: "#202024",
+										}),
+									...(withHeaderColumn &&
+										rowIndex === 0 && {
 											backgroundColor: "#202024",
 										}),
 								};
