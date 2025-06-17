@@ -1,0 +1,62 @@
+.loginFormInputContainer {
+	display: flex;
+	flex-direction: column;
+	color: var(--cl-gray-100);
+	border-radius: var(--rd-sm);
+	border: 1px solid var(--cl-gray-500);
+	margin: var(--sp-2) 0;
+	position: relative;
+
+	&:focus-within {
+		border: 1px solid var(--cl-gray-200);
+	}
+}
+.loginFormInputField {
+	background-color: transparent;
+	color: var(--cl-gray-100);
+	padding: var(--sp-5) var(--sp-4);
+	border: none;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.loginFormInputTitle {
+	font-size: var(--fs-xs);
+	color: var(--cl-gray-200);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	left: 10px;
+}
+
+.loginFormInputError {
+	font-size: var(--fs-xs);
+	color: var(--cl-red);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	right: 10;
+}
+
+.loginButton {
+	background-color: var(--cl-green-700);
+	border: none;
+	border-radius: var(--rd-sm);
+	padding: var(--sp-3) var(--sp-4);
+	color: var(--cl-gray-100);
+	margin-top: var(--sp-5);
+	transition: linear 0.15s background;
+
+	&:hover {
+		background-color: var(--cl-green-500);
+	}
+
+	&:disabled {
+		opacity: 50%;
+		cursor: not-allowed;
+	}
+}

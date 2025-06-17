@@ -49,3 +49,10 @@ export function useRouteScopedStorage<T>(key: string, defaultValue: T) {
 
 	return [value, setValue] as const;
 }
+
+export function setBearerToken(bearerToken: string) {
+	localStorage.setItem("Authentication-JWT", bearerToken);
+}
+export function getBearerToken(): string | null {
+	return localStorage.getItem("Authentication-JWT");
+}

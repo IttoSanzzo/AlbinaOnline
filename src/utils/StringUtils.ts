@@ -52,3 +52,7 @@ export function pascalToCamel(str: string): string {
 export function camelToPascal(str: string): string {
 	return str[0].toUpperCase() + str.slice(1);
 }
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export function isEmail(str: string): boolean {
+	return emailRegex.test(str);
+}
