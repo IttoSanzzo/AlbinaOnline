@@ -1,0 +1,30 @@
+.registerFormContainer {
+	display: flex;
+	flex-direction: column;
+}
+.registerFailed {
+	color: var(--cl-red);
+	text-align: center;
+	margin-top: var(--sp-1);
+	font-size: var(--fs-xs);
+	height: var(--fs-xs);
+}
+.registerButton {
+	background-color: var(--cl-green-700);
+	border: none;
+	border-radius: var(--rd-sm);
+	padding: var(--sp-3) var(--sp-4);
+	color: var(--cl-gray-100);
+	margin-top: var(--sp-5);
+	transition: linear 0.15s background;
+	width: 100%;
+
+	&:hover {
+		background-color: var(--cl-green-500);
+	}
+
+	&:disabled {
+		opacity: 50%;
+		cursor: not-allowed;
+	}
+}

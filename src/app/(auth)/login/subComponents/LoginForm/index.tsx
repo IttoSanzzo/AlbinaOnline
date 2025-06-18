@@ -6,10 +6,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormInput } from "./subComponents/LoginFormInput";
 import { LoginButton } from "./subComponents/LoginFormInput/styledElements";
-import { FetchLogin, LoginProps } from "@/utils/AlbinaApi";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { isEmail } from "@/utils/StringUtils";
 import { useState } from "react";
-import { setBearerToken } from "@/utils/Storage";
 import { useRouter } from "next/navigation";
 
 const schema = z.object({
@@ -19,11 +18,39 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+export type LoginProps =
+	| { password: string; username: string; email?: string }
+	| { password: string; username?: string; email: string };
+export async function FetchLogin(
+	props: LoginProps
+): Promise<{ status: number; user?: any }> {
+	try {
+		const postBody =
+			"username" in props
+				? { password: props.password, username: props.username }
+				: { password: props.password, email: props.email };
+
+		const response = await fetch(`${getAlbinaApiAddress()}/auth/login`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(postBody),
+			cache: "no-cache",
+			credentials: "include",
+		});
+		if (response.status != 200) return { status: response.status };
+		const data = await response.json();
+		return { ...data, status: response.status };
+	} catch (ex) {
+		return { status: 500 };
+	}
+}
+
 async function PerformLogin(props: LoginProps): Promise<boolean> {
 	const response = await FetchLogin(props);
 	if (response.status != 200) return false;
-	if ("token" in response) {
-		setBearerToken(response.token);
+	if (!!response.user) {
 		return true;
 	}
 	return false;
