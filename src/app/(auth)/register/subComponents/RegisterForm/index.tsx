@@ -101,7 +101,10 @@ async function PerformRegister(
 	return { status: false, message: "O cadastro falhou." };
 }
 
-export function RegisterForm() {
+interface RegisterFormProps {
+	redirectTo?: string;
+}
+export function RegisterForm({ redirectTo }: RegisterFormProps) {
 	const [registerCurrentMessage, setRegisterCurrentMessage] =
 		useState<string>("");
 	const router = useRouter();
@@ -125,7 +128,7 @@ export function RegisterForm() {
 			setRegisterCurrentMessage(response.message!);
 		} else {
 			setRegisterCurrentMessage("Cadastro Bem Sucedido!");
-			router.push("/");
+			router.push(redirectTo ? redirectTo : "/home");
 		}
 	}
 

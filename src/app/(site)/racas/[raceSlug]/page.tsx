@@ -334,7 +334,10 @@ export default async function Race({ params }: RaceProps) {
 			</NotionHeader>
 			{/* <GenericEffectsDisplay effects={raceData.skillSlug} /> */}
 
-			<GenericPageFooter version="6.4.7" />
+			<GenericPageFooter
+				version="6.4.7"
+				lastUpdate={raceData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

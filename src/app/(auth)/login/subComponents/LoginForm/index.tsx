@@ -56,7 +56,10 @@ async function PerformLogin(props: LoginProps): Promise<boolean> {
 	return false;
 }
 
-export function LoginForm() {
+interface LoginFormProps {
+	redirectTo?: string;
+}
+export function LoginForm({ redirectTo }: LoginFormProps) {
 	const [loginCurrentMessage, setLoginCurrentMessage] = useState<string>("");
 	const router = useRouter();
 
@@ -81,7 +84,7 @@ export function LoginForm() {
 		if (status == false) setLoginCurrentMessage("Login Falhou.");
 		else {
 			setLoginCurrentMessage("Login Bem Sucedido!");
-			router.push("/");
+			router.push(redirectTo ? redirectTo : "/home");
 		}
 	}
 

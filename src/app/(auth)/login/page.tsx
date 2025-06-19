@@ -7,14 +7,23 @@ import {
 } from "./styledElements";
 import { LoginForm } from "./subComponents/LoginForm";
 
-export default async function Login() {
+interface LoginPageProps {
+	searchParams: Promise<{ redirectTo?: string }>;
+}
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+	const params = await searchParams;
+	const redirectTo = params.redirectTo;
+	const registerPageLink = `/register${
+		redirectTo ? `?redirectTo=${redirectTo}` : ""
+	}`;
+
 	return (
 		<LoginPageContainer>
 			<LoginWindow>
 				<LoginHeader children="Log In" />
-				<LoginForm />
+				<LoginForm redirectTo={redirectTo} />
 				<NewcomerFooter>
-					Novo aqui? <Link href={"/register"}>Cadastre-se agora</Link>.
+					Novo aqui? <Link href={registerPageLink}>Cadastre-se agora</Link>.
 				</NewcomerFooter>
 			</LoginWindow>
 		</LoginPageContainer>

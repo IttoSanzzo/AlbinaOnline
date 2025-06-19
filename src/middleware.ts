@@ -1,11 +1,12 @@
 import {
-	stackMiddlewares,
 	MiddlewareFactory,
-} from "@/middlewares/core/stackHandler";
-import { withJwtAccessToken } from "./middlewares/withJwtAccessToken";
-import { applyIfPathMatch } from "./middlewares/core/withPathFilter";
+	stackMiddlewares,
+	applyIfPathMatches,
+	identityGate,
+} from "./middlewares";
 
-const middlewares: MiddlewareFactory[] = [
-	applyIfPathMatch(["/login", "/register"], withJwtAccessToken),
-];
+const middlewares: MiddlewareFactory[] = [identityGate];
 export default stackMiddlewares(middlewares);
+export const config = {
+	matcher: ["/((?!api|_next|.*\\..*).*)"],
+};

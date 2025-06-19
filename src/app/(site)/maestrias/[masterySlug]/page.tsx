@@ -45,7 +45,10 @@ export default async function Mastery({ params }: MasteryProps) {
 				colum2={<GenericInfoCallout info={masteryData.info} />}
 			/>
 			<GenericEffectsDisplay effects={masteryData.effects} />
-			<GenericPageFooter version={masteryData.albinaVersion} />
+			<GenericPageFooter
+				version={masteryData.albinaVersion}
+				lastUpdate={masteryData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

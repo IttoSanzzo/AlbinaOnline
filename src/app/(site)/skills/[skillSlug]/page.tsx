@@ -47,7 +47,10 @@ export default async function Skill({ params }: SkillProps) {
 			<SkillPropertiesDisplay skillProperties={skillData.properties} />
 
 			<GenericEffectsDisplay effects={skillData.effects} />
-			<GenericPageFooter version={skillData.albinaVersion} />
+			<GenericPageFooter
+				version={skillData.albinaVersion}
+				lastUpdate={skillData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

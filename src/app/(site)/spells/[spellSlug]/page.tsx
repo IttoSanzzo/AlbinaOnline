@@ -53,7 +53,10 @@ export default async function Spell({ params }: SpellProps) {
 			/>
 
 			<GenericEffectsDisplay effects={spellData.effects} />
-			<GenericPageFooter version={spellData.albinaVersion} />
+			<GenericPageFooter
+				version={spellData.albinaVersion}
+				lastUpdate={spellData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

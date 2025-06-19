@@ -61,7 +61,10 @@ export default async function Trait({ params }: TraitProps) {
 				))}
 			/>
 			<GenericEffectsDisplay effects={traitData.effects} />
-			<GenericPageFooter version={traitData.albinaVersion} />
+			<GenericPageFooter
+				version={traitData.albinaVersion}
+				lastUpdate={traitData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

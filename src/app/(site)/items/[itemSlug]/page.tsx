@@ -47,7 +47,10 @@ export default async function Item({ params }: ItemProps) {
 			<ItemPropertiesDisplay itemProperties={itemData.properties} />
 
 			<GenericEffectsDisplay effects={itemData.effects} />
-			<GenericPageFooter version={itemData.albinaVersion} />
+			<GenericPageFooter
+				version={itemData.albinaVersion}
+				lastUpdate={itemData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }
