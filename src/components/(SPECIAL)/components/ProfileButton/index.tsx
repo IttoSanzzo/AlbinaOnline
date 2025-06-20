@@ -1,13 +1,16 @@
 import Image from "next/image";
 import { ProfileButtonContainer } from "./styledElements";
+import { fullUser } from "@/libs/stp@types";
 
-export default function ProfileButton() {
+interface ProfileButtonProps {
+	user: fullUser | null;
+}
+export function ProfileButton({ user }: ProfileButtonProps) {
+	if (!user) return <ProfileButtonContainer />;
 	return (
 		<ProfileButtonContainer>
 			<Image
-				src={
-					"https://lh3.googleusercontent.com/a/ACg8ocLEBZEHQsYI_CIwg4dzVP-GXo2a5jWi8e4UftbR6wEbah5NQJ-6PA=s96-c-rg-br100"
-				}
+				src={user.iconUrl}
 				alt="Profile image"
 				width={32}
 				height={32}

@@ -23,7 +23,7 @@ export type LoginProps =
 	| { password: string; username?: string; email: string };
 export async function FetchLogin(
 	props: LoginProps
-): Promise<{ status: number; user?: any }> {
+): Promise<{ status: number }> {
 	try {
 		const postBody =
 			"username" in props
@@ -40,8 +40,7 @@ export async function FetchLogin(
 			credentials: "include",
 		});
 		if (response.status != 200) return { status: response.status };
-		const data = await response.json();
-		return { ...data, status: response.status };
+		return { status: response.status };
 	} catch (ex) {
 		return { status: 500 };
 	}
@@ -50,10 +49,7 @@ export async function FetchLogin(
 async function PerformLogin(props: LoginProps): Promise<boolean> {
 	const response = await FetchLogin(props);
 	if (response.status != 200) return false;
-	if (!!response.user) {
-		return true;
-	}
-	return false;
+	return true;
 }
 
 interface LoginFormProps {

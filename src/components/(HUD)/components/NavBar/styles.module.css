@@ -11,15 +11,9 @@
 	font-size: var(--fs-sm);
 	color: var(--cl-gray-100);
 }
-
 .navMiscsContainer {
 	display: flex;
 	align-items: center;
 	flex-direction: row;
 	gap: var(--sp-3);
-}
-
-.profileButtonContainer {
-	border-left: 1px solid var(--cl-gray-700);
-	padding-left: 10px;
 }

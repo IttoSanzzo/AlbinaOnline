@@ -3,9 +3,14 @@
 import { Star } from "@phosphor-icons/react/Star";
 import { FavoriteButtonContainer } from "./styledElements";
 import { useState } from "react";
+import { fullUser } from "@/libs/stp@types";
 
-export default function FavoriteButton() {
+interface FavoriteButtonProps {
+	user: fullUser | null;
+}
+export function FavoriteButton({ user }: FavoriteButtonProps) {
 	const [isFavorite, setIsFavorite] = useState<boolean>(false);
+	// console.log(`Simplesmente uma lenda ${user?.nickname}`);
 
 	function handleAddFavorite() {
 		console.log("Add Favorite");

@@ -7,7 +7,7 @@ export type {
 	GenericExtraProperty,
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
-export type { ItemData, ItemProperties } from "./dataTypes/item";
+export type { fullUser } from "./otherTypes/fullUser";
 export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
 export type {
 	SkillData,

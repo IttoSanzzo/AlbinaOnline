@@ -1,12 +1,7 @@
-import FavoriteButton from "./subComponents/FavoriteButton";
-import ProfileButton from "./subComponents/ProfileButton";
 import Breadcrumb from "./subComponents/Breadcrumb";
 import HideSideBarButton from "./subComponents/HideSideBarButton";
-import {
-	NavBarContainer,
-	NavMiscsContainer,
-	ProfileButtonContainer,
-} from "./styledElements";
+import { NavBarContainer, NavMiscsContainer } from "./styledElements";
+import UserPageMisc from "./subComponents/UserPageMisc";
 
 export function NavBar() {
 	return (
@@ -15,12 +10,7 @@ export function NavBar() {
 				<HideSideBarButton />
 				<Breadcrumb />
 			</NavMiscsContainer>
-			<NavMiscsContainer>
-				<FavoriteButton />
-				<ProfileButtonContainer>
-					<ProfileButton />
-				</ProfileButtonContainer>
-			</NavMiscsContainer>
+			<UserPageMisc />
 		</NavBarContainer>
 	);
 }
