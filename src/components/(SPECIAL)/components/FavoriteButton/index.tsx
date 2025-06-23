@@ -44,7 +44,6 @@ export function FavoriteButton({}: FavoriteButtonProps) {
 				cache: "no-store",
 				body: JSON.stringify(body),
 			});
-			console.log(`RESPONSE ${response.status}`);
 			if (response.ok) await reloadFavorites();
 		} catch (ex) {
 			console.error(ex);
@@ -64,7 +63,6 @@ export function FavoriteButton({}: FavoriteButtonProps) {
 				cache: "no-store",
 				body: JSON.stringify(body),
 			});
-			console.log(`RESPONSE ${response.status}`);
 			if (response.ok) await reloadFavorites();
 		} catch (ex) {
 			console.error(ex);
