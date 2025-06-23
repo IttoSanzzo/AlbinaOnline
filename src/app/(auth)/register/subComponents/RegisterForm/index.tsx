@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RegisterButton } from "./styledElements";
 
-const usernameRegex = /^[a-zA-Z][a-zA-Z0-9_]{2,19}$/;
 const nicknameInvalidRegex = /[\p{C}]/u;
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -56,7 +55,7 @@ type RegisterProps = {
 };
 async function FetchRegister(
 	props: RegisterProps
-): Promise<{ status: number; user?: any; message?: string }> {
+): Promise<{ status: number; message?: string }> {
 	try {
 		const response = await fetch(`${getAlbinaApiAddress()}/auth/register`, {
 			method: "POST",
@@ -71,8 +70,7 @@ async function FetchRegister(
 			const payload = await response.json();
 			return { status: response.status, message: payload.message };
 		}
-		const data = await response.json();
-		return { ...data, status: response.status };
+		return { status: response.status };
 	} catch (ex) {
 		return { status: 500 };
 	}
@@ -95,10 +93,7 @@ async function PerformRegister(
 		const message = messageMap[response.message ?? ""] ?? "O cadastro falhou.";
 		return { status: false, message: message };
 	}
-	if (!!response.user) {
-		return { status: true };
-	}
-	return { status: false, message: "O cadastro falhou." };
+	return { status: true };
 }
 
 interface RegisterFormProps {
