@@ -8,11 +8,11 @@ import {
 import { useAuthStore, useCurrentUser } from "@/libs/stp@hooks";
 
 export default function UserPageMisc() {
-	const { user, loading, reloadUser } = useCurrentUser();
+	const { user, reloadUser } = useCurrentUser();
 
 	return (
 		<UserPageMiscContainer>
-			<FavoriteButton user={user} />
+			<FavoriteButton />
 			<ProfileButtonContainer>
 				<ProfileButton user={user} />
 			</ProfileButtonContainer>

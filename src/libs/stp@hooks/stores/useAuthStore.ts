@@ -20,7 +20,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 	reloadUser: async () => {
 		set({ loading: true });
 		try {
-			const response = await authenticatedFetchAsync(`/auth/me`, {
+			const response = await authenticatedFetchAsync(`/users/me`, {
 				cache: "no-store",
 			});
 			if (!response.ok) throw new Error("Not authenticated");

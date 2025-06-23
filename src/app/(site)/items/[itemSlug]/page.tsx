@@ -8,6 +8,7 @@ import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import MasteryTypologyCallout from "./subComponents/ItemTypologyCallout";
 import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
+import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -29,6 +30,11 @@ export default async function Item({ params }: ItemProps) {
 			banner={itemData.bannerUrl}
 			icon={itemData.iconUrl}
 			borderColor={borderColor}>
+			<SetCurrentPageData
+				type={"Item"}
+				data={itemData}
+			/>
+
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"

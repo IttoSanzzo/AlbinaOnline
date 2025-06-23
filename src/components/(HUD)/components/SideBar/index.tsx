@@ -4,13 +4,12 @@ import {
 	AlbinaTitle,
 	FooterContainer,
 	HeaderContainer,
-	IndexedPageGroups,
 	SideBarActivationArea,
 	SideBarContainer,
 } from "./styledElements";
 import albinaLogo from "@/../public/AlbinaLogo.png";
 import Link from "next/link";
-import IndexedPagesGroup from "./subComponents/IndexedPagesGroup";
+import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
 
 export function SideBar() {
 	return (
@@ -31,32 +30,8 @@ export function SideBar() {
 					</Link>
 				</HeaderContainer>
 
-				<IndexedPageGroups>
-					<IndexedPagesGroup
-						groupName="Favorites"
-						indexedPages={[
-							{ name: "1", link: "1" },
-							{ name: "2", link: "2" },
-							{ name: "3", link: "3" },
-							{ name: "4", link: "4" },
-						]}
-					/>
-					<IndexedPagesGroup
-						groupName="Core Hub"
-						indexedPages={[
-							{ name: "Raças", link: "/racas" },
-							{ name: "Maestrias", link: "/maestrias" },
-							{ name: "Items", link: "/items" },
-							{ name: "Skills", link: "/skills" },
-							{ name: "Spells", link: "/spells" },
-							{ name: "Traços", link: "/tracos" },
-						]}
-					/>
-					<IndexedPagesGroup
-						groupName="Your Chars"
-						indexedPages={[{ name: "Albina Online", link: "/" }]}
-					/>
-				</IndexedPageGroups>
+				<IndexedPagesGroups />
+
 				<FooterContainer>
 					<div>
 						<Image

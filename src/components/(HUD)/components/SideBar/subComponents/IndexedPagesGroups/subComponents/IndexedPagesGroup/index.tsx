@@ -4,6 +4,7 @@ import {
 } from "./styledElements";
 import { NotionToggle } from "@/components/(NotionBased)";
 import { StyledLink } from "@/components/(Design)";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 export interface IndexedPage {
 	name: string;
@@ -35,9 +36,9 @@ export default function IndexedPagesGroup({
 							title={indexedPage.name}
 							href={indexedPage.link}
 							icon={
-								indexedPage.link[0] == "/"
-									? `${process.env.ALBINA_API}/favicon/${indexedPage.link}`
-									: indexedPage.image
+								indexedPage.image != undefined
+									? indexedPage.image
+									: `${getAlbinaApiAddress()}/favicon/${indexedPage.link}`
 							}
 						/>
 					))}

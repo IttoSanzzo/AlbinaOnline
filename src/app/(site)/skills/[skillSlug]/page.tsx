@@ -8,6 +8,7 @@ import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import SkillTypologyCallout from "./subComponents/SkillTypologyCallout";
 import SkillPropertiesDisplay from "./subComponents/SkillPropertiesDisplay";
+import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -29,6 +30,11 @@ export default async function Skill({ params }: SkillProps) {
 			banner={skillData.bannerUrl}
 			icon={skillData.iconUrl}
 			borderColor={borderColor}>
+			<SetCurrentPageData
+				type={"Skill"}
+				data={skillData}
+			/>
+
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"

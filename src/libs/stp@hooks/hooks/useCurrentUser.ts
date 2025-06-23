@@ -8,7 +8,7 @@ export function useCurrentUser() {
 
 	useEffect(() => {
 		if (user == null && loading) reloadUser();
-	}, [reloadUser]);
+	}, []);
 
 	return { user, loading, reloadUser };
 }

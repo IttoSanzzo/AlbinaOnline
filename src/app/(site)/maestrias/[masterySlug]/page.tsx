@@ -8,6 +8,7 @@ import {
 import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
+import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -18,9 +19,11 @@ interface MasteryProps {
 export default async function Mastery({ params }: MasteryProps) {
 	const { masterySlug } = await params;
 	const MasteryPageData = await getPageData(masterySlug);
+
 	if (MasteryPageData.masteryData == undefined) {
-		return <></>;
+		return null;
 	}
+
 	const { masteryData, borderColor } = MasteryPageData;
 
 	return (
@@ -29,6 +32,11 @@ export default async function Mastery({ params }: MasteryProps) {
 			banner={AlbinaLogo}
 			icon={masteryData.iconUrl}
 			borderColor={borderColor}>
+			<SetCurrentPageData
+				type={"Mastery"}
+				data={masteryData}
+			/>
+
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"

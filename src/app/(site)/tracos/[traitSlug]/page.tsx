@@ -12,6 +12,7 @@ import {
 	NotionQuote,
 } from "@/components/(NotionBased)";
 import TraitTypologyCallout from "./subComponents/TraitTypologyCallout";
+import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -33,6 +34,11 @@ export default async function Trait({ params }: TraitProps) {
 			banner={traitData.bannerUrl}
 			icon={traitData.iconUrl}
 			borderColor={borderColor}>
+			<SetCurrentPageData
+				type={"Trait"}
+				data={traitData}
+			/>
+
 			<NotionHeader
 				textColor="purple"
 				backgroundColor="gray"

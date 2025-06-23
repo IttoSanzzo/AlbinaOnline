@@ -14,6 +14,7 @@ import {
 } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import { NotionQuoteList } from "@/components/(UTILS)";
+import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -47,6 +48,11 @@ export default async function Race({ params }: RaceProps) {
 			title={`Raça - ${raceData.name}`}
 			banner={raceData.bannerUrl}
 			icon={raceData.iconUrl}>
+			<SetCurrentPageData
+				type={"Race"}
+				data={raceData}
+			/>
+
 			<NotionHeader
 				textColor={"orange"}
 				backgroundColor={"gray"}
