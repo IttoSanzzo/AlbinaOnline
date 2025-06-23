@@ -37,10 +37,14 @@ export function NotionToggle({
 }: NotionToggleProps) {
 	const memoryName =
 		memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const pathname = routeSensitiveMemory ? usePathname() : "";
+	const memoryState = memoryName
+		? routeStorage.getItem(pathname, memoryName)
+		: undefined;
+	const isMemoryStateOpen = memoryState === "true" ? true : false;
+	const [isOpen, setIsOpen] = useState<boolean>(isMemoryStateOpen);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
-	const pathname = routeSensitiveMemory ? usePathname() : "";
 
 	function handleOpenButton() {
 		if (memoryName) {
