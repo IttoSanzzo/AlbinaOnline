@@ -17,22 +17,22 @@
 		border: 0;
 		padding: 4px;
 		width: 100%;
+		align-items: center;
 
 		& .toggleButtonContainer {
 			flex: flex;
-			justify-content: center;
-			align-items: center;
 			width: 20px;
 			height: 20px;
+			padding-top: 3px;
 			border-radius: var(--rd-sm);
 			transition: 0.25s linear background;
-			padding-top: 3px;
 			& svg {
 				color: var(--cl-white);
 				transition: 0.25s linear rotate;
 			}
 		}
 		&:hover {
+			cursor: pointer;
 			& .toggleButtonContainer {
 				background-color: var(--cl-gray-500);
 			}
@@ -43,5 +43,5 @@
 .contentContainer {
 	margin-left: 25px;
 	overflow: hidden;
-	transition: 0.5s ease-in-out height, 0.5s ease-in-out min-height;
+	transition: 0.5s ease-in-out height, 0.5s ease-in-out max-height;
 }

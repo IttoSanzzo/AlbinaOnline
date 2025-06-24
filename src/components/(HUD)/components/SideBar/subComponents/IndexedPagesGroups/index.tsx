@@ -5,8 +5,6 @@ import { IndexedPagesGroupsContainer } from "./styledElements";
 import IndexedPagesGroup, {
 	IndexedPage,
 } from "./subComponents/IndexedPagesGroup";
-import { IndexedPagesGroupContainer } from "./subComponents/IndexedPagesGroup/styledElements";
-import { useEffect } from "react";
 
 const CoreHubPageGroup = (
 	<IndexedPagesGroup
@@ -23,10 +21,9 @@ const CoreHubPageGroup = (
 );
 
 export default function IndexedPagesGroups() {
-	const { favorites, isLoading } = useUserFavorites();
+	const { favorites } = useUserFavorites();
 
-	if (isLoading || favorites === null)
-		// if (favorites === null)
+	if (favorites === null)
 		return (
 			<IndexedPagesGroupsContainer>
 				{CoreHubPageGroup}

@@ -9,6 +9,7 @@ import {
 import {
 	CSSProperties,
 	ReactNode,
+	useEffect,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -24,15 +25,6 @@ import {
 import { routeStorage } from "@/utils/Storage";
 import { usePathname } from "next/navigation";
 
-interface NotionToggleProps extends NotionPropsColor {
-	children?: ReactNode;
-	title?: ReactNode | string;
-	titleColor?: keyof typeof NotionTextColor;
-	contentMargin?: "none" | "middle" | "full";
-	memoryId?: string;
-	routeSensitiveMemory?: boolean;
-}
-
 function getCurrentOpenState(pathname: string, memoryName?: string) {
 	if (memoryName) {
 		const memoryState: string | null = routeStorage.getItem(
@@ -45,17 +37,21 @@ function getCurrentOpenState(pathname: string, memoryName?: string) {
 	}
 	return false;
 }
-function setMemoryOpenState(
-	newValue: boolean,
-	pathname: string,
-	memoryName?: string
-) {
-	if (memoryName) {
-		if (newValue) routeStorage.setItem(pathname, memoryName, true);
-		else routeStorage.removeItem(pathname, memoryName);
+function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
+	if (name) {
+		if (value) routeStorage.setItem(pathname, name, true);
+		else routeStorage.removeItem(pathname, name);
 	}
 }
 
+interface NotionToggleProps extends NotionPropsColor {
+	children?: ReactNode;
+	title?: ReactNode | string;
+	titleColor?: keyof typeof NotionTextColor;
+	contentMargin?: "none" | "middle" | "full";
+	memoryId?: string;
+	routeSensitiveMemory?: boolean;
+}
 export function NotionToggle({
 	children,
 	title,
@@ -66,26 +62,36 @@ export function NotionToggle({
 	textColor,
 	backgroundColor,
 }: NotionToggleProps) {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
+
+	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
 	const pathname = routeSensitiveMemory ? usePathname() : "";
 	const memoryName = useMemo(() => {
 		return memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
 	}, [memoryId]);
-	const [isOpen, setIsOpen] = useState<boolean>(
-		getCurrentOpenState(pathname, memoryName)
-	);
-	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
 	const contentRef = useRef<HTMLDivElement>(null);
 
-	if (memoryId == "InfoDescription") {
-		console.log(`${isOpen} ${memoryId}`);
-		console.log(isOpen);
+	useLayoutEffect(() => {
+		setIsOpen(getCurrentOpenState(pathname, memoryName));
+	}, []);
+
+	function updateHeight() {
+		if (!contentRef.current) return;
+		const newHeight = contentRef.current!.scrollHeight;
+		if (newHeight != contentMaxHeight) setContentMaxHeight(newHeight);
 	}
 
 	useLayoutEffect(() => {
-		if (isOpen && contentRef.current) {
-			contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
-		}
-	}, [isOpen]);
+		if (!contentRef.current) return;
+		const element = contentRef.current!;
+		const resizeObserver = new ResizeObserver(updateHeight);
+		if (element.firstElementChild)
+			resizeObserver.observe(element.firstElementChild);
+		return () => {
+			resizeObserver.disconnect();
+		};
+	}, [contentRef]);
 
 	function handleOpenButton() {
 		setMemoryOpenState(!isOpen, pathname, memoryName);
@@ -100,16 +106,10 @@ export function NotionToggle({
 	};
 	const contentStyle: CSSProperties = {
 		minHeight: 0,
+		maxHeight: isOpen ? `${contentMaxHeight}px` : 0,
 		...(contentMargin &&
 			contentMargin != "full" && {
 				marginLeft: contentMargin == "middle" ? "12.5px" : 0,
-			}),
-		...(!isOpen && {
-			height: 0,
-		}),
-		...(isOpen &&
-			contentRef.current != null && {
-				height: `${contentRef.current!.scrollHeight}px`,
 			}),
 	};
 
@@ -118,14 +118,12 @@ export function NotionToggle({
 			<HeaderContainer>
 				<button
 					style={colorStyle}
-					suppressHydrationWarning
 					onClick={handleOpenButton}
 					aria-expanded={isOpen}
 					aria-controls={`notion-toggle-${memoryId ?? "content"}`}
 					aria-label="Toggle content">
 					<ToggleButtonContainer>
 						<Triangle
-							suppressHydrationWarning
 							size={11}
 							weight="fill"
 							color={
@@ -142,7 +140,6 @@ export function NotionToggle({
 				</button>
 			</HeaderContainer>
 			<ContentContainer
-				suppressHydrationWarning
 				id={`notion-toggle-${memoryId ?? "content"}`}
 				ref={contentRef}
 				style={contentStyle}>

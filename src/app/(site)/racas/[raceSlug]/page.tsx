@@ -105,6 +105,7 @@ export default async function Race({ params }: RaceProps) {
 					titleColor="yellow"
 					title={"Cultura, Comunidade e Curiosidades..:"}>
 					<NotionToggle
+						memoryId="introduction"
 						textColor="orange"
 						title={
 							<NotionText
@@ -125,6 +126,7 @@ export default async function Race({ params }: RaceProps) {
 						<NotionDivisor />
 					</NotionToggle>
 					<NotionToggle
+						memoryId="personality"
 						textColor="orange"
 						title={
 							<NotionText
@@ -140,6 +142,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					</NotionToggle>
 					<NotionToggle
+						memoryId="culture"
 						textColor="orange"
 						title={
 							<NotionText
@@ -155,6 +158,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					</NotionToggle>
 					<NotionToggle
+						memoryId="miscellaneous"
 						textColor="orange"
 						title={
 							<NotionText
@@ -170,6 +174,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					</NotionToggle>
 					<NotionToggle
+						memoryId="groups"
 						textColor="orange"
 						title={
 							<NotionText
@@ -185,6 +190,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					</NotionToggle>
 					<NotionToggle
+						memoryId="relations"
 						textColor="orange"
 						title={
 							<NotionText
@@ -205,6 +211,7 @@ export default async function Race({ params }: RaceProps) {
 					titleColor="yellow"
 					title={"Aparência e Fisiologia..:"}>
 					<NotionToggle
+						memoryId="description"
 						textColor="orange"
 						title={
 							<NotionText
@@ -220,6 +227,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					</NotionToggle>
 					<NotionToggle
+						memoryId="images"
 						textColor="orange"
 						title={
 							<NotionText

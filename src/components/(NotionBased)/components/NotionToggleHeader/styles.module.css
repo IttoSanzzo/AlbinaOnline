@@ -2,57 +2,61 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	margin-bottom: var(--sp-1);
-	border-radius: var(--rd-sm);
 	padding: 0 2px;
 }
 
 .headerContainer {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 5px;
 	width: 100%;
 
 	& > button {
 		z-index: 0;
-		border: 0;
-		border-radius: var(--rd-sm);
 		background-color: transparent;
-		width: 20px;
-		height: 20px;
-		transition: 0.25s linear background;
-		font-size: 0;
+		display: flex;
+		flex-direction: row;
+		gap: 5px;
+		border: 0;
+		padding: 4px;
+		width: 100%;
+		align-items: center;
 
-		& > svg {
-			color: var(--cl-white);
-			transition: 0.25s linear rotate;
+		& .toggleButtonHeaderContainer {
+			margin-right: 25px;
+			display: flexbox;
+			flex: 1;
+
+			& h1,
+			& h2,
+			& h3,
+			& h4,
+			& h5,
+			& h6 {
+				margin-bottom: 0;
+			}
+		}
+
+		& .toggleButtonContainer {
+			flex: flex;
+			width: 20px;
+			height: 20px;
+			padding-top: 3px;
+			border-radius: var(--rd-sm);
+			transition: 0.25s linear background;
+			& svg {
+				color: var(--cl-white);
+				transition: 0.25s linear rotate;
+			}
 		}
 		&:hover {
-			background-color: var(--cl-gray-500);
-		}
-	}
-	& > div {
-		margin-right: 25px;
-		display: flexbox;
-		flex: 1;
-
-		& h1,
-		& h2,
-		& h3,
-		& h4,
-		& h5,
-		& h6 {
-			margin-bottom: 0;
+			cursor: pointer;
+			& .toggleButtonContainer {
+				background-color: var(--cl-gray-500);
+			}
 		}
 	}
 }
 
 .contentContainer {
 	margin-left: 25px;
-	margin-right: 25px;
-	min-height: var(--fs-md);
 	overflow: hidden;
-	transition: 0.5s ease-in-out height, 0.5s ease-in-out min-height,
-		0.5s ease-in-out margin;
+	transition: 0.5s ease-in-out height, 0.5s ease-in-out max-height;
 }

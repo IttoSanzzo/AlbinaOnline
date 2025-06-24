@@ -4,29 +4,29 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 function setItem<T>(pathname: string | null, key: string, value: T): void {
-	try {
-		const storageName = pathname ? pathname : "Global";
-		localStorage.setItem(`${storageName}-${key}`, String(value));
-	} catch {
-		// console.warn("Tried to access localStorage in server.");
-	}
+	// try {
+	const storageName = pathname ? pathname : "Global";
+	localStorage.setItem(`${storageName}-${key}`, String(value));
+	// } catch {
+	// console.warn("Tried to access localStorage in server.");
+	// }
 }
 function getItem(pathname: string | null, key: string): string | null {
-	try {
-		const storageName = pathname ? pathname : "Global";
-		return localStorage.getItem(`${storageName}-${key}`);
-	} catch {
-		// console.warn("Tried to access localStorage in server.");
-		return null;
-	}
+	// try {
+	const storageName = pathname ? pathname : "Global";
+	return localStorage.getItem(`${storageName}-${key}`);
+	// } catch {
+	// console.warn("Tried to access localStorage in server.");
+	// return null;
+	// }
 }
 function removeItem(pathname: string | null, key: string): void {
-	try {
-		const storageName = pathname ? pathname : "Global";
-		localStorage.removeItem(`${storageName}-${key}`);
-	} catch {
-		// console.warn("Tried to access localStorage in server.");
-	}
+	// try {
+	const storageName = pathname ? pathname : "Global";
+	localStorage.removeItem(`${storageName}-${key}`);
+	// } catch {
+	// console.warn("Tried to access localStorage in server.");
+	// }
 }
 
 export const routeStorage = {
