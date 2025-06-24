@@ -27,7 +27,7 @@
 			border-radius: var(--rd-sm);
 			transition: 0.25s linear background;
 			padding-top: 3px;
-			svg {
+			& svg {
 				color: var(--cl-white);
 				transition: 0.25s linear rotate;
 			}
