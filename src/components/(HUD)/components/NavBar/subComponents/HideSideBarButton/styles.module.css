@@ -23,7 +23,7 @@
 }
 
 @media (max-width: 480px) {
-	:root[data-hidden-sidebar="false"] .hideSideBarButtonContainer {
+	:root[data-active-sidebar="true"] .hideSideBarButtonContainer {
 		width: 100vw;
 		height: 100vh;
 		top: 0;

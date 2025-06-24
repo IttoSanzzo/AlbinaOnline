@@ -22,10 +22,10 @@
 }
 
 @media (max-width: 480px) {
-	:root[data-hidden-sidebar="false"] .anchorNavBarContainer {
+	:root[data-active-sidebar="true"] .anchorNavBarContainer {
 		opacity: 0.3;
 	}
-	:root[data-hidden-sidebar="false"] .anchorLines {
+	:root[data-active-sidebar="true"] .anchorLines {
 		&:hover {
 			& .tableOfContents {
 				right: -200px;

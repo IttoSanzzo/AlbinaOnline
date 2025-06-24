@@ -2,24 +2,17 @@
 
 import { List } from "@phosphor-icons/react/List";
 import { HideSideBarButtonContainer } from "./styledElements";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { setCssAttribute } from "@/utils/CssPropertyUtils";
 
-function handleHideSideButton() {
-	const isSideBarHidden = localStorage.getItem("isSideBarHidden");
-	const nextValue = isSideBarHidden === "true" ? "false" : "true";
-	localStorage.setItem("isSideBarHidden", nextValue);
-	setCssAttribute("data-hidden-sidebar", nextValue);
-}
-
 export default function HideSideBarButton() {
-	useEffect(() => {
-		var isSideBarHidden = localStorage.getItem("isSideBarHidden");
-		if (!isSideBarHidden) {
-			localStorage.setItem("isSideBarHidden", "true");
-			isSideBarHidden = "true";
-		}
-		setCssAttribute("data-hidden-sidebar", isSideBarHidden!);
+	function handleHideSideButton() {
+		const current =
+			document.documentElement.getAttribute("data-active-sidebar") === "true";
+		setCssAttribute("data-active-sidebar", `${!current}`);
+	}
+	useLayoutEffect(() => {
+		setCssAttribute("data-active-sidebar", "false");
 	}, []);
 
 	return (
