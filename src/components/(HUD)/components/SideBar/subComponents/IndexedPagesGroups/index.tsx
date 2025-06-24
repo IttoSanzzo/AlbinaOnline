@@ -6,6 +6,7 @@ import IndexedPagesGroup, {
 	IndexedPage,
 } from "./subComponents/IndexedPagesGroup";
 import { IndexedPagesGroupContainer } from "./subComponents/IndexedPagesGroup/styledElements";
+import { useEffect } from "react";
 
 const CoreHubPageGroup = (
 	<IndexedPagesGroup
@@ -23,11 +24,13 @@ const CoreHubPageGroup = (
 
 export default function IndexedPagesGroups() {
 	const { favorites, isLoading } = useUserFavorites();
+
 	if (isLoading || favorites === null)
+		// if (favorites === null)
 		return (
-			<IndexedPagesGroupContainer>
+			<IndexedPagesGroupsContainer>
 				{CoreHubPageGroup}
-			</IndexedPagesGroupContainer>
+			</IndexedPagesGroupsContainer>
 		);
 
 	const getSluggedFavoriteIndexedPage = (endpoint: string, favoriteList: any) =>
@@ -43,7 +46,7 @@ export default function IndexedPagesGroups() {
 		<IndexedPagesGroupsContainer>
 			{CoreHubPageGroup}
 
-			{favorites.Item.length > 0 && (
+			{favorites?.Item.length > 0 && (
 				<IndexedPagesGroup
 					groupName="Items Fav."
 					indexedPages={getSluggedFavoriteIndexedPage("/items", favorites.Item)}

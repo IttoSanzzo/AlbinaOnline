@@ -16,8 +16,8 @@ export default function HideSideBarButton() {
 	useEffect(() => {
 		var isSideBarHidden = localStorage.getItem("isSideBarHidden");
 		if (!isSideBarHidden) {
-			localStorage.setItem("isSideBarHidden", "false");
-			isSideBarHidden = "false";
+			localStorage.setItem("isSideBarHidden", "true");
+			isSideBarHidden = "true";
 		}
 		setCssAttribute("data-hidden-sidebar", isSideBarHidden!);
 	}, []);

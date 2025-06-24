@@ -3,40 +3,45 @@
 	flex-direction: column;
 	width: 100%;
 	padding: 2px;
-	margin-bottom: var(--sp-1);
 }
 
 .headerContainer {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 5px;
 	width: 100%;
 
 	& > button {
 		z-index: 0;
-		border: 0;
-		border-radius: var(--rd-sm);
 		background-color: transparent;
-		width: 20px;
-		height: 20px;
-		transition: 0.25s linear background;
-		font-size: 0;
+		display: flex;
+		flex-direction: row;
+		gap: 5px;
+		border: 0;
+		padding: 4px;
+		width: 100%;
 
-		& > svg {
-			color: var(--cl-white);
-			transition: 0.25s linear rotate;
+		& .toggleButtonContainer {
+			flex: flex;
+			justify-content: center;
+			align-items: center;
+			width: 20px;
+			height: 20px;
+			border-radius: var(--rd-sm);
+			transition: 0.25s linear background;
+			padding-top: 3px;
+			svg {
+				color: var(--cl-white);
+				transition: 0.25s linear rotate;
+			}
 		}
 		&:hover {
-			background-color: var(--cl-gray-500);
+			& .toggleButtonContainer {
+				background-color: var(--cl-gray-500);
+			}
 		}
 	}
 }
 
 .contentContainer {
-	margin-top: var(--sp-1);
 	margin-left: 25px;
-	min-height: var(--fs-md);
 	overflow: hidden;
 	transition: 0.5s ease-in-out height, 0.5s ease-in-out min-height;
 }

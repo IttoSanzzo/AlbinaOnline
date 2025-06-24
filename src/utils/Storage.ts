@@ -4,16 +4,29 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 function setItem<T>(pathname: string | null, key: string, value: T): void {
-	const storageName = pathname ? pathname : "Global";
-	localStorage.setItem(`${storageName}-${key}`, String(value));
+	try {
+		const storageName = pathname ? pathname : "Global";
+		localStorage.setItem(`${storageName}-${key}`, String(value));
+	} catch {
+		// console.warn("Tried to access localStorage in server.");
+	}
 }
 function getItem(pathname: string | null, key: string): string | null {
-	const storageName = pathname ? pathname : "Global";
-	return localStorage.getItem(`${storageName}-${key}`);
+	try {
+		const storageName = pathname ? pathname : "Global";
+		return localStorage.getItem(`${storageName}-${key}`);
+	} catch {
+		// console.warn("Tried to access localStorage in server.");
+		return null;
+	}
 }
 function removeItem(pathname: string | null, key: string): void {
-	const storageName = pathname ? pathname : "Global";
-	localStorage.removeItem(`${storageName}-${key}`);
+	try {
+		const storageName = pathname ? pathname : "Global";
+		localStorage.removeItem(`${storageName}-${key}`);
+	} catch {
+		// console.warn("Tried to access localStorage in server.");
+	}
 }
 
 export const routeStorage = {

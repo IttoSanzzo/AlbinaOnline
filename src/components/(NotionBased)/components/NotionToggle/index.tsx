@@ -4,8 +4,16 @@ import {
 	ContentContainer,
 	HeaderContainer,
 	NotionToggleContainer,
+	ToggleButtonContainer,
 } from "./styledElements";
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
+import {
+	CSSProperties,
+	ReactNode,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { Triangle } from "@phosphor-icons/react/Triangle";
 import {
 	NotionText,
@@ -25,6 +33,29 @@ interface NotionToggleProps extends NotionPropsColor {
 	routeSensitiveMemory?: boolean;
 }
 
+function getCurrentOpenState(pathname: string, memoryName?: string) {
+	if (memoryName) {
+		const memoryState: string | null = routeStorage.getItem(
+			pathname,
+			memoryName
+		);
+		if (memoryState) {
+			return memoryState === "true";
+		}
+	}
+	return false;
+}
+function setMemoryOpenState(
+	newValue: boolean,
+	pathname: string,
+	memoryName?: string
+) {
+	if (memoryName) {
+		if (newValue) routeStorage.setItem(pathname, memoryName, true);
+		else routeStorage.removeItem(pathname, memoryName);
+	}
+}
+
 export function NotionToggle({
 	children,
 	title,
@@ -35,75 +66,84 @@ export function NotionToggle({
 	textColor,
 	backgroundColor,
 }: NotionToggleProps) {
-	const memoryName =
-		memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
 	const pathname = routeSensitiveMemory ? usePathname() : "";
-	const memoryState = memoryName
-		? routeStorage.getItem(pathname, memoryName)
-		: undefined;
-	const isMemoryStateOpen = memoryState === "true" ? true : false;
-	const [isOpen, setIsOpen] = useState<boolean>(isMemoryStateOpen);
-	const contentRef = useRef<HTMLDivElement>(null);
+	const memoryName = useMemo(() => {
+		return memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
+	}, [memoryId]);
+	const [isOpen, setIsOpen] = useState<boolean>(
+		getCurrentOpenState(pathname, memoryName)
+	);
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
+	const contentRef = useRef<HTMLDivElement>(null);
+
+	if (memoryId == "InfoDescription") {
+		console.log(`${isOpen} ${memoryId}`);
+		console.log(isOpen);
+	}
+
+	useLayoutEffect(() => {
+		if (isOpen && contentRef.current) {
+			contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
+		}
+	}, [isOpen]);
 
 	function handleOpenButton() {
-		if (memoryName) {
-			if (isOpen) routeStorage.removeItem(pathname, memoryName);
-			else routeStorage.setItem(pathname, memoryName, true);
-		}
+		setMemoryOpenState(!isOpen, pathname, memoryName);
 		setIsOpen(!isOpen);
 	}
 
-	useEffect(() => {
-		if (memoryName) {
-			const memoryState = routeStorage.getItem(pathname, memoryName);
-			if (memoryState) {
-				const isMemoryStateOpen = memoryState === "true" ? true : false;
-				setIsOpen(isMemoryStateOpen);
-			}
-		}
-	}, []);
-
-	const style: CSSProperties = {
+	const colorStyle: CSSProperties = {
 		...(textColor && { color: NotionTextColor[textColor] }),
 		...(backgroundColor && {
 			backgroundColor: NotionBackgroundColor[backgroundColor],
 		}),
 	};
 	const contentStyle: CSSProperties = {
+		minHeight: 0,
 		...(contentMargin &&
 			contentMargin != "full" && {
 				marginLeft: contentMargin == "middle" ? "12.5px" : 0,
 			}),
 		...(!isOpen && {
 			height: 0,
-			minHeight: 0,
 		}),
-		...(isOpen && {
-			height: `${contentRef.current!.scrollHeight}px`,
-		}),
+		...(isOpen &&
+			contentRef.current != null && {
+				height: `${contentRef.current!.scrollHeight}px`,
+			}),
 	};
 
 	return (
-		<NotionToggleContainer style={style}>
+		<NotionToggleContainer style={colorStyle}>
 			<HeaderContainer>
-				<button onClick={handleOpenButton}>
-					<Triangle
-						size={11}
-						weight="fill"
-						color={
-							textColor ? NotionTextColor[textColor] : NotionTextColor.default
-						}
-						style={{ rotate: arrowRotationDegree }}
-					/>
+				<button
+					style={colorStyle}
+					suppressHydrationWarning
+					onClick={handleOpenButton}
+					aria-expanded={isOpen}
+					aria-controls={`notion-toggle-${memoryId ?? "content"}`}
+					aria-label="Toggle content">
+					<ToggleButtonContainer>
+						<Triangle
+							suppressHydrationWarning
+							size={11}
+							weight="fill"
+							color={
+								textColor ? NotionTextColor[textColor] : NotionTextColor.default
+							}
+							style={{ rotate: arrowRotationDegree }}
+						/>
+					</ToggleButtonContainer>
+					{typeof title === "string" ? (
+						<NotionText textColor={titleColor}>{title}</NotionText>
+					) : (
+						title
+					)}
 				</button>
-				{typeof title === "string" ? (
-					<NotionText textColor={titleColor}>{title}</NotionText>
-				) : (
-					title
-				)}
 			</HeaderContainer>
 			<ContentContainer
+				suppressHydrationWarning
+				id={`notion-toggle-${memoryId ?? "content"}`}
 				ref={contentRef}
 				style={contentStyle}>
 				{children}
