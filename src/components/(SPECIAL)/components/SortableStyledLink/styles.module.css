@@ -1,0 +1,34 @@
+.sortableLinkContainer {
+	display: flex;
+	flex-direction: row;
+	& > div {
+		width: 100%;
+	}
+
+	&:hover {
+		position: relative;
+		z-index: 1000;
+
+		& .dragButton {
+			background-color: var(--cl-gray-500);
+			color: var(--cl-gray-700);
+		}
+	}
+}
+.dragButton {
+	width: 15px;
+	margin-left: -15px;
+	border: 0;
+	border-top-right-radius: var(--rd-xs);
+	border-bottom-right-radius: var(--rd-xs);
+	color: transparent;
+	background-color: transparent;
+	transition: 0.15s ease-in background-color, 0.25s ease-in color;
+}
+
+@media (max-width: 480px) {
+	.dragButton {
+		width: 35px;
+		margin-left: -35px;
+	}
+}

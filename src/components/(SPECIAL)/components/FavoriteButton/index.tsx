@@ -7,8 +7,7 @@ import { useCurrentPageData } from "@/libs/stp@hooks/hooks/useCurrentPageData";
 import { NotionTextColor } from "@/components/(NotionBased)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 
-interface FavoriteButtonProps {}
-export function FavoriteButton({}: FavoriteButtonProps) {
+export function FavoriteButton() {
 	const { favorites, isLoading, reloadFavorites } = useUserFavorites();
 	const { data, type, isSet } = useCurrentPageData();
 

@@ -22,4 +22,7 @@ export type {
 export type { TraitData } from "./dataTypes/trait";
 
 export type { fullUser } from "./otherTypes/fullUser";
-export type { userFavoritesGrouped } from "./otherTypes/userFavoritesGrouped";
+export type {
+	userFavoritesGrouped,
+	userFavoriteType,
+} from "./otherTypes/userFavoritesGrouped";

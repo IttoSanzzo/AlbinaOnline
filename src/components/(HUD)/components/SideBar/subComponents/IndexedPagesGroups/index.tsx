@@ -2,9 +2,10 @@
 
 import { useUserFavorites } from "@/libs/stp@hooks";
 import { IndexedPagesGroupsContainer } from "./styledElements";
-import IndexedPagesGroup, {
-	IndexedPage,
-} from "./subComponents/IndexedPagesGroup";
+import IndexedPagesGroup from "./subComponents/IndexedPagesGroup";
+import SortableIndexedPagesGroup, {
+	SortableIndexedPage,
+} from "./subComponents/SortableIndexedPagesGroup";
 
 const CoreHubPageGroup = (
 	<IndexedPagesGroup
@@ -23,15 +24,19 @@ const CoreHubPageGroup = (
 export default function IndexedPagesGroups() {
 	const { favorites } = useUserFavorites();
 
-	if (favorites === null)
+	if (favorites === null) {
 		return (
 			<IndexedPagesGroupsContainer>
 				{CoreHubPageGroup}
 			</IndexedPagesGroupsContainer>
 		);
+	}
 
-	const getSluggedFavoriteIndexedPage = (endpoint: string, favoriteList: any) =>
-		favoriteList.map((favorite: any): IndexedPage => {
+	const getSluggedFavoriteSortableIndexedPage = (
+		endpoint: string,
+		favoriteList: any
+	): SortableIndexedPage[] =>
+		favoriteList.map((favorite: any): SortableIndexedPage => {
 			return {
 				name: favorite.target.name,
 				link: `${endpoint}/${favorite.target.slug}`,
@@ -44,51 +49,63 @@ export default function IndexedPagesGroups() {
 			{CoreHubPageGroup}
 
 			{favorites?.Item.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Items Fav."
-					indexedPages={getSluggedFavoriteIndexedPage("/items", favorites.Item)}
+					groupType="Item"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/items",
+						favorites.Item
+					)}
 				/>
 			)}
 			{favorites.Mastery.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Maestrias Fav."
-					indexedPages={getSluggedFavoriteIndexedPage(
+					groupType="Mastery"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/maestrias",
 						favorites.Mastery
 					)}
 				/>
 			)}
 			{favorites.Skill.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Skills Fav."
-					indexedPages={getSluggedFavoriteIndexedPage(
+					groupType="Skill"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/skills",
 						favorites.Skill
 					)}
 				/>
 			)}
 			{favorites.Spell.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Spells Fav."
-					indexedPages={getSluggedFavoriteIndexedPage(
+					groupType="Spell"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/spells",
 						favorites.Spell
 					)}
 				/>
 			)}
 			{favorites.Trait.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Traits Fav."
-					indexedPages={getSluggedFavoriteIndexedPage(
+					groupType="Trait"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/tracos",
 						favorites.Trait
 					)}
 				/>
 			)}
 			{favorites.Race.length > 0 && (
-				<IndexedPagesGroup
+				<SortableIndexedPagesGroup
 					groupName="Raças Fav."
-					indexedPages={getSluggedFavoriteIndexedPage("/racas", favorites.Race)}
+					groupType="Race"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/racas",
+						favorites.Race
+					)}
 				/>
 			)}
 		</IndexedPagesGroupsContainer>

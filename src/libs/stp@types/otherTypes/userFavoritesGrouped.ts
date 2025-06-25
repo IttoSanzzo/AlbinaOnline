@@ -5,6 +5,15 @@ import { SkillData } from "../dataTypes/skill";
 import { SpellData } from "../dataTypes/spell";
 import { TraitData } from "../dataTypes/trait";
 
+export type userFavoriteType =
+	| "Character"
+	| "Item"
+	| "Mastery"
+	| "Skill"
+	| "Spell"
+	| "Trait"
+	| "Race";
+
 type favoriteItem = {
 	id: string;
 	displayOrder: number;

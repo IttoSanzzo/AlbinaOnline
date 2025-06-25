@@ -1,10 +1,10 @@
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { StyledLinkContainer } from "./styledElements";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 
-interface StyledLinkProps {
+export interface StyledLinkProps extends LinkProps {
 	title: string;
 	href: string;
 	icon?: string;
@@ -16,6 +16,7 @@ export function StyledLink({
 	href,
 	icon,
 	textMode = false,
+	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
 		? icon[0] === "@"
@@ -26,7 +27,9 @@ export function StyledLink({
 	return (
 		<StyledLinkContainer
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
-			<Link href={href}>
+			<Link
+				href={href}
+				{...rest}>
 				<Image
 					src={finalIcon}
 					width={21}
