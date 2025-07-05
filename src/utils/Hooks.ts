@@ -4,6 +4,8 @@ export function useVisibleSections(ids: string[]) {
 	const [visibleId, setVisibleId] = useState<string | null>(null);
 
 	useEffect(() => {
+		if (ids.length === 0) return;
+
 		const observer = new IntersectionObserver(
 			(entries) => {
 				const visible = entries

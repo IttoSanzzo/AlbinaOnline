@@ -2,8 +2,21 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { ItemData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import ItemTypeDisplay from "./subComponents/ItemTypeDisplay";
+import { SetAnchorNavigation } from "@/components/(UTILS)";
 
-export default async function Items() {
+const anchorNavigationData = [
+	{ name: "Armamentos", id: "armamentos" },
+	{ name: "Focus", id: "focus" },
+	{ name: "Escudos", id: "escudos" },
+	{ name: "Frames", id: "frames" },
+	{ name: "Vestimentas Auxiliares", id: "vestimentas-auxiliares" },
+	{ name: "Acessórios", id: "acessorios" },
+	{ name: "Consumíveis", id: "consumiveis" },
+	{ name: "Miscelaneos", id: "miscelaneos" },
+	{ name: "Especiais", id: "especiais" },
+];
+
+export default async function ItemsPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/items`, {
 		cache: await getCacheMode(),
 	});
@@ -16,18 +29,9 @@ export default async function Items() {
 		<GenericPageContainer
 			title="Todos os Items"
 			icon={`${process.env.ALBINA_API}/favicon/core-page/items`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/items`}
-			anchors={[
-				{ name: "Armamentos", id: "armamentos" },
-				{ name: "Focus", id: "focus" },
-				{ name: "Escudos", id: "escudos" },
-				{ name: "Frames", id: "frames" },
-				{ name: "Vestimentas Auxiliares", id: "vestimentas-auxiliares" },
-				{ name: "Acessórios", id: "acessorios" },
-				{ name: "Consumíveis", id: "consumiveis" },
-				{ name: "Miscelaneos", id: "miscelaneos" },
-				{ name: "Especiais", id: "especiais" },
-			]}>
+			banner={`${process.env.ALBINA_API}/banner/core-page/items`}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+
 			<ItemTypeDisplay
 				title="Armamentos"
 				allItems={allItems}

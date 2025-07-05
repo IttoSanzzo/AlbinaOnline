@@ -2,8 +2,17 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { TraitData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import TraitTypeDisplay from "./subComponents/TraitTypeDisplay";
+import { SetAnchorNavigation } from "@/components/(UTILS)";
+import { AnchorProps } from "@/libs/stp@hooks";
 
-export default async function Items() {
+const anchorNavigationData: AnchorProps[] = [
+	{ name: "Genéricas", id: "genericas" },
+	{ name: "Comuns", id: "comuns" },
+	{ name: "Raciais", id: "raciais" },
+	{ name: "Únicas", id: "unicas" },
+];
+
+export default async function TraitsPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/traits`, {
 		cache: await getCacheMode(),
 	});
@@ -17,13 +26,9 @@ export default async function Items() {
 		<GenericPageContainer
 			title="Todas as Traits"
 			icon={`${process.env.ALBINA_API}/favicon/core-page/traits`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/traits`}
-			anchors={[
-				{ name: "Genéricas", id: "genericas" },
-				{ name: "Comuns", id: "comuns" },
-				{ name: "Raciais", id: "raciais" },
-				{ name: "Únicas", id: "unicas" },
-			]}>
+			banner={`${process.env.ALBINA_API}/banner/core-page/traits`}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+
 			<TraitTypeDisplay
 				title="Genéricas"
 				allTraits={allTraits}

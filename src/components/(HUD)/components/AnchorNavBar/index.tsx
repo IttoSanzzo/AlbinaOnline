@@ -11,37 +11,36 @@ import {
 import styles from "./styles.module.css";
 import { useVisibleSections } from "@/utils/Hooks";
 import { idfyString } from "@/utils/StringUtils";
+import { AnchorProps, useAnchorNavigation } from "@/libs/stp@hooks";
 
-export type AnchorProps = {
-	name: string;
-	id: string;
-};
-
-interface AnchorNavBarProps {
-	anchors: AnchorProps[];
-}
-
-export function AnchorNavBar({ anchors }: AnchorNavBarProps) {
-	if (anchors.length == 0) return <AnchorNavBarContainer />;
-	anchors.forEach((anchor) => {
-		anchor.id = idfyString(anchor.id);
-	});
-
-	const visibleId = useVisibleSections(anchors.map((anchor) => anchor.id));
+export function AnchorNavBar() {
+	const { anchors, isSet } = useAnchorNavigation();
+	const refinedAnchors: AnchorProps[] = anchors
+		? anchors.map((anchor) => {
+				return {
+					name: anchor.name,
+					id: idfyString(anchor.id),
+				};
+		  })
+		: [];
+	const visibleId = useVisibleSections(
+		refinedAnchors?.map((anchor) => anchor.id)
+	);
+	if (isSet === false || !anchors?.length) return null;
 
 	return (
 		<AnchorNavBarContainer>
 			<AnchorLines>
-				{anchors.map((anchor, index) => (
+				{refinedAnchors.map((anchor) => (
 					<AnchorLine
-						key={index}
+						key={anchor.id}
 						className={
 							anchor.id === visibleId ? styles["activeAnchorLine"] : undefined
 						}
 					/>
 				))}
 				<TableOfContents>
-					{anchors.map((anchor) => (
+					{refinedAnchors.map((anchor) => (
 						<AnchorItem
 							key={anchor.id}
 							className={

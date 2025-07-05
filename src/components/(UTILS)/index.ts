@@ -4,3 +4,5 @@ export { NotionGridList } from "./components/NotionGridList";
 export { EmptyLine } from "./components/EmptyLine";
 export { SmartText } from "./components/SmartText";
 export { TestFetchButton } from "./components/TestFetchButton";
+export { SetCurrentPageData } from "./components/SetCurrentPageData";
+export { SetAnchorNavigation } from "./components/SetAnchorNavigation";

@@ -1,4 +1,4 @@
-import { SideBar, NavBar } from "@/components/(HUD)";
+import { SideBar, NavBar, AnchorNavBar } from "@/components/(HUD)";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
 import { ReactNode } from "react";
@@ -19,6 +19,7 @@ export default function Layout({ children }: LayoutProps) {
 				<NavBar />
 				<PageContainer>{children}</PageContainer>
 			</MainContainer>
+			<AnchorNavBar />
 		</GlobalContainer>
 	);
 }

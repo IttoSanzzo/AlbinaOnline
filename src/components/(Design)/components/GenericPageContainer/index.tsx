@@ -4,7 +4,6 @@ import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
 import { StaticImageData } from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
-import { AnchorNavBar, AnchorProps } from "@/components/(HUD)";
 
 interface GenericPageContainerProps {
 	children: ReactNode;
@@ -12,7 +11,6 @@ interface GenericPageContainerProps {
 	icon?: string;
 	borderColor?: string;
 	title: string;
-	anchors?: AnchorProps[];
 }
 
 export function GenericPageContainer({
@@ -21,7 +19,6 @@ export function GenericPageContainer({
 	banner,
 	icon,
 	borderColor,
-	anchors = [],
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
@@ -34,7 +31,6 @@ export function GenericPageContainer({
 				/>
 				{children}
 			</ContentsContainer>
-			{anchors.length !== 0 && <AnchorNavBar anchors={anchors} />}
 		</MainContainer>
 	);
 }

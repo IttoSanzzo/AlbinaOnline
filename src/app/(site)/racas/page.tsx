@@ -2,8 +2,18 @@ import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 import { RaceData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import RaceTypeDisplay from "./subComponents/RaceTypeDisplay";
+import { SetAnchorNavigation } from "@/components/(UTILS)";
+import { AnchorProps } from "@/libs/stp@hooks";
 
-export default async function Races() {
+const anchorNavigationData: AnchorProps[] = [
+	{ name: "Humanos", id: "Humanos" },
+	{ name: "Feéricos", id: "Feéricos" },
+	{ name: "Demônios", id: "Demônios" },
+	{ name: "Dracônicos", id: "Dracônicos" },
+	{ name: "Seireis", id: "Seireis" },
+];
+
+export default async function RacesPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/races`, {
 		cache: await getCacheMode(),
 	});
@@ -15,9 +25,10 @@ export default async function Races() {
 	return (
 		<GenericPageContainer
 			title="Raças"
-			anchors={[]}
 			icon={`${process.env.ALBINA_API}/favicon/core-page/races`}
 			banner={`${process.env.ALBINA_API}/banner/core-page/races`}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+
 			<RaceTypeDisplay
 				title="Humanos"
 				allRaces={allRaces}

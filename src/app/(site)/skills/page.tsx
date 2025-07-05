@@ -2,8 +2,17 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { SkillData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SkillTypeDisplay from "./subComponents/SkillTypeDisplay";
+import { SetAnchorNavigation } from "@/components/(UTILS)";
+import { AnchorProps } from "@/libs/stp@hooks";
 
-export default async function Items() {
+const anchorNavigationData: AnchorProps[] = [
+	{ name: "Genéricas", id: "genericas" },
+	{ name: "Comuns", id: "comuns" },
+	{ name: "Raciais", id: "raciais" },
+	{ name: "Únicas", id: "unicas" },
+];
+
+export default async function SkillsPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/skills`, {
 		cache: await getCacheMode(),
 	});
@@ -17,13 +26,9 @@ export default async function Items() {
 		<GenericPageContainer
 			title="Todas as Skills"
 			icon={`${process.env.ALBINA_API}/favicon/core-page/skills`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/skills`}
-			anchors={[
-				{ name: "Genéricas", id: "genericas" },
-				{ name: "Comuns", id: "comuns" },
-				{ name: "Raciais", id: "raciais" },
-				{ name: "Únicas", id: "unicas" },
-			]}>
+			banner={`${process.env.ALBINA_API}/banner/core-page/skills`}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+
 			<SkillTypeDisplay
 				title="Genéricas"
 				allSkills={allSkills}

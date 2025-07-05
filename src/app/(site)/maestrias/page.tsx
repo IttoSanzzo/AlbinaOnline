@@ -16,19 +16,20 @@ import {
 	EmptyLine,
 	NotionGridList,
 	NotionQuoteList,
+	SetAnchorNavigation,
 } from "@/components/(UTILS)";
-import { AnchorProps } from "@/components/(HUD)";
 import { MasteryData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
+import { AnchorProps } from "@/libs/stp@hooks";
 
-const pageAnchors: AnchorProps[] = [
+const anchorNavigationData: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },
 	{ name: "Perícias", id: "Perícias" },
 	{ name: "Conhecimentos", id: "Conhecimentos" },
 	{ name: "Ofícios", id: "Ofícios" },
 ];
 
-export default async function Masterys() {
+export default async function MasteriesPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/maestrias`, {
 		cache: await getCacheMode(),
 	});
@@ -63,9 +64,9 @@ export default async function Masterys() {
 		<GenericPageContainer
 			title="Maestrias"
 			icon={`${process.env.ALBINA_API}/favicon/core-page/masteries`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/masteries`}
-			anchors={pageAnchors}>
+			banner={`${process.env.ALBINA_API}/banner/core-page/masteries`}>
 			<NotionDivisor />
+			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<NotionBox
 				backgroundColor="gray"

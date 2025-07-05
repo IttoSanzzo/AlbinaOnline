@@ -1,9 +1,8 @@
 "use client";
 
 import { Star } from "@phosphor-icons/react/Star";
-import { useUserFavorites } from "@/libs/stp@hooks";
+import { useCurrentPageData, useUserFavorites } from "@/libs/stp@hooks";
 import { FavoriteButtonContainer } from "./styledElements";
-import { useCurrentPageData } from "@/libs/stp@hooks/hooks/useCurrentPageData";
 import { NotionTextColor } from "@/components/(NotionBased)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 

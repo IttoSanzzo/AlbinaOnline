@@ -1,10 +1,10 @@
 "use client";
 
-import { useSetCurrentPageData } from "@/libs/stp@hooks/hooks/useCurrentPageData";
 import {
 	PageData,
 	PageDataType,
-} from "@/libs/stp@hooks/stores/useCurrentPageDataStore";
+	useSetCurrentPageData,
+} from "@/libs/stp@hooks";
 
 interface SetCurrentPageDataProps {
 	type: PageDataType;
