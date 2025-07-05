@@ -1,0 +1,15 @@
+.styledOwnedLinkCardContainer {
+	position: relative;
+}
+.ownerPageLinkContainer {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	border-radius: var(--rd-full);
+	overflow: hidden;
+
+	transition: 0.15s ease-in-out box-shadow;
+	&:hover {
+		box-shadow: 0 0 8px white;
+	}
+}

@@ -11,7 +11,7 @@ export function FavoriteButton() {
 	const { favorites, isLoading, reloadFavorites } = useUserFavorites();
 	const { data, type, isSet } = useCurrentPageData();
 
-	if (isLoading || isSet == false || type == null)
+	if (isLoading || isSet == false || type == null) {
 		return (
 			<FavoriteButtonContainer>
 				<button
@@ -24,6 +24,7 @@ export function FavoriteButton() {
 				</button>
 			</FavoriteButtonContainer>
 		);
+	}
 
 	const isAlreadyFavorite = favorites?.[type].some(
 		(favorite) => favorite.target.id == data?.id

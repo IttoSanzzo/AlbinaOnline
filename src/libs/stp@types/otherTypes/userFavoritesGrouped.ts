@@ -16,37 +16,37 @@ export type userFavoriteType =
 
 type favoriteItem = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: ItemData;
 };
 type favoriteMastery = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: MasteryData;
 };
 type favoriteSkill = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: SkillData;
 };
 type favoriteSpell = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: SpellData;
 };
 type favoriteTrait = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: TraitData;
 };
 type favoriteRace = {
 	id: string;
-	displayOrder: number;
+	order: number;
 	type: string;
 	target: RaceData;
 };

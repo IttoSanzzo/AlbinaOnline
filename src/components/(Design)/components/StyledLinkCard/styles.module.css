@@ -1,0 +1,67 @@
+.styledLinkCardContainer {
+	display: inline-flex;
+	flex-direction: column;
+	border: 1px solid var(--cl-gray-600);
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-xs);
+	position: relative;
+	overflow: hidden;
+
+	& a {
+		text-decoration: none;
+		color: var(--cl-gray-100);
+	}
+	&:hover {
+		cursor: pointer;
+	}
+	&:focus-within {
+		box-shadow: 0 0 15px wheat;
+	}
+}
+.artworkContainer {
+	margin: -1px 0 0 -1px;
+	border: 1px solid var(--cl-gray-600);
+	border-radius: var(--rd-xs);
+	overflow: hidden;
+
+	& img {
+		border-radius: var(--rd-xs);
+		overflow: hidden;
+		transition: 0.2s ease-in-out transform;
+	}
+}
+.styledLinkCardContainer:hover .artworkContainer img {
+	transform: scale(1.25);
+}
+
+.titleContainer {
+	display: flex;
+	height: 35px;
+	overflow: hidden;
+	text-decoration: none;
+	justify-content: center;
+	align-items: center;
+	word-break: break-all;
+}
+.hoverTitleContainer {
+	position: absolute;
+	bottom: 0;
+	margin-bottom: -35px;
+	display: flex;
+	height: 35px;
+	overflow: hidden;
+	text-decoration: none;
+	justify-content: center;
+	align-items: center;
+	word-break: break-all;
+	background-color: var(--cl-gray-800);
+	border-top-right-radius: var(--rd-md);
+	border-top-left-radius: var(--rd-md);
+	width: 100%;
+	opacity: 0.8;
+
+	transition: 0.15s ease-in-out margin;
+}
+.styledLinkCardContainer:hover .hoverTitleContainer {
+	margin-bottom: 0px;
+}

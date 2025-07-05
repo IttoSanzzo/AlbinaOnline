@@ -26,3 +26,6 @@ export type {
 	userFavoritesGrouped,
 	userFavoriteType,
 } from "./otherTypes/userFavoritesGrouped";
+
+export type { CharacterSimpleData } from "./dataTypes/Character/CharacterSimpleData";
+export type { CharacterFullData } from "./dataTypes/Character/CharacterFullData";

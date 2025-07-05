@@ -11,6 +11,7 @@ const CoreHubPageGroup = (
 	<IndexedPagesGroup
 		groupName="Core Hub"
 		indexedPages={[
+			{ name: "Chars", link: "/chars" },
 			{ name: "Items", link: "/items" },
 			{ name: "Maestrias", link: "/maestrias" },
 			{ name: "Skills", link: "/skills" },

@@ -8,7 +8,7 @@ export const identityGate: MiddlewareFactory = (next) => {
 		if (pathname === "/") return next(request, event);
 		const refreshToken = request.cookies.get("jwt-refresh-token")?.value;
 		if (["/login", "/register"].includes(pathname)) {
-			if (refreshToken) {
+			if (!!refreshToken) {
 				return NextResponse.redirect(new URL("/home", request.url));
 			}
 		} else {

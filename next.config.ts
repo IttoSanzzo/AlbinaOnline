@@ -22,7 +22,12 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: "http",
-				hostname: "187.40.106.54",
+				hostname: "201.4.179.237",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
+				hostname: "avatars.githubusercontent.com",
 				pathname: "/**",
 			},
 		],
