@@ -21,17 +21,18 @@ const nextConfig: NextConfig = {
 				pathname: "/**",
 			},
 			{
-				protocol: "http",
-				hostname: "201.4.179.237",
-				pathname: "/**",
-			},
-			{
 				protocol: "https",
 				hostname: "avatars.githubusercontent.com",
 				pathname: "/**",
 			},
+			{
+				protocol: "http",
+				hostname: "*.*.*.*",
+				pathname: "/**",
+			},
 		],
 	},
+	allowedDevOrigins: ["localhost", "*.*.*.*"],
 };
 
 export default nextConfig;

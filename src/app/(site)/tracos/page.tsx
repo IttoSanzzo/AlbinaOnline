@@ -16,8 +16,8 @@ export default async function Items() {
 	return (
 		<GenericPageContainer
 			title="Todas as Traits"
-			icon={`${process.env.ALBINA_API}/favicon/tracos`}
-			banner={`${process.env.ALBINA_API}/banner/tracos`}
+			icon={`${process.env.ALBINA_API}/favicon/core-page/traits`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/traits`}
 			anchors={[
 				{ name: "Genéricas", id: "genericas" },
 				{ name: "Comuns", id: "comuns" },

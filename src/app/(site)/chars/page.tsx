@@ -16,11 +16,11 @@ export default async function Characters() {
 	return (
 		<GenericPageContainer
 			title="Todos os Chars"
-			icon={`${process.env.ALBINA_API}/favicon/chars`}
-			banner={`${process.env.ALBINA_API}/banner/chars`}>
+			icon={`${process.env.ALBINA_API}/favicon/core-page/characters`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/characters`}>
 			<StyledOwnedLinkCard
-				ownerId="b0eeea5d-a780-4279-b3bc-395505549c4b"
-				href={""}
+				ownerId="33bc8235-6ca5-4bf2-ad29-c09dd52019c5"
+				href={"/chars/teste"}
 				title="Hirone Sanzzo"
 				artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
 				// layout="rectangle"

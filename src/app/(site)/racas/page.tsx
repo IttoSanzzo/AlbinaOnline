@@ -16,8 +16,8 @@ export default async function Races() {
 		<GenericPageContainer
 			title="Raças"
 			anchors={[]}
-			icon={`${process.env.ALBINA_API}/favicon/racas`}
-			banner={`${process.env.ALBINA_API}/banner/racas`}>
+			icon={`${process.env.ALBINA_API}/favicon/core-page/races`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/races`}>
 			<RaceTypeDisplay
 				title="Humanos"
 				allRaces={allRaces}

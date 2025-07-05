@@ -8,15 +8,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
 	const { itemSlug } = await params;
 	const itemPageData = await getPageData(itemSlug);
-	if (itemPageData.itemData == undefined) {
-		return { title: "Not Found" };
-	}
-	const { itemData } = itemPageData;
+	// if (itemPageData.itemData == undefined) {
+	// return { title: "Not Found" };
+	// }
+	// const { itemData } = itemPageData;
 
-	const title = itemData.name;
+	// const title = itemData.name;
+	const title = "TESTING";
 
 	return {
 		title,
-		icons: { icon: itemData.iconUrl },
+		// icons: { icon: itemData.iconUrl },
 	};
 }

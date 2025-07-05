@@ -15,8 +15,8 @@ export default async function Items() {
 	return (
 		<GenericPageContainer
 			title="Todos os Items"
-			icon={`${process.env.ALBINA_API}/favicon/items`}
-			banner={`${process.env.ALBINA_API}/banner/items`}
+			icon={`${process.env.ALBINA_API}/favicon/core-page/items`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/items`}
 			anchors={[
 				{ name: "Armamentos", id: "armamentos" },
 				{ name: "Focus", id: "focus" },

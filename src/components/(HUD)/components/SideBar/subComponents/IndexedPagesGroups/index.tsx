@@ -49,6 +49,16 @@ export default function IndexedPagesGroups() {
 		<IndexedPagesGroupsContainer>
 			{CoreHubPageGroup}
 
+			{favorites?.Character.length > 0 && (
+				<SortableIndexedPagesGroup
+					groupName="Chars Fav."
+					groupType="Character"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/chars",
+						favorites.Character
+					)}
+				/>
+			)}
 			{favorites?.Item.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Items Fav."

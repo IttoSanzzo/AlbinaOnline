@@ -1,4 +1,3 @@
-import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import {
 	GenericEffectsDisplay,
 	GenericInfoCallout,
@@ -29,7 +28,7 @@ export default async function Mastery({ params }: MasteryProps) {
 	return (
 		<GenericPageContainer
 			title={`⩤Maestria⩥ ${masteryData.name}`}
-			banner={AlbinaLogo}
+			banner={masteryData.bannerUrl}
 			icon={masteryData.iconUrl}
 			borderColor={borderColor}>
 			<SetCurrentPageData

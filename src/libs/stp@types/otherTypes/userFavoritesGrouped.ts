@@ -1,3 +1,4 @@
+import { CharacterFullData } from "../dataTypes/Character/CharacterFullData";
 import { ItemData } from "../dataTypes/item";
 import { MasteryData } from "../dataTypes/mastery";
 import { RaceData } from "../dataTypes/race";
@@ -14,6 +15,12 @@ export type userFavoriteType =
 	| "Trait"
 	| "Race";
 
+type favoriteCharacter = {
+	id: string;
+	order: number;
+	type: string;
+	target: CharacterFullData;
+};
 type favoriteItem = {
 	id: string;
 	order: number;
@@ -52,7 +59,7 @@ type favoriteRace = {
 };
 
 export type userFavoritesGrouped = {
-	Character: favoriteItem[];
+	Character: favoriteCharacter[];
 	Item: favoriteItem[];
 	Mastery: favoriteMastery[];
 	Skill: favoriteSkill[];

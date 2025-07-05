@@ -62,8 +62,8 @@ export default async function Masterys() {
 	return (
 		<GenericPageContainer
 			title="Maestrias"
-			icon={`${process.env.ALBINA_API}/favicon/maestrias`}
-			banner={`${process.env.ALBINA_API}/banner/maestrias`}
+			icon={`${process.env.ALBINA_API}/favicon/core-page/masteries`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/masteries`}
 			anchors={pageAnchors}>
 			<NotionDivisor />
 

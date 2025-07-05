@@ -33,8 +33,8 @@ export default async function Spells() {
 	return (
 		<GenericPageContainer
 			title="Todas os Spells"
-			icon={`${process.env.ALBINA_API}/favicon/spells`}
-			banner={`${process.env.ALBINA_API}/banner/spells`}
+			icon={`${process.env.ALBINA_API}/favicon/core-page/spells`}
+			banner={`${process.env.ALBINA_API}/banner/core-page/spells`}
 			anchors={[]}>
 			<NotionBox
 				backgroundColor="gray"
