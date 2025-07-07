@@ -11,4 +11,5 @@
 	background-color: var(--cl-gray-800);
 	border-radius: var(--rd-md);
 	padding: 2px;
+	word-break: break-all;
 }

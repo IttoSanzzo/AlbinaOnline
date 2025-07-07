@@ -8,7 +8,8 @@ import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import MasteryTypologyCallout from "./subComponents/ItemTypologyCallout";
 import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -30,6 +31,7 @@ export default async function Item({ params }: ItemProps) {
 			banner={itemData.bannerUrl}
 			icon={itemData.iconUrl}
 			borderColor={borderColor}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Item"}
 				data={itemData}

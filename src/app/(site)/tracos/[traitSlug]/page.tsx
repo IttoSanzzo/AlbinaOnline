@@ -12,7 +12,8 @@ import {
 	NotionQuote,
 } from "@/components/(NotionBased)";
 import TraitTypologyCallout from "./subComponents/TraitTypologyCallout";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -34,6 +35,7 @@ export default async function Trait({ params }: TraitProps) {
 			banner={traitData.bannerUrl}
 			icon={traitData.iconUrl}
 			borderColor={borderColor}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Trait"}
 				data={traitData}

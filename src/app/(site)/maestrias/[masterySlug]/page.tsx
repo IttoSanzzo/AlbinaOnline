@@ -7,7 +7,8 @@ import {
 import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -31,6 +32,7 @@ export default async function Mastery({ params }: MasteryProps) {
 			banner={masteryData.bannerUrl}
 			icon={masteryData.iconUrl}
 			borderColor={borderColor}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Mastery"}
 				data={masteryData}

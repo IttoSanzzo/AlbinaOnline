@@ -8,7 +8,8 @@ import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import SpellTypologyCallout from "./subComponents/SpellTypologyCallout";
 import SpellPropertiesDisplay from "./subComponents/SpellPropertiesDisplay";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -30,6 +31,7 @@ export default async function Spell({ params }: SpellProps) {
 			banner={spellData.bannerUrl}
 			icon={spellData.iconUrl}
 			borderColor={borderColor}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Spell"}
 				data={spellData}

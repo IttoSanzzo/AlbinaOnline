@@ -1,8 +1,9 @@
 import { GenericPageContainer } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
 import { CharacterFullData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -18,7 +19,7 @@ interface CharacterPageProps {
 	params: Promise<{ charId: string }>;
 }
 export default async function Character({ params }: CharacterPageProps) {
-	const { charId } = await params;
+	// const { charId } = await params;
 	// const CharacterPageData = await getPageData(charId);
 	// if (CharacterPageData.characterData == undefined) {
 	// return <>Error</>;
@@ -31,6 +32,7 @@ export default async function Character({ params }: CharacterPageProps) {
 			banner={characterData.bannerUrl}
 			icon={characterData.iconUrl}
 			borderColor={"#505059"}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			{""}
 			<SetCurrentPageData
 				type={"Character"}

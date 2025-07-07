@@ -1,11 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { ProfileButtonContainer } from "./styledElements";
-import { fullUser } from "@/libs/stp@types";
+import { useCurrentUser } from "@/libs/stp@hooks";
 
-interface ProfileButtonProps {
-	user: fullUser | null;
-}
-export function ProfileButton({ user }: ProfileButtonProps) {
+export function ProfileButton() {
+	const { user, reloadUser } = useCurrentUser();
+
 	if (!user) return <ProfileButtonContainer />;
 	return (
 		<ProfileButtonContainer>

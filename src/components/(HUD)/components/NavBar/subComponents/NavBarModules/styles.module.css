@@ -1,0 +1,13 @@
+.navBarModulesContainer {
+	/* border: 1px solid red; */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--sp-2);
+	& button {
+		margin-bottom: -3px;
+		font-size: var(--fs-md);
+		background: transparent;
+		border: 0;
+	}
+}

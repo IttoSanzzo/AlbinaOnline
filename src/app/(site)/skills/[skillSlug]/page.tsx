@@ -8,7 +8,8 @@ import { getPageData } from "./(routeInfra)";
 import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import SkillTypologyCallout from "./subComponents/SkillTypologyCallout";
 import SkillPropertiesDisplay from "./subComponents/SkillPropertiesDisplay";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -30,6 +31,7 @@ export default async function Skill({ params }: SkillProps) {
 			banner={skillData.bannerUrl}
 			icon={skillData.iconUrl}
 			borderColor={borderColor}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Skill"}
 				data={skillData}

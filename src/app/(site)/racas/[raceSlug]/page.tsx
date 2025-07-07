@@ -14,7 +14,8 @@ import {
 } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import { NotionQuoteList } from "@/components/(UTILS)";
-import { SetCurrentPageData } from "@/components/(UTILS)/components/SetCurrentPageData";
+import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import { FavoriteButton } from "@/components/(SPECIAL)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -48,6 +49,7 @@ export default async function Race({ params }: RaceProps) {
 			title={`Raça - ${raceData.name}`}
 			banner={raceData.bannerUrl}
 			icon={raceData.iconUrl}>
+			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
 				type={"Race"}
 				data={raceData}

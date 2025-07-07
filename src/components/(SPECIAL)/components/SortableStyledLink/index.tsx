@@ -1,3 +1,5 @@
+"use client";
+
 import { StyledLink, StyledLinkProps } from "@/components/(Design)";
 import { DragButton, SortableLinkContainer } from "./styledElements";
 import { useSortable } from "@dnd-kit/sortable";
