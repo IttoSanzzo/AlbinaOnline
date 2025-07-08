@@ -1,0 +1,42 @@
+.dropdownItem {
+	border-radius: var(--rd-sm);
+	background-color: transparent;
+	padding: 3px 5px;
+	color: var(--cl-gray-200);
+
+	&:hover {
+		background-color: var(--cl-gray-600);
+	}
+
+	&:focus {
+		background-color: var(--cl-gray-600);
+		outline: none;
+	}
+}
+
+.itemPartsContainer {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	padding-right: 2px;
+}
+.itemIcon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: var(--fs-md);
+}
+.itemMainContainer {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	justify-content: space-between;
+
+	font-size: var(--fs-sm);
+}
+.itemLeftHand {
+	display: flex;
+}
+.itemRightHand {
+	display: flex;
+}

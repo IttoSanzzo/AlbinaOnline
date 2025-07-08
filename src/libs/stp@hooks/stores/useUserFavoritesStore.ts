@@ -10,6 +10,7 @@ interface FavoritesState {
 	setFavorites: (favorites: userFavoritesGrouped | null) => void;
 	setIsLoading: (loading: boolean) => void;
 	reloadFavorites: () => Promise<void>;
+	clearFavorites: () => void;
 }
 
 export const useUserFavoritesStore = create<FavoritesState>((set) => ({
@@ -34,5 +35,8 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 		} finally {
 			set({ isLoading: false });
 		}
+	},
+	clearFavorites: () => {
+		set({ favorites: null, isLoading: true });
 	},
 }));

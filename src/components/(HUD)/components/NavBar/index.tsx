@@ -6,7 +6,7 @@ import {
 	ProfileButtonContainer,
 } from "./styledElements";
 import NavBarModules from "./subComponents/NavBarModules";
-import { FavoriteButton, ProfileButton } from "@/components/(SPECIAL)";
+import { ProfileButton } from "@/components/(SPECIAL)";
 
 export function NavBar() {
 	return (

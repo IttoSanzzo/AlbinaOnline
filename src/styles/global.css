@@ -38,6 +38,35 @@
 	--cl-teal-900: #134e4a;
 
 	--cl-red: #f75a68;
+	--cl-red-100: #fee2e2;
+	--cl-red-200: #fecaca;
+	--cl-red-300: #fca5a5;
+	--cl-red-400: #f87171;
+	--cl-red-500: #ef4444;
+	--cl-red-600: #dc2626;
+	--cl-red-700: #b91c1c;
+	--cl-red-800: #991b1b;
+	--cl-red-900: #7f1d1d;
+
+	--cl-violet-100: #ede9fe;
+	--cl-violet-200: #ddd6fe;
+	--cl-violet-300: #c4b5fd;
+	--cl-violet-400: #a78bfa;
+	--cl-violet-500: #8b5cf6;
+	--cl-violet-600: #7c3aed;
+	--cl-violet-700: #6d28d9;
+	--cl-violet-800: #5b21b6;
+	--cl-violet-900: #4c1d95;
+
+	--cl-mauve-100: #f3e8ff;
+	--cl-mauve-200: #e9d5ff;
+	--cl-mauve-300: #d8b4fe;
+	--cl-mauve-400: #c084fc;
+	--cl-mauve-500: #a855f7;
+	--cl-mauve-600: #9333ea;
+	--cl-mauve-700: #7e22ce;
+	--cl-mauve-800: #6b21a8;
+	--cl-mauve-900: #581c87;
 
 	/* Spaces */
 	--sp-1: 0.25rem;
@@ -89,6 +118,7 @@
 	/* Line Heights */
 	--lh-shorter: 125%;
 	--lh-short: 140%;
+	--lh-lesser: 150%;
 	--lh-base: 160%;
 	--lh-tall: 180%;
 
