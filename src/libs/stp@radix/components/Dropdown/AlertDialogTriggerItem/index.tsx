@@ -10,27 +10,30 @@ import {
 	ItemMainContainer,
 	ItemPartsContainer,
 	ItemRightHand,
-} from "../DDMenuStyledItem/styledElements";
-import externalStyles from "../DDMenuStyledItem/styles.module.css";
+} from "../Item/styledElements";
+import externalStyles from "../Item/styles.module.css";
 import styles from "./styles.module.css";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 
-interface DDMenuStyledAlertDialogTriggerProps
+interface AlertDialogTriggerItemProps
 	extends DropdownMenu.DropdownMenuItemProps {
 	iconProps: StpIconProps;
 	rightHand?: ReactNode;
 }
 
-export function DDMenuStyledAlertDialogTrigger({
+export function AlertDialogTriggerItem({
 	iconProps,
 	children,
 	rightHand,
 	className,
 	...rest
-}: DDMenuStyledAlertDialogTriggerProps) {
+}: AlertDialogTriggerItemProps) {
 	return (
 		<DropdownMenu.Item
 			className={clsx(externalStyles.dropdownItem, className)}
+			onSelect={(event) => {
+				event.preventDefault();
+			}}
 			{...rest}
 			asChild>
 			<AlertDialog.Trigger className={styles.trigger}>

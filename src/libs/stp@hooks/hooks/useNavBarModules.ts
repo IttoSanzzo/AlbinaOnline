@@ -17,19 +17,24 @@ export function useNavBarModules() {
 
 export function useSetNavBarModulesStore(
 	favoriteButton?: () => ReactNode,
-	addNewButton?: () => ReactNode,
+	contextMenuButton?: () => ReactNode,
 	options?: { resetOnUnmount?: boolean }
 ) {
-	const { modules, setModule, clearModules } = useNavBarModules();
+	const { modules, setModule, clearModules } = useNavBarModulesStore(
+		useShallow((state) => ({
+			modules: state.modules,
+			setModule: state.setModule,
+			removeModule: state.removeModule,
+			clearModules: state.clearModules,
+		}))
+	);
 	useEffect(() => {
-		if (favoriteButton && modules["FavoriteModule"] !== favoriteButton)
-			setModule("FavoriteModule", favoriteButton);
-		if (addNewButton && modules["AddNewModule"] !== addNewButton)
-			setModule("AddNewModule", addNewButton);
+		if (favoriteButton) setModule("FavoriteModule", favoriteButton);
+		if (contextMenuButton) setModule("ContextMenuModule", contextMenuButton);
 		return () => {
 			if (options?.resetOnUnmount) {
 				clearModules();
 			}
 		};
-	}, [favoriteButton, addNewButton]);
+	}, [favoriteButton, contextMenuButton]);
 }

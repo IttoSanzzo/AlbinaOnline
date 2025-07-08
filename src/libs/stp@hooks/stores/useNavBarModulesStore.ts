@@ -1,12 +1,7 @@
 import { ReactNode } from "react";
 import { create } from "zustand";
 
-export type NavBarModuleKey =
-	| "FavoriteModule"
-	| "AddNewModule"
-	| "DeleteModule"
-	| "PageOptionsModule"
-	| string;
+export type NavBarModuleKey = string | "FavoriteModule" | "ContextMenuModule";
 
 interface NavBarModulesState {
 	modules: Record<NavBarModuleKey, () => ReactNode>;

@@ -1,0 +1,27 @@
+.dropdownContent {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	margin-right: 4px;
+	width: 220px;
+	border-radius: var(--rd-md);
+	padding: 6px 6px 8px;
+
+	background-color: var(--cl-gray-800);
+	box-shadow: 0px 10px 38px -10px var(--black-2),
+		0px 10px 20px -15px var(--black-1);
+
+	animation: dropdownAnimation 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+	overflow: visible;
+}
+
+@keyframes dropdownAnimation {
+	from {
+		opacity: 0;
+		transform: translateY(5px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

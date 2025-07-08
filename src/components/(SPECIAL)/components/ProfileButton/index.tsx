@@ -6,10 +6,8 @@ import {
 	ProfileMenuTriggerButton,
 } from "./styledElements";
 import { useCurrentUser } from "@/libs/stp@hooks";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import styles from "./styles.module.css";
 import { LogoutButton } from "./subComponents/LogoutItem";
-import { DDMenuStyledItem } from "@/libs/stp@radix";
+import { DropdownMenu } from "@/libs/stp@radix";
 
 export function ProfileButton() {
 	const { user } = useCurrentUser();
@@ -31,30 +29,10 @@ export function ProfileButton() {
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
 					<DropdownMenu.Content
-						className={styles.dropdownContent}
 						side="bottom"
 						sideOffset={10}>
-						<DropdownMenu.Arrow className={styles.dropdownArrow} />
+						<DropdownMenu.Arrow />
 
-						<DropdownMenu.Item className={styles.dropdownItem}>
-							Banana
-						</DropdownMenu.Item>
-
-						<DropdownMenu.Separator className={styles.dropdownSeparator} />
-
-						<DropdownMenu.Item className={styles.dropdownItem}>
-							Abacaxiiiiiiiii
-						</DropdownMenu.Item>
-						<DropdownMenu.Item className={styles.dropdownItem}>
-							Uva
-						</DropdownMenu.Item>
-
-						<DDMenuStyledItem
-							iconProps={{ name: "Acorn", color: "blue", style: "bold" }}>
-							Teste
-						</DDMenuStyledItem>
-
-						<DropdownMenu.Separator className={styles.dropdownSeparator} />
 						<LogoutButton />
 					</DropdownMenu.Content>
 				</DropdownMenu.Portal>

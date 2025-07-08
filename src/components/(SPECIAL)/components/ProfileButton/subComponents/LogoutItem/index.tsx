@@ -1,7 +1,6 @@
 "use client";
 
-import { DDMenuStyledAlertDialogTrigger } from "@/libs/stp@radix";
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { AlertDialog, DropdownMenu } from "@/libs/stp@radix";
 import styles from "./styles.module.css";
 import { DialogButtonsContainer } from "./styledElements";
 import clsx from "clsx";
@@ -25,13 +24,10 @@ export function LogoutButton() {
 
 	return (
 		<AlertDialog.Root>
-			<DDMenuStyledAlertDialogTrigger
-				onSelect={(event) => {
-					event.preventDefault();
-				}}
+			<DropdownMenu.AlertDialogTrigger
 				iconProps={{ name: "SignOut", color: "red", style: "bold" }}>
 				Sair
-			</DDMenuStyledAlertDialogTrigger>
+			</DropdownMenu.AlertDialogTrigger>
 
 			<AlertDialog.Portal>
 				<AlertDialog.Overlay className={styles.dialogOverlay} />

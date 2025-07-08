@@ -1,13 +1,33 @@
 .navBarModulesContainer {
-	/* border: 1px solid red; */
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	gap: var(--sp-2);
-	& button {
+	& > * {
+		all: unset;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
 		margin-bottom: -3px;
-		font-size: var(--fs-md);
+		border: 0;
+		height: 25px;
+		width: 25px;
+		background-color: transparent;
+		border-radius: var(--rd-full);
+
+		transition: 0.15s ease-in-out background-color;
+		&:hover {
+			background-color: var(--cl-gray-600);
+		}
+	}
+	& button {
 		background: transparent;
 		border: 0;
+		cursor: pointer;
+	}
+
+	& *:global(.moduleTriggerButton) {
+		font-size: 0;
+		outline: unset;
 	}
 }

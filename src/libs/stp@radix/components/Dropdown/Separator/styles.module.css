@@ -1,0 +1,5 @@
+.dropdownSeparator {
+	background-color: var(--cl-gray-500);
+	height: 1px;
+	margin: 5px;
+}

@@ -13,18 +13,18 @@ import {
 	ItemRightHand,
 } from "./styledElements";
 
-interface DDMenuStyledItemProps extends DropdownMenu.DropdownMenuItemProps {
+interface ItemProps extends DropdownMenu.DropdownMenuItemProps {
 	iconProps: StpIconProps;
 	rightHand?: ReactNode;
 }
 
-export function DDMenuStyledItem({
+export function Item({
 	iconProps,
 	children,
 	rightHand,
 	className,
 	...rest
-}: DDMenuStyledItemProps) {
+}: ItemProps) {
 	return (
 		<DropdownMenu.Item
 			className={clsx(styles.dropdownItem, className)}
