@@ -20,6 +20,7 @@
 
 		border: none;
 		background-color: transparent;
+
 		color: var(--cl-gray-100);
 	}
 }
@@ -34,6 +35,10 @@
 	&:-webkit-autofill {
 		border-radius: var(--rd-sm) !important;
 	}
+}
+
+.passwordInputContainer:has(.passwordInputField:-webkit-autofill) .toggleIcon {
+	color: var(--cl-gray-900);
 }
 
 .passwordInputLabel {

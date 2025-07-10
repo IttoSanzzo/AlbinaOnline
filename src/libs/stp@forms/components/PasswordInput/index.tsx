@@ -65,6 +65,7 @@ export function PasswordInput({
 				/>
 				<PasswordToggleField.Toggle className={styles.toggleButton}>
 					<PasswordToggleField.Icon
+						className={styles.toggleIcon}
 						width={18}
 						height={18}
 						visible={<EyeOpenIcon />}
