@@ -129,6 +129,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 	return (
 		<RegisterFormContainer onSubmit={handleSubmit(onSubmit)}>
 			<HookedForm.TextInput
+				autoComplete="username"
 				label="Usuário *"
 				errorMessage={errors.username ? errors.username.message : undefined}
 				field={register("username")}
@@ -146,7 +147,8 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 				field={register("email")}
 				placeholder="email@exemplo.com"
 			/>
-			<HookedForm.TextInput
+			<HookedForm.PasswordInput
+				autoComplete="current-password"
 				label="Senha *"
 				errorMessage={errors.password ? errors.password.message : undefined}
 				field={register("password")}
