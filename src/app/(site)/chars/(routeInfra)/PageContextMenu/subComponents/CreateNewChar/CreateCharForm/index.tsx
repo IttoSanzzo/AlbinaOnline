@@ -4,22 +4,11 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormContainer } from "./styledElements";
-import { Select } from "@/libs/stp@radix";
-import {
-	CheckIcon,
-	ChevronDownIcon,
-	ChevronUpIcon,
-} from "@radix-ui/react-icons";
-import Image from "next/image";
-
-type RaceOption = {
-	name: string;
-	slug: string;
-	iconUrl: string;
-};
+import { HookedForm, SelectWithIconOption } from "@/libs/stp@forms";
+import { RaceData } from "@/libs/stp@types";
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),
@@ -29,7 +18,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function CreateCharForm() {
-	const [raceOptions, setRaceOptions] = useState<RaceOption[]>([]);
+	const [raceOptions, setRaceOptions] = useState<SelectWithIconOption[]>([]);
 	const router = useRouter();
 	const {
 		control,
@@ -45,13 +34,21 @@ export function CreateCharForm() {
 			cache: "force-cache",
 		})
 			.then((response) => response.json())
-			.then((data: RaceOption[]) =>
-				setRaceOptions(data.sort((a, b) => a.name.localeCompare(b.name)))
+			.then((data: RaceData[]) =>
+				setRaceOptions(
+					data
+						.map((race) => ({
+							name: race.name,
+							value: race.slug,
+							icon: race.iconUrl,
+						}))
+						.sort((a, b) => a.name.localeCompare(b.name))
+				)
 			)
 			.catch((error) => console.error("Error fetching races", error));
 	}, []);
-
 	if (raceOptions.length == 0) return null;
+	console.log(raceOptions);
 
 	async function onSubmit(data: FormData) {
 		console.log(data);
@@ -59,65 +56,28 @@ export function CreateCharForm() {
 
 	return (
 		<FormContainer onSubmit={handleSubmit(onSubmit)}>
-			<div>
-				<label>name</label>
-				<input
-					{...register("name")}
-					placeholder="Nome"
-				/>
-			</div>
-			<div>
-				<label>Raça</label>
-				<Controller
-					control={control}
-					name="race"
-					render={({ field }) => (
-						<Select.Root
-							onValueChange={field.onChange}
-							value={field.value}>
-							<Select.Trigger>
-								<Select.Value placeholder="Selecione uma raça" />
-								<Select.Icon>
-									<ChevronDownIcon />
-								</Select.Icon>
-							</Select.Trigger>
+			<HookedForm.TextInput
+				label="Nome"
+				field={register("name")}
+				errorMessage={errors.name?.message}
+				fontSize="lg"
+				textCentered
+			/>
+			<HookedForm.SelectWithIcon
+				control={control}
+				fieldName="race"
+				label="Raça"
+				errorMessage={errors.race?.message}
+				placeholder="Selecione uma raça"
+				options={raceOptions}
+			/>
+			<HookedForm.Space height={3} />
 
-							<Select.Portal>
-								<Select.Content>
-									<Select.ScrollUpButton>
-										<ChevronUpIcon />
-									</Select.ScrollUpButton>
-
-									<Select.Viewport>
-										{raceOptions.map((race) => (
-											<Select.Item
-												key={race.slug}
-												value={race.slug}>
-												{race.iconUrl && (
-													<Image
-														src={race.iconUrl}
-														alt=""
-														width={12}
-														height={12}
-													/>
-												)}
-												<Select.ItemText>{race.name}</Select.ItemText>
-												<Select.ItemIndicator>
-													<CheckIcon />
-												</Select.ItemIndicator>
-											</Select.Item>
-										))}
-									</Select.Viewport>
-
-									<Select.ScrollDownButton>
-										<ChevronDownIcon />
-									</Select.ScrollDownButton>
-								</Select.Content>
-							</Select.Portal>
-						</Select.Root>
-					)}
-				/>
-			</div>
+			<HookedForm.SubmitButton
+				label="Criar"
+				color="green"
+			/>
+			<HookedForm.SimpleMessage color="red" />
 		</FormContainer>
 	);
 }

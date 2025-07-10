@@ -8,19 +8,27 @@
 
 	--cl-gray-100: #e1e1e6;
 	--cl-gray-200: #a9a9b2;
+	--cl-gray-300: #8e8e9a;
 	--cl-gray-400: #7c7c8a;
 	--cl-gray-500: #505059;
 	--cl-gray-600: #323238;
 	--cl-gray-700: #29292e;
 	--cl-gray-800: #202024;
 	--cl-gray-900: #121214;
+
+	--cl-green-100: #ccfbe6;
+	--cl-green-200: #99f2cc;
 	--cl-green-300: #00b27e;
+	--cl-green-400: #009e72;
 	--cl-green-500: #00875f;
+	--cl-green-600: #02704d;
 	--cl-green-700: #015f43;
+	--cl-green-800: #01432f;
 	--cl-green-900: #00291d;
 
 	--cl-blue-100: #dbeafe;
 	--cl-blue-200: #93c5fd;
+	--cl-blue-300: #60a5fa;
 	--cl-blue-400: #3b82f6;
 	--cl-blue-500: #2563eb;
 	--cl-blue-600: #1d4ed8;
@@ -37,7 +45,6 @@
 	--cl-teal-800: #115e59;
 	--cl-teal-900: #134e4a;
 
-	--cl-red: #f75a68;
 	--cl-red-100: #fee2e2;
 	--cl-red-200: #fecaca;
 	--cl-red-300: #fca5a5;
@@ -116,6 +123,7 @@
 	--fw-bold: 700;
 
 	/* Line Heights */
+	--lh-really-short: 80%;
 	--lh-shorter: 125%;
 	--lh-short: 140%;
 	--lh-lesser: 150%;

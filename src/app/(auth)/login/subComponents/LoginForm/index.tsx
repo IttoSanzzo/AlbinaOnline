@@ -1,15 +1,14 @@
 "use client";
 
 import { z } from "zod";
-import { LoginFailed, LoginFormContainer } from "./styledElements";
+import { LoginFormContainer } from "./styledElements";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormInput } from "./subComponents/LoginFormInput";
-import { LoginButton } from "./subComponents/LoginFormInput/styledElements";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { isEmail } from "@/utils/StringUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { HookedForm } from "@/libs/stp@forms";
 
 const schema = z.object({
 	usernameOrEmail: z.string().min(1, "Insira o usuário."),
@@ -56,7 +55,7 @@ interface LoginFormProps {
 	redirectTo?: string;
 }
 export function LoginForm({ redirectTo }: LoginFormProps) {
-	const [loginCurrentMessage, setLoginCurrentMessage] = useState<string>("");
+	const [loginCurrentMessage, setLoginCurrentMessage] = useState<string>(" ");
 	const router = useRouter();
 
 	const {
@@ -85,33 +84,33 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 	}
 
 	return (
-		<LoginFormContainer onSubmit={handleSubmit(onSubmit)}>
-			<LoginFormInput
-				title="Usuário ou Email *"
+		<LoginFormContainer
+			onSubmit={handleSubmit(onSubmit)}
+			autoComplete="on">
+			<HookedForm.TextInput
+				autoComplete="username"
+				label="Usuário ou Email *"
 				errorMessage={
 					errors.usernameOrEmail ? errors.usernameOrEmail.message : undefined
 				}
 				field={register("usernameOrEmail")}
 				placeholder="Usuário ou Email"
 			/>
-			<LoginFormInput
-				title="Senha *"
+			<HookedForm.PasswordInput
+				autoComplete="current-password"
+				label="Senha *"
 				errorMessage={errors.password ? errors.password.message : undefined}
 				field={register("password")}
 				placeholder="Senha"
 			/>
-			<LoginButton
-				type="submit"
-				children="Log In"
+			<HookedForm.Space />
+			<HookedForm.SubmitButton
+				label="Log In"
 				disabled={isSubmitting}
 			/>
-			<LoginFailed
-				children={loginCurrentMessage}
-				style={
-					loginCurrentMessage == "Login Bem Sucedido!"
-						? { color: "green" }
-						: undefined
-				}
+			<HookedForm.SimpleMessage
+				message={loginCurrentMessage}
+				color={loginCurrentMessage == "Login Bem Sucedido!" ? "green" : "red"}
 			/>
 		</LoginFormContainer>
 	);

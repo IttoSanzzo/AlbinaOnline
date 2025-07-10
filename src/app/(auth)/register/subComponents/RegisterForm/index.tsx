@@ -1,14 +1,13 @@
 "use client";
 
 import { z } from "zod";
-import { RegisterFailed, RegisterFormContainer } from "./styledElements";
+import { RegisterFormContainer } from "./styledElements";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterFormInput } from "./subComponents/RegisterFormInput";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { RegisterButton } from "./styledElements";
+import { HookedForm } from "@/libs/stp@forms";
 
 const nicknameInvalidRegex = /[\p{C}]/u;
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -129,41 +128,38 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 
 	return (
 		<RegisterFormContainer onSubmit={handleSubmit(onSubmit)}>
-			<RegisterFormInput
-				title="Usuário *"
+			<HookedForm.TextInput
+				label="Usuário *"
 				errorMessage={errors.username ? errors.username.message : undefined}
 				field={register("username")}
 				placeholder="usuario-exemplar"
 			/>
-			<RegisterFormInput
-				title="Nome *"
+			<HookedForm.TextInput
+				label="Nome *"
 				errorMessage={errors.nickname ? errors.nickname.message : undefined}
 				field={register("nickname")}
 				placeholder="Nome Exemplar"
 			/>
-			<RegisterFormInput
-				title="Email *"
+			<HookedForm.TextInput
+				label="Email *"
 				errorMessage={errors.email ? errors.email.message : undefined}
 				field={register("email")}
 				placeholder="email@exemplo.com"
 			/>
-			<RegisterFormInput
-				title="Senha *"
+			<HookedForm.TextInput
+				label="Senha *"
 				errorMessage={errors.password ? errors.password.message : undefined}
 				field={register("password")}
 				placeholder="Senha1234"
 			/>
-			<RegisterButton
-				type="submit"
-				children="Sign Up"
+			<HookedForm.SubmitButton
+				label="Sign Up"
 				disabled={isSubmitting}
 			/>
-			<RegisterFailed
-				children={registerCurrentMessage}
-				style={
-					registerCurrentMessage == "Cadastro Bem Sucedido!"
-						? { color: "green" }
-						: undefined
+			<HookedForm.SimpleMessage
+				message={registerCurrentMessage}
+				color={
+					registerCurrentMessage == "Cadastro Bem Sucedido!" ? "green" : "red"
 				}
 			/>
 		</RegisterFormContainer>

@@ -1,0 +1,32 @@
+.simpleMessageContainer {
+	color: var(--cl-gray-100);
+	text-align: center;
+	margin-top: var(--sp-1);
+	font-size: var(--fs-xs);
+	height: var(--fs-xs);
+	background-color: transparent;
+}
+
+.simpleMessageContainer {
+	&:global(.gray) {
+		color: var(--cl-gray-500);
+	}
+	&:global(.green) {
+		color: var(--cl-green-500);
+	}
+	&:global(.red) {
+		color: var(--cl-red-500);
+	}
+	&:global(.teal) {
+		color: var(--cl-teal-500);
+	}
+	&:global(.blue) {
+		color: var(--cl-blue-500);
+	}
+	&:global(.violet) {
+		color: var(--cl-violet-500);
+	}
+	&:global(.mauve) {
+		color: var(--cl-mauve-500);
+	}
+}

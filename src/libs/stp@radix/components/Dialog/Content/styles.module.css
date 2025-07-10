@@ -7,15 +7,19 @@
 	width: 90vw;
 	max-width: 500px;
 	max-height: 85vh;
-	padding: 10px;
+	padding: 18px;
+	border: 1px solid var(--cl-gray-600);
 	border-radius: var(--rd-md);
 
 	background-color: var(--cl-gray-800);
-	box-shadow: 0px 10px 38px -10px var(--black-2),
-		0px 10px 20px -15px var(--black-1);
+	box-shadow: 0 0 30px var(--cl-gray-700);
 
 	animation: contentShow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 	overflow: visible;
+
+	&:focus {
+		outline: none;
+	}
 }
 
 @keyframes contentShow {
