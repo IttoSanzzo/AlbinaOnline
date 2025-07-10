@@ -1,5 +1,5 @@
 .sideBarActivationArea {
-	z-index: 10;
+	/* z-index: 10; */
 	position: fixed;
 	max-height: 100vh;
 	background-color: transparent;
