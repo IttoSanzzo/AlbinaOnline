@@ -57,6 +57,7 @@ export function PasswordInput({
 					<PasswordInputError>{errorMessage}</PasswordInputError>
 				)}
 				<PasswordToggleField.Input
+					autoCapitalize="none"
 					className={styles.passwordInputField}
 					style={inputStyle}
 					{...field}
