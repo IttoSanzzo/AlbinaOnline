@@ -4,7 +4,7 @@ import { NotionGridList } from "@/components/(UTILS)";
 import { SetNavBarModules } from "@/libs/stp@hooks";
 import { CharacterSimpleData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
-import { PageContextMenu } from "./(routeInfra)/PageContextMenu";
+import { routeInfra } from "./(routeInfra)";
 
 export default async function Characters() {
 	// const response = await fetch(`${process.env.ALBINA_API}/chars`, {
@@ -20,7 +20,7 @@ export default async function Characters() {
 			title="Todos os Chars"
 			icon={`${process.env.ALBINA_API}/favicon/core-page/characters`}
 			banner={`${process.env.ALBINA_API}/banner/core-page/characters`}>
-			<SetNavBarModules contextMenuButton={PageContextMenu} />
+			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
 
 			<StyledOwnedLinkCard
 				ownerId="33bc8235-6ca5-4bf2-ad29-c09dd52019c5"

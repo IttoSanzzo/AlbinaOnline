@@ -1,3 +1,34 @@
-.dialogContent {
-	/* z-index: 20; */
+.alertDialogContent {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	width: 90vw;
+	max-width: 500px;
+	max-height: 85vh;
+	padding: 18px;
+	border: 1px solid var(--cl-gray-600);
+	border-radius: var(--rd-md);
+
+	background-color: var(--cl-gray-800);
+	box-shadow: 0 0 30px var(--cl-gray-700);
+
+	animation: contentShow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+	overflow: visible;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: translate(-50%, -48%) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
 }

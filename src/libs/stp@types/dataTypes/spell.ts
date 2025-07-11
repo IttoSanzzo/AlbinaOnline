@@ -17,7 +17,7 @@ export type SpellProperties = {
 };
 
 export type SpellData = {
-	id: number;
+	id: string;
 	slug: string;
 	name: string;
 	type: string;

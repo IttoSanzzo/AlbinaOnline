@@ -10,9 +10,19 @@ export default function NavBarModules() {
 	return (
 		<NavBarModulesContainer>
 			{Object.entries(modules).map(([key, componentFactory]) =>
-				componentFactory ? (
+				["FavoriteModule", "ContextMenuModule"].includes(key) == false ? (
 					<div key={key}>{React.createElement(componentFactory)}</div>
 				) : null
+			)}
+			{modules.FavoriteModule && (
+				<div key={"FavoriteModule"}>
+					{React.createElement(modules.FavoriteModule)}
+				</div>
+			)}
+			{modules.ContextMenuModule && (
+				<div key={"ContextMenuModule"}>
+					{React.createElement(modules.ContextMenuModule)}
+				</div>
 			)}
 		</NavBarModulesContainer>
 	);

@@ -25,3 +25,13 @@
 		transform: translateY(0);
 	}
 }
+
+.fallback {
+	font-size: var(--fs-sm);
+	text-align: center;
+	color: var(--cl-gray-300);
+}
+
+.dropdownContent:has(:nth-child(3)) .fallback {
+	display: none;
+}

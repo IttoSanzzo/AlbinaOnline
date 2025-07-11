@@ -1,14 +1,19 @@
 import { GenericPageContainer } from "@/components/(Design)";
-import { getPageData } from "./(routeInfra)";
 import { CharacterFullData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import {
+	SetCurrentCharacterAccessLevel,
+	SetCurrentPageData,
+	SetNavBarModules,
+} from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
+import { routeInfra } from "./(routeInfra)";
 
-export { generateStaticParams, generateMetadata } from "./(routeInfra)";
+export const generateMetadata = routeInfra.generateMetadata;
+export const generateStaticParams = routeInfra.generateStaticParams;
 
 const characterData: CharacterFullData = {
-	id: "09d648f2-f676-418b-b5c2-9280e657ecf9",
+	id: "f93b238f-eef4-49d2-8c5b-3caabbe3264e",
 	ownerId: "33bc8235-6ca5-4bf2-ad29-c09dd52019c5",
 	name: "Teste",
 	iconUrl: `${getAlbinaApiAddress()}/chars/09d648f2-f676-418b-b5c2-9280e657ecf9/favicon`,
@@ -32,12 +37,15 @@ export default async function Character({ params }: CharacterPageProps) {
 			banner={characterData.bannerUrl}
 			icon={characterData.iconUrl}
 			borderColor={"#505059"}>
-			<SetNavBarModules favoriteButton={FavoriteButton} />
-			{""}
+			<SetNavBarModules
+				contextMenuButton={routeInfra.PageContextMenu}
+				favoriteButton={FavoriteButton}
+			/>
 			<SetCurrentPageData
 				type={"Character"}
 				data={characterData}
 			/>
+			<SetCurrentCharacterAccessLevel characterId={characterData.id} />
 		</GenericPageContainer>
 	);
 }

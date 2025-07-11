@@ -33,7 +33,6 @@ async function tryRefresh(): Promise<boolean> {
 		})
 			.then((response) => {
 				if (response.status !== 200) {
-					console.log("SO THIS IS IT.");
 					if (typeof window !== "undefined") {
 						const loginPageLink = `/login?redirectTo=${window.location.pathname}`;
 						window.location.href = loginPageLink;

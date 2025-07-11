@@ -22,7 +22,7 @@ export type RaceGenerals = {
 export type RaceParameters = Parameters;
 
 export type RaceData = {
-	id: number;
+	id: string;
 	slug: string;
 	name: string;
 	type: string;

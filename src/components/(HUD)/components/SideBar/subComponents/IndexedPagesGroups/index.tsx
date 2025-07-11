@@ -44,6 +44,17 @@ export default function IndexedPagesGroups() {
 				image: favorite.target.iconUrl,
 			};
 		});
+	const getNonSluggedFavoriteSortableIndexedPage = (
+		endpoint: string,
+		favoriteList: any
+	): SortableIndexedPage[] =>
+		favoriteList.map((favorite: any): SortableIndexedPage => {
+			return {
+				name: favorite.target.name,
+				link: `${endpoint}/${favorite.target.id}`,
+				image: favorite.target.iconUrl,
+			};
+		});
 
 	return (
 		<IndexedPagesGroupsContainer>
@@ -53,7 +64,7 @@ export default function IndexedPagesGroups() {
 				<SortableIndexedPagesGroup
 					groupName="Chars Fav."
 					groupType="Character"
-					indexedPages={getSluggedFavoriteSortableIndexedPage(
+					indexedPages={getNonSluggedFavoriteSortableIndexedPage(
 						"/chars",
 						favorites.Character
 					)}

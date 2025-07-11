@@ -13,6 +13,7 @@ export function PageBanner({ src }: PageBannerProps) {
 				alt="Page's banner"
 				width={1720}
 				height={260}
+				priority={true}
 			/>
 		</PageBannerContainer>
 	);

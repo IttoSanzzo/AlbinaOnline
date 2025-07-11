@@ -16,7 +16,7 @@ export type SkillProperties = {
 };
 
 export type SkillData = {
-	id: number;
+	id: string;
 	slug: string;
 	name: string;
 	type: string;

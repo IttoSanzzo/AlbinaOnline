@@ -1,8 +1,5 @@
 import * as SelectRadix from "@radix-ui/react-select";
 
-import {} from "./";
-import { ItemIndicator } from "@radix-ui/react-dropdown-menu";
-
 export const Select = {
 	Root: SelectRadix.Root,
 	Trigger: SelectRadix.Trigger,

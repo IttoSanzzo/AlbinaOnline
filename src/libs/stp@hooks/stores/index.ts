@@ -10,3 +10,5 @@ export { useAnchorNavigationStore } from "./useAnchorNavigationStore";
 
 export { useNavBarModulesStore } from "./useNavBarModulesStore";
 export type { NavBarModuleKey } from "./useNavBarModulesStore";
+
+export { useCurrentCharacterAccessLevelStore } from "./useCurrentCharacterAccessLevelStore";

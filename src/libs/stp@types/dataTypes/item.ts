@@ -14,7 +14,7 @@ export type ItemProperties = {
 };
 
 export type ItemData = {
-	id: number;
+	id: string;
 	slug: string;
 	name: string;
 	type: string;

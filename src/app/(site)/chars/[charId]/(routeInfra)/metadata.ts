@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getPageData } from ".";
+import { routeInfra } from ".";
 
 export async function generateMetadata({
 	params,
@@ -7,7 +7,7 @@ export async function generateMetadata({
 	params: Promise<{ itemSlug: string }>;
 }): Promise<Metadata> {
 	const { itemSlug } = await params;
-	const itemPageData = await getPageData(itemSlug);
+	const itemPageData = await routeInfra.getPageData(itemSlug);
 	// if (itemPageData.itemData == undefined) {
 	// return { title: "Not Found" };
 	// }

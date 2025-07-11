@@ -12,4 +12,9 @@ export {
 	useSetAnchorNavigation,
 } from "./useAnchorNavigation";
 
-export { useNavBarModules } from "./useNavBarModules";
+export { useNavBarModules, useSetNavBarModules } from "./useNavBarModules";
+
+export {
+	useCurrentCharacterAccessLevel,
+	useSetCurrentCharacterAccessLevel,
+} from "./useCurentCharacterAccessLevel";

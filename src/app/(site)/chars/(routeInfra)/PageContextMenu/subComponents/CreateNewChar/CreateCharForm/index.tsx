@@ -9,15 +9,17 @@ import { z } from "zod";
 import { FormContainer } from "./styledElements";
 import { HookedForm, SelectWithIconOption } from "@/libs/stp@forms";
 import { RaceData } from "@/libs/stp@types";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),
-	race: z.string().min(1, "Insira uma raça!"),
+	raceId: z.string().min(1, "Insira uma raça!"),
 });
 
 type FormData = z.infer<typeof schema>;
 
 export function CreateCharForm() {
+	const [responseMessage, setResponseMessage] = useState<string>("");
 	const [raceOptions, setRaceOptions] = useState<SelectWithIconOption[]>([]);
 	const router = useRouter();
 	const {
@@ -39,7 +41,7 @@ export function CreateCharForm() {
 					data
 						.map((race) => ({
 							name: race.name,
-							value: race.slug,
+							value: race.id,
 							icon: race.iconUrl,
 						}))
 						.sort((a, b) => a.name.localeCompare(b.name))
@@ -48,10 +50,24 @@ export function CreateCharForm() {
 			.catch((error) => console.error("Error fetching races", error));
 	}, []);
 	if (raceOptions.length == 0) return null;
-	console.log(raceOptions);
 
-	async function onSubmit(data: FormData) {
-		console.log(data);
+	async function onSubmit(formData: FormData) {
+		const response = await authenticatedFetchAsync(
+			`${getAlbinaApiAddress()}/characters`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			}
+		);
+		if (response.status != 200) {
+			setResponseMessage("A criação falhou");
+			return;
+		}
+		const responseData = await response.json();
+		router.push(`/chars/${responseData.character.id}`);
 	}
 
 	return (
@@ -65,9 +81,9 @@ export function CreateCharForm() {
 			/>
 			<HookedForm.SelectWithIcon
 				control={control}
-				fieldName="race"
+				fieldName="raceId"
 				label="Raça"
-				errorMessage={errors.race?.message}
+				errorMessage={errors.raceId?.message}
 				placeholder="Selecione uma raça"
 				options={raceOptions}
 			/>
@@ -76,8 +92,12 @@ export function CreateCharForm() {
 			<HookedForm.SubmitButton
 				label="Criar"
 				color="green"
+				disabled={isSubmitting}
 			/>
-			<HookedForm.SimpleMessage color="red" />
+			<HookedForm.SimpleMessage
+				message={responseMessage}
+				color="red"
+			/>
 		</FormContainer>
 	);
 }

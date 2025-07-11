@@ -9,16 +9,17 @@ import { CSSProperties } from "react";
 interface ContentProps extends AlertDialogContentProps {
 	width?: number;
 }
-export function Content({ className, width, ...rest }: ContentProps) {
+export function Content({ className, style, width, ...rest }: ContentProps) {
 	const contentStyle: CSSProperties = {
 		...(width && {
 			width: `${width}px`,
 		}),
+		...style,
 	};
 	return (
 		<AlertDialogContent
 			style={contentStyle}
-			className={clsx(styles.dialogContent, className)}
+			className={clsx(styles.alertDialogContent, className)}
 			{...rest}
 		/>
 	);

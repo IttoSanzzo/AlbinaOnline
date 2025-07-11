@@ -8,7 +8,7 @@ export type TraitInfo = {
 };
 
 export type TraitData = {
-	id: number;
+	id: string;
 	slug: string;
 	name: string;
 	type: string;

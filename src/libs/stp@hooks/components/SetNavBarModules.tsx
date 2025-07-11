@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { useSetNavBarModulesStore } from "../hooks/useNavBarModules";
+import { useSetNavBarModules } from "../hooks";
 
 interface SetNavBarModulesProps {
 	favoriteButton?: () => ReactNode;
@@ -11,7 +11,7 @@ export function SetNavBarModules({
 	favoriteButton,
 	contextMenuButton,
 }: SetNavBarModulesProps) {
-	useSetNavBarModulesStore(favoriteButton, contextMenuButton, {
+	useSetNavBarModules(favoriteButton, contextMenuButton, {
 		resetOnUnmount: true,
 	});
 	return null;

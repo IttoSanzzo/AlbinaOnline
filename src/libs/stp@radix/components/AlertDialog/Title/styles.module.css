@@ -1,0 +1,5 @@
+.alertDialogTitle {
+	margin: 0;
+	color: var(--cl-gray-100);
+	font-size: var(--fs-3xl);
+}

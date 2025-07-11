@@ -1,15 +1,23 @@
 import * as AlertDialogRadix from "@radix-ui/react-alert-dialog";
 
+import { ButtonsContainer } from "./ButtonsContainer/index";
+import { Overlay } from "./Overlay/index";
 import { Content } from "./Content/index";
+import { Title } from "./Title/index";
+import { Description } from "./Description/index";
+import { Cancel } from "./Cancel/index";
+import { Action } from "./Action/index";
 
 export const AlertDialog = {
 	Root: AlertDialogRadix.Root,
 	Trigger: AlertDialogRadix.Trigger,
 	Portal: AlertDialogRadix.Portal,
-	Overlay: AlertDialogRadix.Overlay,
+	Overlay: Overlay,
 	Content: Content,
-	Title: AlertDialogRadix.Title,
-	Description: AlertDialogRadix.Description,
-	Cancel: AlertDialogRadix.Cancel,
-	Action: AlertDialogRadix.Action,
+	Title: Title,
+	Description: Description,
+	Cancel: Cancel,
+	Action: Action,
+
+	ButtonsContainer: ButtonsContainer,
 };

@@ -1,9 +1,6 @@
 "use client";
 
 import { AlertDialog, DropdownMenu } from "@/libs/stp@radix";
-import styles from "./styles.module.css";
-import { DialogButtonsContainer } from "./styledElements";
-import clsx from "clsx";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useRouter } from "next/navigation";
 import { resetAllStores } from "@/libs/stp@hooks";
@@ -30,25 +27,19 @@ export function LogoutButton() {
 			</DropdownMenu.AlertDialogTrigger>
 
 			<AlertDialog.Portal>
-				<AlertDialog.Overlay className={styles.dialogOverlay} />
-				<AlertDialog.Content className={styles.dialogContainer}>
-					<AlertDialog.Title className={styles.dialogTitle}>
-						Você tem certeza?
-					</AlertDialog.Title>
-					<AlertDialog.Description className={styles.dialogDescription}>
+				<AlertDialog.Overlay />
+				<AlertDialog.Content>
+					<AlertDialog.Title>Você tem certeza?</AlertDialog.Title>
+					<AlertDialog.Description>
 						Uma vez que sair, será necessário realizar login novamente para
 						acessar o site.
 					</AlertDialog.Description>
-					<DialogButtonsContainer>
-						<AlertDialog.Cancel className={clsx(styles.dialogButton)}>
-							Cancelar
-						</AlertDialog.Cancel>
-						<AlertDialog.Action
-							className={clsx(styles.dialogButton, "red")}
-							onClick={handleLogout}>
+					<AlertDialog.ButtonsContainer alignment="end">
+						<AlertDialog.Cancel>Cancelar</AlertDialog.Cancel>
+						<AlertDialog.Action onClick={handleLogout}>
 							Sair agora
 						</AlertDialog.Action>
-					</DialogButtonsContainer>
+					</AlertDialog.ButtonsContainer>
 				</AlertDialog.Content>
 			</AlertDialog.Portal>
 		</AlertDialog.Root>

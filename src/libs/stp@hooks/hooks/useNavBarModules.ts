@@ -15,7 +15,7 @@ export function useNavBarModules() {
 	);
 }
 
-export function useSetNavBarModulesStore(
+export function useSetNavBarModules(
 	favoriteButton?: () => ReactNode,
 	contextMenuButton?: () => ReactNode,
 	options?: { resetOnUnmount?: boolean }
