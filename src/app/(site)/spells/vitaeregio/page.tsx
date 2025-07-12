@@ -2,8 +2,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
-import { AnchorProps } from "@/libs/stp@hooks";
-import { SetAnchorNavigation } from "@/components/(UTILS)";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },

@@ -11,7 +11,6 @@ export interface OwnerPageLinkProps {
 export default function OwnerPageLink({ ownerId }: OwnerPageLinkProps) {
 	const router = useRouter();
 	async function handleClick() {
-		console.log("Trying it");
 		try {
 			const response = await fetch(
 				`${getAlbinaApiAddress()}/users/id/${ownerId}/username`,

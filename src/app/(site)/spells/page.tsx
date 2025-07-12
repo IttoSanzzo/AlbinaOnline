@@ -3,8 +3,8 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import AllSpellsDisplay from "./subComponents/AllSpellsDisplay";
 import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList, SetAnchorNavigation } from "@/components/(UTILS)";
-import { AnchorProps } from "@/libs/stp@hooks";
+import { NotionGridList } from "@/components/(UTILS)";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Domínios", id: "Domínios" },

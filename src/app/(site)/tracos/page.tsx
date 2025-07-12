@@ -2,8 +2,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { TraitData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import TraitTypeDisplay from "./subComponents/TraitTypeDisplay";
-import { SetAnchorNavigation } from "@/components/(UTILS)";
-import { AnchorProps } from "@/libs/stp@hooks";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Genéricas", id: "genericas" },

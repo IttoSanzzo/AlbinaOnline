@@ -2,8 +2,7 @@ import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 import { RaceData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import RaceTypeDisplay from "./subComponents/RaceTypeDisplay";
-import { SetAnchorNavigation } from "@/components/(UTILS)";
-import { AnchorProps } from "@/libs/stp@hooks";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Humanos", id: "Humanos" },

@@ -16,11 +16,10 @@ import {
 	EmptyLine,
 	NotionGridList,
 	NotionQuoteList,
-	SetAnchorNavigation,
 } from "@/components/(UTILS)";
 import { MasteryData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
-import { AnchorProps } from "@/libs/stp@hooks";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },

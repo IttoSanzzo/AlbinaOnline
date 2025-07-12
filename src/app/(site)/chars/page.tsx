@@ -1,63 +1,26 @@
 "use client";
 
-import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
+import { GenericPageContainer } from "@/components/(Design)";
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
-import { NotionGridList } from "@/components/(UTILS)";
-import { SetNavBarModules } from "@/libs/stp@hooks";
+import { Carousel, NotionGridList } from "@/components/(UTILS)";
+import {
+	SetNavBarModules,
+	useCurrentUser,
+	useUserFavorites,
+} from "@/libs/stp@hooks";
 import { CharacterSimpleData } from "@/libs/stp@types";
 import { routeInfra } from "./(routeInfra)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-
-import { useKeenSlider } from "keen-slider/react";
-import "keen-slider/keen-slider.min.css";
-import { NotionBox } from "@/components/(NotionBased)";
-
-const Carousel = ({ slides }: { slides: ReactNode[] }) => {
-	const containerRef = useRef<HTMLDivElement | null>(null);
-	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-		slideChanged: () => {
-			console.log("changed");
-		},
-		loop: true,
-		mode: "free-snap",
-		slides: {
-			perView: 3,
-		},
-	});
-
-	const combinedRef = (node: HTMLDivElement | null) => {
-		sliderRef(node);
-		containerRef.current = node;
-	};
-
-	// useEffect(() => {
-	// 	if (!containerRef.current) return;
-	// 	const resizeObserver = new ResizeObserver(() => {
-	// 		slider.current?.update();
-	// 	});
-	// 	resizeObserver.observe(containerRef.current);
-	// 	return () => resizeObserver.disconnect();
-	// }, [sliderRef]);
-
-	return (
-		<div
-			ref={combinedRef}
-			className="keen-slider">
-			{slides.map((slide, index) => (
-				<div
-					key={index}
-					className="keen-slider__slide">
-					{slide}
-				</div>
-			))}
-		</div>
-	);
-};
+import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
 
 export default function Characters() {
-	const [rawCharacters, setRawCharacters] = useState<CharacterSimpleData[]>([]);
+	const [rawCharacters, setRawCharacters] = useState<
+		CharacterSimpleData[] | null
+	>(null);
+	const { favorites, isLoading } = useUserFavorites();
+	const currentUser = useCurrentUser();
 
 	useEffect(() => {
 		authenticatedFetchAsync(`${getAlbinaApiAddress()}/chars`, {
@@ -66,9 +29,23 @@ export default function Characters() {
 			response.json().then((data) => setRawCharacters(data.characters));
 		});
 	}, [setRawCharacters]);
+	if (rawCharacters === null) return null;
 	const allCharacters: CharacterSimpleData[] = [...rawCharacters].sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
+	const allFavoriteCharacters: CharacterSimpleData[] = isLoading
+		? []
+		: favorites?.Character.flatMap((favorite) => {
+				const character = allCharacters.find(
+					(character) => character.id == favorite.target.id
+				);
+				return character ? [character] : [];
+		  }) ?? [];
+	const allUserCharacters: CharacterSimpleData[] = currentUser.loading
+		? []
+		: allCharacters.filter(
+				(character) => character.ownerId == currentUser.user?.id
+		  );
 
 	return (
 		<GenericPageContainer
@@ -77,10 +54,68 @@ export default function Characters() {
 			banner={`${getAlbinaApiAddress()}/banner/core-page/characters`}>
 			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
 
-			{/* {allCharacters.length !== 0 && (
-				<NotionBox>
-					<Carousel
-						slides={allCharacters.map((character) => (
+			{allCharacters.length !== 0 && (
+				<NotionBox
+					withoutPadding
+					backgroundColor="darkGray">
+					{allFavoriteCharacters.length !== 0 && (
+						<>
+							<NotionHeader
+								textAlign="center"
+								textColor="yellow"
+								children={"Seus Favoritos"}
+							/>
+							<NotionBox backgroundColor="yellow">
+								<Carousel
+									minWidth={150}
+									slidesSpacing={15}
+									slideChilds={allFavoriteCharacters.map((character) => (
+										<StyledOwnedLinkCard
+											key={character.id}
+											ownerId={character.ownerId}
+											href={`/chars/${character.id}`}
+											title={character.name}
+											artworkUrl={character.iconUrl}
+										/>
+									))}
+								/>
+							</NotionBox>
+						</>
+					)}
+					{allUserCharacters.length !== 0 && (
+						<>
+							<NotionHeader
+								textAlign="center"
+								textColor="purple"
+								children={"Seus Personagens"}
+							/>
+							<NotionBox backgroundColor="purple">
+								<Carousel
+									minWidth={150}
+									slidesSpacing={15}
+									slideChilds={allUserCharacters.map((character) => (
+										<StyledOwnedLinkCard
+											key={character.id}
+											ownerId={character.ownerId}
+											href={`/chars/${character.id}`}
+											title={character.name}
+											artworkUrl={character.iconUrl}
+										/>
+									))}
+								/>
+							</NotionBox>
+						</>
+					)}
+					<NotionHeader
+						textAlign="center"
+						textColor="darkGray"
+						backgroundColor="darkGray"
+						children={"Todos"}
+					/>
+					<NotionGridList
+						backgroundColor="blue"
+						minColumnWidth={150}>
+						{allCharacters.map((character) => (
 							<StyledOwnedLinkCard
 								key={character.id}
 								ownerId={character.ownerId}
@@ -90,24 +125,9 @@ export default function Characters() {
 								layout="rectangle"
 							/>
 						))}
-					/>
+					</NotionGridList>
 				</NotionBox>
-			)} */}
-
-			{/* {allCharacters.length !== 0 && (
-				<NotionGridList minColumnWidth={150}>
-					{allCharacters.map((character) => (
-						<StyledOwnedLinkCard
-							key={character.id}
-							ownerId={character.ownerId}
-							href={`/chars/${character.id}`}
-							title={character.name}
-							artworkUrl={character.iconUrl}
-							layout="rectangle"
-						/>
-					))}
-				</NotionGridList>
-			)} */}
+			)}
 		</GenericPageContainer>
 	);
 }

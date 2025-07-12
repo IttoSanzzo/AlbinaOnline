@@ -2,7 +2,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { ItemData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import ItemTypeDisplay from "./subComponents/ItemTypeDisplay";
-import { SetAnchorNavigation } from "@/components/(UTILS)";
+import { SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const anchorNavigationData = [
 	{ name: "Armamentos", id: "armamentos" },

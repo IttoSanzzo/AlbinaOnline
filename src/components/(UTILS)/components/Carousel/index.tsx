@@ -1,0 +1,57 @@
+import { CSSProperties, ReactNode } from "react";
+import { KeenSliderOptions, useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import { CarouselContainer, SlideContainer } from "./styledElements";
+
+interface CarouselProps extends KeenSliderOptions {
+	slideChilds: ReactNode[];
+	minWidth?: number;
+	loop?: boolean;
+	mode?: "free" | "free-snap" | "snap";
+	slidesPerView?: number | "auto";
+	slidesSpacing?: number;
+	slidesNumber?: number;
+	slidesOrigin?: number | "auto" | "center" | undefined;
+}
+export function Carousel({
+	slideChilds,
+	minWidth,
+	loop = true,
+	mode = "free-snap",
+	slidesPerView = "auto",
+	slidesSpacing,
+	slidesNumber,
+	slidesOrigin,
+	...rest
+}: CarouselProps) {
+	const [sliderRef] = useKeenSlider<HTMLDivElement>({
+		loop,
+		mode,
+		slides: {
+			perView: slidesPerView,
+			spacing: slidesSpacing,
+			number: slidesNumber,
+			origin: slidesOrigin,
+		},
+		...rest,
+	});
+
+	const slideStyle: CSSProperties = {
+		...(minWidth && { minWidth: `${minWidth}px` }),
+	};
+
+	return (
+		<CarouselContainer
+			ref={sliderRef}
+			className="keen-slider">
+			{slideChilds.map((slide, index) => (
+				<SlideContainer
+					key={index}
+					className="keen-slider__slide"
+					style={slideStyle}>
+					{slide}
+				</SlideContainer>
+			))}
+		</CarouselContainer>
+	);
+}
