@@ -10,10 +10,13 @@ import {
 import albinaLogo from "@/../public/AlbinaLogo.png";
 import Link from "next/link";
 import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
+import { DataInitComplete } from "./subComponents/DataInitComplete";
 
-export function SideBar() {
+export async function SideBar() {
 	return (
-		<SideBarActivationArea>
+		<>
+			<DataInitComplete />
+			<SideBarActivationArea />
 			<SideBarContainer>
 				<HeaderContainer>
 					<Link href={"/home"}>
@@ -58,6 +61,6 @@ export function SideBar() {
 					</footer>
 				</FooterContainer>
 			</SideBarContainer>
-		</SideBarActivationArea>
+		</>
 	);
 }

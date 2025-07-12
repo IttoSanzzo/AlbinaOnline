@@ -1,96 +1,113 @@
+"use client";
+
 import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
 import { NotionGridList } from "@/components/(UTILS)";
 import { SetNavBarModules } from "@/libs/stp@hooks";
 import { CharacterSimpleData } from "@/libs/stp@types";
-import { getCacheMode } from "@/utils/Cache";
 import { routeInfra } from "./(routeInfra)";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
-export default async function Characters() {
-	// const response = await fetch(`${process.env.ALBINA_API}/chars`, {
-	// 	cache: await getCacheMode(),
-	// });
-	// const allRawCharacters: CharacterSimpleData[] = await response.json();
-	// const allCharacters: CharacterSimpleData[] = allRawCharacters.sort((a, b) =>
-	// 	a.name.localeCompare(b.name)
-	// );
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import { NotionBox } from "@/components/(NotionBased)";
+
+const Carousel = ({ slides }: { slides: ReactNode[] }) => {
+	const containerRef = useRef<HTMLDivElement | null>(null);
+	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+		slideChanged: () => {
+			console.log("changed");
+		},
+		loop: true,
+		mode: "free-snap",
+		slides: {
+			perView: 3,
+		},
+	});
+
+	const combinedRef = (node: HTMLDivElement | null) => {
+		sliderRef(node);
+		containerRef.current = node;
+	};
+
+	// useEffect(() => {
+	// 	if (!containerRef.current) return;
+	// 	const resizeObserver = new ResizeObserver(() => {
+	// 		slider.current?.update();
+	// 	});
+	// 	resizeObserver.observe(containerRef.current);
+	// 	return () => resizeObserver.disconnect();
+	// }, [sliderRef]);
+
+	return (
+		<div
+			ref={combinedRef}
+			className="keen-slider">
+			{slides.map((slide, index) => (
+				<div
+					key={index}
+					className="keen-slider__slide">
+					{slide}
+				</div>
+			))}
+		</div>
+	);
+};
+
+export default function Characters() {
+	const [rawCharacters, setRawCharacters] = useState<CharacterSimpleData[]>([]);
+
+	useEffect(() => {
+		authenticatedFetchAsync(`${getAlbinaApiAddress()}/chars`, {
+			cache: "no-cache",
+		}).then((response) => {
+			response.json().then((data) => setRawCharacters(data.characters));
+		});
+	}, [setRawCharacters]);
+	const allCharacters: CharacterSimpleData[] = [...rawCharacters].sort((a, b) =>
+		a.name.localeCompare(b.name)
+	);
 
 	return (
 		<GenericPageContainer
 			title="Todos os Chars"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/characters`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/characters`}>
+			icon={`${getAlbinaApiAddress()}/favicon/core-page/characters`}
+			banner={`${getAlbinaApiAddress()}/banner/core-page/characters`}>
 			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
 
-			<StyledOwnedLinkCard
-				ownerId="33bc8235-6ca5-4bf2-ad29-c09dd52019c5"
-				href={"/chars/teste"}
-				title="Hirone Sanzzo"
-				artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-				// layout="rectangle"
-			/>
-			<NotionGridList minColumnWidth={150}>
-				<StyledLinkCard
-					href={""}
-					title="Hirone Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Itto Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Katrina Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/175269519?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Katrina Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/175269519?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Hirone Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Hirone Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Itto Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Katrina Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/175269519?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Katrina Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/175269519?v=4"}
-					layout="rectangle"
-				/>
-				<StyledLinkCard
-					href={""}
-					title="Hirone Sanzzo"
-					artworkUrl={"https://avatars.githubusercontent.com/u/106534001?v=4"}
-					// layout="rectangle"
-				/>
-			</NotionGridList>
+			{/* {allCharacters.length !== 0 && (
+				<NotionBox>
+					<Carousel
+						slides={allCharacters.map((character) => (
+							<StyledOwnedLinkCard
+								key={character.id}
+								ownerId={character.ownerId}
+								href={`/chars/${character.id}`}
+								title={character.name}
+								artworkUrl={character.iconUrl}
+								layout="rectangle"
+							/>
+						))}
+					/>
+				</NotionBox>
+			)} */}
+
+			{/* {allCharacters.length !== 0 && (
+				<NotionGridList minColumnWidth={150}>
+					{allCharacters.map((character) => (
+						<StyledOwnedLinkCard
+							key={character.id}
+							ownerId={character.ownerId}
+							href={`/chars/${character.id}`}
+							title={character.name}
+							artworkUrl={character.iconUrl}
+							layout="rectangle"
+						/>
+					))}
+				</NotionGridList>
+			)} */}
 		</GenericPageContainer>
 	);
 }

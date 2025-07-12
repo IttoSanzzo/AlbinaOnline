@@ -22,7 +22,7 @@ export interface StyledLinkCardProps {
 	size?: number;
 	layout?: "square" | "rectangle";
 }
-export async function StyledLinkCard({
+export function StyledLinkCard({
 	href,
 	title,
 	artworkUrl,

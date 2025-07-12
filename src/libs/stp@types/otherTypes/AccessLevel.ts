@@ -5,4 +5,5 @@ export enum AccessLevel {
 	Edit,
 	CoOwner,
 	Owner,
+	Admin,
 }

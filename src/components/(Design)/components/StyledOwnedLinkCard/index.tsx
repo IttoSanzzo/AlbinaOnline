@@ -11,7 +11,7 @@ import OwnerPageLink, {
 interface StyledOwnedLinkCardProps
 	extends StyledLinkCardProps,
 		OwnerPageLinkProps {}
-export async function StyledOwnedLinkCard({
+export function StyledOwnedLinkCard({
 	ownerId,
 	size = 150,
 	...rest

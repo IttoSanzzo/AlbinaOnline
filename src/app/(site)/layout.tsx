@@ -13,13 +13,15 @@ const PageContainer = newStyledElement.div(styles.pageContainer);
 
 export default function Layout({ children }: LayoutProps) {
 	return (
-		<GlobalContainer>
-			<MainContainer>
-				<NavBar />
-				<PageContainer>{children}</PageContainer>
-			</MainContainer>
-			<SideBar />
+		<>
+			<GlobalContainer>
+				<MainContainer>
+					<NavBar />
+					<PageContainer>{children}</PageContainer>
+				</MainContainer>
+				<SideBar />
+			</GlobalContainer>
 			<AnchorNavBar />
-		</GlobalContainer>
+		</>
 	);
 }

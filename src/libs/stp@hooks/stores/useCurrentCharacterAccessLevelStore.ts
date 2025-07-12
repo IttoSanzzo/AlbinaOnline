@@ -29,10 +29,10 @@ export const useCurrentCharacterAccessLevelStore =
 					}
 				);
 				if (!response.ok) throw new Error("Not authenticated");
-				const data: { accessLevel: string } = await response.json();
+				const data: { accessLevel: keyof typeof AccessLevel } =
+					await response.json();
 				set({
-					accessLevel:
-						AccessLevel[data.accessLevel as keyof typeof AccessLevel],
+					accessLevel: AccessLevel[data.accessLevel],
 				});
 			} catch {
 				set({ accessLevel: AccessLevel.None });

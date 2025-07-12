@@ -1,25 +1,30 @@
 .globalContainer {
+	position: fixed;
 	display: flex;
-	flex-direction: row;
+	flex-direction: row-reverse;
+	width: 100vw;
+	height: 100vh;
 }
 
 .mainContainer {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 	margin-left: 0;
-	height: 100%;
-	transition: 0.25s ease-out margin;
-}
-@media (max-width: 480px) {
-	.mainContainer {
-		margin-left: 0;
-	}
-}
-:root[data-active-sidebar="true"] .mainContainer {
-	margin-left: var(--sp-52);
+	width: 100%;
 }
 
+/* @media (max-width: 480px) { */
+/* TODO what is this... */
+/* .mainContainer { */
+/* margin-left: 0; */
+/* } */
+/* } */
+/* :root[data-active-sidebar="true"] .mainContainer { */
+/* margin-left: var(--sp-52); */
+/* max-width: calc(100vw - var(--sp-52)); */
+/* } */
+
 .pageContainer {
-	overflow: hidden;
+	transition: 5s ease-out width;
+	overflow: scroll;
 }
