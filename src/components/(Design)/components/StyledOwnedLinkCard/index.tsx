@@ -18,7 +18,6 @@ export function StyledOwnedLinkCard({
 }: StyledOwnedLinkCardProps) {
 	const ownerImageContainerStyle: CSSProperties = {
 		top: size - 32,
-		left: size - 32,
 	};
 
 	return (

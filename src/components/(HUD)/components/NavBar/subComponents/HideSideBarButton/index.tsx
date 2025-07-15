@@ -5,7 +5,7 @@ import { HideSideBarButtonContainer } from "./styledElements";
 import { useLayoutEffect } from "react";
 import { setCssAttribute } from "@/utils/CssPropertyUtils";
 
-export default function HideSideBarButton() {
+export function HideSideBarButton() {
 	function handleHideSideButton() {
 		const current =
 			document.documentElement.getAttribute("data-active-sidebar") === "true";

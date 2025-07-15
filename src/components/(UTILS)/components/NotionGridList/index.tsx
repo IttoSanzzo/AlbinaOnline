@@ -1,30 +1,49 @@
 import { CSSProperties, ReactNode } from "react";
-import { ContentContainer, NotionGridListContainer } from "./styledElements";
+import { ContentContainerColumn, ContentContainerRow } from "./styledElements";
 import { NotionBackgroundColor, NotionBox } from "@/components/(NotionBased)";
 
 interface NotionGridListProps {
 	children: ReactNode;
 	columns?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 	backgroundColor?: keyof typeof NotionBackgroundColor;
-	minColumnWidth?: number;
+	columnWidth?: number;
+	direction?: "row" | "column";
 }
 
 export function NotionGridList({
 	children,
 	columns,
-	minColumnWidth,
+	columnWidth,
 	backgroundColor,
+	direction = "column",
 }: NotionGridListProps) {
+	if (direction === "column") {
+		const columnsStyle: CSSProperties = {
+			...(columns && { columnCount: columns }),
+			...(columnWidth && { columnWidth: `${columnWidth}px` }),
+		};
+
+		return (
+			<NotionBox backgroundColor={backgroundColor}>
+				<ContentContainerColumn
+					style={columnsStyle}
+					children={children}
+				/>
+			</NotionBox>
+		);
+	}
 	const columnsStyle: CSSProperties = {
-		...(columns && { columnCount: columns }),
-		...(minColumnWidth && { columnWidth: `${minColumnWidth}px` }),
+		...(columnWidth && {
+			gridTemplateColumns: `repeat(auto-fit, minmax(${columnWidth}px, 1fr))`,
+		}),
 	};
 
 	return (
 		<NotionBox backgroundColor={backgroundColor}>
-			<NotionGridListContainer>
-				<ContentContainer style={columnsStyle}>{children}</ContentContainer>
-			</NotionGridListContainer>
+			<ContentContainerRow
+				style={columnsStyle}
+				children={children}
+			/>
 		</NotionBox>
 	);
 }

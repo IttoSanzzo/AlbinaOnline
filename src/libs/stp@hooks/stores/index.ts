@@ -12,3 +12,6 @@ export { useNavBarModulesStore } from "./useNavBarModulesStore";
 export type { NavBarModuleKey } from "./useNavBarModulesStore";
 
 export { useCurrentCharacterAccessLevelStore } from "./useCurrentCharacterAccessLevelStore";
+
+export { useBreadcrumbsStore } from "./useBreadcrumbsStore";
+export type { Breadcrumb } from "./useBreadcrumbsStore";

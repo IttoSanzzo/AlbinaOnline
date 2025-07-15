@@ -18,3 +18,5 @@ export {
 	useCurrentCharacterAccessLevel,
 	useSetCurrentCharacterAccessLevel,
 } from "./useCurentCharacterAccessLevel";
+
+export { useBreadcrumbs, useSetBreadcrumbs } from "./useBreadcrumbs";

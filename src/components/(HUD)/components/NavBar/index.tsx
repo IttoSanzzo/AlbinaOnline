@@ -1,19 +1,17 @@
-import Breadcrumb from "./subComponents/Breadcrumb";
-import HideSideBarButton from "./subComponents/HideSideBarButton";
 import {
 	NavBarContainer,
 	NavSideContainer,
 	ProfileButtonContainer,
 } from "./styledElements";
-import NavBarModules from "./subComponents/NavBarModules";
 import { ProfileButton } from "@/components/(SPECIAL)";
+import { Breadcrumbs, HideSideBarButton, NavBarModules } from "./subComponents";
 
 export function NavBar() {
 	return (
 		<NavBarContainer>
 			<NavSideContainer>
 				<HideSideBarButton />
-				<Breadcrumb />
+				<Breadcrumbs />
 			</NavSideContainer>
 			<NavSideContainer>
 				<NavBarModules />

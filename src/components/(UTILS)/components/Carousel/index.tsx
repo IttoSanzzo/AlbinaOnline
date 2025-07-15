@@ -6,22 +6,22 @@ import { CarouselContainer, SlideContainer } from "./styledElements";
 interface CarouselProps extends KeenSliderOptions {
 	slideChilds: ReactNode[];
 	minWidth?: number;
+	maxWidth?: number;
 	loop?: boolean;
 	mode?: "free" | "free-snap" | "snap";
 	slidesPerView?: number | "auto";
 	slidesSpacing?: number;
-	slidesNumber?: number;
 	slidesOrigin?: number | "auto" | "center" | undefined;
 }
 export function Carousel({
 	slideChilds,
 	minWidth,
+	maxWidth,
 	loop = true,
 	mode = "free-snap",
 	slidesPerView = "auto",
-	slidesSpacing,
-	slidesNumber,
-	slidesOrigin,
+	slidesSpacing = 0,
+	slidesOrigin = "auto",
 	...rest
 }: CarouselProps) {
 	const [sliderRef] = useKeenSlider<HTMLDivElement>({
@@ -30,14 +30,15 @@ export function Carousel({
 		slides: {
 			perView: slidesPerView,
 			spacing: slidesSpacing,
-			number: slidesNumber,
 			origin: slidesOrigin,
+			number: slideChilds.length,
 		},
 		...rest,
 	});
 
 	const slideStyle: CSSProperties = {
 		...(minWidth && { minWidth: `${minWidth}px` }),
+		...(maxWidth && { maxWidth: `${maxWidth}px` }),
 	};
 
 	return (
@@ -48,9 +49,9 @@ export function Carousel({
 				<SlideContainer
 					key={index}
 					className="keen-slider__slide"
-					style={slideStyle}>
-					{slide}
-				</SlideContainer>
+					style={slideStyle}
+					children={slide}
+				/>
 			))}
 		</CarouselContainer>
 	);

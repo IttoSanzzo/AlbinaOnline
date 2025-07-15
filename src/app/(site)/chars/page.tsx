@@ -1,6 +1,6 @@
 "use client";
 
-import { GenericPageContainer } from "@/components/(Design)";
+import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
 import { Carousel, NotionGridList } from "@/components/(UTILS)";
 import {
@@ -11,7 +11,7 @@ import {
 import { CharacterSimpleData } from "@/libs/stp@types";
 import { routeInfra } from "./(routeInfra)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
 
@@ -67,8 +67,9 @@ export default function Characters() {
 							/>
 							<NotionBox backgroundColor="yellow">
 								<Carousel
+									slidesOrigin={"center"}
+									slidesSpacing={10}
 									minWidth={150}
-									slidesSpacing={15}
 									slideChilds={allFavoriteCharacters.map((character) => (
 										<StyledOwnedLinkCard
 											key={character.id}
@@ -91,8 +92,9 @@ export default function Characters() {
 							/>
 							<NotionBox backgroundColor="purple">
 								<Carousel
+									slidesOrigin={"center"}
+									slidesSpacing={10}
 									minWidth={150}
-									slidesSpacing={15}
 									slideChilds={allUserCharacters.map((character) => (
 										<StyledOwnedLinkCard
 											key={character.id}
@@ -113,11 +115,13 @@ export default function Characters() {
 						children={"Todos"}
 					/>
 					<NotionGridList
+						direction="row"
 						backgroundColor="blue"
-						minColumnWidth={150}>
-						{allCharacters.map((character) => (
+						columnWidth={150}>
+						{allCharacters.map((character, index) => (
 							<StyledOwnedLinkCard
 								key={character.id}
+								size={150}
 								ownerId={character.ownerId}
 								href={`/chars/${character.id}`}
 								title={character.name}

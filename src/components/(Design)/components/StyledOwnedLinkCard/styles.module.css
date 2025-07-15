@@ -1,8 +1,12 @@
 .styledOwnedLinkCardContainer {
 	position: relative;
+	width: fit-content;
+	height: fit-content;
+	font-size: 0;
 }
 .ownerPageLinkContainer {
 	position: absolute;
+	right: 2px;
 	width: 30px;
 	height: 30px;
 	border-radius: var(--rd-full);
@@ -10,6 +14,9 @@
 
 	transition: 0.15s ease-in-out box-shadow;
 	&:hover {
+		box-shadow: 0 0 8px white;
+	}
+	&:focus-within {
 		box-shadow: 0 0 8px white;
 	}
 }
