@@ -21,11 +21,5 @@ export type {
 } from "./dataTypes/spell";
 export type { TraitData } from "./dataTypes/trait";
 
-export type { fullUser } from "./otherTypes/fullUser";
-export type {
-	userFavoritesGrouped,
-	userFavoriteType,
-} from "./otherTypes/userFavoritesGrouped";
-
-export type { CharacterSimpleData } from "./dataTypes/Character/CharacterSimpleData";
-export type { CharacterFullData } from "./dataTypes/Character/CharacterFullData";
+export * from "./dataTypes/Character";
+export * from "./otherTypes";

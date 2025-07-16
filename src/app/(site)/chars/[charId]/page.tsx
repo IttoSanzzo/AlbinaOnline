@@ -1,7 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
-import { CharacterSimpleData } from "@/libs/stp@types";
+import { CharacterExpandedData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
 	Breadcrumb,
@@ -14,6 +14,7 @@ import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { NotionBox } from "@/components/(NotionBased)";
 
 // export const generateMetadata = routeInfra.generateMetadata;
 
@@ -24,20 +25,24 @@ export default function Character({ params }: CharacterPageProps) {
 	const [error, setError] = useState<number | null>(null);
 	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
 	const [characterData, setCharacterData] =
-		useState<CharacterSimpleData | null>(null);
+		// useState<CharacterSimpleData | null>(null);
+		useState<CharacterExpandedData | null>(null);
 
 	useEffect(() => {
 		params.then((paramsData) => setParamsData(paramsData));
 	}, [setParamsData]);
 	useEffect(() => {
 		if (paramsData == null) return;
-		authenticatedFetchAsync(`/chars/${paramsData.charId}`, {
+		authenticatedFetchAsync(`/chars/${paramsData.charId}?view=expanded`, {
 			method: "GET",
 		}).then((response) => {
 			if (!response.ok) {
 				setError(response.status);
 			} else {
-				response.json().then((data) => setCharacterData(data.character));
+				response.json().then((data) => {
+					console.log(data);
+					setCharacterData(data.character);
+				});
 			}
 		});
 	}, [paramsData, setCharacterData]);
@@ -84,6 +89,10 @@ export default function Character({ params }: CharacterPageProps) {
 				data={characterData}
 			/>
 			<SetCurrentCharacterAccessLevel characterId={characterData.id} />
+
+			<NotionBox
+				backgroundColor="gray"
+				withoutBorder></NotionBox>
 		</GenericPageContainer>
 	);
 }

@@ -1,4 +1,4 @@
-import { CharacterFullData } from "../dataTypes/Character/CharacterFullData";
+import { CharacterExpandedData } from "../dataTypes/Character";
 import { ItemData } from "../dataTypes/item";
 import { MasteryData } from "../dataTypes/mastery";
 import { RaceData } from "../dataTypes/race";
@@ -6,7 +6,7 @@ import { SkillData } from "../dataTypes/skill";
 import { SpellData } from "../dataTypes/spell";
 import { TraitData } from "../dataTypes/trait";
 
-export type userFavoriteType =
+export type UserFavoriteType =
 	| "Character"
 	| "Item"
 	| "Mastery"
@@ -15,55 +15,55 @@ export type userFavoriteType =
 	| "Trait"
 	| "Race";
 
-type favoriteCharacter = {
+type FavoriteCharacter = {
 	id: string;
 	order: number;
 	type: string;
-	target: CharacterFullData;
+	target: CharacterExpandedData;
 };
-type favoriteItem = {
+type FavoriteItem = {
 	id: string;
 	order: number;
 	type: string;
 	target: ItemData;
 };
-type favoriteMastery = {
+type FavoriteMastery = {
 	id: string;
 	order: number;
 	type: string;
 	target: MasteryData;
 };
-type favoriteSkill = {
+type FavoriteSkill = {
 	id: string;
 	order: number;
 	type: string;
 	target: SkillData;
 };
-type favoriteSpell = {
+type FavoriteSpell = {
 	id: string;
 	order: number;
 	type: string;
 	target: SpellData;
 };
-type favoriteTrait = {
+type FavoriteTrait = {
 	id: string;
 	order: number;
 	type: string;
 	target: TraitData;
 };
-type favoriteRace = {
+type FavoriteRace = {
 	id: string;
 	order: number;
 	type: string;
 	target: RaceData;
 };
 
-export type userFavoritesGrouped = {
-	Character: favoriteCharacter[];
-	Item: favoriteItem[];
-	Mastery: favoriteMastery[];
-	Skill: favoriteSkill[];
-	Spell: favoriteSpell[];
-	Trait: favoriteTrait[];
-	Race: favoriteRace[];
+export type UserFavoritesGrouped = {
+	character: FavoriteCharacter[];
+	item: FavoriteItem[];
+	mastery: FavoriteMastery[];
+	skill: FavoriteSkill[];
+	spell: FavoriteSpell[];
+	trait: FavoriteTrait[];
+	race: FavoriteRace[];
 };
