@@ -36,34 +36,38 @@ export default function UserPage({ params }: UserPageProps) {
 			title={user.nickname}
 			banner={user.bannerUrl}
 			icon={user.iconUrl}>
-			<div>
+			<NotionHeader textAlign="center">
 				<strong>{user.nickname}</strong>
+				<br />
 				<span>{user.username}</span>
-			</div>
-
+				<br />
+				<button>editar perfil</button>
+				<br />
+			</NotionHeader>
 			<>
 				<NotionBox backgroundColor="purple">
 					<NotionHeader
 						textAlign="center"
 						backgroundColor={"green"}
 						headerType="h4"
-						children="Maestrias"
+						children="Itens"
 					/>
 					<Carousel
 						slidesOrigin={"center"}
 						slidesSpacing={10}
-						minWidth={50}
-						slideChilds={favorites.Mastery.map((masteryFavorite) => (
+						minWidth={150}
+						slideChilds={favorites.Item.map((ItemFavorite) => (
 							<StyledLinkCard
-								size={50}
-								key={masteryFavorite.target.id}
-								href={`/maestrias/${masteryFavorite.target.slug}`}
-								title={masteryFavorite.target.name}
-								artworkUrl={masteryFavorite.target.iconUrl}
+								size={150}
+								key={ItemFavorite.target.id}
+								href={`/items/${ItemFavorite.target.slug}`}
+								title={ItemFavorite.target.name}
+								artworkUrl={ItemFavorite.target.iconUrl}
 							/>
 						))}
 					/>
 				</NotionBox>
+
 				<NotionBox backgroundColor="purple">
 					<NotionHeader
 						textAlign="center"
@@ -85,6 +89,95 @@ export default function UserPage({ params }: UserPageProps) {
 						))}
 					/>
 				</NotionBox>
+
+				<NotionBox backgroundColor="purple">
+					<NotionHeader
+						textAlign="center"
+						backgroundColor={"green"}
+						headerType="h4"
+						children="Skills"
+					/>
+					<Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={150}
+						slideChilds={favorites.Skill.map((SkillsFavorite) => (
+							<StyledLinkCard
+								key={SkillsFavorite.target.id}
+								href={`/skills/${SkillsFavorite.target.slug}`}
+								title={SkillsFavorite.target.name}
+								artworkUrl={SkillsFavorite.target.iconUrl}
+							/>
+						))}
+					/>
+				</NotionBox>
+
+				<NotionBox backgroundColor="purple">
+					<NotionHeader
+						textAlign="center"
+						backgroundColor={"green"}
+						headerType="h4"
+						children="Spells"
+					/>
+					<Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={150}
+						slideChilds={favorites.Spell.map((SpellsFavorite) => (
+							<StyledLinkCard
+								key={SpellsFavorite.target.id}
+								href={`/spells/${SpellsFavorite.target.slug}`}
+								title={SpellsFavorite.target.name}
+								artworkUrl={SpellsFavorite.target.iconUrl}
+							/>
+						))}
+					/>
+				</NotionBox>
+
+				<NotionBox backgroundColor="purple">
+					<NotionHeader
+						textAlign="center"
+						backgroundColor={"green"}
+						headerType="h4"
+						children="traços"
+					/>
+					<Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={150}
+						slideChilds={favorites.Trait.map((TraitFavorite) => (
+							<StyledLinkCard
+								key={TraitFavorite.target.id}
+								href={`/tracos/${TraitFavorite.target.slug}`}
+								title={TraitFavorite.target.name}
+								artworkUrl={TraitFavorite.target.iconUrl}
+							/>
+						))}
+					/>
+				</NotionBox>
+
+				<NotionBox backgroundColor="purple">
+					<NotionHeader
+						textAlign="center"
+						backgroundColor={"green"}
+						headerType="h4"
+						children="Raças"
+					/>
+					<Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={150}
+						slideChilds={favorites.Race.map((RaceFavorite) => (
+							<StyledLinkCard
+								key={RaceFavorite.target.id}
+								href={`/racas/${RaceFavorite.target.slug}`}
+								title={RaceFavorite.target.name}
+								artworkUrl={RaceFavorite.target.iconUrl}
+							/>
+						))}
+					/>
+				</NotionBox>
+
 				<NotionBox backgroundColor="purple">
 					<NotionHeader
 						textAlign="center"
