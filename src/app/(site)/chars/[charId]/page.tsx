@@ -1,5 +1,7 @@
+"use client";
+
 import { GenericPageContainer } from "@/components/(Design)";
-import { CharacterFullData } from "@/libs/stp@types";
+import { CharacterSimpleData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
 	Breadcrumb,
@@ -10,28 +12,48 @@ import {
 } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
+import { useEffect, useState } from "react";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
 
-export const generateMetadata = routeInfra.generateMetadata;
-export const generateStaticParams = routeInfra.generateStaticParams;
-
-const characterData: CharacterFullData = {
-	id: "928e4a17-86de-4965-b7e4-c1782e561027",
-	ownerId: "33bc8235-6ca5-4bf2-ad29-c09dd52019c5",
-	name: "Teste",
-	iconUrl: `${getAlbinaApiAddress()}/chars/09d648f2-f676-418b-b5c2-9280e657ecf9/favicon`,
-	bannerUrl: `${getAlbinaApiAddress()}/chars/09d648f2-f676-418b-b5c2-9280e657ecf9/banner`,
-};
+// export const generateMetadata = routeInfra.generateMetadata;
 
 interface CharacterPageProps {
 	params: Promise<{ charId: string }>;
 }
-export default async function Character({ params }: CharacterPageProps) {
-	// const { charId } = await params;
-	// const CharacterPageData = await getPageData(charId);
-	// if (CharacterPageData.characterData == undefined) {
-	// return <>Error</>;
-	// }
-	// const { characterData, borderColor } = CharacterPageData;
+export default function Character({ params }: CharacterPageProps) {
+	const [error, setError] = useState<number | null>(null);
+	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
+	const [characterData, setCharacterData] =
+		useState<CharacterSimpleData | null>(null);
+
+	useEffect(() => {
+		params.then((paramsData) => setParamsData(paramsData));
+	}, [setParamsData]);
+	useEffect(() => {
+		if (paramsData == null) return;
+		authenticatedFetchAsync(`/chars/${paramsData.charId}`, {
+			method: "GET",
+		}).then((response) => {
+			if (!response.ok) {
+				setError(response.status);
+			} else {
+				response.json().then((data) => setCharacterData(data.character));
+			}
+		});
+	}, [paramsData, setCharacterData]);
+	if (error != null) {
+		switch (error) {
+			case 403:
+				return <>Forbidden</>;
+			case 404:
+				return <>Not Found</>;
+			case 500:
+				return <>Interal Server Error</>;
+			default:
+				return <>Unknown</>;
+		}
+	}
+	if (paramsData == null || characterData == null) return null;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{

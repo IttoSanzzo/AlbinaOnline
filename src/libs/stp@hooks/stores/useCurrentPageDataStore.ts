@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	CharacterFullData,
+	CharacterSimpleData,
 	ItemData,
 	MasteryData,
 	RaceData,
@@ -30,7 +30,7 @@ export type PageData =
 	| SpellData
 	| TraitData
 	| RaceData
-	| CharacterFullData;
+	| CharacterSimpleData;
 
 export interface CurrentPageDataState {
 	type: PageDataType;

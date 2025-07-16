@@ -29,7 +29,7 @@ export default function UserPage({ params }: UserPageProps) {
 	)
 		return null;
 
-	console.log(favorites.Mastery[0].target);
+	// console.log(favorites.Mastery[0].target);
 
 	return (
 		<GenericPageContainer
