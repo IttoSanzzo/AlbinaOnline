@@ -40,6 +40,7 @@
 		padding: 0 0.2rem 0 0.1rem;
 		align-items: center;
 		vertical-align: sub;
+		gap: 0px;
 
 		& img {
 			height: 18px;
