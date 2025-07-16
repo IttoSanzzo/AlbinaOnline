@@ -1,10 +1,10 @@
-.styledLinkContainer {
+.styledFalseLinkContainer {
 	display: flexbox;
 	border-radius: var(--rd-sm);
 	background-color: var(--cl-gray-800);
 	page-break-inside: avoid;
 
-	& a {
+	& button {
 		text-decoration: none;
 		padding: var(--sp-1);
 		display: flex;
@@ -26,16 +26,16 @@
 		}
 	}
 
-	&:hover a {
+	&:hover button {
 		background-color: var(--cl-gray-700);
 		color: var(--cl-gray-100);
 	}
 }
 
-.styledLinkInTextMode {
+.styledFalseLinkInTextMode {
 	display: inline;
 
-	& a {
+	& button {
 		display: inline-flex;
 		padding: 0 0.2rem 0 0.1rem;
 		align-items: center;

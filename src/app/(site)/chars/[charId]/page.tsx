@@ -40,7 +40,7 @@ export default async function Character({ params }: CharacterPageProps) {
 			icon: `${getAlbinaApiAddress()}/favicon/chars`,
 		},
 		{
-			href: "",
+			href: "#",
 			name: characterData.name,
 			icon: characterData.iconUrl,
 		},

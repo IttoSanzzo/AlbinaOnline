@@ -7,6 +7,7 @@ import { Breadcrumb, useBreadcrumbs } from "@/libs/stp@hooks";
 import { StyledLink } from "@/components/(Design)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useMemo } from "react";
+import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 
 export function Breadcrumbs() {
 	const pathName = usePathname();
@@ -35,12 +36,20 @@ export function Breadcrumbs() {
 		<BreadcrumbContainer>
 			{crumbs.map((breadcrumb, index) => (
 				<span key={breadcrumb.href}>
-					<StyledLink
-						textMode
-						href={breadcrumb.href}
-						title={breadcrumb.name}
-						icon={breadcrumb.icon}
-					/>
+					{index == crumbs.length - 1 ? (
+						<StyledFalseLink
+							textMode
+							title={breadcrumb.name}
+							icon={breadcrumb.icon}
+						/>
+					) : (
+						<StyledLink
+							textMode
+							href={breadcrumb.href}
+							title={breadcrumb.name}
+							icon={breadcrumb.icon}
+						/>
+					)}
 					{crumbs.length > index + 1 && <span>/</span>}
 				</span>
 			))}
