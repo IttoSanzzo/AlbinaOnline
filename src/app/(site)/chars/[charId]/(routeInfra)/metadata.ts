@@ -7,7 +7,7 @@ export async function generateMetadata({
 	params: Promise<{ itemSlug: string }>;
 }): Promise<Metadata> {
 	const { itemSlug } = await params;
-	const itemPageData = await routeInfra.getPageData(itemSlug);
+	// const itemPageData = await routeInfra;
 	// if (itemPageData.itemData == undefined) {
 	// return { title: "Not Found" };
 	// }

@@ -1,6 +1,6 @@
 "use client";
 
-import { fullUser } from "@/libs/stp@types";
+import { FullUser } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "./AlbinaApi";
 
 export async function authenticatedFetchAsync(
@@ -53,6 +53,6 @@ export async function fetchMe() {
 		cache: "no-store",
 	});
 	if (!response.ok) throw new Error("Not authenticated");
-	const data: { user: fullUser } = await response.json();
+	const data: { user: FullUser } = await response.json();
 	return data.user;
 }

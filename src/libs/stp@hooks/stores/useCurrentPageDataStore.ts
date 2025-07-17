@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	CharacterSimpleData,
+	CharacterData,
 	ItemData,
 	MasteryData,
 	RaceData,
@@ -13,14 +13,14 @@ import { create } from "zustand";
 
 export type PageDataType =
 	| null
-	| "Character"
-	| "Item"
-	| "Mastery"
-	| "Skill"
-	| "Spell"
-	| "Trait"
-	| "Race"
-	| "Character";
+	| "character"
+	| "item"
+	| "mastery"
+	| "skill"
+	| "spell"
+	| "trait"
+	| "race"
+	| "character";
 
 export type PageData =
 	| null
@@ -30,7 +30,7 @@ export type PageData =
 	| SpellData
 	| TraitData
 	| RaceData
-	| CharacterSimpleData;
+	| CharacterData;
 
 export interface CurrentPageDataState {
 	type: PageDataType;

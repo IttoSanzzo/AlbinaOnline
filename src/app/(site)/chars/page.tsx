@@ -8,7 +8,7 @@ import {
 	useCurrentUser,
 	useUserFavorites,
 } from "@/libs/stp@hooks";
-import { CharacterSimpleData } from "@/libs/stp@types";
+import { CharacterData } from "@/libs/stp@types";
 import { routeInfra } from "./(routeInfra)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useEffect, useState } from "react";
@@ -16,9 +16,9 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
 
 export default function Characters() {
-	const [rawCharacters, setRawCharacters] = useState<
-		CharacterSimpleData[] | null
-	>(null);
+	const [rawCharacters, setRawCharacters] = useState<CharacterData[] | null>(
+		null
+	);
 	const { favorites, isLoading } = useUserFavorites();
 	const currentUser = useCurrentUser();
 
@@ -30,18 +30,18 @@ export default function Characters() {
 		});
 	}, [setRawCharacters]);
 	if (rawCharacters === null) return null;
-	const allCharacters: CharacterSimpleData[] = [...rawCharacters].sort((a, b) =>
+	const allCharacters: CharacterData[] = [...rawCharacters].sort((a, b) =>
 		a.name.localeCompare(b.name)
 	);
-	const allFavoriteCharacters: CharacterSimpleData[] = isLoading
+	const allFavoriteCharacters: CharacterData[] = isLoading
 		? []
-		: favorites?.Character.flatMap((favorite) => {
+		: favorites?.character.flatMap((favorite) => {
 				const character = allCharacters.find(
 					(character) => character.id == favorite.target.id
 				);
 				return character ? [character] : [];
 		  }) ?? [];
-	const allUserCharacters: CharacterSimpleData[] = currentUser.loading
+	const allUserCharacters: CharacterData[] = currentUser.loading
 		? []
 		: allCharacters.filter(
 				(character) => character.ownerId == currentUser.user?.id

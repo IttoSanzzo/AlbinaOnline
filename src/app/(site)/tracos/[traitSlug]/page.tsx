@@ -37,7 +37,7 @@ export default async function Trait({ params }: TraitProps) {
 			borderColor={borderColor}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Trait"}
+				type={"trait"}
 				data={traitData}
 			/>
 

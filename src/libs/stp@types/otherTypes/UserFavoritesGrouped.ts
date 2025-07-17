@@ -1,4 +1,4 @@
-import { CharacterExpandedData } from "../dataTypes/Character";
+import { CharacterData } from "../dataTypes/Character";
 import { ItemData } from "../dataTypes/item";
 import { MasteryData } from "../dataTypes/mastery";
 import { RaceData } from "../dataTypes/race";
@@ -19,7 +19,7 @@ type FavoriteCharacter = {
 	id: string;
 	order: number;
 	type: string;
-	target: CharacterExpandedData;
+	target: CharacterData;
 };
 type FavoriteItem = {
 	id: string;

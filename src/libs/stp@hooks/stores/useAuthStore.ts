@@ -1,13 +1,13 @@
 "use client";
 
-import { fullUser } from "@/libs/stp@types";
+import { FullUser } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { create } from "zustand";
 
 interface AuthState {
-	user: fullUser | null;
+	user: FullUser | null;
 	loading: boolean;
-	setUser: (user: fullUser | null) => void;
+	setUser: (user: FullUser | null) => void;
 	setLoading: (loading: boolean) => void;
 	reloadUser: () => Promise<void>;
 	clearUser: () => void;
@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 				cache: "no-store",
 			});
 			if (!response.ok) throw new Error("Not authenticated");
-			const data: { user: fullUser } = await response.json();
+			const data: { user: FullUser } = await response.json();
 			set({ user: data.user });
 		} catch {
 			set({ user: null });

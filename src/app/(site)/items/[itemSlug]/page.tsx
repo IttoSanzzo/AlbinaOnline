@@ -33,7 +33,7 @@ export default async function Item({ params }: ItemProps) {
 			borderColor={borderColor}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Item"}
+				type={"item"}
 				data={itemData}
 			/>
 

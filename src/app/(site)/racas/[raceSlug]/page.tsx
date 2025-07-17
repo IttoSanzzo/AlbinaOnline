@@ -51,7 +51,7 @@ export default async function Race({ params }: RaceProps) {
 			icon={raceData.iconUrl}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Race"}
+				type={"race"}
 				data={raceData}
 			/>
 

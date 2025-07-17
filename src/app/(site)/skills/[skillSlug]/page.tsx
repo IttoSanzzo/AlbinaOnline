@@ -33,7 +33,7 @@ export default async function Skill({ params }: SkillProps) {
 			borderColor={borderColor}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Skill"}
+				type={"skill"}
 				data={skillData}
 			/>
 

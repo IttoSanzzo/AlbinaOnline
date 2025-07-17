@@ -56,7 +56,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Item.map((ItemFavorite) => (
+						slideChilds={favorites.item.map((ItemFavorite) => (
 							<StyledLinkCard
 								size={150}
 								key={ItemFavorite.target.id}
@@ -79,7 +79,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Mastery.map((masteryFavorite) => (
+						slideChilds={favorites.mastery.map((masteryFavorite) => (
 							<StyledLinkCard
 								key={masteryFavorite.target.id}
 								href={`/maestrias/${masteryFavorite.target.slug}`}
@@ -101,7 +101,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Skill.map((SkillsFavorite) => (
+						slideChilds={favorites.skill.map((SkillsFavorite) => (
 							<StyledLinkCard
 								key={SkillsFavorite.target.id}
 								href={`/skills/${SkillsFavorite.target.slug}`}
@@ -123,7 +123,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Spell.map((SpellsFavorite) => (
+						slideChilds={favorites.spell.map((SpellsFavorite) => (
 							<StyledLinkCard
 								key={SpellsFavorite.target.id}
 								href={`/spells/${SpellsFavorite.target.slug}`}
@@ -145,7 +145,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Trait.map((TraitFavorite) => (
+						slideChilds={favorites.trait.map((TraitFavorite) => (
 							<StyledLinkCard
 								key={TraitFavorite.target.id}
 								href={`/tracos/${TraitFavorite.target.slug}`}
@@ -167,7 +167,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Race.map((RaceFavorite) => (
+						slideChilds={favorites.race.map((RaceFavorite) => (
 							<StyledLinkCard
 								key={RaceFavorite.target.id}
 								href={`/racas/${RaceFavorite.target.slug}`}
@@ -189,7 +189,7 @@ export default function UserPage({ params }: UserPageProps) {
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
-						slideChilds={favorites.Mastery.map((masteryFavorite) => (
+						slideChilds={favorites.mastery.map((masteryFavorite) => (
 							<StyledLinkCard
 								key={masteryFavorite.target.id}
 								href={`/maestrias/${masteryFavorite.target.slug}`}

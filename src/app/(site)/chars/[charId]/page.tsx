@@ -85,7 +85,7 @@ export default function Character({ params }: CharacterPageProps) {
 				favoriteButton={FavoriteButton}
 			/>
 			<SetCurrentPageData
-				type={"Character"}
+				type={"character"}
 				data={characterData}
 			/>
 			<SetCurrentCharacterAccessLevel characterId={characterData.id} />

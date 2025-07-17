@@ -34,7 +34,7 @@ export default async function Mastery({ params }: MasteryProps) {
 			borderColor={borderColor}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Mastery"}
+				type={"mastery"}
 				data={masteryData}
 			/>
 

@@ -4,7 +4,6 @@ import {
 } from "./styledElements";
 import { NotionToggle } from "@/components/(NotionBased)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { userFavoriteType } from "@/libs/stp@types";
 import { useLayoutEffect, useState } from "react";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
@@ -14,6 +13,7 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableStyledLink } from "@/components/(SPECIAL)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { UserFavoriteType } from "@/libs/stp@types";
 
 export interface SortableIndexedPage {
 	name: string;
@@ -38,7 +38,7 @@ function genReordenatedArray(
 }
 
 async function postReorderAsync(
-	type: userFavoriteType,
+	type: UserFavoriteType,
 	length: number,
 	oldPosition: number,
 	newPosition: number
@@ -60,7 +60,7 @@ async function postReorderAsync(
 
 interface SortableIndexedPagesGroupProps {
 	groupName: string;
-	groupType: userFavoriteType;
+	groupType: UserFavoriteType;
 	indexedPages: SortableIndexedPage[];
 }
 export default function SortableIndexedPagesGroup({

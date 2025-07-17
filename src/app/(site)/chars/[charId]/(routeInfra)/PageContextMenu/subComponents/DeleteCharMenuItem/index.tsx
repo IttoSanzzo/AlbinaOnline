@@ -13,7 +13,7 @@ export function DeleteCharMenuItem() {
 		currentCharacterAccessLevel.isSet == false ||
 		currentCharacterAccessLevel.accessLevel < AccessLevel.Owner ||
 		isSet == false ||
-		type != "Character" ||
+		type != "character" ||
 		!data
 	)
 		return null;

@@ -60,73 +60,73 @@ export default function IndexedPagesGroups() {
 		<IndexedPagesGroupsContainer>
 			{CoreHubPageGroup}
 
-			{favorites?.Character.length > 0 && (
+			{favorites?.character.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Chars Fav."
 					groupType="Character"
 					indexedPages={getNonSluggedFavoriteSortableIndexedPage(
 						"/chars",
-						favorites.Character
+						favorites.character
 					)}
 				/>
 			)}
-			{favorites?.Item.length > 0 && (
+			{favorites?.item.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Items Fav."
 					groupType="Item"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/items",
-						favorites.Item
+						favorites.item
 					)}
 				/>
 			)}
-			{favorites.Mastery.length > 0 && (
+			{favorites.mastery.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Maestrias Fav."
 					groupType="Mastery"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/maestrias",
-						favorites.Mastery
+						favorites.mastery
 					)}
 				/>
 			)}
-			{favorites.Skill.length > 0 && (
+			{favorites.skill.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Skills Fav."
 					groupType="Skill"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/skills",
-						favorites.Skill
+						favorites.skill
 					)}
 				/>
 			)}
-			{favorites.Spell.length > 0 && (
+			{favorites.spell.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Spells Fav."
 					groupType="Spell"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/spells",
-						favorites.Spell
+						favorites.spell
 					)}
 				/>
 			)}
-			{favorites.Trait.length > 0 && (
+			{favorites.trait.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Traits Fav."
 					groupType="Trait"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/tracos",
-						favorites.Trait
+						favorites.trait
 					)}
 				/>
 			)}
-			{favorites.Race.length > 0 && (
+			{favorites.race.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Raças Fav."
 					groupType="Race"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/racas",
-						favorites.Race
+						favorites.race
 					)}
 				/>
 			)}

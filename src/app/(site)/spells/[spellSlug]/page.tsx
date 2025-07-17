@@ -33,7 +33,7 @@ export default async function Spell({ params }: SpellProps) {
 			borderColor={borderColor}>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 			<SetCurrentPageData
-				type={"Spell"}
+				type={"spell"}
 				data={spellData}
 			/>
 

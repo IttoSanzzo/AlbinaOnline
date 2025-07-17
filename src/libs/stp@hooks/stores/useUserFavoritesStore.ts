@@ -1,13 +1,13 @@
 "use client";
 
-import { userFavoritesGrouped } from "@/libs/stp@types";
+import { UserFavoritesGrouped } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { create } from "zustand";
 
 interface FavoritesState {
-	favorites: userFavoritesGrouped | null;
+	favorites: UserFavoritesGrouped | null;
 	isLoading: boolean;
-	setFavorites: (favorites: userFavoritesGrouped | null) => void;
+	setFavorites: (favorites: UserFavoritesGrouped | null) => void;
 	setIsLoading: (loading: boolean) => void;
 	reloadFavorites: () => Promise<void>;
 	clearFavorites: () => void;
@@ -28,8 +28,18 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 				}
 			);
 			if (!response.ok) throw new Error("Not authenticated");
-			const data: { favorites: userFavoritesGrouped } = await response.json();
-			set({ favorites: data.favorites });
+			const data: { favorites: any } = await response.json();
+			set({
+				favorites: {
+					character: data.favorites.Character,
+					item: data.favorites.Item,
+					mastery: data.favorites.Mastery,
+					race: data.favorites.Race,
+					skill: data.favorites.Skill,
+					spell: data.favorites.Spell,
+					trait: data.favorites.Trait,
+				},
+			});
 		} catch {
 			set({ favorites: null });
 		} finally {
