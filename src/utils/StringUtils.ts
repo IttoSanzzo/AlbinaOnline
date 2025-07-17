@@ -56,3 +56,10 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function isEmail(str: string): boolean {
 	return emailRegex.test(str);
 }
+
+export function normalizeText(text: string): string {
+	return text
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase();
+}

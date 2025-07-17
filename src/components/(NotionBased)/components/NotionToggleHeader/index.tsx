@@ -53,7 +53,7 @@ interface NotionToggleHeaderProps extends NotionPropsColor {
 	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
 	title?: string;
 	titleColor?: keyof typeof NotionTextColor;
-	titleAlign: "center" | "left" | "right" | undefined;
+	titleAlign?: "center" | "left" | "right";
 	contentMargin?: "none" | "middle" | "full";
 	memoryId?: string;
 	routeSensitiveMemory?: boolean;

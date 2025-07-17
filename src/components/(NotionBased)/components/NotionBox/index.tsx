@@ -9,6 +9,7 @@ interface NotionBoxProps {
 	children?: ReactNode;
 	withoutPadding?: boolean;
 	withoutBorder?: boolean;
+	withoutMargin?: boolean;
 	backgroundColor?: keyof typeof NotionBackgroundColor;
 }
 
@@ -16,6 +17,7 @@ export function NotionBox({
 	children,
 	withoutPadding = false,
 	withoutBorder = false,
+	withoutMargin = false,
 	backgroundColor,
 }: NotionBoxProps) {
 	const style: CSSProperties = {
@@ -27,6 +29,7 @@ export function NotionBox({
 			border: "0",
 		}),
 		...(withoutPadding && { padding: "0" }),
+		...(withoutMargin && { margin: "0" }),
 	};
 
 	return <NotionBoxContainer style={style}>{children}</NotionBoxContainer>;

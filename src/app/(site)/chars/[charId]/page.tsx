@@ -1,6 +1,6 @@
 "use client";
 
-import { GenericPageContainer } from "@/components/(Design)";
+import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { CharacterExpandedData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
@@ -14,7 +14,8 @@ import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { NotionBox } from "@/components/(NotionBased)";
+import { NotionBox, NotionToggleHeader } from "@/components/(NotionBased)";
+import { CharacterDisplays } from "./subComponents/CharacterDisplays";
 
 // export const generateMetadata = routeInfra.generateMetadata;
 
@@ -25,7 +26,6 @@ export default function Character({ params }: CharacterPageProps) {
 	const [error, setError] = useState<number | null>(null);
 	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
 	const [characterData, setCharacterData] =
-		// useState<CharacterSimpleData | null>(null);
 		useState<CharacterExpandedData | null>(null);
 
 	useEffect(() => {
@@ -92,7 +92,27 @@ export default function Character({ params }: CharacterPageProps) {
 
 			<NotionBox
 				backgroundColor="gray"
-				withoutBorder></NotionBox>
+				// withoutPadding
+				withoutBorder>
+				<NotionToggleHeader
+					title="Maestrias"
+					titleColor="gray"
+					backgroundColor="darkGray"
+				/>
+				<CharacterDisplays.SpellDomains
+					spellDomains={characterData.spellDomains}
+				/>
+				<NotionToggleHeader
+					title="Outros"
+					titleColor="gray"
+					backgroundColor="darkGray"
+				/>
+			</NotionBox>
+
+			<GenericPageFooter
+				version="6.5.0"
+				lastUpdate={characterData.updatedAt}
+			/>
 		</GenericPageContainer>
 	);
 }

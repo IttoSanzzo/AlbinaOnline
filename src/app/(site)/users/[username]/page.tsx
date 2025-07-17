@@ -1,7 +1,15 @@
 "use client";
 
-import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
+import {
+	GenericPageContainer,
+	StyledLink,
+	StyledLinkCard,
+} from "@/components/(Design)";
+import {
+	NotionBox,
+	NotionHeader,
+	NotionToggleHeader,
+} from "@/components/(NotionBased)";
 import { Carousel } from "@/components/(UTILS)";
 import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
@@ -29,177 +37,175 @@ export default function UserPage({ params }: UserPageProps) {
 	)
 		return null;
 
-	// console.log(favorites.Mastery[0].target);
+	console.log(favorites.character);
 
 	return (
 		<GenericPageContainer
 			title={user.nickname}
 			banner={user.bannerUrl}
 			icon={user.iconUrl}>
-			<NotionHeader textAlign="center">
-				<strong>{user.nickname}</strong>
-				<br />
-				<span>{user.username}</span>
-				<br />
-				<button>editar perfil</button>
-				<br />
-			</NotionHeader>
 			<>
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Itens"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.item.map((ItemFavorite) => (
-							<StyledLinkCard
-								size={150}
-								key={ItemFavorite.target.id}
-								href={`/items/${ItemFavorite.target.slug}`}
-								title={ItemFavorite.target.name}
-								artworkUrl={ItemFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Characters"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.mastery.map((masteryFavorite) => (
+									<StyledLinkCard
+										key={masteryFavorite.target.id}
+										href={`/maestrias/${masteryFavorite.target.slug}`}
+										title={masteryFavorite.target.name}
+										artworkUrl={masteryFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
+						}
+					/>
+				</NotionBox>
+				<NotionBox backgroundColor="purple">
+					<NotionToggleHeader
+						title="Itens"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.item.map((ItemFavorite) => (
+									<StyledLinkCard
+										size={150}
+										key={ItemFavorite.target.id}
+										href={`/items/${ItemFavorite.target.slug}`}
+										title={ItemFavorite.target.name}
+										artworkUrl={ItemFavorite.target.iconUrl}
+									/>
+								))}
+							/>
+						}
 					/>
 				</NotionBox>
 
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Maestrias"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.mastery.map((masteryFavorite) => (
-							<StyledLinkCard
-								key={masteryFavorite.target.id}
-								href={`/maestrias/${masteryFavorite.target.slug}`}
-								title={masteryFavorite.target.name}
-								artworkUrl={masteryFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Maestrias"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.mastery.map((masteryFavorite) => (
+									<StyledLinkCard
+										key={masteryFavorite.target.id}
+										href={`/maestrias/${masteryFavorite.target.slug}`}
+										title={masteryFavorite.target.name}
+										artworkUrl={masteryFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
+						}
 					/>
 				</NotionBox>
 
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Skills"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.skill.map((SkillsFavorite) => (
-							<StyledLinkCard
-								key={SkillsFavorite.target.id}
-								href={`/skills/${SkillsFavorite.target.slug}`}
-								title={SkillsFavorite.target.name}
-								artworkUrl={SkillsFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Skills"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.skill.map((SkillsFavorite) => (
+									<StyledLinkCard
+										key={SkillsFavorite.target.id}
+										href={`/skills/${SkillsFavorite.target.slug}`}
+										title={SkillsFavorite.target.name}
+										artworkUrl={SkillsFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
+						}
 					/>
 				</NotionBox>
 
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Spells"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.spell.map((SpellsFavorite) => (
-							<StyledLinkCard
-								key={SpellsFavorite.target.id}
-								href={`/spells/${SpellsFavorite.target.slug}`}
-								title={SpellsFavorite.target.name}
-								artworkUrl={SpellsFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Spell"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.spell.map((SpellsFavorite) => (
+									<StyledLinkCard
+										key={SpellsFavorite.target.id}
+										href={`/spells/${SpellsFavorite.target.slug}`}
+										title={SpellsFavorite.target.name}
+										artworkUrl={SpellsFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
+						}
 					/>
 				</NotionBox>
 
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="traços"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.trait.map((TraitFavorite) => (
-							<StyledLinkCard
-								key={TraitFavorite.target.id}
-								href={`/tracos/${TraitFavorite.target.slug}`}
-								title={TraitFavorite.target.name}
-								artworkUrl={TraitFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Traços"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.trait.map((TraitFavorite) => (
+									<StyledLinkCard
+										key={TraitFavorite.target.id}
+										href={`/tracos/${TraitFavorite.target.slug}`}
+										title={TraitFavorite.target.name}
+										artworkUrl={TraitFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
+						}
 					/>
 				</NotionBox>
 
 				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Raças"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.race.map((RaceFavorite) => (
-							<StyledLinkCard
-								key={RaceFavorite.target.id}
-								href={`/racas/${RaceFavorite.target.slug}`}
-								title={RaceFavorite.target.name}
-								artworkUrl={RaceFavorite.target.iconUrl}
+					<NotionToggleHeader
+						title="Raças"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.race.map((RaceFavorite) => (
+									<StyledLinkCard
+										key={RaceFavorite.target.id}
+										href={`/racas/${RaceFavorite.target.slug}`}
+										title={RaceFavorite.target.name}
+										artworkUrl={RaceFavorite.target.iconUrl}
+									/>
+								))}
 							/>
-						))}
-					/>
-				</NotionBox>
-
-				<NotionBox backgroundColor="purple">
-					<NotionHeader
-						textAlign="center"
-						backgroundColor={"green"}
-						headerType="h4"
-						children="Maestrias"
-					/>
-					<Carousel
-						slidesOrigin={"center"}
-						slidesSpacing={10}
-						minWidth={150}
-						slideChilds={favorites.mastery.map((masteryFavorite) => (
-							<StyledLinkCard
-								key={masteryFavorite.target.id}
-								href={`/maestrias/${masteryFavorite.target.slug}`}
-								title={masteryFavorite.target.name}
-								artworkUrl={masteryFavorite.target.iconUrl}
-							/>
-						))}
+						}
 					/>
 				</NotionBox>
 			</>
+			<NotionHeader textAlign="center">
+				<br />
+				<StyledLink
+					title={"Editar Perfil"}
+					href={"#"}
+				/>
+			</NotionHeader>
 		</GenericPageContainer>
 	);
 }

@@ -14,6 +14,7 @@ interface NotionTextProps extends NotionPropsColor {
 	withItalic?: boolean;
 	withUnderline?: boolean;
 	textAlign?: "left" | "center" | "right" | "flex-center";
+	display?: "inline" | "block";
 }
 
 export function NotionText({
@@ -24,6 +25,7 @@ export function NotionText({
 	withItalic,
 	withUnderline,
 	textAlign,
+	display,
 }: NotionTextProps) {
 	const style: CSSProperties = {
 		...(textColor && { color: NotionTextColor[textColor] }),
@@ -36,6 +38,7 @@ export function NotionText({
 		...(textAlign && textAlign === "flex-center"
 			? { display: "flex", justifyContent: "center" }
 			: { textAlign: textAlign }),
+		...(display && { display: display }),
 	};
 
 	return (
