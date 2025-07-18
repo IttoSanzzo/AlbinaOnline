@@ -1,0 +1,67 @@
+.numberInputFieldContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+.numberInputField {
+	background-color: transparent;
+	color: var(--cl-gray-100);
+	border: none;
+	outline: none;
+	font-size: var(--fs-md);
+	appearance: textField;
+	text-align: center;
+
+	&:-webkit-autofill {
+		border-radius: var(--rd-sm) !important;
+	}
+}
+.numberInputDecrementButton {
+	position: absolute;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	border: none;
+	line-height: 0;
+	left: 0px;
+	top: 50%;
+	transform: translateY(-50%);
+
+	transition: 0.2s linear background-color;
+
+	& svg {
+		font-size: var(--fs-2xl);
+	}
+	&:hover {
+		background-color: var(--cl-gray-600);
+		cursor: pointer;
+	}
+}
+.numberInputIncrementButton {
+	position: absolute;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	border: none;
+	line-height: 0;
+	right: 0px;
+	top: 50%;
+	transform: translateY(-50%);
+
+	transition: 0.2s linear background-color;
+
+	& svg {
+		font-size: var(--fs-2xl);
+	}
+	&:hover {
+		background-color: var(--cl-gray-600);
+		cursor: pointer;
+	}
+}
+
+.numberInputFieldContainer:global(.withButtonPadding) {
+	.numberInputDecrementButton {
+		left: 10px;
+	}
+	.numberInputIncrementButton {
+		right: 10px;
+	}
+}

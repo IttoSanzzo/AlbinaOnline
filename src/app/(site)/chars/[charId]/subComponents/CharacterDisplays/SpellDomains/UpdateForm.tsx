@@ -3,7 +3,6 @@ import {
 	Notion2Columns,
 	NotionBox,
 	NotionTable,
-	NotionText,
 } from "@/components/(NotionBased)";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -11,7 +10,7 @@ import { normalizeText } from "@/utils/StringUtils";
 import { CommonSpellDomainTablePair } from ".";
 import { HookedForm } from "@/libs/stp@forms";
 import { z } from "zod";
-import { useForm, UseFormRegister } from "react-hook-form";
+import { Control, useForm, UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const schema = z.object({
@@ -32,21 +31,39 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 function FormSpellDomainTablePair(
-	register: UseFormRegister<{
-		general: number;
-		impetum: number;
-		khranitel: number;
-		vitaeregio: number;
-		migaku: number;
-		affaiblir: number;
-		aufbringen: number;
-		gaizao: number;
-		idaitera: number;
-		gollemhag: number;
-		verstand: number;
-		sajak: number;
-		anagnosi: number;
-	}>,
+	control: Control<
+		{
+			general: number;
+			impetum: number;
+			khranitel: number;
+			vitaeregio: number;
+			migaku: number;
+			affaiblir: number;
+			aufbringen: number;
+			gaizao: number;
+			idaitera: number;
+			gollemhag: number;
+			verstand: number;
+			sajak: number;
+			anagnosi: number;
+		},
+		any,
+		{
+			general: number;
+			impetum: number;
+			khranitel: number;
+			vitaeregio: number;
+			migaku: number;
+			affaiblir: number;
+			aufbringen: number;
+			gaizao: number;
+			idaitera: number;
+			gollemhag: number;
+			verstand: number;
+			sajak: number;
+			anagnosi: number;
+		}
+	>,
 	name: string
 ) {
 	const lowercaseName = name === "General" ? "" : normalizeText(name);
@@ -56,10 +73,9 @@ function FormSpellDomainTablePair(
 			href={`/spells/${lowercaseName}`}
 			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
-		<input
-			type="number"
-			// field={register(
-			{...register(
+		<HookedForm.NumberInputInline
+			control={control}
+			fieldName={
 				lowercaseName as
 					| "general"
 					| "impetum"
@@ -74,8 +90,9 @@ function FormSpellDomainTablePair(
 					| "verstand"
 					| "sajak"
 					| "anagnosi"
-			)}
-			// label={lowercaseName}
+			}
+			max={10}
+			min={-1}
 		/>,
 	];
 }
@@ -86,7 +103,7 @@ interface UpdateFormProps {
 }
 export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 	const {
-		register,
+		control,
 		handleSubmit,
 		formState: { isSubmitting, isValid, isDirty },
 		reset,
@@ -137,12 +154,12 @@ export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 							textColor="pink"
 							tableData={{
 								tableLanes: [
-									FormSpellDomainTablePair(register, "Impetum"),
-									FormSpellDomainTablePair(register, "Khranitel"),
-									FormSpellDomainTablePair(register, "Aufbringen"),
-									FormSpellDomainTablePair(register, "Migaku"),
-									FormSpellDomainTablePair(register, "Affaiblir"),
-									FormSpellDomainTablePair(register, "Vitaeregio"),
+									FormSpellDomainTablePair(control, "Impetum"),
+									FormSpellDomainTablePair(control, "Khranitel"),
+									FormSpellDomainTablePair(control, "Aufbringen"),
+									FormSpellDomainTablePair(control, "Migaku"),
+									FormSpellDomainTablePair(control, "Affaiblir"),
+									FormSpellDomainTablePair(control, "Vitaeregio"),
 								],
 							}}
 						/>
@@ -156,12 +173,12 @@ export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 							textColor="pink"
 							tableData={{
 								tableLanes: [
-									FormSpellDomainTablePair(register, "Gaizào"),
-									FormSpellDomainTablePair(register, "Verstand"),
-									FormSpellDomainTablePair(register, "Sajak"),
-									FormSpellDomainTablePair(register, "Idaítera"),
-									FormSpellDomainTablePair(register, "Gollemhag"),
-									FormSpellDomainTablePair(register, "Anagnosi"),
+									FormSpellDomainTablePair(control, "Gaizào"),
+									FormSpellDomainTablePair(control, "Verstand"),
+									FormSpellDomainTablePair(control, "Sajak"),
+									FormSpellDomainTablePair(control, "Idaítera"),
+									FormSpellDomainTablePair(control, "Gollemhag"),
+									FormSpellDomainTablePair(control, "Anagnosi"),
 								],
 							}}
 						/>

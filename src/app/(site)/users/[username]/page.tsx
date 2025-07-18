@@ -13,6 +13,7 @@ import {
 import { Carousel } from "@/components/(UTILS)";
 import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
+import { UserFavoriteCarousel } from "./configuracoes/subComponents/UserFavoriteCarousel";
 
 interface UserPageProps {
 	params: Promise<{
@@ -37,7 +38,7 @@ export default function UserPage({ params }: UserPageProps) {
 	)
 		return null;
 
-	console.log(favorites.character);
+	//console.log(favorites.character[0].target);
 
 	return (
 		<GenericPageContainer
@@ -68,7 +69,7 @@ export default function UserPage({ params }: UserPageProps) {
 				</NotionBox>
 				<NotionBox backgroundColor="purple">
 					<NotionToggleHeader
-						title="Itens"
+						title="Items"
 						titleAlign="left"
 						children={
 							<Carousel
@@ -192,6 +193,27 @@ export default function UserPage({ params }: UserPageProps) {
 										href={`/racas/${RaceFavorite.target.slug}`}
 										title={RaceFavorite.target.name}
 										artworkUrl={RaceFavorite.target.iconUrl}
+									/>
+								))}
+							/>
+						}
+					/>
+				</NotionBox>
+				<NotionBox backgroundColor="purple">
+					<NotionToggleHeader
+						title="Chars"
+						titleAlign="left"
+						children={
+							<Carousel
+								slidesOrigin={"center"}
+								slidesSpacing={10}
+								minWidth={150}
+								slideChilds={favorites.character.map((charFavorite) => (
+									<StyledLinkCard
+										key={charFavorite.target.id}
+										href={`/chars/${charFavorite.target.id}`}
+										title={charFavorite.target.name}
+										artworkUrl={charFavorite.target.iconUrl}
 									/>
 								))}
 							/>

@@ -1,0 +1,35 @@
+.numberInputContainer {
+	display: flex;
+	flex-direction: column;
+	color: var(--cl-gray-100);
+	border-radius: var(--rd-sm);
+	border: 1px solid var(--cl-gray-500);
+	margin: var(--sp-2) 0;
+	position: relative;
+	min-width: 100px;
+
+	&:focus-within {
+		border: 1px solid var(--cl-gray-200);
+	}
+}
+
+.numberInputLabel {
+	font-size: var(--fs-xs);
+	color: var(--cl-gray-200);
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	left: 10px;
+}
+
+.numberInputError {
+	font-size: var(--fs-xs);
+	color: var(--cl-red-500);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	right: 10;
+}
