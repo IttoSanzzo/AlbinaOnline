@@ -27,10 +27,10 @@ export function DeleteCharForm({
 	const [responseMessage, setResponseMessage] = useState<string>("");
 	const router = useRouter();
 	const {
+		control,
 		watch,
-		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { isSubmitting },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
@@ -52,9 +52,9 @@ export function DeleteCharForm({
 	return (
 		<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
 			<HookedForm.TextInput
+				control={control}
+				fieldName="name"
 				label="Nome do personagem"
-				field={register("name")}
-				errorMessage={errors.name?.message}
 				fontSize="lg"
 				textCentered
 				placeholder="Insira o nome do personagem"

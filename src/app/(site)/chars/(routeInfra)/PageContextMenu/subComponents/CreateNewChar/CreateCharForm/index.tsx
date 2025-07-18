@@ -24,9 +24,8 @@ export function CreateCharForm() {
 	const router = useRouter();
 	const {
 		control,
-		register,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { isSubmitting },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
@@ -74,8 +73,8 @@ export function CreateCharForm() {
 		<FormContainer onSubmit={handleSubmit(onSubmit)}>
 			<HookedForm.TextInput
 				label="Nome"
-				field={register("name")}
-				errorMessage={errors.name?.message}
+				control={control}
+				fieldName="name"
 				fontSize="lg"
 				textCentered
 			/>
@@ -83,7 +82,6 @@ export function CreateCharForm() {
 				control={control}
 				fieldName="raceId"
 				label="Raça"
-				errorMessage={errors.raceId?.message}
 				placeholder="Selecione uma raça"
 				options={raceOptions}
 			/>

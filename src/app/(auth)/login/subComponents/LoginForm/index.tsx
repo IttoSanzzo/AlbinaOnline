@@ -59,9 +59,9 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 	const router = useRouter();
 
 	const {
-		register,
+		control,
 		handleSubmit,
-		formState: { errors, isSubmitting },
+		formState: { isSubmitting },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
@@ -90,17 +90,15 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 			<HookedForm.TextInput
 				autoComplete="username"
 				label="Usuário ou Email *"
-				errorMessage={
-					errors.usernameOrEmail ? errors.usernameOrEmail.message : undefined
-				}
-				field={register("usernameOrEmail")}
+				control={control}
+				fieldName="usernameOrEmail"
 				placeholder="Usuário ou Email"
 			/>
 			<HookedForm.PasswordInput
 				autoComplete="current-password"
 				label="Senha *"
-				errorMessage={errors.password ? errors.password.message : undefined}
-				field={register("password")}
+				control={control}
+				fieldName="password"
 				placeholder="Senha"
 			/>
 			<HookedForm.Space />

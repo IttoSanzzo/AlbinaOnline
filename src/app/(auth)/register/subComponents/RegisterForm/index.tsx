@@ -104,7 +104,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 	const router = useRouter();
 
 	const {
-		register,
+		control,
 		handleSubmit,
 		formState: { errors, isSubmitting },
 	} = useForm<FormData>({
@@ -131,27 +131,27 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 			<HookedForm.TextInput
 				autoComplete="username"
 				label="Usuário *"
-				errorMessage={errors.username ? errors.username.message : undefined}
-				field={register("username")}
+				control={control}
+				fieldName="username"
 				placeholder="usuario-exemplar"
 			/>
 			<HookedForm.TextInput
 				label="Nome *"
-				errorMessage={errors.nickname ? errors.nickname.message : undefined}
-				field={register("nickname")}
+				control={control}
+				fieldName="nickname"
 				placeholder="Nome Exemplar"
 			/>
 			<HookedForm.TextInput
 				label="Email *"
-				errorMessage={errors.email ? errors.email.message : undefined}
-				field={register("email")}
+				control={control}
+				fieldName="email"
 				placeholder="email@exemplo.com"
 			/>
 			<HookedForm.PasswordInput
 				autoComplete="current-password"
 				label="Senha *"
-				errorMessage={errors.password ? errors.password.message : undefined}
-				field={register("password")}
+				control={control}
+				fieldName="password"
 				placeholder="Senha1234"
 			/>
 			<HookedForm.SubmitButton

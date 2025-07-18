@@ -1,5 +1,5 @@
 import * as Select from "@radix-ui/react-select";
-import { Control, Controller, Path } from "react-hook-form";
+import { Control, Controller, Path, useController } from "react-hook-form";
 import { SelectContainer, SelectError, SelectLabel } from "./styledElements";
 import styles from "./styles.module.css";
 import {
@@ -21,7 +21,6 @@ type SelectWithIconProps<TControl extends Control<any>> = {
 	control: TControl;
 	fieldName: Path<ExtractFieldValues<TControl>>;
 	label: string;
-	errorMessage?: string;
 	placeholder?: string;
 	options: SelectWithIconOption[];
 };
@@ -29,14 +28,20 @@ export function SelectWithIcon<TControl extends Control<any>>({
 	control,
 	fieldName,
 	label,
-	errorMessage,
 	placeholder,
 	options,
 }: SelectWithIconProps<TControl>) {
+	const { fieldState } = useController({
+		name: fieldName,
+		control: control,
+	});
+
 	return (
 		<SelectContainer>
 			<SelectLabel children={label} />
-			{errorMessage && <SelectError>{errorMessage}</SelectError>}
+			{fieldState.error && (
+				<SelectError>{fieldState.error.message}</SelectError>
+			)}
 			<Controller
 				name={fieldName}
 				control={control}

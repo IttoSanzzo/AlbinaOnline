@@ -5,12 +5,14 @@ import {
 	TextInputLabel,
 } from "./styledElements";
 import { CSSProperties, InputHTMLAttributes } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { Control, Path, useController } from "react-hook-form";
 
-type TextInputProps = {
-	field: UseFormRegisterReturn;
+type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
+
+type TextInputProps<TControl extends Control<any>> = {
+	control: TControl;
+	fieldName: Path<ExtractFieldValues<TControl>>;
 	label: string;
-	errorMessage?: string;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -30,16 +32,21 @@ type TextInputProps = {
 	textCentered?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function TextInput({
-	field,
+export function TextInput<TControl extends Control<any>>({
+	control,
+	fieldName,
 	label,
-	errorMessage,
 	lesserPadding = false,
 	textCentered = false,
 	fontSize,
 	style,
 	...rest
-}: TextInputProps) {
+}: TextInputProps<TControl>) {
+	const { field, fieldState } = useController({
+		name: fieldName,
+		control: control,
+	});
+
 	const inputStyle: CSSProperties = {
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
 		...(lesserPadding && { padding: "var(--sp-4) var(--sp-4)" }),
@@ -50,7 +57,9 @@ export function TextInput({
 	return (
 		<TextInputContainer>
 			<TextInputLabel children={label} />
-			{errorMessage && <TextInputError>{errorMessage}</TextInputError>}
+			{fieldState.error && (
+				<TextInputError>{fieldState.error.message}</TextInputError>
+			)}
 			<TextInputField
 				style={inputStyle}
 				{...field}

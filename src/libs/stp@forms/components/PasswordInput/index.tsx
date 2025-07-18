@@ -4,16 +4,18 @@ import {
 	PasswordInputLabel,
 } from "./styledElements";
 import { CSSProperties } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import { Control, Path, useController } from "react-hook-form";
 import * as PasswordToggleField from "@radix-ui/react-password-toggle-field";
 import styles from "./styles.module.css";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 
-interface PasswordInputProps
+type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
+
+interface PasswordInputProps<TControl extends Control<any>>
 	extends PasswordToggleField.PasswordToggleFieldInputProps {
-	field: UseFormRegisterReturn;
+	control: TControl;
+	fieldName: Path<ExtractFieldValues<TControl>>;
 	label: string;
-	errorMessage?: string;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -32,16 +34,21 @@ interface PasswordInputProps
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 }
-export function PasswordInput({
-	field,
+export function PasswordInput<TControl extends Control<any>>({
+	control,
+	fieldName,
 	label,
-	errorMessage,
 	lesserPadding = false,
 	textCentered = false,
 	fontSize,
 	style,
 	...rest
-}: PasswordInputProps) {
+}: PasswordInputProps<TControl>) {
+	const { field, fieldState } = useController({
+		name: fieldName,
+		control: control,
+	});
+
 	const inputStyle: CSSProperties = {
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
 		...(lesserPadding && { padding: "var(--sp-4) var(--sp-4)" }),
@@ -53,8 +60,8 @@ export function PasswordInput({
 		<PasswordToggleField.Root>
 			<PasswordInputContainer>
 				<PasswordInputLabel children={label} />
-				{errorMessage && (
-					<PasswordInputError>{errorMessage}</PasswordInputError>
+				{fieldState.error && (
+					<PasswordInputError>{fieldState.error.message}</PasswordInputError>
 				)}
 				<PasswordToggleField.Input
 					autoCapitalize="none"
