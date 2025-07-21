@@ -1,7 +1,9 @@
 import { StyledLinkCard } from "@/components/(Design)";
-import { NotionToggleHeader } from "@/components/(NotionBased)";
+import { NotionBox, NotionToggleHeader } from "@/components/(NotionBased)";
 import { Carousel } from "@/components/(UTILS)";
 import { UserFavoritesGrouped } from "@/libs/stp@types";
+import { capitalize } from "@/utils/StringUtils";
+import { newStyledElement } from "@setsu-tp/styled-components";
 
 interface UserFavoriteCarouselProps {
 	favorites: UserFavoritesGrouped;
@@ -14,28 +16,32 @@ export function UserFavoriteCarousel({
 	favoriteType,
 	routeBase,
 }: UserFavoriteCarouselProps) {
+	// const test = newStyledElement.div(style.testeContainer);
+
 	console.log(favorites);
 	const indentifier = favoriteType == "character" ? "id" : "slug";
 	return (
-		<NotionToggleHeader
-			title={routeBase}
-			titleAlign="left"
-			children={
-				<Carousel
-					slidesOrigin={"center"}
-					slidesSpacing={10}
-					minWidth={150}
-					slideChilds={favorites[favoriteType].map((favorite) => (
-						<StyledLinkCard
-							size={150}
-							key={favorite.target.id}
-							href={`/${routeBase}/${(favorite.target as any)[indentifier]}`}
-							title={favorite.target.name}
-							artworkUrl={favorite.target.iconUrl}
-						/>
-					))}
-				/>
-			}
-		/>
+		<NotionBox backgroundColor="purple">
+			<NotionToggleHeader
+				title={capitalize(favoriteType)}
+				titleAlign="left"
+				children={
+					<Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={150}
+						slideChilds={favorites[favoriteType].map((favorite) => (
+							<StyledLinkCard
+								size={150}
+								key={favorite.target.id}
+								href={`/${routeBase}/${(favorite.target as any)[indentifier]}`}
+								title={favorite.target.name}
+								artworkUrl={favorite.target.iconUrl}
+							/>
+						))}
+					/>
+				}
+			/>
+		</NotionBox>
 	);
 }
