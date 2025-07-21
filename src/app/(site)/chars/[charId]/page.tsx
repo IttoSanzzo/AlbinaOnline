@@ -92,7 +92,7 @@ export default function Character({ params }: CharacterPageProps) {
 
 			<NotionBox
 				backgroundColor="gray"
-				// withoutPadding
+				// withoutPaddingg
 				withoutBorder>
 				<NotionToggleHeader
 					title="Maestrias"
