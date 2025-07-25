@@ -9,6 +9,7 @@ import { useCurrentUser } from "@/libs/stp@hooks";
 import { LogoutButton } from "./subComponents/LogoutItem";
 import { DropdownMenu } from "@/libs/stp@radix";
 import { YourProfileItem } from "./subComponents/YourProfileItem";
+import { YourEditItem } from "./subComponents/YourEditItem";
 
 export function ProfileButton() {
 	const { user } = useCurrentUser();
@@ -35,6 +36,7 @@ export function ProfileButton() {
 						<DropdownMenu.Arrow />
 
 						<YourProfileItem userUsername={user.username} />
+						<YourEditItem userUsername={user.username} />
 						<DropdownMenu.Separator />
 						<LogoutButton />
 					</DropdownMenu.Content>

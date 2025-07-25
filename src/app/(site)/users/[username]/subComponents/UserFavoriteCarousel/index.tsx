@@ -9,12 +9,14 @@ interface UserFavoriteCarouselProps {
 	favorites: UserFavoritesGrouped;
 	favoriteType: keyof UserFavoritesGrouped;
 	routeBase: string;
+	favoriteName: string;
 }
 
 export function UserFavoriteCarousel({
 	favorites,
 	favoriteType,
 	routeBase,
+	favoriteName,
 }: UserFavoriteCarouselProps) {
 	// const test = newStyledElement.div(style.testeContainer);
 
@@ -23,7 +25,7 @@ export function UserFavoriteCarousel({
 	return (
 		<NotionBox backgroundColor="purple">
 			<NotionToggleHeader
-				title={capitalize(favoriteType)}
+				title={favoriteName}
 				titleAlign="left"
 				children={
 					<Carousel
