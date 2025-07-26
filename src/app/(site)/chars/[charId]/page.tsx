@@ -100,6 +100,7 @@ export default function Character({ params }: CharacterPageProps) {
 					backgroundColor="darkGray"
 				/>
 				<CharacterDisplays.SpellDomains
+					characterId={characterData.id}
 					spellDomains={characterData.spellDomains}
 				/>
 				<NotionToggleHeader

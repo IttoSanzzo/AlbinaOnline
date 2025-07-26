@@ -39,9 +39,11 @@ export function CommonSpellDomainTablePair(
 }
 
 interface CharacterSpellDomainsDisplayProps {
+	characterId: string;
 	spellDomains: CharacterSpellDomains;
 }
 export function CharacterSpellDomainsDisplay({
+	characterId,
 	spellDomains,
 }: CharacterSpellDomainsDisplayProps) {
 	const { accessLevel, isSet } = useCurrentCharacterAccessLevel();
@@ -62,6 +64,7 @@ export function CharacterSpellDomainsDisplay({
 				withoutBorder>
 				{isSet == true || accessLevel >= AccessLevel.Edit ? (
 					<UpdateForm
+						characterId={characterId}
 						spellDomains={localSpellDomains}
 						setSpellDomains={setLocalSpellDomains}
 					/>

@@ -12,6 +12,8 @@ import { HookedForm } from "@/libs/stp@forms";
 import { z } from "zod";
 import { Control, useForm, UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { useState } from "react";
 
 const schema = z.object({
 	general: z.coerce.number().min(-1, "Mínimo de -1").max(10, "Máximo de 10"),
@@ -98,10 +100,16 @@ function FormSpellDomainTablePair(
 }
 
 interface UpdateFormProps {
+	characterId: string;
 	spellDomains: CharacterSpellDomains;
 	setSpellDomains: (spellDomains: CharacterSpellDomains) => void;
 }
-export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
+export function UpdateForm({
+	characterId,
+	spellDomains,
+	setSpellDomains,
+}: UpdateFormProps) {
+	const [errorMessage, setErrorMessage] = useState<string>("");
 	const {
 		control,
 		handleSubmit,
@@ -113,6 +121,20 @@ export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 	});
 
 	async function onSubmit(formData: FormData) {
+		const response = await authenticatedFetchAsync(
+			`/chars/${characterId}/spell-domains`,
+			{
+				method: "PUT",
+				body: JSON.stringify(formData),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		if (response.ok == false) {
+			setErrorMessage("Erro durante o salvamento");
+			return;
+		}
 		setSpellDomains({
 			characterId: spellDomains.characterId,
 			general: formData.general,
@@ -129,6 +151,7 @@ export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 			verstand: formData.verstand,
 			vitaeregio: formData.vitaeregio,
 		});
+		setErrorMessage("");
 		reset(formData);
 	}
 
@@ -186,13 +209,19 @@ export function UpdateForm({ spellDomains, setSpellDomains }: UpdateFormProps) {
 				}
 			/>
 			{isDirty && (
-				<HookedForm.SubmitButton
-					disabled={!isValid || isSubmitting}
-					color={isValid ? "teal" : "gray"}
-					label={
-						isValid ? "Salvar Domínios" : "Valores devem estar entre -1 e 10"
-					}
-				/>
+				<>
+					<HookedForm.SubmitButton
+						disabled={!isValid || isSubmitting}
+						color={isValid ? "teal" : "gray"}
+						label={
+							isValid ? "Salvar Domínios" : "Valores devem estar entre -1 e 10"
+						}
+					/>
+					<HookedForm.SimpleMessage
+						message={errorMessage}
+						color="red"
+					/>
+				</>
 			)}
 		</HookedForm.Form>
 	);

@@ -22,6 +22,8 @@ import { useLayoutEffect, useState } from "react";
 import { UserFavoriteCarousel } from "./subComponents/UserFavoriteCarousel";
 import { UserFavoriteCarouselContainer } from "./styledElements";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { FullUser, UserFavoritesGrouped } from "@/libs/stp@types";
 
 interface UserPageProps {
 	params: Promise<{
@@ -30,23 +32,41 @@ interface UserPageProps {
 }
 
 export default function UserPage({ params }: UserPageProps) {
-	const [usernameParam, setUsernameParam] = useState<string | null>(null);
-	const { loading, user } = useCurrentUser();
-	const { favorites, isLoading } = useUserFavorites();
+	const [user, setUser] = useState<FullUser | null>(null);
+	const [favorites, setFavorites] = useState<UserFavoritesGrouped | null>(null);
 
 	useLayoutEffect(() => {
-		params.then((paramStore) => setUsernameParam(paramStore.username));
+		params.then((paramStore) => {
+			authenticatedFetchAsync(
+				`${getAlbinaApiAddress()}/users/${paramStore.username}`,
+				{
+					method: "GET",
+				}
+			).then((response) => {
+				response.json().then((data) => {
+					setUser(data.user);
+				});
+			});
+		});
 	}, [params]);
-	if (
-		usernameParam == null ||
-		loading == true ||
-		user == null ||
-		isLoading == true ||
-		favorites == null
-	)
-		return null;
+	useLayoutEffect(() => {
+		if (user == null) return;
+		authenticatedFetchAsync(
+			`${getAlbinaApiAddress()}/users/${user.username}/favorites/grouped`,
+			{
+				method: "GET",
+			}
+		).then((response) => {
+			response.json().then((data) => {
+				/*setUser(data.user);*/
+				console.log(data);
+			});
+		});
+	}, [user]);
+	if (user == null || favorites == null) return null;
 
 	//console.log(favorites.character[0].target);
+
 	const breadcrumbs: Breadcrumb[] = [
 		{
 			href: "/users",
@@ -123,3 +143,13 @@ export default function UserPage({ params }: UserPageProps) {
 		</GenericPageContainer>
 	);
 }
+
+// setFavorites({
+// 	character: data.favorites.Character,
+// 	item: data.favorites.Item,
+// 	mastery: data.favorites.Mastery,
+// 	race: data.favorites.Race,
+// 	skill: data.favorites.Skill,
+// 	spell: data.favorites.Spell,
+// 	trait: data.favorites.Trait,
+// });
