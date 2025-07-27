@@ -261,7 +261,8 @@ export default async function Race({ params }: RaceProps) {
 				<Notion2Columns
 					colum1={
 						<NotionTable
-							fixedLineSize={90}
+							fixedLinePositions={[1]}
+							fixedLineWidths={[90]}
 							tableData={{
 								tableLanes: [
 									[

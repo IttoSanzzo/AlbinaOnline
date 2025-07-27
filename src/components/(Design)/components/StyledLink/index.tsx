@@ -9,6 +9,7 @@ export interface StyledLinkProps extends LinkProps {
 	href: string;
 	icon?: string;
 	textMode?: boolean;
+	tryAutomaticIcon?: boolean;
 }
 
 export function StyledLink({
@@ -16,12 +17,15 @@ export function StyledLink({
 	href,
 	icon,
 	textMode = false,
+	tryAutomaticIcon = false,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
 		? icon[0] === "@"
 			? icon
-			: `${icon}?size=21`
+			: `${icon}`
+		: tryAutomaticIcon
+		? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
 		: AlbinaLogo;
 
 	return (

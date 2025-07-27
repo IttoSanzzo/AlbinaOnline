@@ -1,5 +1,5 @@
 import { CharacterSpellDomainsDisplay } from "./SpellDomains";
 
-export const CharacterDisplays = {
+export const CharacterDataEditableDisplays = {
 	SpellDomains: CharacterSpellDomainsDisplay,
 };

@@ -175,7 +175,8 @@ export default function SpellPropertiesDisplay({
 					<NotionTable
 						withHeaderRow
 						textColor="gray"
-						fixedLineSize={25}
+						fixedLinePositions={[1]}
+						fixedLineWidths={[25]}
 						tableData={{
 							tableLanes: [
 								[
@@ -202,7 +203,8 @@ export default function SpellPropertiesDisplay({
 					<NotionTable
 						withHeaderRow
 						textColor="gray"
-						fixedLineSize={15}
+						fixedLinePositions={[1]}
+						fixedLineWidths={[15]}
 						tableData={{
 							tableLanes: [
 								[

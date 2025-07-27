@@ -50,8 +50,6 @@ export function CharacterSpellDomainsDisplay({
 	const [localSpellDomains, setLocalSpellDomains] =
 		useState<CharacterSpellDomains>(spellDomains);
 
-	// console.log(localSpellDomains);
-
 	return (
 		<NotionToggleHeader
 			title="Domínios"

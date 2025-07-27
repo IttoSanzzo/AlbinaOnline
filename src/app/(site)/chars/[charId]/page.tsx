@@ -1,7 +1,7 @@
 "use client";
 
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
-import { CharacterExpandedData } from "@/libs/stp@types";
+import { AccessLevel, CharacterExpandedData } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
 	Breadcrumb,
@@ -9,13 +9,14 @@ import {
 	SetCurrentCharacterAccessLevel,
 	SetCurrentPageData,
 	SetNavBarModules,
+	useCurrentCharacterAccessLevel,
 } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { NotionBox, NotionToggleHeader } from "@/components/(NotionBased)";
-import { CharacterDisplays } from "./subComponents/CharacterDisplays";
+import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullSheetEditableDisplay";
+import { CharacterFullSheetSocialDisplay } from "./subComponents/CharaterFullSheetSocialDisplay";
 
 // export const generateMetadata = routeInfra.generateMetadata;
 
@@ -27,6 +28,7 @@ export default function Character({ params }: CharacterPageProps) {
 	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
 	const [characterData, setCharacterData] =
 		useState<CharacterExpandedData | null>(null);
+	const { accessLevel, isSet } = useCurrentCharacterAccessLevel();
 
 	useEffect(() => {
 		params.then((paramsData) => setParamsData(paramsData));
@@ -90,25 +92,11 @@ export default function Character({ params }: CharacterPageProps) {
 			/>
 			<SetCurrentCharacterAccessLevel characterId={characterData.id} />
 
-			<NotionBox
-				backgroundColor="gray"
-				// withoutPaddingg
-				withoutBorder>
-				<NotionToggleHeader
-					title="Maestrias"
-					titleColor="gray"
-					backgroundColor="darkGray"
-				/>
-				<CharacterDisplays.SpellDomains
-					characterId={characterData.id}
-					spellDomains={characterData.spellDomains}
-				/>
-				<NotionToggleHeader
-					title="Outros"
-					titleColor="gray"
-					backgroundColor="darkGray"
-				/>
-			</NotionBox>
+			{accessLevel >= AccessLevel.Edit ? (
+				<CharacterFullSheetEditableDisplay characterData={characterData} />
+			) : (
+				<CharacterFullSheetSocialDisplay characterData={characterData} />
+			)}
 
 			<GenericPageFooter
 				version="6.5.0"

@@ -88,7 +88,8 @@ export default async function MasteriesPage() {
 					/>
 					<NotionCallout backgroundColor="purple">
 						<NotionTable
-							fixedLineSize={23}
+							fixedLinePositions={[1]}
+							fixedLineWidths={[23]}
 							tableData={{
 								tableLanes: [
 									[
@@ -293,7 +294,8 @@ export default async function MasteriesPage() {
 									{"Os conhecimentos são divididos em duas categorias: "}
 									<EmptyLine />
 									<NotionTable
-										fixedLineSize={23}
+										fixedLinePositions={[1]}
+										fixedLineWidths={[23]}
 										tableData={{
 											tableLanes: [
 												[
@@ -372,7 +374,8 @@ export default async function MasteriesPage() {
 									{"Os ofícios são divididos em três categorias: "}
 									<EmptyLine />
 									<NotionTable
-										fixedLineSize={23}
+										fixedLinePositions={[1]}
+										fixedLineWidths={[23]}
 										tableData={{
 											tableLanes: [
 												[

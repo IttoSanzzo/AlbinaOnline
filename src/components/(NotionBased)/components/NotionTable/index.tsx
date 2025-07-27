@@ -1,6 +1,7 @@
 import {
 	NotionBackgroundColor,
 	NotionPropsColor,
+	NotionText,
 	NotionTextColor,
 } from "../../index";
 import {
@@ -16,8 +17,8 @@ export interface NotionTableData {
 interface NotionTableProps extends NotionPropsColor {
 	tableData: NotionTableData;
 	direction?: "row" | "column";
-	fixedLinePosition?: number;
-	fixedLineSize?: number;
+	fixedLinePositions?: number[];
+	fixedLineWidths?: number[];
 	withHeaderRow?: boolean;
 	withHeaderColumn?: boolean;
 }
@@ -25,8 +26,8 @@ interface NotionTableProps extends NotionPropsColor {
 export function NotionTable({
 	tableData: { tableLanes },
 	direction = "row",
-	fixedLinePosition = 1,
-	fixedLineSize,
+	fixedLinePositions = [],
+	fixedLineWidths = [],
 	withHeaderRow = false,
 	withHeaderColumn = true,
 	textColor,
@@ -38,8 +39,17 @@ export function NotionTable({
 			backgroundColor: NotionBackgroundColor[backgroundColor],
 		}),
 	};
+	if (fixedLinePositions.length != fixedLineWidths.length)
+		return (
+			<NotionText
+				textColor="red"
+				backgroundColor="yellow"
+				children="NotionTable: fixedLinePositions and fixedLineWidths should not have different lengths."
+			/>
+		);
 
 	if (direction === "row") {
+		var fixedPositionIndex = -1;
 		return (
 			<NotionHorizontalTableContainer style={baseStyle}>
 				<tbody>
@@ -47,9 +57,9 @@ export function NotionTable({
 						<tr key={laneIndex}>
 							{row.map((column, rowIndex) => {
 								const contentStyle = {
-									...(fixedLineSize &&
-										rowIndex === fixedLinePosition - 1 && {
-											width: `${fixedLineSize}%`,
+									...(fixedLineWidths.length > 0 &&
+										fixedLinePositions.includes(rowIndex + 1) && {
+											width: `${fixedLineWidths[++fixedPositionIndex]}%`,
 										}),
 									...(withHeaderRow &&
 										laneIndex === 0 && {
