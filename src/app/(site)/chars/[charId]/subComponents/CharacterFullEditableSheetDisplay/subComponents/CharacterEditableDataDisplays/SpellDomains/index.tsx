@@ -3,17 +3,20 @@ import {
 	Notion2Columns,
 	NotionBox,
 	NotionTable,
+	NotionText,
 } from "@/components/(NotionBased)";
+import { HookedForm } from "@/libs/stp@forms";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
-import { CommonSpellDomainTablePair } from ".";
-import { HookedForm } from "@/libs/stp@forms";
-import { z } from "zod";
-import { Control, useForm, UseFormRegister } from "react-hook-form";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Control, useForm } from "react-hook-form";
+import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { useState } from "react";
+import React from "react";
+import z from "zod";
+import { shallowCompare } from "@/utils/Data";
 
 const schema = z.object({
 	general: z.coerce.number().min(-1, "Mínimo de -1").max(10, "Máximo de 10"),
@@ -32,42 +35,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-function FormSpellDomainTablePair(
-	control: Control<
-		{
-			general: number;
-			impetum: number;
-			khranitel: number;
-			vitaeregio: number;
-			migaku: number;
-			affaiblir: number;
-			aufbringen: number;
-			gaizao: number;
-			idaitera: number;
-			gollemhag: number;
-			verstand: number;
-			sajak: number;
-			anagnosi: number;
-		},
-		any,
-		{
-			general: number;
-			impetum: number;
-			khranitel: number;
-			vitaeregio: number;
-			migaku: number;
-			affaiblir: number;
-			aufbringen: number;
-			gaizao: number;
-			idaitera: number;
-			gollemhag: number;
-			verstand: number;
-			sajak: number;
-			anagnosi: number;
-		}
-	>,
-	name: string
-) {
+function FormSpellDomainTablePair(control: Control<FormData>, name: string) {
 	const lowercaseName = name === "General" ? "" : normalizeText(name);
 	return [
 		<StyledLink
@@ -77,86 +45,83 @@ function FormSpellDomainTablePair(
 		/>,
 		<HookedForm.NumberInputInline
 			control={control}
-			fieldName={
-				lowercaseName as
-					| "general"
-					| "impetum"
-					| "khranitel"
-					| "vitaeregio"
-					| "migaku"
-					| "affaiblir"
-					| "aufbringen"
-					| "gaizao"
-					| "idaitera"
-					| "gollemhag"
-					| "verstand"
-					| "sajak"
-					| "anagnosi"
-			}
+			fieldName={lowercaseName as keyof FormData}
 			max={10}
 			min={-1}
 		/>,
 	];
 }
 
-interface UpdateFormProps {
-	characterId: string;
-	spellDomains: CharacterSpellDomains;
-	setSpellDomains: (spellDomains: CharacterSpellDomains) => void;
+export function CommonSpellDomainTablePair(
+	name: string,
+	spellDomains: CharacterSpellDomains
+) {
+	const lowercaseName = name === "General" ? "" : normalizeText(name);
+	return [
+		<StyledLink
+			title={name}
+			href={`/spells/${lowercaseName}`}
+			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
+		/>,
+		<NotionText
+			textAlign="center"
+			display="block"
+			children={`${
+				spellDomains[
+					name === "General"
+						? "general"
+						: (lowercaseName as keyof CharacterSpellDomains)
+				]
+			}`}
+		/>,
+	];
 }
-export function UpdateForm({
-	characterId,
+
+interface CharacterSpellDomainsDisplayProps {
+	spellDomains: CharacterSpellDomains;
+}
+export function CharacterSpellDomainsDisplay({
 	spellDomains,
-	setSpellDomains,
-}: UpdateFormProps) {
+}: CharacterSpellDomainsDisplayProps) {
+	const { characterId } = useContext(CharacterIdContext);
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const {
 		control,
-		handleSubmit,
-		formState: { isSubmitting, isValid, isDirty },
-		reset,
+		watch,
+		formState: { isValid },
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: spellDomains,
 	});
+	const watchedValues = watch();
+	const lastSpellDomains = useRef({ ...watchedValues });
 
-	async function onSubmit(formData: FormData) {
-		const response = await authenticatedFetchAsync(
-			`/chars/${characterId}/spell-domains`,
-			{
-				method: "PUT",
-				body: JSON.stringify(formData),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
-		if (response.ok == false) {
-			setErrorMessage("Erro durante o salvamento");
-			return;
+	useEffect(() => {
+		if (isValid && !shallowCompare(lastSpellDomains.current, watchedValues)) {
+			const timeout = setTimeout(async () => {
+				const response = await authenticatedFetchAsync(
+					`/chars/${characterId}/spell-domains`,
+					{
+						method: "PUT",
+						body: JSON.stringify(watchedValues),
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);
+				if (response.ok == false) {
+					setErrorMessage("Erro durante o salvamento");
+					return;
+				}
+				lastSpellDomains.current = { ...watchedValues };
+				setErrorMessage("");
+			}, 1000);
+			return () => clearTimeout(timeout);
 		}
-		setSpellDomains({
-			characterId: spellDomains.characterId,
-			general: formData.general,
-			affaiblir: formData.affaiblir,
-			anagnosi: formData.anagnosi,
-			aufbringen: formData.aufbringen,
-			gaizao: formData.gaizao,
-			gollemhag: formData.gollemhag,
-			idaitera: formData.idaitera,
-			impetum: formData.impetum,
-			khranitel: formData.khranitel,
-			migaku: formData.migaku,
-			sajak: formData.sajak,
-			verstand: formData.verstand,
-			vitaeregio: formData.vitaeregio,
-		});
-		setErrorMessage("");
-		reset(formData);
-	}
+	}, [watchedValues, isValid]);
 
 	return (
-		<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+		<HookedForm.Form>
 			<NotionBox
 				backgroundColor="purple"
 				withoutBorder
@@ -172,7 +137,8 @@ export function UpdateForm({
 				colum1={
 					<NotionBox
 						backgroundColor="purple"
-						withoutBorder>
+						withoutBorder
+						withoutMargin>
 						<NotionTable
 							textColor="pink"
 							tableData={{
@@ -191,7 +157,8 @@ export function UpdateForm({
 				colum2={
 					<NotionBox
 						backgroundColor="purple"
-						withoutBorder>
+						withoutBorder
+						withoutMargin>
 						<NotionTable
 							textColor="pink"
 							tableData={{
@@ -208,21 +175,10 @@ export function UpdateForm({
 					</NotionBox>
 				}
 			/>
-			{isDirty && (
-				<>
-					<HookedForm.SubmitButton
-						disabled={!isValid || isSubmitting}
-						color={isValid ? "teal" : "gray"}
-						label={
-							isValid ? "Salvar Domínios" : "Valores devem estar entre -1 e 10"
-						}
-					/>
-					<HookedForm.SimpleMessage
-						message={errorMessage}
-						color="red"
-					/>
-				</>
-			)}
+			<HookedForm.SimpleMessage
+				message={isValid ? errorMessage : "Valor inválido detectado"}
+				color="red"
+			/>
 		</HookedForm.Form>
 	);
 }

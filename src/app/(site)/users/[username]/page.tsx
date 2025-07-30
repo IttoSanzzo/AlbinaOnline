@@ -58,14 +58,20 @@ export default function UserPage({ params }: UserPageProps) {
 			}
 		).then((response) => {
 			response.json().then((data) => {
-				/*setUser(data.user);*/
+				setFavorites({
+					character: data.favorites.Character,
+					item: data.favorites.Item,
+					mastery: data.favorites.Mastery,
+					race: data.favorites.Race,
+					skill: data.favorites.Skill,
+					spell: data.favorites.Spell,
+					trait: data.favorites.Trait,
+				});
 				console.log(data);
 			});
 		});
 	}, [user]);
 	if (user == null || favorites == null) return null;
-
-	//console.log(favorites.character[0].target);
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
@@ -143,13 +149,3 @@ export default function UserPage({ params }: UserPageProps) {
 		</GenericPageContainer>
 	);
 }
-
-// setFavorites({
-// 	character: data.favorites.Character,
-// 	item: data.favorites.Item,
-// 	mastery: data.favorites.Mastery,
-// 	race: data.favorites.Race,
-// 	skill: data.favorites.Skill,
-// 	spell: data.favorites.Spell,
-// 	trait: data.favorites.Trait,
-// });

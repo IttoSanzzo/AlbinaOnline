@@ -19,6 +19,7 @@ interface NotionTableProps extends NotionPropsColor {
 	direction?: "row" | "column";
 	fixedLinePositions?: number[];
 	fixedLineWidths?: number[];
+	columnBackgroundColors?: (keyof typeof NotionBackgroundColor | undefined)[];
 	withHeaderRow?: boolean;
 	withHeaderColumn?: boolean;
 }
@@ -28,6 +29,7 @@ export function NotionTable({
 	direction = "row",
 	fixedLinePositions = [],
 	fixedLineWidths = [],
+	columnBackgroundColors = [],
 	withHeaderRow = false,
 	withHeaderColumn = true,
 	textColor,
@@ -60,6 +62,11 @@ export function NotionTable({
 									...(fixedLineWidths.length > 0 &&
 										fixedLinePositions.includes(rowIndex + 1) && {
 											width: `${fixedLineWidths[++fixedPositionIndex]}%`,
+										}),
+									...(rowIndex < columnBackgroundColors.length &&
+										columnBackgroundColors[rowIndex] != undefined && {
+											backgroundColor:
+												NotionBackgroundColor[columnBackgroundColors[rowIndex]],
 										}),
 									...(withHeaderRow &&
 										laneIndex === 0 && {

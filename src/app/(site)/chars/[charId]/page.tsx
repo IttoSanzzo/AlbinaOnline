@@ -15,7 +15,7 @@ import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullSheetEditableDisplay";
+import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharaterFullSheetSocialDisplay";
 
 // export const generateMetadata = routeInfra.generateMetadata;
@@ -28,7 +28,7 @@ export default function Character({ params }: CharacterPageProps) {
 	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
 	const [characterData, setCharacterData] =
 		useState<CharacterExpandedData | null>(null);
-	const { accessLevel, isSet } = useCurrentCharacterAccessLevel();
+	const { accessLevel } = useCurrentCharacterAccessLevel();
 
 	useEffect(() => {
 		params.then((paramsData) => setParamsData(paramsData));
@@ -42,7 +42,6 @@ export default function Character({ params }: CharacterPageProps) {
 				setError(response.status);
 			} else {
 				response.json().then((data) => {
-					console.log(data);
 					setCharacterData(data.character);
 				});
 			}
@@ -95,6 +94,7 @@ export default function Character({ params }: CharacterPageProps) {
 			{accessLevel >= AccessLevel.Edit ? (
 				<CharacterFullSheetEditableDisplay characterData={characterData} />
 			) : (
+				// <CharacterFullSheetEditableDisplay characterData={characterData} />
 				<CharacterFullSheetSocialDisplay characterData={characterData} />
 			)}
 

@@ -1,6 +1,7 @@
 import { NotionBox, NotionToggleHeader } from "@/components/(NotionBased)";
-import { CharacterDataEditableDisplays } from "./CharacterDataEditableDisplays";
 import { CharacterExpandedData } from "@/libs/stp@types";
+import { CharacterEditableSheetContextProviders } from "./subComponents/CharacterEditableSheetContextProviders";
+import { CharacterDrawers } from "./subComponents/Drawers";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;
@@ -9,21 +10,15 @@ export function CharacterFullSheetEditableDisplay({
 	characterData,
 }: CharacterFullSheetEditableDisplayProps) {
 	return (
-		<>
+		<CharacterEditableSheetContextProviders data={characterData}>
 			<NotionBox
 				backgroundColor="gray"
 				withoutBorder>
-				<NotionToggleHeader
-					title="Estatísticas"
-					titleColor="gray"
-					backgroundColor="darkGray"
+				<CharacterDrawers.ParametersAndAtributeScores
+					characterId={characterData.id}
 				/>
-				<NotionToggleHeader
-					title="Maestrias & Testes"
-					titleColor="gray"
-					backgroundColor="darkGray"
-				/>
-				<CharacterDataEditableDisplays.SpellDomains
+				<CharacterDrawers.MasteriesAndTests characterId={characterData.id} />
+				<CharacterDrawers.SpellDomains
 					characterId={characterData.id}
 					spellDomains={characterData.spellDomains}
 				/>
@@ -33,6 +28,6 @@ export function CharacterFullSheetEditableDisplay({
 					backgroundColor="darkGray"
 				/>
 			</NotionBox>
-		</>
+		</CharacterEditableSheetContextProviders>
 	);
 }

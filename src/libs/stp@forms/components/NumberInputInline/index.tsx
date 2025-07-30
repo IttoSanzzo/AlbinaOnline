@@ -56,7 +56,9 @@ export function NumberInputInline<TControl extends Control<any>>({
 
 	function handleDecrement() {
 		const newValue: number = (field.value ?? 0) - (step ? step : 1);
-		field.onChange(min ? (newValue < min ? min : newValue) : newValue);
+		field.onChange(
+			min != undefined ? (newValue < min ? min : newValue) : newValue
+		);
 	}
 	function handleIncrement() {
 		const newValue: number = (field.value ?? 0) + (step ? step : 1);
