@@ -1,5 +1,4 @@
 .dialogContent {
-	/* z-index: 20; */
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -16,7 +15,7 @@
 	box-shadow: 0 0 30px var(--cl-gray-700);
 
 	animation: contentShow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-	overflow: visible;
+	overflow: scroll;
 
 	&:focus {
 		outline: none;

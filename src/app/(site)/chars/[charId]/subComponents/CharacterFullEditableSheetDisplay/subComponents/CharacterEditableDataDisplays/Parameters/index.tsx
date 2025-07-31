@@ -157,13 +157,13 @@ export function CharacterParametersDisplay() {
 							control,
 							"physicalMight",
 							race.parameters.physicalPower,
-							"Poder Físico"
+							"P. Físico"
 						),
 						tableParameterEntry(
 							control,
 							"arcanePower",
 							race.parameters.magicalPower,
-							"Poder Mágico"
+							"P. Mágico"
 						),
 					],
 				}}

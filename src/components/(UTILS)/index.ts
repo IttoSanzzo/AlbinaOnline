@@ -5,3 +5,5 @@ export { EmptyLine } from "./components/EmptyLine";
 export { SmartText } from "./components/SmartText";
 export { TestFetchButton } from "./components/TestFetchButton";
 export { Carousel } from "./components/Carousel";
+
+export { SideActionNumberInputButtons } from "./components/SideActionNumberInputButtons";

@@ -4,12 +4,16 @@ import clsx from "clsx";
 import { CSSProperties } from "react";
 
 interface ContentProps extends DialogContentProps {
-	width?: number;
+	width?: React.CSSProperties["width"];
+	maxWidth?: React.CSSProperties["maxWidth"];
 }
-export function Content({ className, width, ...rest }: ContentProps) {
+export function Content({ className, width, maxWidth, ...rest }: ContentProps) {
 	const contentStyle: CSSProperties = {
 		...(width && {
-			width: `${width}px`,
+			width: width,
+		}),
+		...(maxWidth && {
+			maxWidth: maxWidth,
 		}),
 	};
 	return (

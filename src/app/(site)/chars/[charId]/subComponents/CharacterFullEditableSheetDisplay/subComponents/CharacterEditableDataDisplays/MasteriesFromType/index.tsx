@@ -1,33 +1,53 @@
-import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionTable, NotionText } from "@/components/(NotionBased)";
-import { useContext, useLayoutEffect, useState } from "react";
-import { AbilityScoreContext } from "../../CharacterEditableSheetContextProviders";
+"use client";
+
+import {
+	NotionBox,
+	NotionTable,
+	NotionText,
+	NotionToggleHeader,
+} from "@/components/(NotionBased)";
+import React, { ReactNode, useContext } from "react";
+import {
+	AbilityScoreContext,
+	MasteriesContext,
+} from "../../CharacterEditableSheetContextProviders";
 import {
 	CharacterAbilityScore,
 	CharacterMasteryExpanded,
+	masteryNames,
 	MasteryType,
 } from "@/libs/stp@types";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
+import { MasteryLinkWithDeletion } from "./subComponents/MasteryLinkWithDeletion";
+import { AddMasteryButton } from "./subComponents/AddMasteryButton";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { MasteryLevelController } from "./subComponents/MasteryLevelController";
+
+const MasteriesDrawerContainer = newStyledElement.div(
+	styles.masteriesDrawerContainer
+);
 
 function tableMasteryEntry(
+	characterId: string,
+	masteryId: string,
 	name: string,
 	slug: string,
 	level: number,
 	abilityScore?: number
 ) {
 	return [
-		<StyledLink
-			title={name}
-			href={`/maestrias/${slug}`}
-			icon={`${getAlbinaApiAddress()}/favicon/maestrias/${slug}`}
+		<MasteryLinkWithDeletion
+			characterId={characterId}
+			masteryId={masteryId}
+			name={name}
+			slug={slug}
 		/>,
-		<NotionText
-			textAlign="center"
-			display="block"
-			children={String(level)}
+		<MasteryLevelController
+			level={level}
+			characterId={characterId}
+			masteryId={masteryId}
 		/>,
 		bonusValueText(
 			level +
@@ -35,138 +55,188 @@ function tableMasteryEntry(
 		),
 	];
 }
+function tableHeaderRow() {
+	return [
+		<NotionText
+			textAlign="center"
+			display="block"
+			textColor="gray"
+			children="Nome"
+		/>,
+		<NotionText
+			textAlign="center"
+			display="block"
+			textColor="gray"
+			children="Nível"
+		/>,
+		<NotionText
+			textAlign="center"
+			display="block"
+			textColor="gray"
+			children="Bônus"
+		/>,
+	];
+}
+function formTable(
+	masteries: CharacterMasteryExpanded[],
+	abilityScore: CharacterAbilityScore
+): ReactNode[][] {
+	if (masteries.length == 0) {
+		return [
+			tableHeaderRow(),
+			[
+				"-",
+				<NotionText
+					textAlign="center"
+					display="block"
+					children="-"
+				/>,
+				<NotionText
+					textAlign="center"
+					display="block"
+					children="-"
+				/>,
+			],
+		];
+	}
+	return [
+		tableHeaderRow(),
+		...masteries.map((mastery) => {
+			switch (mastery.mastery.type) {
+				case "Proficiency":
+					return tableMasteryEntry(
+						mastery.characterId,
+						mastery.mastery.id,
+						mastery.mastery.name,
+						mastery.mastery.slug,
+						mastery.level
+					);
+				case "Expertise":
+					return tableMasteryEntry(
+						mastery.characterId,
+						mastery.mastery.id,
+						mastery.mastery.name,
+						mastery.mastery.slug,
+						mastery.level,
+						abilityScore[
+							mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
+						] as number
+					);
+				case "Knowledge":
+					return tableMasteryEntry(
+						mastery.characterId,
+						mastery.mastery.id,
+						mastery.mastery.name,
+						mastery.mastery.slug,
+						mastery.level,
+						Math.max(abilityScore.intelligence, abilityScore.wisdom)
+					);
+				case "Craft":
+					switch (mastery.mastery.subType) {
+						case "Production":
+							return tableMasteryEntry(
+								mastery.characterId,
+								mastery.mastery.id,
+								mastery.mastery.name,
+								mastery.mastery.slug,
+								mastery.level,
+								Math.max(abilityScore.technique, abilityScore.intelligence)
+							);
+						case "Combatant":
+							return tableMasteryEntry(
+								mastery.characterId,
+								mastery.mastery.id,
+								mastery.mastery.name,
+								mastery.mastery.slug,
+								mastery.level,
+								Math.max(abilityScore.technique, abilityScore.strength)
+							);
+						case "General":
+							return tableMasteryEntry(
+								mastery.characterId,
+								mastery.mastery.id,
+								mastery.mastery.name,
+								mastery.mastery.slug,
+								mastery.level,
+								Math.max(
+									abilityScore.wisdom,
+									abilityScore.intelligence,
+									abilityScore.charisma
+								)
+							);
+					}
+				default:
+					return tableMasteryEntry(
+						mastery.characterId,
+						mastery.mastery.id,
+						mastery.mastery.name,
+						mastery.mastery.slug,
+						mastery.level
+					);
+			}
+		}),
+	];
+}
+
 interface CharacterMasteriesFromTypeDisplayProps {
 	characterId: string;
 	type: keyof typeof MasteryType;
 }
-export function CharacterMasteriesFromTypeDisplay({
+export function _CharacterMasteriesFromTypeDisplay({
 	characterId,
 	type,
 }: CharacterMasteriesFromTypeDisplayProps) {
-	// const [errorMessage, setErrorMessage] = useState<string>("");
 	const { abilityScore } = useContext(AbilityScoreContext);
-	const [masteries, setMasteries] = useState<CharacterMasteryExpanded[]>([]);
-	// const { masteries, setMasteries } = useContext(MasteriesContext);
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
-			`${getAlbinaApiAddress()}/chars/${characterId}/masteries?type=${type}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		).then((response) => {
-			if (!response.ok) throw new Error("Failed to fetch masteries");
-			response.json().then((data: CharacterMasteryExpanded[]) => {
-				const orderedData = data.sort((a, b) => {
-					const nameCompare = a.mastery.name.localeCompare(b.mastery.name);
-					if (nameCompare !== 0) return nameCompare;
-					return a.level - b.level;
-				});
-				setMasteries(orderedData);
-			});
-		});
-	}, [characterId, type]);
+	const { characterMasteries } = useContext(MasteriesContext);
+
+	const masteriesFromThisType = characterMasteries.filter(
+		(mastery) => mastery.mastery.type == type
+	);
 
 	return (
 		<NotionBox
+			backgroundColor="darkGray"
 			withoutBorder
-			withoutMargin
+			withoutMargin={type == "Proficiency" || type == "Craft"}
 			withoutPadding>
-			<NotionTable
-				fixedLinePositions={[1]}
-				fixedLineWidths={[50]}
-				direction="row"
-				withHeaderRow
-				tableData={{
-					tableLanes: [
-						[
-							<NotionText
-								textAlign="center"
-								display="block"
-								textColor="gray"
-								children="Nome"
-							/>,
-							<NotionText
-								textAlign="center"
-								display="block"
-								textColor="gray"
-								children="Nível"
-							/>,
-							<NotionText
-								textAlign="center"
-								display="block"
-								textColor="gray"
-								children="Bônus"
-							/>,
-						],
-						...masteries.map((mastery) => {
-							switch (mastery.mastery.type) {
-								case "Proficiency":
-									return tableMasteryEntry(
-										mastery.mastery.name,
-										mastery.mastery.slug,
-										mastery.level
-									);
-								case "Expertise":
-									return tableMasteryEntry(
-										mastery.mastery.name,
-										mastery.mastery.slug,
-										mastery.level,
-										abilityScore[
-											mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
-										] as number
-									);
-								case "Knowledge":
-									return tableMasteryEntry(
-										mastery.mastery.name,
-										mastery.mastery.slug,
-										mastery.level,
-										Math.max(abilityScore.intelligence, abilityScore.wisdom)
-									);
-								case "Craft":
-									switch (mastery.mastery.subType) {
-										case "Production":
-											return tableMasteryEntry(
-												mastery.mastery.name,
-												mastery.mastery.slug,
-												mastery.level,
-												Math.max(
-													abilityScore.technique,
-													abilityScore.intelligence
-												)
-											);
-										case "Combatant":
-											return tableMasteryEntry(
-												mastery.mastery.name,
-												mastery.mastery.slug,
-												mastery.level,
-												Math.max(abilityScore.technique, abilityScore.strength)
-											);
-										case "General":
-											return tableMasteryEntry(
-												mastery.mastery.name,
-												mastery.mastery.slug,
-												mastery.level,
-												Math.max(
-													abilityScore.wisdom,
-													abilityScore.intelligence,
-													abilityScore.charisma
-												)
-											);
-									}
-								default:
-									return tableMasteryEntry(
-										mastery.mastery.name,
-										mastery.mastery.slug,
-										mastery.level
-									);
-							}
-						}),
-					],
-				}}
-			/>
+			<MasteriesDrawerContainer>
+				<NotionToggleHeader
+					memoryId={`${characterId}-${type}s`}
+					contentMargin="none"
+					textColor="yellow"
+					headerType="h2"
+					titleColor="orange"
+					title={`${masteryNames[type]}s`}>
+					<NotionTable
+						fixedLinePositions={[1, 3]}
+						fixedLineWidths={[50, 19]}
+						direction="row"
+						withHeaderRow
+						tableData={{
+							tableLanes: formTable(masteriesFromThisType, abilityScore),
+						}}
+					/>
+				</NotionToggleHeader>
+				<AddMasteryButton
+					masteries={masteriesFromThisType}
+					characterId={characterId}
+					type={type}
+				/>
+			</MasteriesDrawerContainer>
 		</NotionBox>
 	);
 }
+
+function areEqual(
+	prevProps: CharacterMasteriesFromTypeDisplayProps,
+	nextProps: CharacterMasteriesFromTypeDisplayProps
+) {
+	return (
+		prevProps.characterId === nextProps.characterId &&
+		prevProps.type === nextProps.type
+	);
+}
+export const CharacterMasteriesFromTypeDisplay = React.memo(
+	_CharacterMasteriesFromTypeDisplay,
+	areEqual
+);

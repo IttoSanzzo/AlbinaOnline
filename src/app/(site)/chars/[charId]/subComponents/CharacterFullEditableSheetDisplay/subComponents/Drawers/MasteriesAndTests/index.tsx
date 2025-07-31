@@ -1,6 +1,11 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { Notion2Columns } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
+import { useContext, useLayoutEffect } from "react";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { CharacterMasteryExpanded } from "@/libs/stp@types";
+import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
 
 interface MasteriesAndTestsDrawerProps {
 	characterId: string;
@@ -8,6 +13,30 @@ interface MasteriesAndTestsDrawerProps {
 export function MasteriesAndTestsDrawer({
 	characterId,
 }: MasteriesAndTestsDrawerProps) {
+	const { setCharacterMasteries } = useContext(MasteriesContext);
+
+	useLayoutEffect(() => {
+		authenticatedFetchAsync(
+			getAlbinaApiAddress(`/chars/${characterId}/masteries`),
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		).then((response) => {
+			if (!response.ok) throw new Error("Failed to fetch masteries");
+			response.json().then((data: CharacterMasteryExpanded[]) => {
+				const orderedData = data.sort((a, b) => {
+					const nameCompare = a.mastery.name.localeCompare(b.mastery.name);
+					if (nameCompare !== 0) return nameCompare;
+					return a.level - b.level;
+				});
+				setCharacterMasteries(orderedData);
+			});
+		});
+	}, [characterId]);
+
 	return (
 		<CharacterDrawerBaseHeader
 			title="Maestrias & Testes"

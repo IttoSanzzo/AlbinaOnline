@@ -45,3 +45,11 @@ export type MasteryData = {
 	updatedAt: string;
 	albinaVersion: string;
 };
+
+export const masteryNames: Record<keyof typeof MasteryType, string> = {
+	Proficiency: "Proficiência",
+	Craft: "Ofício",
+	Expertise: "Perícia",
+	Knowledge: "Conhecimento",
+	Unknown: "?",
+};

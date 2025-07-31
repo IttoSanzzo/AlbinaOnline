@@ -68,6 +68,7 @@ export function NumberInputInline<TControl extends Control<any>>({
 	return (
 		<NumberInputFieldContainer className={className}>
 			<NumberInputDecrementButton
+				disabled={min != undefined && field.value <= min}
 				type="button"
 				onClick={handleDecrement}
 				children={StpIcon({ name: "LessThan" })}
@@ -82,6 +83,7 @@ export function NumberInputInline<TControl extends Control<any>>({
 				{...rest}
 			/>
 			<NumberInputIncrementButton
+				disabled={max != undefined && field.value >= max}
 				type="button"
 				onClick={handleIncrement}
 				children={StpIcon({ name: "GreaterThan" })}

@@ -1,5 +1,6 @@
 .styledLinkContainer {
 	display: flexbox;
+	position: relative;
 	border-radius: var(--rd-sm);
 	background-color: var(--cl-gray-800);
 	page-break-inside: avoid;
@@ -29,7 +30,6 @@
 	&:hover a {
 		background-color: var(--cl-gray-700);
 		color: var(--cl-gray-100);
-		cursor: pointer;
 	}
 }
 
@@ -50,5 +50,27 @@
 		& span {
 			font-size: var(--fs-md) !important;
 		}
+	}
+}
+
+.actionButton {
+	position: absolute;
+	left: 4px;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: var(--cl-gray-700);
+	border: none;
+	line-height: 0;
+	opacity: 0;
+
+	transition: 0.25s linear opacity;
+
+	& svg {
+		width: 21px;
+		height: 21px;
+	}
+	&:hover {
+		cursor: pointer;
+		opacity: 1;
 	}
 }

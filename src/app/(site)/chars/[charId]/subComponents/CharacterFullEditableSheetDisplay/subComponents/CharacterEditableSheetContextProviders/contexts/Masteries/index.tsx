@@ -2,13 +2,13 @@ import { createContext, ReactNode, useMemo, useState } from "react";
 import { CharacterMasteryExpanded } from "@/libs/stp@types";
 
 export const MasteriesContext = createContext<{
-	masteries: CharacterMasteryExpanded[];
-	setMasteries: React.Dispatch<
+	characterMasteries: CharacterMasteryExpanded[];
+	setCharacterMasteries: React.Dispatch<
 		React.SetStateAction<CharacterMasteryExpanded[]>
 	>;
 }>({
-	masteries: [],
-	setMasteries: () => {
+	characterMasteries: [],
+	setCharacterMasteries: () => {
 		throw new Error("setMasteries called outside of provider");
 	},
 });
@@ -22,8 +22,8 @@ export function MasteriesContextProvider({
 	const masteriesState = useState<CharacterMasteryExpanded[]>([]);
 	const masteriesContextValue = useMemo(
 		() => ({
-			masteries: masteriesState[0],
-			setMasteries: masteriesState[1],
+			characterMasteries: masteriesState[0],
+			setCharacterMasteries: masteriesState[1],
 		}),
 		[masteriesState[0]]
 	);

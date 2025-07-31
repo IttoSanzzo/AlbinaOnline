@@ -1,0 +1,13 @@
+.buttonContainer {
+	position: absolute;
+	top: 10px;
+	right: 11px;
+
+	& > svg {
+		width: 20px;
+		height: 20px;
+	}
+	&:hover {
+		cursor: pointer;
+	}
+}

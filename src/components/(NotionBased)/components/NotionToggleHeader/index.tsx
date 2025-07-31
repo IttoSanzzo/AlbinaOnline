@@ -10,7 +10,6 @@ import {
 import {
 	CSSProperties,
 	ReactNode,
-	useEffect,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -22,7 +21,6 @@ import {
 	NotionPropsColor,
 	NotionTextColor,
 	NotionHeader,
-	NotionText,
 } from "../../index";
 import { routeStorage } from "@/utils/Storage";
 import { usePathname } from "next/navigation";
@@ -45,8 +43,6 @@ function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
 		else routeStorage.removeItem(pathname, name);
 	}
 }
-
-// marginTop: "0.25rem",
 
 interface NotionToggleHeaderProps extends NotionPropsColor {
 	children?: ReactNode;

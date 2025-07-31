@@ -1,10 +1,14 @@
-.styledLinkContainer {
-	display: flexbox;
+.styledLinklikeButtonContainer {
+	display: flex;
+	position: relative;
 	border-radius: var(--rd-sm);
 	background-color: var(--cl-gray-800);
 	page-break-inside: avoid;
+	width: 100%;
 
-	& a {
+	& button {
+		display: flex;
+		flex: 1;
 		text-decoration: none;
 		padding: var(--sp-1);
 		display: flex;
@@ -26,17 +30,17 @@
 		}
 	}
 
-	&:hover a {
+	&:hover button {
 		background-color: var(--cl-gray-700);
 		color: var(--cl-gray-100);
 		cursor: pointer;
 	}
 }
 
-.styledLinkInTextMode {
+.styledLinklikeButtonInTextMode {
 	display: inline;
 
-	& a {
+	& button {
 		display: inline-flex;
 		padding: 0 0.2rem 0 0.1rem;
 		align-items: center;
@@ -50,5 +54,27 @@
 		& span {
 			font-size: var(--fs-md) !important;
 		}
+	}
+}
+
+.actionButton {
+	position: absolute;
+	left: 4px;
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: var(--cl-gray-700);
+	border: none;
+	line-height: 0;
+	opacity: 0;
+
+	transition: 0.25s linear opacity;
+
+	& svg {
+		width: 21px;
+		height: 21px;
+	}
+	&:hover {
+		cursor: pointer;
+		opacity: 1;
 	}
 }

@@ -11,6 +11,7 @@ export type {
 	MasteryType,
 	MasterySubType,
 } from "./dataTypes/mastery";
+export { masteryNames } from "./dataTypes/mastery";
 export type { ItemData, ItemProperties } from "./dataTypes/item";
 export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
 export type {
