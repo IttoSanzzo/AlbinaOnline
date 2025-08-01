@@ -1,20 +1,30 @@
 import { NotionBackgroundColor } from "@/components/(NotionBased)";
-import {
-	TextInputContainer,
-	TextInputError,
-	TextInputField,
-	TextInputLabel,
-} from "./styledElements";
-import { CSSProperties, InputHTMLAttributes } from "react";
+import { CSSProperties, TextareaHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const TextAreaInputContainer = newStyledElement.div(
+	styles.textAreaInputContainer
+);
+export const TextAreaInputField = newStyledElement.textarea(
+	styles.textAreaInputField
+);
+export const TextAreaInputLabel = newStyledElement.label(
+	styles.textAreaInputLabel
+);
+export const TextAreaInputError = newStyledElement.div(
+	styles.textAreaInputError
+);
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
-type TextInputProps<TControl extends Control<any>> = {
+type TextAreaInputProps<TControl extends Control<any>> = {
 	control: TControl;
 	fieldName: Path<ExtractFieldValues<TControl>>;
 	label: string;
 	labelBackground?: keyof typeof NotionBackgroundColor;
+	height?: React.CSSProperties["height"];
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -32,19 +42,19 @@ type TextInputProps<TControl extends Control<any>> = {
 		| "9xl";
 	lesserPadding?: boolean;
 	textCentered?: boolean;
-} & InputHTMLAttributes<HTMLInputElement>;
-
-export function TextInput<TControl extends Control<any>>({
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
+export function TextAreaInput<TControl extends Control<any>>({
 	control,
 	fieldName,
 	label,
 	labelBackground,
+	height,
 	lesserPadding = false,
 	textCentered = false,
 	fontSize,
 	style,
 	...rest
-}: TextInputProps<TControl>) {
+}: TextAreaInputProps<TControl>) {
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,
@@ -54,6 +64,7 @@ export function TextInput<TControl extends Control<any>>({
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
 		...(lesserPadding && { padding: "var(--sp-4) var(--sp-4)" }),
 		...(textCentered && { textAlign: "center" }),
+		height: height,
 		...style,
 	};
 	const labelStyle: CSSProperties = {
@@ -63,19 +74,19 @@ export function TextInput<TControl extends Control<any>>({
 	};
 
 	return (
-		<TextInputContainer>
-			<TextInputLabel
+		<TextAreaInputContainer>
+			<TextAreaInputLabel
 				children={label}
 				style={labelStyle}
 			/>
 			{fieldState.error && (
-				<TextInputError>{fieldState.error.message}</TextInputError>
+				<TextAreaInputError>{fieldState.error.message}</TextAreaInputError>
 			)}
-			<TextInputField
+			<TextAreaInputField
 				style={inputStyle}
 				{...field}
 				{...rest}
 			/>
-		</TextInputContainer>
+		</TextAreaInputContainer>
 	);
 }

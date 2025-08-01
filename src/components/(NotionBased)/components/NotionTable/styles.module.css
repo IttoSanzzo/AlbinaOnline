@@ -61,8 +61,16 @@
 			border-top-right-radius: var(--rd-md);
 		}
 	}
-	& tbody tr td {
-		padding: var(--sp-1) var(--sp-2);
-		word-break: break-all;
+	& tbody tr {
+		& td {
+			padding: var(--sp-1) var(--sp-2);
+			word-break: break-all;
+		}
+		& td:first-child {
+			border-bottom-left-radius: var(--rd-md);
+		}
+		& td:last-child {
+			border-bottom-right-radius: var(--rd-md);
+		}
 	}
 }

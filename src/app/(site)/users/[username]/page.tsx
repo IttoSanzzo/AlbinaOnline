@@ -67,7 +67,6 @@ export default function UserPage({ params }: UserPageProps) {
 					spell: data.favorites.Spell,
 					trait: data.favorites.Trait,
 				});
-				console.log(data);
 			});
 		});
 	}, [user]);

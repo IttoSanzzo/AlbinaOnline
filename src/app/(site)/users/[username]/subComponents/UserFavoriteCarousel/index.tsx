@@ -20,7 +20,6 @@ export function UserFavoriteCarousel({
 }: UserFavoriteCarouselProps) {
 	// const test = newStyledElement.div(style.testeContainer);
 
-	console.log(favorites);
 	const indentifier = favoriteType == "character" ? "id" : "slug";
 	return (
 		<NotionBox backgroundColor="purple">

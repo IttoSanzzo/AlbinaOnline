@@ -4,11 +4,16 @@ import {
 	NotionText,
 	NotionTextColor,
 } from "../../index";
-import {
-	NotionVerticalTableContainer,
-	NotionHorizontalTableContainer,
-} from "./styledElements";
 import { CSSProperties, ReactNode } from "react";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const NotionHorizontalTableContainer = newStyledElement.table(
+	styles.notionHorizontalTableContainer
+);
+export const NotionVerticalTableContainer = newStyledElement.table(
+	styles.notionVerticalTableContainer
+);
 
 export interface NotionTableData {
 	tableLanes: Array<ReactNode[]>;
@@ -118,15 +123,37 @@ export function NotionTable({
 			<thead>
 				<tr>
 					{reordenedTable[0].map((content, index) => (
-						<th key={index}>{content}</th>
+						<th
+							style={{
+								...(columnBackgroundColors.length > 0 &&
+									columnBackgroundColors[0] != undefined && {
+										backgroundColor:
+											NotionBackgroundColor[columnBackgroundColors[0]],
+									}),
+							}}
+							key={index}>
+							{content}
+						</th>
 					))}
 				</tr>
 			</thead>
 			<tbody>
-				{reordenedTable.slice(1).map((column, index) => (
-					<tr key={index}>
-						{column.map((columnContent, index) => (
-							<td key={index}>{columnContent}</td>
+				{reordenedTable.slice(1).map((column, rowIndex) => (
+					<tr key={rowIndex}>
+						{column.map((columnContent, columnIndex) => (
+							<td
+								style={{
+									...(rowIndex <= columnBackgroundColors.length &&
+										columnBackgroundColors[rowIndex + 1] != undefined && {
+											backgroundColor:
+												NotionBackgroundColor[
+													columnBackgroundColors[rowIndex + 1]!
+												],
+										}),
+								}}
+								key={columnIndex}>
+								{columnContent}
+							</td>
 						))}
 					</tr>
 				))}

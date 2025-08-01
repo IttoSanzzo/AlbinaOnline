@@ -1,0 +1,49 @@
+.textAreaInputContainer {
+	display: flex;
+	flex-direction: column;
+	color: var(--cl-gray-100);
+	border-radius: var(--rd-sm);
+	border: 1px solid var(--cl-gray-500);
+	margin: var(--sp-2) 0;
+	position: relative;
+
+	&:focus-within {
+		border: 1px solid var(--cl-gray-200);
+	}
+}
+.textAreaInputField {
+	background-color: transparent;
+	color: var(--cl-gray-100);
+	padding: var(--sp-5) var(--sp-4);
+	border: none;
+	outline: none;
+	font-size: var(--fs-md);
+	resize: vertical;
+	height: 120px;
+	min-height: 120px;
+
+	&:-webkit-autofill {
+		border-radius: var(--rd-sm) !important;
+	}
+}
+
+.textAreaInputLabel {
+	font-size: var(--fs-xs);
+	color: var(--cl-gray-200);
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	left: 10px;
+}
+
+.textAreaInputError {
+	font-size: var(--fs-xs);
+	color: var(--cl-red-500);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	right: 10;
+}

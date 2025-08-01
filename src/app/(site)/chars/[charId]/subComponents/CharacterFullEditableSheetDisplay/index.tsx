@@ -22,10 +22,10 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					spellDomains={characterData.spellDomains}
 				/>
-				<NotionToggleHeader
-					title="Outros"
-					titleColor="gray"
-					backgroundColor="darkGray"
+				<CharacterDrawers.Others
+					characterId={characterData.id}
+					characterProfile={characterData.profile}
+					characterBackstory={characterData.backstory.history}
 				/>
 			</NotionBox>
 		</CharacterEditableSheetContextProviders>
