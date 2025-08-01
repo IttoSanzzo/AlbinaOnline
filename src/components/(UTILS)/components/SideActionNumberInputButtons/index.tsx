@@ -5,8 +5,9 @@ import { CSSProperties, InputHTMLAttributes, useEffect, useRef } from "react";
 import { useController, useForm } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import { HookedForm } from "@/libs/stp@forms";
 import z from "zod";
+import { HookedForm } from "@/libs/stp@forms";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const NumberInputFieldContainer = newStyledElement.div(
 	styles.numberInputFieldContainer
@@ -69,7 +70,9 @@ export function SideActionNumberInputButtons({
 	const {
 		control,
 		formState: { isValid },
-	} = useForm({
+		watch,
+	} = useForm<FormData>({
+		resolver: zodResolver(schema),
 		defaultValues: {
 			currentValue: defaultValue,
 		},
@@ -78,17 +81,11 @@ export function SideActionNumberInputButtons({
 		name: "currentValue",
 		control,
 	});
-	const lastValue = useRef(field.value);
 
-	useEffect(() => {
-		if (isValid && lastValue.current != field.value) {
-			const timeout = setTimeout(async () => {
-				action(field.value);
-			}, debounceMiliseconds);
-			lastValue.current = field.value;
-			return () => clearTimeout(timeout);
-		}
-	}, [field.value, isValid]);
+	async function handleWatchAction(currentValues: FormData) {
+		action(currentValues.currentValue);
+		return true;
+	}
 
 	const inputStyle: CSSProperties = {
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
@@ -109,6 +106,11 @@ export function SideActionNumberInputButtons({
 	return (
 		// <HookedForm.Form>
 		<NumberInputFieldContainer className={className}>
+			<HookedForm.WatchedAction<FormData>
+				watch={watch}
+				isValid={isValid}
+				action={handleWatchAction}
+			/>
 			<NumberInputDecrementButton
 				disabled={min != undefined && field.value <= min}
 				type="button"
