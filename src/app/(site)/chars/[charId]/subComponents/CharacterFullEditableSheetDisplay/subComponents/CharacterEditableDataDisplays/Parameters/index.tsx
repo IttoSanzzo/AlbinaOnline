@@ -2,7 +2,7 @@ import { StyledLink } from "@/components/(Design)";
 import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import {
 	ParametersContext,
@@ -10,7 +10,6 @@ import {
 	RaceContext,
 } from "../../CharacterEditableSheetContextProviders";
 import z from "zod";
-import { shallowCompare } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 
 const schema = z.object({
@@ -77,38 +76,37 @@ export function CharacterParametersDisplay() {
 		defaultValues: parameters,
 	});
 	const watchedValues = watch();
-	const lastValues = useRef({ ...watchedValues });
 
-	useEffect(() => {
-		if (isValid && !shallowCompare(lastValues.current, watchedValues)) {
-			const timeout = setTimeout(async () => {
-				const response = await authenticatedFetchAsync(
-					`/chars/${characterId}/parameters`,
-					{
-						method: "PUT",
-						body: JSON.stringify(watchedValues),
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-				if (response.ok == false) {
-					setErrorMessage("Erro durante o salvamento");
-					return;
-				}
-				lastValues.current = { ...watchedValues };
-				setParameters({
-					...watchedValues,
-					characterId: parameters.characterId,
-				});
-				setErrorMessage("");
-			}, 1000);
-			return () => clearTimeout(timeout);
+	async function handleWatchedAction(currentValues: FormData) {
+		const response = await authenticatedFetchAsync(
+			`/chars/${characterId}/parameters`,
+			{
+				method: "PUT",
+				body: JSON.stringify(currentValues),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		if (response.ok == false) {
+			setErrorMessage("Erro durante o salvamento");
+			return false;
 		}
-	}, [setParameters, watchedValues, isValid]);
+		setParameters({
+			...watchedValues,
+			characterId: parameters.characterId,
+		});
+		setErrorMessage("");
+		return true;
+	}
 
 	return (
-		<>
+		<HookedForm.Form style={{ display: "flex" }}>
+			<HookedForm.WatchedAction<FormData>
+				watch={watch}
+				isValid={isValid}
+				action={handleWatchedAction}
+			/>
 			<NotionTable
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
@@ -172,6 +170,6 @@ export function CharacterParametersDisplay() {
 				message={isValid ? errorMessage : "Valor inválido detectado"}
 				color="red"
 			/>
-		</>
+		</HookedForm.Form>
 	);
 }
