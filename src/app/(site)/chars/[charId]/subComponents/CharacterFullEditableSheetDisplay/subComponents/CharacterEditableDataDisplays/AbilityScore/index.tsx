@@ -2,14 +2,13 @@ import { StyledLink } from "@/components/(Design)";
 import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import {
 	AbilityScoreContext,
 	CharacterIdContext,
 } from "../../CharacterEditableSheetContextProviders";
 import z from "zod";
-import { shallowCompare } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
@@ -61,38 +60,37 @@ export function CharacterAbilityScoreDisplay() {
 		defaultValues: abilityScore,
 	});
 	const watchedValues = watch();
-	const lastAbilityScore = useRef({ ...watchedValues });
 
-	useEffect(() => {
-		if (isValid && !shallowCompare(lastAbilityScore.current, watchedValues)) {
-			const timeout = setTimeout(async () => {
-				const response = await authenticatedFetchAsync(
-					`/chars/${characterId}/ability-score`,
-					{
-						method: "PUT",
-						body: JSON.stringify(watchedValues),
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-				if (response.ok == false) {
-					setErrorMessage("Erro durante o salvamento");
-					return;
-				}
-				lastAbilityScore.current = { ...watchedValues };
-				setAbilityScore({
-					...watchedValues,
-					characterId: abilityScore.characterId,
-				});
-				setErrorMessage("");
-			}, 1000);
-			return () => clearTimeout(timeout);
+	async function handleWatchedAction(currentValues: FormData) {
+		const response = await authenticatedFetchAsync(
+			`/chars/${characterId}/ability-score`,
+			{
+				method: "PUT",
+				body: JSON.stringify(currentValues),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		if (response.ok == false) {
+			setErrorMessage("Erro durante o salvamento");
+			return false;
 		}
-	}, [setAbilityScore, watchedValues, isValid]);
+		setAbilityScore({
+			...currentValues,
+			characterId: abilityScore.characterId,
+		});
+		setErrorMessage("");
+		return true;
+	}
 
 	return (
-		<>
+		<HookedForm.Form style={{ display: "flex" }}>
+			<HookedForm.WatchedAction<FormData>
+				watch={watch}
+				isValid={isValid}
+				action={handleWatchedAction}
+			/>
 			<NotionTable
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
@@ -170,6 +168,6 @@ export function CharacterAbilityScoreDisplay() {
 				message={isValid ? errorMessage : "Valor inválido detectado"}
 				color="red"
 			/>
-		</>
+		</HookedForm.Form>
 	);
 }
