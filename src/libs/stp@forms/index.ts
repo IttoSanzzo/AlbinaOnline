@@ -9,6 +9,7 @@ import { PasswordInput } from "./components/PasswordInput";
 import { SubmitButton } from "./components/SubmitButton";
 import { Space } from "./components/Space";
 import { SimpleMessage } from "./components/FailMessage";
+import { WatchedAction } from "./components/WatchedAction";
 
 export const HookedForm = {
 	Form: Form,
@@ -20,4 +21,5 @@ export const HookedForm = {
 	SelectWithIcon: SelectWithIcon,
 	Space: Space,
 	SimpleMessage: SimpleMessage,
+	WatchedAction: WatchedAction,
 };
