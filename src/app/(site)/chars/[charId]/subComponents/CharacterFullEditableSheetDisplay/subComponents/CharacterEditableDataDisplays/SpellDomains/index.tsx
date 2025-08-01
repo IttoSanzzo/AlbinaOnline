@@ -9,14 +9,13 @@ import { HookedForm } from "@/libs/stp@forms";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
-import { shallowCompare } from "@/utils/Data";
 
 const schema = z.object({
 	general: z.coerce.number().min(-1, "Mínimo de -1").max(10, "Máximo de 10"),
@@ -93,35 +92,33 @@ export function CharacterSpellDomainsDisplay({
 		resolver: zodResolver(schema),
 		defaultValues: spellDomains,
 	});
-	const watchedValues = watch();
-	const lastSpellDomains = useRef({ ...watchedValues });
 
-	useEffect(() => {
-		if (isValid && !shallowCompare(lastSpellDomains.current, watchedValues)) {
-			const timeout = setTimeout(async () => {
-				const response = await authenticatedFetchAsync(
-					`/chars/${characterId}/spell-domains`,
-					{
-						method: "PUT",
-						body: JSON.stringify(watchedValues),
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-				if (response.ok == false) {
-					setErrorMessage("Erro durante o salvamento");
-					return;
-				}
-				lastSpellDomains.current = { ...watchedValues };
-				setErrorMessage("");
-			}, 1000);
-			return () => clearTimeout(timeout);
+	async function handleWatchedAction(currentValues: FormData) {
+		const response = await authenticatedFetchAsync(
+			`/chars/${characterId}/spell-domains`,
+			{
+				method: "PUT",
+				body: JSON.stringify(currentValues),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		if (response.ok == false) {
+			setErrorMessage("Erro durante o salvamento");
+			return false;
 		}
-	}, [watchedValues, isValid]);
+		setErrorMessage("");
+		return true;
+	}
 
 	return (
 		<HookedForm.Form>
+			<HookedForm.WatchedAction
+				watch={watch}
+				isValid={isValid}
+				action={handleWatchedAction}
+			/>
 			<NotionBox
 				backgroundColor="purple"
 				withoutBorder
