@@ -50,7 +50,7 @@ function tableMasteryEntry(
 			masteryId={masteryId}
 		/>,
 		bonusValueText(
-			level +
+			Number(level) +
 				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0)
 		),
 	];
