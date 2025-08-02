@@ -20,7 +20,7 @@ export async function getPageData(spellSlug: string): Promise<SpellPageData> {
 	const response = await fetch(
 		`${process.env.ALBINA_API}/spells/${spellSlug}`,
 		{
-			cache: await getCacheMode(),
+			cache: getCacheMode(),
 		}
 	);
 	if (!response.ok) return { spellData: undefined, borderColor: "" };

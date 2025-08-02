@@ -22,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 
 export default async function AffaiblirDomainPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
-		cache: await getCacheMode(),
+		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
 
@@ -39,7 +39,6 @@ export default async function AffaiblirDomainPage() {
 
 			<SpellTypeDisplay
 				allSpells={allSpells}
-				title="Affaiblir"
 				domain="Affaiblir"
 			/>
 		</GenericPageContainer>

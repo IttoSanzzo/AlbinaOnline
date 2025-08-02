@@ -1,45 +1,44 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StpIcon } from "@/libs/stp@icons";
-import {
-	CharacterMasteryExpanded,
-	masteryNames,
-	MasteryType,
-} from "@/libs/stp@types";
 import { Dialog } from "@/libs/stp@radix";
-import { MasterySelectionCore } from "./subComponents/MasterySelectionCore";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { CharacterSpellExpanded } from "@/libs/stp@types";
+import { SpellSelectionCore } from "./subComponents/SpellSelectionCore";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
+const AddButton = newStyledElement.button(styles.addButton);
 
-interface AddMasteryButtonProps {
-	type: keyof typeof MasteryType;
+interface AddSpellButtonProps {
 	characterId: string;
-	masteries: CharacterMasteryExpanded[];
+	characterSpells: CharacterSpellExpanded[];
+	setCharacterSpells: React.Dispatch<
+		React.SetStateAction<CharacterSpellExpanded[]>
+	>;
 }
-export function AddMasteryButton({
-	type,
+export function AddSpellButton({
 	characterId,
-	masteries,
-}: AddMasteryButtonProps) {
+	characterSpells,
+	setCharacterSpells,
+}: AddSpellButtonProps) {
 	return (
 		<ButtonContainer>
 			<Dialog.Root>
 				<Dialog.Trigger asChild>
-					{StpIcon({ name: "PlusCircle" })}
+					<AddButton>Adicionar{StpIcon({ name: "PlusCircle" })}</AddButton>
 				</Dialog.Trigger>
 				<Dialog.Portal>
 					<Dialog.Overlay>
 						<Dialog.Content maxWidth={1000}>
 							<DialogDescription />
 							<Dialog.Title
-								children={`Adicionar ${masteryNames[type]}`}
+								children={"Adicionar Spell"}
 								marginBottom={20}
 								textAlign="center"
 							/>
-							<MasterySelectionCore
-								characterMasteries={masteries}
-								type={type}
+							<SpellSelectionCore
+								characterSpells={characterSpells}
+								setCharacterSpells={setCharacterSpells}
 								characterId={characterId}
 							/>
 						</Dialog.Content>

@@ -4,8 +4,12 @@ import { CharacterSpellDomainsDisplay } from "./SpellDomains";
 import { CharacterMasteriesFromTypeDisplay } from "./MasteriesFromType";
 import { CharacterBackstoryDisplay } from "./Backstory";
 import { CharacterProfileDisplay } from "./Profile";
+import { CharacterSkillsDisplay } from "./Skills";
+import { CharacterSpellsDisplay } from "./Spells";
 
 export const CharacterEditableDataDisplays = {
+	Skills: CharacterSkillsDisplay,
+	Spells: CharacterSpellsDisplay,
 	SpellDomains: CharacterSpellDomainsDisplay,
 	AbilityScore: CharacterAbilityScoreDisplay,
 	Parameters: CharacterParametersDisplay,

@@ -27,6 +27,7 @@ interface NotionTableProps extends NotionPropsColor {
 	columnBackgroundColors?: (keyof typeof NotionBackgroundColor | undefined)[];
 	withHeaderRow?: boolean;
 	withHeaderColumn?: boolean;
+	style?: CSSProperties;
 }
 
 export function NotionTable({
@@ -39,12 +40,14 @@ export function NotionTable({
 	withHeaderColumn = true,
 	textColor,
 	backgroundColor,
+	style,
 }: NotionTableProps) {
 	const baseStyle: CSSProperties = {
 		...(textColor && { color: NotionTextColor[textColor] }),
 		...(backgroundColor && {
 			backgroundColor: NotionBackgroundColor[backgroundColor],
 		}),
+		...style,
 	};
 	if (fixedLinePositions.length != fixedLineWidths.length)
 		return (

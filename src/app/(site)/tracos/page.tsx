@@ -13,7 +13,7 @@ const anchorNavigationData: AnchorProps[] = [
 
 export default async function TraitsPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/traits`, {
-		cache: await getCacheMode(),
+		cache: getCacheMode(),
 	});
 	const allRawTraits: TraitData[] = await response.json();
 

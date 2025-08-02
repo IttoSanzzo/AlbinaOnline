@@ -20,7 +20,7 @@ export async function getPageData(skillSlug: string): Promise<SkillPageData> {
 	const response = await fetch(
 		`${process.env.ALBINA_API}/skills/${skillSlug}`,
 		{
-			cache: await getCacheMode(),
+			cache: getCacheMode(),
 		}
 	);
 	if (!response.ok) return { skillData: undefined, borderColor: "" };

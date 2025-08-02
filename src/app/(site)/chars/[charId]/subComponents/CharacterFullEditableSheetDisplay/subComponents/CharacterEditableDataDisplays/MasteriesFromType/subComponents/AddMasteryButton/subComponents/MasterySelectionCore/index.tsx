@@ -1,24 +1,17 @@
 import {
 	CharacterMasteryExpanded,
 	MasteryData,
+	MasterySubType,
 	MasteryType,
 } from "@/libs/stp@types";
 import { NotionGridList } from "@/components/(UTILS)";
-import {
-	Dispatch,
-	SetStateAction,
-	useContext,
-	useLayoutEffect,
-	useState,
-} from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { MasteriesContext } from "../../../../../../CharacterEditableSheetContextProviders";
-
-// const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
@@ -38,7 +31,17 @@ export function MasterySelectionCore({
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
-			setAllMasteries(await response.json());
+			setAllMasteries(
+				((await response.json()) as MasteryData[]).sort(
+					(mastery1, mastery2) => {
+						const typeOrder =
+							MasterySubType[mastery1.subType] -
+							MasterySubType[mastery2.subType];
+						if (typeOrder !== 0) return typeOrder;
+						return mastery1.name.localeCompare(mastery2.name);
+					}
+				)
+			);
 		});
 	}, []);
 

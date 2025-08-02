@@ -56,7 +56,7 @@ export async function getPageData(
 	const response = await fetch(
 		`${process.env.ALBINA_API}/maestrias/${masterySlug}`,
 		{
-			cache: await getCacheMode(),
+			cache: getCacheMode(),
 		}
 	);
 	if (!response.ok) return { masteryData: undefined, borderColor: "" };

@@ -22,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 
 export default async function AnagnosiDomainPage() {
 	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
-		cache: await getCacheMode(),
+		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
 
@@ -39,7 +39,6 @@ export default async function AnagnosiDomainPage() {
 
 			<SpellTypeDisplay
 				allSpells={allSpells}
-				title="Anagnosi"
 				domain="Anagnosi"
 			/>
 		</GenericPageContainer>

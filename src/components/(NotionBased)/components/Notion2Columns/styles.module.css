@@ -2,13 +2,22 @@
 	display: flex;
 	flex: 1;
 	flex-direction: row;
-	gap: 2px;
+	gap: var(--sp-1);
 }
 
-.columContainer {
+.leftColumContainer {
 	display: flex;
 	flex: 1;
-	padding: var(--sp-2) var(--sp-1) 0;
+	padding: var(--sp-2) 0 0 var(--sp-1);
+	overflow: scroll;
+
+	transition: 0.3s linear border;
+	border-radius: var(--rd-md);
+}
+.rightColumContainer {
+	display: flex;
+	flex: 1;
+	padding: var(--sp-2) var(--sp-1) 0 0;
 	overflow: scroll;
 
 	transition: 0.3s linear border;

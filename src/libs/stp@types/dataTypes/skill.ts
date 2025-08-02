@@ -1,5 +1,20 @@
 import { GenericEffect, GenericExtraProperty, GenericInfo } from "../index";
 
+export enum SkillType {
+	Unknown,
+	Unique,
+	Racial,
+	Common,
+	Generic,
+}
+export enum SkillSubType {
+	Unknown,
+	MajorAction,
+	MinorAction,
+	MajorReaction,
+	MinorReaction,
+}
+
 export type SkillComponents = {
 	mana: string;
 	stamina: string;
@@ -19,8 +34,8 @@ export type SkillData = {
 	id: string;
 	slug: string;
 	name: string;
-	type: string;
-	subType: string;
+	type: keyof typeof SkillType;
+	subType: keyof typeof SkillSubType;
 	iconUrl: string;
 	bannerUrl: string;
 	info: GenericInfo;
@@ -29,4 +44,12 @@ export type SkillData = {
 	createdAt: string;
 	updatedAt: string;
 	albinaVersion: string;
+};
+
+export const skillNames: Record<keyof typeof SkillType, string> = {
+	Unique: "Única",
+	Racial: "Racial",
+	Common: "Comum",
+	Generic: "Genérica",
+	Unknown: "?",
 };

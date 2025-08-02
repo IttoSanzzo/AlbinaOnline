@@ -18,7 +18,7 @@ export async function getPageData(itemSlug: string): Promise<ItemPageData> {
 	if (!itemSlug) return { itemData: undefined, borderColor: "" };
 
 	const response = await fetch(`${process.env.ALBINA_API}/items/${itemSlug}`, {
-		cache: await getCacheMode(),
+		cache: getCacheMode(),
 	});
 	if (!response.ok) return { itemData: undefined, borderColor: "" };
 	const itemData = convertEnumsFromResponse<ItemData>(await response.json());

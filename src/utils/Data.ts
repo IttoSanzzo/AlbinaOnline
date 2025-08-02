@@ -30,7 +30,7 @@ export async function fetchStaticParamSlugs<K extends keyof SlugMap>(
 	endpoint: K
 ): Promise<{ [P in SlugMap[K]]: string }[]> {
 	const response = await fetch(`${process.env.ALBINA_API}/${endpoint}`, {
-		cache: await getCacheMode(),
+		cache: getCacheMode(),
 	});
 	if (!response.ok) return [];
 	const data: { slug: string }[] = await response.json();
@@ -53,4 +53,26 @@ export function shallowCompare<T extends object>(a: T, b: T): boolean {
 	}
 
 	return true;
+}
+
+export function insertSorted<T>(
+	array: T[],
+	item: T,
+	compareFn: (a: T, b: T) => number
+): T[] {
+	let left = 0;
+	let right = array.length;
+
+	while (left < right) {
+		const mid = Math.floor((left + right) / 2);
+		if (compareFn(item, array[mid]) < 0) {
+			right = mid;
+		} else {
+			left = mid + 1;
+		}
+	}
+
+	const newArray = [...array];
+	newArray.splice(left, 0, item);
+	return newArray;
 }

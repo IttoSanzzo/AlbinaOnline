@@ -1,4 +1,16 @@
-import { GenericEffect, GenericExtraProperty, GenericInfo } from "../index";
+import {
+	GenericEffect,
+	GenericExtraProperty,
+	GenericInfo,
+	SpellDomain,
+} from "../index";
+
+export enum SpellType {
+	Unknown,
+}
+export enum SpellSubType {
+	Unknown,
+}
 
 export type SpellComponents = {
 	mana: string;
@@ -20,14 +32,14 @@ export type SpellData = {
 	id: string;
 	slug: string;
 	name: string;
-	type: string;
-	subType: string;
+	type: keyof typeof SpellType;
+	subType: keyof typeof SpellSubType;
 	iconUrl: string;
 	bannerUrl: string;
 	info: GenericInfo;
 	properties?: SpellProperties;
 	domainLevel: number;
-	spellDomains: string[];
+	spellDomains: (keyof typeof SpellDomain)[];
 	magicAttributes: string[];
 	effects: GenericEffect[];
 	createdAt: string;

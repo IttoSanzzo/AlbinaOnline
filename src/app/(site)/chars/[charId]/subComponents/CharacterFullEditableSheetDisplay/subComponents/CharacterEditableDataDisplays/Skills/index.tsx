@@ -1,0 +1,139 @@
+import { StyledLinkWithButton } from "@/components/(Design)";
+import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { CharacterSkillExpanded, SkillData, SkillType } from "@/libs/stp@types";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import React, { useLayoutEffect, useState } from "react";
+import { AddSkillButton } from "./subComponents/AddSkillButton";
+
+async function handleSkillRemoval(
+	characterId: string,
+	skillId: string,
+	setCharacterSkills: React.Dispatch<
+		React.SetStateAction<CharacterSkillExpanded[]>
+	>
+) {
+	const body = { skillId: skillId };
+	const response = await authenticatedFetchAsync(
+		getAlbinaApiAddress(`/chars/${characterId}/skills`),
+		{
+			method: "DELETE",
+			body: JSON.stringify(body),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	if (!response.ok) return;
+	setCharacterSkills((state) =>
+		state.filter((skill) => skill.skill.id != skillId)
+	);
+}
+
+function formTable(
+	characterId: string,
+	characterSkills: CharacterSkillExpanded[],
+	setCharacterSkills: React.Dispatch<
+		React.SetStateAction<CharacterSkillExpanded[]>
+	>
+): React.JSX.Element[][] {
+	const titleRow = [
+		<NotionText
+			textColor="gray"
+			children="Nome"
+		/>,
+	];
+	if (characterSkills.length == 0) {
+		return [
+			titleRow,
+			[
+				<NotionText
+					textColor="orange"
+					children="-"
+				/>,
+			],
+		];
+	}
+	return [
+		titleRow,
+		...characterSkills.map((characterSkill) => [
+			<StyledLinkWithButton
+				buttonIcon={{ name: "TrashIcon", color: "red" }}
+				title={characterSkill.skill.name}
+				icon={characterSkill.skill.iconUrl}
+				href={`/skills/${characterSkill.skill.slug}`}
+				onClick={() =>
+					handleSkillRemoval(
+						characterId,
+						characterSkill.skill.id,
+						setCharacterSkills
+					)
+				}
+			/>,
+		]),
+	];
+}
+
+interface CharacterSkillsDisplayProps {
+	characterId: string;
+}
+export function _CharacterSkillsDisplay({
+	characterId,
+}: CharacterSkillsDisplayProps) {
+	const [characterSkills, setCharacterSkills] = useState<
+		CharacterSkillExpanded[]
+	>([]);
+
+	useLayoutEffect(() => {
+		authenticatedFetchAsync(
+			getAlbinaApiAddress(`/chars/${characterId}/skills`),
+			{
+				method: "GET",
+			}
+		).then(async (response) => {
+			if (!response.ok) return;
+			const sortedSkills: CharacterSkillExpanded[] = (
+				(await response.json()) as CharacterSkillExpanded[]
+			).sort((cs1, cs2) => {
+				const typeOrder = SkillType[cs1.skill.type] - SkillType[cs2.skill.type];
+				if (typeOrder !== 0) return typeOrder;
+				return cs1.skill.name.localeCompare(cs2.skill.name);
+			});
+			setCharacterSkills(sortedSkills);
+		});
+	}, []);
+
+	return (
+		<div style={{ position: "relative" }}>
+			<NotionTable
+				style={{ margin: 0 }}
+				withHeaderColumn={false}
+				columnBackgroundColors={["gray"]}
+				withHeaderRow
+				tableData={{
+					tableLanes: formTable(
+						characterId,
+						characterSkills,
+						setCharacterSkills
+					),
+				}}
+			/>
+			<AddSkillButton
+				characterSkills={characterSkills}
+				setCharacterSkills={setCharacterSkills}
+				characterId={characterId}
+			/>
+		</div>
+	);
+}
+
+function areEqual(
+	prevProps: CharacterSkillsDisplayProps,
+	nextProps: CharacterSkillsDisplayProps
+) {
+	return prevProps.characterId === nextProps.characterId;
+}
+export const CharacterSkillsDisplay = React.memo(
+	_CharacterSkillsDisplay,
+	areEqual
+);

@@ -6,12 +6,8 @@ export type {
 	DefensiveProfile,
 	GenericExtraProperty,
 } from "./core";
-export type {
-	MasteryData,
-	MasteryType,
-	MasterySubType,
-} from "./dataTypes/mastery";
-export { masteryNames } from "./dataTypes/mastery";
+export type { MasteryData } from "./dataTypes/mastery";
+export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";
 export type { ItemData, ItemProperties } from "./dataTypes/item";
 export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
 export type {
@@ -19,11 +15,13 @@ export type {
 	SkillComponents,
 	SkillProperties,
 } from "./dataTypes/skill";
+export { SkillType, SkillSubType, skillNames } from "./dataTypes/skill";
 export type {
 	SpellData,
 	SpellComponents,
 	SpellProperties,
 } from "./dataTypes/spell";
+export { SpellType, SpellSubType } from "./dataTypes/spell";
 export type { TraitData } from "./dataTypes/trait";
 
 export * from "./dataTypes/Character";

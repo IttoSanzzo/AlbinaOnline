@@ -1,18 +1,16 @@
 import { StyledLink } from "@/components/(Design)";
 import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
 import { NotionGridList } from "@/components/(UTILS)";
-import { SpellData } from "@/libs/stp@types";
+import { SpellData, SpellDomain } from "@/libs/stp@types";
 
 interface SpellTypeDisplayProps {
 	allSpells: SpellData[];
-	domain: string;
-	title: string;
+	domain: keyof typeof SpellDomain;
 }
 
 export default function SpellTypeDisplay({
 	allSpells,
 	domain,
-	title,
 }: SpellTypeDisplayProps) {
 	const allSpellsFromThisType = allSpells.filter((spell) =>
 		spell.spellDomains.includes(domain)
