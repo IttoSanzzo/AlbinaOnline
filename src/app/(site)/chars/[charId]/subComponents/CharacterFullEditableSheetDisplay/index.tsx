@@ -1,11 +1,8 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
 import { CharacterExpandedData } from "@/libs/stp@types";
 import { CharacterEditableSheetContextProviders } from "./subComponents/CharacterEditableSheetContextProviders";
 import { CharacterDrawers } from "./subComponents/Drawers";
+import { CharacterDrawerBaseHeader } from "../CharacterDrawerBaseHeader";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;
@@ -18,17 +15,21 @@ export function CharacterFullSheetEditableDisplay({
 			<NotionBox
 				backgroundColor="gray"
 				withoutBorder>
+				<CharacterDrawers.Inventory characterId={characterData.id} />
+				<CharacterDrawerBaseHeader
+					title="Estatísticas"
+					memoryId="">
+					<CharacterDrawerBaseHeader
+						title="Traços"
+						memoryId=""
+					/>
+				</CharacterDrawerBaseHeader>
 				<Notion2Columns
 					withoutPadding
 					withoutGap
 					withoutBorderRadius
 					colum1={<CharacterDrawers.Skills characterId={characterData.id} />}
-					colum2={
-						<CharacterDrawers.Spells
-							// characterSpells={characterData.acquiredSpells}
-							characterId={characterData.id}
-						/>
-					}
+					colum2={<CharacterDrawers.Spells characterId={characterData.id} />}
 				/>
 				<CharacterDrawers.ParametersAndAtributeScores
 					characterId={characterData.id}

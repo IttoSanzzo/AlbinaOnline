@@ -4,8 +4,10 @@ import { SpellDomainsDrawer } from "./SpellDomains";
 import { ParametersAndAtributeScoresDrawer } from "./ParametersAndAtributeScores";
 import { MasteriesAndTestsDrawer } from "./MasteriesAndTests";
 import { OthersDrawer } from "./Others";
+import { InventoryDrawer } from "./Inventory";
 
 export const CharacterDrawers = {
+	Inventory: InventoryDrawer,
 	Skills: SkillsDrawer,
 	Spells: SpellsDrawer,
 	SpellDomains: SpellDomainsDrawer,
