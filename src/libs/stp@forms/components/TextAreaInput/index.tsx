@@ -85,6 +85,7 @@ export function TextAreaInput<TControl extends Control<any>>({
 			<TextAreaInputField
 				style={inputStyle}
 				{...field}
+				value={field.value ?? ""}
 				{...rest}
 			/>
 		</TextAreaInputContainer>

@@ -80,6 +80,7 @@ export function NumberInputInline<TControl extends Control<any>>({
 				min={min}
 				step={step}
 				{...field}
+				value={field.value ?? ""}
 				{...rest}
 			/>
 			<NumberInputIncrementButton

@@ -68,6 +68,7 @@ export function PasswordInput<TControl extends Control<any>>({
 					className={styles.passwordInputField}
 					style={inputStyle}
 					{...field}
+					value={field.value ?? ""}
 					{...rest}
 				/>
 				<PasswordToggleField.Toggle className={styles.toggleButton}>
