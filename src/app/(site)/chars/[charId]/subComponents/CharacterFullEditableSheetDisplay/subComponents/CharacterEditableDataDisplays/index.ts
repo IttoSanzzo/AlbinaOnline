@@ -6,8 +6,10 @@ import { CharacterBackstoryDisplay } from "./Backstory";
 import { CharacterProfileDisplay } from "./Profile";
 import { CharacterSkillsDisplay } from "./Skills";
 import { CharacterSpellsDisplay } from "./Spells";
+import { CharacterCoinStacksDisplay } from "./CoinStacks";
 
 export const CharacterEditableDataDisplays = {
+	CoinStacks: CharacterCoinStacksDisplay,
 	Skills: CharacterSkillsDisplay,
 	Spells: CharacterSpellsDisplay,
 	SpellDomains: CharacterSpellDomainsDisplay,

@@ -11,6 +11,10 @@ interface NotionBoxProps {
 	withoutBorder?: boolean;
 	withoutMargin?: boolean;
 	backgroundColor?: keyof typeof NotionBackgroundColor;
+	width?: React.CSSProperties["width"];
+	height?: React.CSSProperties["height"];
+	minWidth?: React.CSSProperties["minWidth"];
+	minHeight?: React.CSSProperties["minHeight"];
 }
 
 export function NotionBox({
@@ -19,6 +23,10 @@ export function NotionBox({
 	withoutBorder = false,
 	withoutMargin = false,
 	backgroundColor,
+	width,
+	height,
+	minHeight,
+	minWidth,
 }: NotionBoxProps) {
 	const style: CSSProperties = {
 		...(backgroundColor && {
@@ -30,6 +38,10 @@ export function NotionBox({
 		}),
 		...(withoutPadding && { padding: "0" }),
 		...(withoutMargin && { margin: "0" }),
+		width,
+		height,
+		minWidth,
+		minHeight,
 	};
 
 	return <NotionBoxContainer style={style}>{children}</NotionBoxContainer>;

@@ -6,6 +6,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { CharacterMasteryExpanded } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
+import React from "react";
 
 interface MasteriesAndTestsDrawerProps {
 	characterId: string;

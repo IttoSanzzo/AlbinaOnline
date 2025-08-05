@@ -1,8 +1,12 @@
-import { StyledFalseLinkContainer } from "./styledElements";
-import styles from "./styles.module.css";
 import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import React from "react";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const StyledFalseLinkContainer = newStyledElement.div(
+	styles.styledFalseLinkContainer
+);
 
 export interface StyledFalseLinkProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,7 +30,11 @@ export function StyledFalseLink({
 	return (
 		<StyledFalseLinkContainer
 			className={textMode ? styles.styledFalseLinkInTextMode : undefined}>
-			<button {...rest}>
+			<button
+				onClick={(event) => {
+					event.preventDefault();
+				}}
+				{...rest}>
 				<Image
 					src={finalIcon}
 					width={21}

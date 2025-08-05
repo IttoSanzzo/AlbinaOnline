@@ -182,7 +182,7 @@ interface CharacterMasteriesFromTypeDisplayProps {
 	characterId: string;
 	type: keyof typeof MasteryType;
 }
-export function _CharacterMasteriesFromTypeDisplay({
+function _CharacterMasteriesFromTypeDisplay({
 	characterId,
 	type,
 }: CharacterMasteriesFromTypeDisplayProps) {

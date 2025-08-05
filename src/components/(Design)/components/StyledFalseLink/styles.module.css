@@ -24,6 +24,9 @@
 			font-family: Inter;
 			font-size: var(--fs-lg) !important;
 		}
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	&:hover button {

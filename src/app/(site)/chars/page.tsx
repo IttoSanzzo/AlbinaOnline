@@ -70,6 +70,7 @@ export default function Characters() {
 									slidesOrigin={"center"}
 									slidesSpacing={10}
 									minWidth={150}
+									memoryId={"Favorites"}
 									slideChilds={allFavoriteCharacters.map((character) => (
 										<StyledOwnedLinkCard
 											key={character.id}
@@ -95,6 +96,7 @@ export default function Characters() {
 									slidesOrigin={"center"}
 									slidesSpacing={10}
 									minWidth={150}
+									memoryId={"Owned"}
 									slideChilds={allUserCharacters.map((character) => (
 										<StyledOwnedLinkCard
 											key={character.id}

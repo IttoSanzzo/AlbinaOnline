@@ -5,11 +5,17 @@ import {
 	NotionToggleHeader,
 } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
+import { CharacterCoinStack } from "@/libs/stp@types";
+import React from "react";
 
 interface InventoryDrawerProps {
 	characterId: string;
+	characterCoinStacks: CharacterCoinStack[];
 }
-export function InventoryDrawer({ characterId }: InventoryDrawerProps) {
+function _InventoryDrawer({
+	characterId,
+	characterCoinStacks,
+}: InventoryDrawerProps) {
 	return (
 		<CharacterDrawerBaseHeader
 			title="Inventário"
@@ -29,10 +35,9 @@ export function InventoryDrawer({ characterId }: InventoryDrawerProps) {
 							title="Items"></NotionToggleHeader>
 					}
 					colum2={
-						<NotionToggleHeader
-							backgroundColor="darkGray"
-							titleColor="yellow"
-							title="Moedas"></NotionToggleHeader>
+						<CharacterEditableDataDisplays.CoinStacks
+							characterCoinStacks={characterCoinStacks}
+						/>
 					}
 				/>
 
@@ -44,3 +49,14 @@ export function InventoryDrawer({ characterId }: InventoryDrawerProps) {
 		</CharacterDrawerBaseHeader>
 	);
 }
+
+function areEqual(
+	prevProps: InventoryDrawerProps,
+	nextProps: InventoryDrawerProps
+) {
+	return (
+		prevProps.characterId === nextProps.characterId &&
+		prevProps.characterCoinStacks === nextProps.characterCoinStacks
+	);
+}
+export const InventoryDrawer = React.memo(_InventoryDrawer, areEqual);

@@ -1,7 +1,35 @@
-import { CSSProperties, ReactNode } from "react";
-import { KeenSliderOptions, useKeenSlider } from "keen-slider/react";
+"use client";
+
+import { CSSProperties, ReactNode, useMemo } from "react";
+import {
+	KeenSliderHooks,
+	KeenSliderInstance,
+	KeenSliderOptions,
+	useKeenSlider,
+} from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { CarouselContainer, SlideContainer } from "./styledElements";
+import { routeStorage } from "@/utils/Storage";
+import { usePathname } from "next/navigation";
+import { boolean } from "zod";
+
+function getCurrentPositionState(pathname: string, memoryName?: string) {
+	if (memoryName) {
+		const memoryState: string | null = routeStorage.getItem(
+			pathname,
+			memoryName
+		);
+		if (memoryState) return Number(memoryState);
+	}
+	return 0;
+}
+function setMemoryPositionState(
+	value: number,
+	pathname: string,
+	name?: string
+) {
+	if (name) routeStorage.setItem(pathname, name, value);
+}
 
 interface CarouselProps extends KeenSliderOptions {
 	slideChilds: ReactNode[];
@@ -10,8 +38,10 @@ interface CarouselProps extends KeenSliderOptions {
 	loop?: boolean;
 	mode?: "free" | "free-snap" | "snap";
 	slidesPerView?: number | "auto";
-	slidesSpacing?: number;
-	slidesOrigin?: number | "auto" | "center" | undefined;
+	slidesSpacing?: number | (() => number);
+	slidesOrigin?: number | "auto" | "center";
+	routeSensitiveMemory?: boolean;
+	memoryId?: string;
 }
 export function Carousel({
 	slideChilds,
@@ -22,8 +52,21 @@ export function Carousel({
 	slidesPerView = "auto",
 	slidesSpacing = 0,
 	slidesOrigin = "auto",
+	routeSensitiveMemory = true,
+	memoryId,
 	...rest
 }: CarouselProps) {
+	const pathname = routeSensitiveMemory ? usePathname() : "";
+	const memoryName = useMemo(() => {
+		return memoryId && memoryId !== "" ? `Caroulsel/${memoryId}` : undefined;
+	}, [memoryId]);
+
+	const defaultChangeHandler = memoryId
+		? (event: KeenSliderInstance<{}, {}, KeenSliderHooks>) => {
+				setMemoryPositionState(event.track.details.rel, pathname, memoryName);
+		  }
+		: undefined;
+
 	const [sliderRef] = useKeenSlider<HTMLDivElement>({
 		loop,
 		mode,
@@ -33,6 +76,8 @@ export function Carousel({
 			origin: slidesOrigin,
 			number: slideChilds.length,
 		},
+		initial: getCurrentPositionState(pathname, memoryName),
+		slideChanged: defaultChangeHandler,
 		...rest,
 	});
 

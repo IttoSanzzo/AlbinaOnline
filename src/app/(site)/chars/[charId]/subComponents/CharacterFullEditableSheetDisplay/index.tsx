@@ -15,7 +15,10 @@ export function CharacterFullSheetEditableDisplay({
 			<NotionBox
 				backgroundColor="gray"
 				withoutBorder>
-				<CharacterDrawers.Inventory characterId={characterData.id} />
+				<CharacterDrawers.Inventory
+					characterId={characterData.id}
+					characterCoinStacks={characterData.coinStacks}
+				/>
 				<CharacterDrawerBaseHeader
 					title="Estatísticas"
 					memoryId="">
