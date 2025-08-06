@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./styles.module.css";
 import clsx from "clsx";
+import { newStyledElement } from "@setsu-tp/styled-components";
+
+const SubmitButtonTrigger = newStyledElement.button(styles.submitButtonTrigger);
 
 interface SubmitButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,11 +17,11 @@ export function SubmitButton({
 	...rest
 }: SubmitButtonProps) {
 	return (
-		<button
+		<SubmitButtonTrigger
 			type="submit"
-			className={clsx(styles.submitButton, color, className)}
+			className={clsx(color, className)}
 			{...rest}>
 			<label>{label}</label>
-		</button>
+		</SubmitButtonTrigger>
 	);
 }

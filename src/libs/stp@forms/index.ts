@@ -7,6 +7,7 @@ import { TextAreaInput } from "./components/TextAreaInput";
 import { NumberInput } from "./components/NumberInput";
 import { NumberInputInline } from "./components/NumberInputInline";
 import { PasswordInput } from "./components/PasswordInput";
+import { ImageInput } from "./components/ImageInput";
 import { SubmitButton } from "./components/SubmitButton";
 import { Space } from "./components/Space";
 import { SimpleMessage } from "./components/FailMessage";
@@ -21,6 +22,7 @@ export const HookedForm = {
 	NumberInputInline: NumberInputInline,
 	NumberInput: NumberInput,
 	PasswordInput: PasswordInput,
+	ImageInput: ImageInput,
 	SelectWithIcon: SelectWithIcon,
 	Space: Space,
 	Separator: Separator,

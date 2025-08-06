@@ -79,7 +79,15 @@ export default function Character({ params }: CharacterPageProps) {
 			title={characterData.name}
 			banner={characterData.bannerUrl}
 			icon={characterData.iconUrl}
-			borderColor={"#505059"}>
+			borderColor={"#505059"}
+			isEditable={accessLevel >= AccessLevel.Edit}
+			bannerChangeRoute={getAlbinaApiAddress(
+				`/chars/${characterData.id}/banner`
+			)}
+			iconChangeRoute={getAlbinaApiAddress(
+				`/chars/${characterData.id}/favicon`
+			)}
+			titleChangeRoute={getAlbinaApiAddress(`/chars/${characterData.id}/name`)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<SetNavBarModules
 				contextMenuButton={routeInfra.PageContextMenu}

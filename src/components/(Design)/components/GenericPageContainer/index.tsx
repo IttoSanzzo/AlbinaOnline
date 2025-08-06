@@ -1,16 +1,25 @@
 import { ReactNode } from "react";
-import { ContentsContainer, MainContainer } from "./styledElements";
 import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
 import { StaticImageData } from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { EditablePageBanner } from "./subComponents/EditablePageBanner";
+
+export const MainContainer = newStyledElement.div(styles.mainContainer);
+export const ContentsContainer = newStyledElement.div(styles.contentsContainer);
 
 interface GenericPageContainerProps {
 	children: ReactNode;
-	banner?: string | StaticImageData;
+	banner?: string;
 	icon?: string;
 	borderColor?: string;
 	title: string;
+	isEditable?: boolean;
+	bannerChangeRoute?: string;
+	iconChangeRoute?: string;
+	titleChangeRoute?: string;
 }
 
 export function GenericPageContainer({
@@ -19,12 +28,27 @@ export function GenericPageContainer({
 	banner,
 	icon,
 	borderColor,
+	isEditable = false,
+	bannerChangeRoute,
+	iconChangeRoute,
+	titleChangeRoute,
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
-			<PageBanner src={banner ? banner : AlbinaLogo} />
+			{isEditable && bannerChangeRoute && bannerChangeRoute !== "" ? (
+				<EditablePageBanner
+					route={bannerChangeRoute}
+					bannerSrc={banner ?? ""}
+				/>
+			) : (
+				<PageBanner bannerSrc={banner ? banner : AlbinaLogo} />
+			)}
+
 			<ContentsContainer>
 				<PageHeader
+					isEditable={isEditable}
+					iconChangeRoute={iconChangeRoute}
+					titleChangeRoute={titleChangeRoute}
 					title={title}
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}

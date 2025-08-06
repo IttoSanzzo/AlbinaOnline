@@ -1,19 +1,26 @@
 import Image, { StaticImageData } from "next/image";
-import { PageBannerContainer } from "./styledElements";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const PageBannerContainer = newStyledElement.div(
+	styles.pageBannerContainer
+);
 
 interface PageBannerProps {
-	src: string | StaticImageData;
+	bannerSrc: string | StaticImageData;
 }
-
-export function PageBanner({ src }: PageBannerProps) {
+export function PageBanner({ bannerSrc }: PageBannerProps) {
 	return (
 		<PageBannerContainer>
 			<Image
-				src={src}
+				src={bannerSrc}
 				alt="Page's banner"
-				width={1720}
-				height={260}
+				width={0}
+				height={280}
 				priority={true}
+				sizes="(max-width: 100%)"
+				fill={false}
+				quality={100}
 			/>
 		</PageBannerContainer>
 	);

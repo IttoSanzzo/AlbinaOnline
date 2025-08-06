@@ -1,0 +1,23 @@
+.changeBannerButtonContainer {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
+
+.changeBannerButtonTrigger {
+	padding: 6px;
+	line-height: 0;
+	border: 2px solid var(--cl-gray-500);
+	border-radius: var(--fs-xs);
+	background-color: var(--cl-gray-800);
+	transition: 0.15s linear color, 0.15s linear background-color;
+
+	& svg {
+		width: 15px;
+		height: 15px;
+	}
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-gray-600);
+	}
+}

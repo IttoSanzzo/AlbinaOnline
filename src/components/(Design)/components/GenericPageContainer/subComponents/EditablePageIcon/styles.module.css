@@ -1,0 +1,14 @@
+.pageIconContainer {
+	position: relative;
+	overflow: hidden;
+	height: var(--sp-30);
+	width: var(--sp-30);
+	border-radius: var(--rd-lg);
+	box-shadow: 0px 0px 20px var(--cl-black-3);
+
+	& img {
+		height: var(--sp-30);
+		width: var(--sp-30);
+		object-fit: cover;
+	}
+}

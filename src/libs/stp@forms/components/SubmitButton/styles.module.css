@@ -1,4 +1,4 @@
-.submitButton {
+.submitButtonTrigger {
 	border: none;
 	border-radius: var(--rd-sm);
 	padding: var(--sp-3) var(--sp-4);
@@ -8,14 +8,21 @@
 
 	&:hover {
 		background-color: var(--cl-green-500);
+		cursor: pointer;
+		& label {
+			cursor: pointer;
+		}
 	}
 	&:disabled {
 		opacity: 50%;
 		cursor: not-allowed;
+		& label {
+			cursor: not-allowed;
+		}
 	}
 }
 
-.submitButton {
+.submitButtonTrigger {
 	&:global(.gray) {
 		background-color: var(--cl-gray-700);
 		color: var(--cl-gray-200);

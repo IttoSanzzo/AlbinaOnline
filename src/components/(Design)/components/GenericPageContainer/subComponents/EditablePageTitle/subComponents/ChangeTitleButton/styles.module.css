@@ -1,0 +1,21 @@
+.changeTitleButtonContainer {
+	position: relative;
+}
+
+.changeTitleButtonTrigger {
+	position: absolute;
+	line-height: 0;
+	border: 0;
+	border-radius: var(--rd-md);
+	opacity: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: var(--cl-gray-100);
+	transition: 0.25s linear opacity;
+
+	&:hover {
+		cursor: pointer;
+		opacity: 0.1;
+	}
+}

@@ -1,0 +1,23 @@
+.changeIconButtonContainer {
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+}
+
+.changeIconButtonTrigger {
+	padding: 3px;
+	line-height: 0;
+	border: 2px solid var(--cl-gray-500);
+	border-radius: var(--fs-xxs);
+	background-color: var(--cl-gray-800);
+	transition: 0.15s linear color, 0.15s linear background-color;
+
+	& svg {
+		width: 15px;
+		height: 15px;
+	}
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-gray-600);
+	}
+}
