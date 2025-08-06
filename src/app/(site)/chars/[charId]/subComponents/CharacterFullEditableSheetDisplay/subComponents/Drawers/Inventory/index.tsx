@@ -35,9 +35,7 @@ function _InventoryDrawer({
 						/>
 					}
 				/>
-				<CharacterEditableDataDisplays.Equipments
-				// characterEquipments={characterEquipments}
-				/>
+				<CharacterEditableDataDisplays.Equipments />
 			</NotionBox>
 		</CharacterDrawerBaseHeader>
 	);

@@ -19,14 +19,7 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					characterCoinStacks={characterData.coinStacks}
 				/>
-				<CharacterDrawerBaseHeader
-					title="Estatísticas"
-					memoryId="">
-					<CharacterDrawerBaseHeader
-						title="Traços"
-						memoryId=""
-					/>
-				</CharacterDrawerBaseHeader>
+				<CharacterDrawers.Statistics characterId={characterData.id} />
 				<Notion2Columns
 					withoutPadding
 					withoutGap

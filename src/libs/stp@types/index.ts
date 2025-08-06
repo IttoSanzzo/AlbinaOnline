@@ -29,6 +29,7 @@ export type {
 } from "./dataTypes/spell";
 export { SpellType, SpellSubType } from "./dataTypes/spell";
 export type { TraitData } from "./dataTypes/trait";
+export { TraitType, TraitSubType, traitNames } from "./dataTypes/trait";
 
 export * from "./dataTypes/Character";
 export * from "./otherTypes";

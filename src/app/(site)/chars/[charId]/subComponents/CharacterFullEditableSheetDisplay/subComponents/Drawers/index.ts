@@ -5,9 +5,11 @@ import { ParametersAndAtributeScoresDrawer } from "./ParametersAndAtributeScores
 import { MasteriesAndTestsDrawer } from "./MasteriesAndTests";
 import { OthersDrawer } from "./Others";
 import { InventoryDrawer } from "./Inventory";
+import { StatisticsDrawer } from "./Statistics";
 
 export const CharacterDrawers = {
 	Inventory: InventoryDrawer,
+	Statistics: StatisticsDrawer,
 	Skills: SkillsDrawer,
 	Spells: SpellsDrawer,
 	SpellDomains: SpellDomainsDrawer,

@@ -25,7 +25,7 @@ export function AddSpellButton({
 		<ButtonContainer>
 			<Dialog.Root>
 				<Dialog.Trigger asChild>
-					<AddButton>Adicionar{StpIcon({ name: "PlusCircle" })}</AddButton>
+					<AddButton>{StpIcon({ name: "PlusCircle" })}</AddButton>
 				</Dialog.Trigger>
 				<Dialog.Portal>
 					<Dialog.Overlay>
