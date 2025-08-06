@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterTrait = {
-	id: string;
-	characterId: string;
-	traitId: string;
+	id: Guid;
+	characterId: Guid;
+	traitId: Guid;
 };

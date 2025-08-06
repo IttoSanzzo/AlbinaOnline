@@ -1,4 +1,4 @@
-import { Parameters } from "../index";
+import { Guid, Parameters } from "../index";
 
 export type RaceInfo = {
 	introduction: string[];
@@ -22,7 +22,7 @@ export type RaceGenerals = {
 export type RaceParameters = Parameters;
 
 export type RaceData = {
-	id: string;
+	id: Guid;
 	slug: string;
 	name: string;
 	type: string;

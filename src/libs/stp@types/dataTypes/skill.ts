@@ -1,4 +1,9 @@
-import { GenericEffect, GenericExtraProperty, GenericInfo } from "../index";
+import {
+	GenericEffect,
+	GenericExtraProperty,
+	GenericInfo,
+	Guid,
+} from "../index";
 
 export enum SkillType {
 	Unknown,
@@ -31,7 +36,7 @@ export type SkillProperties = {
 };
 
 export type SkillData = {
-	id: string;
+	id: Guid;
 	slug: string;
 	name: string;
 	type: keyof typeof SkillType;

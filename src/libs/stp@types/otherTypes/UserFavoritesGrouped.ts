@@ -5,6 +5,7 @@ import { RaceData } from "../dataTypes/race";
 import { SkillData } from "../dataTypes/skill";
 import { SpellData } from "../dataTypes/spell";
 import { TraitData } from "../dataTypes/trait";
+import { Guid } from "../misc";
 
 export type UserFavoriteType =
 	| "Character"
@@ -16,43 +17,43 @@ export type UserFavoriteType =
 	| "Race";
 
 type FavoriteCharacter = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: CharacterData;
 };
 type FavoriteItem = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: ItemData;
 };
 type FavoriteMastery = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: MasteryData;
 };
 type FavoriteSkill = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: SkillData;
 };
 type FavoriteSpell = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: SpellData;
 };
 type FavoriteTrait = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: TraitData;
 };
 type FavoriteRace = {
-	id: string;
+	id: Guid;
 	order: number;
 	type: string;
 	target: RaceData;

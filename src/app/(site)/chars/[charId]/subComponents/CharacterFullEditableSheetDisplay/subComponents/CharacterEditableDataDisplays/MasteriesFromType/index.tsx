@@ -14,6 +14,7 @@ import {
 import {
 	CharacterAbilityScore,
 	CharacterMasteryExpanded,
+	Guid,
 	masteryNames,
 	MasteryType,
 } from "@/libs/stp@types";
@@ -30,8 +31,8 @@ const MasteriesDrawerContainer = newStyledElement.div(
 );
 
 function tableMasteryEntry(
-	characterId: string,
-	masteryId: string,
+	characterId: Guid,
+	masteryId: Guid,
 	name: string,
 	slug: string,
 	level: number,
@@ -179,7 +180,7 @@ function formTable(
 }
 
 interface CharacterMasteriesFromTypeDisplayProps {
-	characterId: string;
+	characterId: Guid;
 	type: keyof typeof MasteryType;
 }
 function _CharacterMasteriesFromTypeDisplay({

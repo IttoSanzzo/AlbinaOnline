@@ -1,10 +1,10 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterSkill } from "@/libs/stp@types";
+import { CharacterSkill, Guid } from "@/libs/stp@types";
 
 interface SkillsDrawerProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function SkillsDrawer({ characterId }: SkillsDrawerProps) {
 	return (

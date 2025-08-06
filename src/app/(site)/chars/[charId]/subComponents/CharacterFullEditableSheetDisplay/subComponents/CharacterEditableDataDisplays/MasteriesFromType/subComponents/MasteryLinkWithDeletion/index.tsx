@@ -3,10 +3,11 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
+import { Guid } from "@/libs/stp@types";
 
 interface MasteryLinkWithDeletionProps {
-	characterId: string;
-	masteryId: string;
+	characterId: Guid;
+	masteryId: Guid;
 	name: string;
 	slug: string;
 }

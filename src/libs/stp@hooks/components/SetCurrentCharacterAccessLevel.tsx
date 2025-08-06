@@ -1,9 +1,10 @@
 "use client";
 
+import { Guid } from "@/libs/stp@types";
 import { useSetCurrentCharacterAccessLevel } from "../hooks";
 
 interface SetCurrentCharacterAccessLevelProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function SetCurrentCharacterAccessLevel({
 	characterId,

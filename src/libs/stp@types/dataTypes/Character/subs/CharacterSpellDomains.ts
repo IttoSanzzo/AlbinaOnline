@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterSpellDomains = {
-	characterId: string;
+	characterId: Guid;
 	general: number;
 	impetum: number;
 	khranitel: number;

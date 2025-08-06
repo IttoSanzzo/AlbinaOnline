@@ -1,7 +1,9 @@
+import { Guid } from "../../misc";
+
 export type CharacterData = {
-	id: string;
-	ownerId: string;
-	raceId: string;
+	id: Guid;
+	ownerId: Guid;
+	raceId: Guid;
 	name: string;
 	level: number;
 	isAlive: boolean;

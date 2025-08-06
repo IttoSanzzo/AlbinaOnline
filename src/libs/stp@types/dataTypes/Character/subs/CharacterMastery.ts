@@ -1,9 +1,10 @@
+import { Guid } from "@/libs/stp@types/misc";
 import { MasteryData } from "../../mastery";
 
 export type CharacterMastery = {
-	id: string;
-	characterId: string;
-	masteryId: string;
+	id: Guid;
+	characterId: Guid;
+	masteryId: Guid;
 	level: number;
 };
 

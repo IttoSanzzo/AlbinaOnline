@@ -1,10 +1,14 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterProfile, CharacterSpellDomains } from "@/libs/stp@types";
+import {
+	CharacterProfile,
+	CharacterSpellDomains,
+	Guid,
+} from "@/libs/stp@types";
 
 interface OthersDrawerProps {
-	characterId: string;
+	characterId: Guid;
 	characterBackstory: string;
 	characterProfile: CharacterProfile;
 }

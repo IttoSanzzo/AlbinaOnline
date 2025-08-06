@@ -1,4 +1,9 @@
-import { CharacterSpellExpanded, SpellData, SpellType } from "@/libs/stp@types";
+import {
+	CharacterSpellExpanded,
+	Guid,
+	SpellData,
+	SpellType,
+} from "@/libs/stp@types";
 import { NotionGridList } from "@/components/(UTILS)";
 import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -12,7 +17,7 @@ import { NotionHeader, NotionToggleHeader } from "@/components/(NotionBased)";
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
 interface SpellSelectionCoreProps {
-	characterId: string;
+	characterId: Guid;
 	characterSpells: CharacterSpellExpanded[];
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
@@ -68,7 +73,7 @@ export function SpellSelectionCore({
 		if (!response.ok) return;
 		setCharacterSpells((state) => {
 			const newSpell: CharacterSpellExpanded = {
-				id: "",
+				id: Guid.Empty,
 				characterId: characterId,
 				spellId: spell.id,
 				spell: spell,

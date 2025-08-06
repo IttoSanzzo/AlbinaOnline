@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterProfile = {
-	characterId: string;
+	characterId: Guid;
 	age: number;
 	stature: number;
 	weight: number;

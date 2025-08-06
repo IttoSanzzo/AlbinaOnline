@@ -7,9 +7,13 @@ import { CharacterProfileDisplay } from "./Profile";
 import { CharacterSkillsDisplay } from "./Skills";
 import { CharacterSpellsDisplay } from "./Spells";
 import { CharacterCoinStacksDisplay } from "./CoinStacks";
+import { CharacterItemStacksDisplay } from "./ItemStacks";
+import { CharacterEquipmentsDisplay } from "./Equipments";
 
 export const CharacterEditableDataDisplays = {
+	ItemStacks: CharacterItemStacksDisplay,
 	CoinStacks: CharacterCoinStacksDisplay,
+	Equipments: CharacterEquipmentsDisplay,
 	Skills: CharacterSkillsDisplay,
 	Spells: CharacterSpellsDisplay,
 	SpellDomains: CharacterSpellDomainsDisplay,

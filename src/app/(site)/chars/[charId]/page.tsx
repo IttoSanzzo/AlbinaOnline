@@ -1,7 +1,7 @@
 "use client";
 
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
-import { AccessLevel, CharacterExpandedData } from "@/libs/stp@types";
+import { AccessLevel, CharacterExpandedData, Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
 	Breadcrumb,
@@ -21,11 +21,11 @@ import { CharacterFullSheetSocialDisplay } from "./subComponents/CharaterFullShe
 // export const generateMetadata = routeInfra.generateMetadata;
 
 interface CharacterPageProps {
-	params: Promise<{ charId: string }>;
+	params: Promise<{ charId: Guid }>;
 }
 export default function Character({ params }: CharacterPageProps) {
 	const [error, setError] = useState<number | null>(null);
-	const [paramsData, setParamsData] = useState<{ charId: string } | null>(null);
+	const [paramsData, setParamsData] = useState<{ charId: Guid } | null>(null);
 	const [characterData, setCharacterData] =
 		useState<CharacterExpandedData | null>(null);
 	const { accessLevel } = useCurrentCharacterAccessLevel();

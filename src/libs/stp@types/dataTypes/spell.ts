@@ -2,6 +2,7 @@ import {
 	GenericEffect,
 	GenericExtraProperty,
 	GenericInfo,
+	Guid,
 	SpellDomain,
 } from "../index";
 
@@ -29,7 +30,7 @@ export type SpellProperties = {
 };
 
 export type SpellData = {
-	id: string;
+	id: Guid;
 	slug: string;
 	name: string;
 	type: keyof typeof SpellType;

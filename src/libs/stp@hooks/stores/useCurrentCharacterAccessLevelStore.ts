@@ -1,5 +1,6 @@
 "use client";
 
+import { Guid } from "@/libs/stp@types";
 import { AccessLevel } from "@/libs/stp@types/otherTypes/AccessLevel";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { create } from "zustand";
@@ -9,7 +10,7 @@ interface CurrentCharacterAccessLevelState {
 	isSet: boolean;
 	setAccessLevel: (accessLevel: AccessLevel) => void;
 	setIsSet: (loading: boolean) => void;
-	fetchAccessLevel: (characterId: string) => Promise<void>;
+	fetchAccessLevel: (characterId: Guid) => Promise<void>;
 	clearAccessLevel: () => void;
 }
 
@@ -19,7 +20,7 @@ export const useCurrentCharacterAccessLevelStore =
 		isSet: false,
 		setAccessLevel: (accessLevel) => set({ accessLevel }),
 		setIsSet: (isSet) => set({ isSet }),
-		fetchAccessLevel: async (characterId: string) => {
+		fetchAccessLevel: async (characterId: Guid) => {
 			set({ isSet: false });
 			try {
 				const response = await authenticatedFetchAsync(

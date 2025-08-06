@@ -9,6 +9,12 @@ export type {
 export type { MasteryData } from "./dataTypes/mastery";
 export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";
 export type { ItemData, ItemProperties } from "./dataTypes/item";
+export {
+	ItemType,
+	ItemSubType,
+	ItemTypeName,
+	ItemTypePluralName,
+} from "./dataTypes/item";
 export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
 export type {
 	SkillData,
@@ -26,3 +32,4 @@ export type { TraitData } from "./dataTypes/trait";
 
 export * from "./dataTypes/Character";
 export * from "./otherTypes";
+export * from "./misc";

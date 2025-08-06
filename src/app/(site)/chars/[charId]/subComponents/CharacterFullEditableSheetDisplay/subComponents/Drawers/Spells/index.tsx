@@ -1,9 +1,10 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
+import { Guid } from "@/libs/stp@types";
 
 interface SpellsDrawerProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function SpellsDrawer({ characterId }: SpellsDrawerProps) {
 	return (

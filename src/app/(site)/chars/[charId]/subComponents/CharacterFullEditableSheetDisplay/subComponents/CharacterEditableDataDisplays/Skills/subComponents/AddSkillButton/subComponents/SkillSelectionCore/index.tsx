@@ -1,5 +1,6 @@
 import {
 	CharacterSkillExpanded,
+	Guid,
 	SkillData,
 	skillNames,
 	SkillType,
@@ -17,7 +18,7 @@ import { NotionToggleHeader } from "@/components/(NotionBased)";
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
 interface SkillSelectionCoreProps {
-	characterId: string;
+	characterId: Guid;
 	characterSkills: CharacterSkillExpanded[];
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
@@ -73,7 +74,7 @@ export function SkillSelectionCore({
 		if (!response.ok) return;
 		setCharacterSkills((state) => {
 			const newSkill: CharacterSkillExpanded = {
-				id: "",
+				id: Guid.Empty,
 				characterId: characterId,
 				skillId: skill.id,
 				skill: skill,

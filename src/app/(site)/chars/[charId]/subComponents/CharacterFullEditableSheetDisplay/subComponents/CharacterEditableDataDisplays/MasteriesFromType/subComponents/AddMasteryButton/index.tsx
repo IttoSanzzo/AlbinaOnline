@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { StpIcon } from "@/libs/stp@icons";
 import {
 	CharacterMasteryExpanded,
+	Guid,
 	masteryNames,
 	MasteryType,
 } from "@/libs/stp@types";
@@ -14,7 +15,7 @@ const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
 interface AddMasteryButtonProps {
 	type: keyof typeof MasteryType;
-	characterId: string;
+	characterId: Guid;
 	masteries: CharacterMasteryExpanded[];
 }
 export function AddMasteryButton({

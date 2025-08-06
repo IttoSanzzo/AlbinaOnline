@@ -4,9 +4,10 @@ import Image from "next/image";
 import { OwnerPageLinkButton } from "./styledElements";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useRouter } from "next/navigation";
+import { Guid } from "@/libs/stp@types";
 
 export interface OwnerPageLinkProps {
-	ownerId: string;
+	ownerId: Guid;
 }
 export default function OwnerPageLink({ ownerId }: OwnerPageLinkProps) {
 	const router = useRouter();

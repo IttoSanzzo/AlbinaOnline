@@ -1,11 +1,12 @@
+import { Guid } from "@/libs/stp@types";
 import { createContext, ReactNode, useMemo, useState } from "react";
 
 export const CharacterIdContext = createContext<{
-	characterId: string;
-}>({ characterId: "__CHARACTER_ID_NOT_PROVIDED__" });
+	characterId: Guid;
+}>({ characterId: Guid.Empty });
 
 interface CharacterIdContextProviderProps {
-	characterId: string;
+	characterId: Guid;
 	children: ReactNode;
 }
 export function CharacterIdContextProvider({

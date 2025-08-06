@@ -11,7 +11,6 @@ import "keen-slider/keen-slider.min.css";
 import { CarouselContainer, SlideContainer } from "./styledElements";
 import { routeStorage } from "@/utils/Storage";
 import { usePathname } from "next/navigation";
-import { boolean } from "zod";
 
 function getCurrentPositionState(pathname: string, memoryName?: string) {
 	if (memoryName) {

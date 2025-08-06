@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useCurrentCharacterAccessLevelStore } from "../stores";
 import { useShallow } from "zustand/shallow";
+import { Guid } from "@/libs/stp@types";
 
 export function useCurrentCharacterAccessLevel() {
 	return useCurrentCharacterAccessLevelStore(
@@ -17,7 +18,7 @@ export function useCurrentCharacterAccessLevel() {
 }
 
 export function useSetCurrentCharacterAccessLevel(
-	characterId: string,
+	characterId: Guid,
 	options?: { resetOnUnmount?: boolean }
 ) {
 	const { fetchAccessLevel, clearAccessLevel } =

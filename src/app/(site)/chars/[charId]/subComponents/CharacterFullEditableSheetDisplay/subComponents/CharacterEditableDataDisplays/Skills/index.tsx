@@ -1,14 +1,19 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { NotionTable, NotionText } from "@/components/(NotionBased)";
-import { CharacterSkillExpanded, SkillData, SkillType } from "@/libs/stp@types";
+import {
+	CharacterSkillExpanded,
+	Guid,
+	SkillData,
+	SkillType,
+} from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSkillButton } from "./subComponents/AddSkillButton";
 
 async function handleSkillRemoval(
-	characterId: string,
-	skillId: string,
+	characterId: Guid,
+	skillId: Guid,
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
 	>
@@ -31,7 +36,7 @@ async function handleSkillRemoval(
 }
 
 function formTable(
-	characterId: string,
+	characterId: Guid,
 	characterSkills: CharacterSkillExpanded[],
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
@@ -75,7 +80,7 @@ function formTable(
 }
 
 interface CharacterSkillsDisplayProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function _CharacterSkillsDisplay({
 	characterId,

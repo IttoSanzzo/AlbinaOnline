@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterParameters = {
-	characterId: string;
+	characterId: Guid;
 	vitality: number;
 	vigor: number;
 	mana: number;

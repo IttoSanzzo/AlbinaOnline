@@ -4,12 +4,12 @@ import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDispla
 import { useContext, useLayoutEffect } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { CharacterMasteryExpanded } from "@/libs/stp@types";
+import { CharacterMasteryExpanded, Guid } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
 import React from "react";
 
 interface MasteriesAndTestsDrawerProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function MasteriesAndTestsDrawer({
 	characterId,

@@ -1,8 +1,9 @@
+import { Guid } from "@/libs/stp@types/misc";
 import { AccessLevel } from "@/libs/stp@types/otherTypes/AccessLevel";
 
 export type CharacterAccessPermission = {
-	id: string;
-	userId: string;
-	characterId: string;
+	id: Guid;
+	userId: Guid;
+	characterId: Guid;
 	accessLevel: keyof typeof AccessLevel;
 };

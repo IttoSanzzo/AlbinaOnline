@@ -1,3 +1,5 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export enum MonetaryUnit {
 	Unknown,
 	Koryn,
@@ -26,8 +28,8 @@ export type LyurCoins = {
 	lyur: number;
 };
 export type CharacterCoinStack = {
-	id: string;
-	characterId: string;
+	id: Guid;
+	characterId: Guid;
 	type: "Character";
 	unit: keyof typeof MonetaryUnit;
 	coins: KorynCoins | LyurCoins | VarisCoins | PerckCoins;

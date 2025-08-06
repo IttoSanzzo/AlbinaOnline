@@ -1,5 +1,6 @@
 import {
 	CharacterMasteryExpanded,
+	Guid,
 	MasteryData,
 	MasterySubType,
 	MasteryType,
@@ -15,7 +16,7 @@ import { MasteriesContext } from "../../../../../../CharacterEditableSheetContex
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
-	characterId: string;
+	characterId: Guid;
 	characterMasteries: CharacterMasteryExpanded[];
 }
 export function MasterySelectionCore({
@@ -74,7 +75,7 @@ export function MasterySelectionCore({
 				{
 					characterId,
 					masteryId: mastery.id,
-					id: "",
+					id: Guid.Empty,
 					level: 0,
 					mastery: mastery,
 				},

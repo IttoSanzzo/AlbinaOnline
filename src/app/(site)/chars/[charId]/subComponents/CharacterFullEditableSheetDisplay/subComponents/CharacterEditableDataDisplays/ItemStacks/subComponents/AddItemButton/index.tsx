@@ -3,24 +3,24 @@ import styles from "./styles.module.css";
 import { StpIcon } from "@/libs/stp@icons";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
-import { SpellSelectionCore } from "./subComponents/SpellSelectionCore";
+import { CharacterItemStackExpanded, Guid } from "@/libs/stp@types";
+import { ItemSelectionCore } from "./subComponents/ItemSelectionCore";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const AddButton = newStyledElement.button(styles.addButton);
 
-interface AddSpellButtonProps {
+interface AddItemButtonProps {
 	characterId: Guid;
-	characterSpells: CharacterSpellExpanded[];
-	setCharacterSpells: React.Dispatch<
-		React.SetStateAction<CharacterSpellExpanded[]>
+	characterItems: CharacterItemStackExpanded[];
+	setCharacterItems: React.Dispatch<
+		React.SetStateAction<CharacterItemStackExpanded[]>
 	>;
 }
-export function AddSpellButton({
+export function AddItemButton({
 	characterId,
-	characterSpells,
-	setCharacterSpells,
-}: AddSpellButtonProps) {
+	characterItems,
+	setCharacterItems,
+}: AddItemButtonProps) {
 	return (
 		<ButtonContainer>
 			<Dialog.Root>
@@ -32,14 +32,14 @@ export function AddSpellButton({
 						<Dialog.Content maxWidth={1000}>
 							<DialogDescription />
 							<Dialog.Title
-								children={"Adicionar Spell"}
+								children={"Adicionar Skill"}
 								marginBottom={20}
 								textAlign="center"
 							/>
-							<SpellSelectionCore
-								characterSpells={characterSpells}
-								setCharacterSpells={setCharacterSpells}
+							<ItemSelectionCore
 								characterId={characterId}
+								characterItems={characterItems}
+								setCharacterItems={setCharacterItems}
 							/>
 						</Dialog.Content>
 					</Dialog.Overlay>

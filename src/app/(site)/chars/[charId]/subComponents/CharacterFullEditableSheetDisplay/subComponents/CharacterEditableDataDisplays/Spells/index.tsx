@@ -1,14 +1,19 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { NotionTable, NotionText } from "@/components/(NotionBased)";
-import { CharacterSpellExpanded, SpellData, SpellType } from "@/libs/stp@types";
+import {
+	CharacterSpellExpanded,
+	Guid,
+	SpellData,
+	SpellType,
+} from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSpellButton } from "./subComponents/AddSpellButton";
 
 async function handleSpellRemoval(
-	characterId: string,
-	spellId: string,
+	characterId: Guid,
+	spellId: Guid,
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
 	>
@@ -31,7 +36,7 @@ async function handleSpellRemoval(
 }
 
 function formTable(
-	characterId: string,
+	characterId: Guid,
 	characterSpells: CharacterSpellExpanded[],
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
@@ -94,7 +99,7 @@ function formTable(
 }
 
 interface CharacterSpellsDisplayProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function _CharacterSpellsDisplay({
 	characterId,

@@ -9,6 +9,7 @@ import { z } from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { AlertDialog } from "@/libs/stp@radix";
+import { Guid } from "@/libs/stp@types";
 
 const schema = z.object({
 	name: z.string(),
@@ -18,7 +19,7 @@ type FormData = z.infer<typeof schema>;
 
 interface DeleteCharFormProps {
 	characterName: string;
-	characterId: string;
+	characterId: Guid;
 }
 export function DeleteCharForm({
 	characterName,

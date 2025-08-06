@@ -1,4 +1,4 @@
-import { GenericEffect, GenericInfo } from "../index";
+import { GenericEffect, GenericInfo, Guid } from "../index";
 
 export enum MasteryType {
 	Unknown,
@@ -29,7 +29,7 @@ export enum MasterySubType {
 }
 
 export type MasteryData = {
-	id: string;
+	id: Guid;
 	slug: string;
 	name: string;
 	type: keyof typeof MasteryType;

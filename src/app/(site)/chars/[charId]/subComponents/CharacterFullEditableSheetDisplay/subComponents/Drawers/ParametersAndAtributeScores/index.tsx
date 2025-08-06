@@ -1,9 +1,10 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { Notion2Columns } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
+import { Guid } from "@/libs/stp@types";
 
 interface ParametersAndAtributeScoresDrawerProps {
-	characterId: string;
+	characterId: Guid;
 }
 export function ParametersAndAtributeScoresDrawer({
 	characterId,

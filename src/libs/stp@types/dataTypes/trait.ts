@@ -1,4 +1,9 @@
-import { GenericEffect, GenericExtraProperty, GenericInfo } from "../index";
+import {
+	GenericEffect,
+	GenericExtraProperty,
+	GenericInfo,
+	Guid,
+} from "../index";
 
 export type TraitInfo = {
 	summary: string[];
@@ -8,7 +13,7 @@ export type TraitInfo = {
 };
 
 export type TraitData = {
-	id: string;
+	id: Guid;
 	slug: string;
 	name: string;
 	type: string;

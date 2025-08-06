@@ -3,14 +3,14 @@ import styles from "./styles.module.css";
 import { StpIcon } from "@/libs/stp@icons";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { CharacterSkillExpanded } from "@/libs/stp@types";
+import { CharacterSkillExpanded, Guid } from "@/libs/stp@types";
 import { SkillSelectionCore } from "./subComponents/SkillSelectionCore";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const AddButton = newStyledElement.button(styles.addButton);
 
 interface AddSkillButtonProps {
-	characterId: string;
+	characterId: Guid;
 	characterSkills: CharacterSkillExpanded[];
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>

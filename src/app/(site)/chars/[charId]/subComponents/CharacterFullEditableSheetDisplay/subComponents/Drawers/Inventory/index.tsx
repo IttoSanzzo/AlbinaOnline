@@ -5,11 +5,11 @@ import {
 	NotionToggleHeader,
 } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterCoinStack } from "@/libs/stp@types";
+import { CharacterCoinStack, CharacterItemStack, Guid } from "@/libs/stp@types";
 import React from "react";
 
 interface InventoryDrawerProps {
-	characterId: string;
+	characterId: Guid;
 	characterCoinStacks: CharacterCoinStack[];
 }
 function _InventoryDrawer({
@@ -28,23 +28,16 @@ function _InventoryDrawer({
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
-					colum1={
-						<NotionToggleHeader
-							backgroundColor="darkGray"
-							titleColor="blue"
-							title="Items"></NotionToggleHeader>
-					}
+					colum1={<CharacterEditableDataDisplays.ItemStacks />}
 					colum2={
 						<CharacterEditableDataDisplays.CoinStacks
 							characterCoinStacks={characterCoinStacks}
 						/>
 					}
 				/>
-
-				<NotionToggleHeader
-					backgroundColor="darkGray"
-					titleColor="green"
-					title="Equipados"></NotionToggleHeader>
+				<CharacterEditableDataDisplays.Equipments
+				// characterEquipments={characterEquipments}
+				/>
 			</NotionBox>
 		</CharacterDrawerBaseHeader>
 	);

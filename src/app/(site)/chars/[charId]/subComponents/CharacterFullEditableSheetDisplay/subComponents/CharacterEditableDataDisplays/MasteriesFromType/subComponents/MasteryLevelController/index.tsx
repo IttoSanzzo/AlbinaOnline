@@ -5,11 +5,12 @@ import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
+import { Guid } from "@/libs/stp@types";
 
 interface MasteryLevelControllerProps {
 	level: number;
-	characterId: string;
-	masteryId: string;
+	characterId: Guid;
+	masteryId: Guid;
 }
 export function MasteryLevelController({
 	level,

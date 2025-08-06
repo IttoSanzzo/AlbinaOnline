@@ -1,10 +1,10 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterSpellDomains } from "@/libs/stp@types";
+import { CharacterSpellDomains, Guid } from "@/libs/stp@types";
 
 interface SpellDomainsDrawerProps {
-	characterId: string;
+	characterId: Guid;
 	spellDomains: CharacterSpellDomains;
 }
 export function SpellDomainsDrawer({

@@ -1,8 +1,9 @@
+import { Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { redirect } from "next/navigation";
 
 interface PageProps {
-	params: Promise<{ userId: string }>;
+	params: Promise<{ userId: Guid }>;
 }
 export default async function Page({ params }: PageProps) {
 	const { userId } = await params;

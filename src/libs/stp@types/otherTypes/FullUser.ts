@@ -1,5 +1,7 @@
+import { Guid } from "../misc";
+
 export type FullUser = {
-	id: string;
+	id: Guid;
 	username: string;
 	nickname: string;
 	iconUrl: string;

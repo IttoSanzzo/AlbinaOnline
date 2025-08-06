@@ -1,0 +1,24 @@
+.buttonContainer {
+	position: absolute;
+	top: 6px;
+	left: 5px;
+}
+.addButton {
+	display: flex;
+	border: none;
+	outline: 1px solid var(--cl-gray-400);
+	background-color: var(--cl-gray-600);
+	color: var(--cl-gray-200);
+	border-radius: var(--rd-sm);
+	text-align: center;
+	align-items: center;
+	padding-left: 3px;
+
+	& > svg {
+		width: 20px;
+		height: 20px;
+	}
+	&:hover {
+		cursor: pointer;
+	}
+}

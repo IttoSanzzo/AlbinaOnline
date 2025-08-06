@@ -1,9 +1,10 @@
+import { Guid } from "@/libs/stp@types/misc";
 import { SkillData } from "../../skill";
 
 export type CharacterSkill = {
-	id: string;
-	characterId: string;
-	skillId: string;
+	id: Guid;
+	characterId: Guid;
+	skillId: Guid;
 };
 export type CharacterSkillExpanded = {
 	skill: SkillData;

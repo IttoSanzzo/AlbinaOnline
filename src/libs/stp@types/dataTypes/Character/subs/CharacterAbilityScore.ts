@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterAbilityScore = {
-	characterId: string;
+	characterId: Guid;
 	strength: number;
 	agility: number;
 	technique: number;

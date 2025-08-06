@@ -1,5 +1,7 @@
+import { Guid } from "@/libs/stp@types/misc";
+
 export type CharacterCoreMetrics = {
-	characterId: string;
+	characterId: Guid;
 	maxHp: number;
 	maxEp: number;
 	maxMp: number;
