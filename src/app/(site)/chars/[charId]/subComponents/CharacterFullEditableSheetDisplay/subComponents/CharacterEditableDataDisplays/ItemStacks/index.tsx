@@ -5,7 +5,11 @@ import {
 } from "@/components/(NotionBased)";
 import { useContext, useLayoutEffect, useState } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import { CharacterItemStackExpanded, Guid } from "@/libs/stp@types";
+import {
+	CharacterEquipments,
+	CharacterItemStackExpanded,
+	Guid,
+} from "@/libs/stp@types";
 import React from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -13,12 +17,16 @@ import { StyledLinkWithButton } from "@/components/(Design)";
 import { ItemsContext } from "../../CharacterEditableSheetContextProviders/contexts/Items";
 import { AddItemButton } from "./subComponents/AddItemButton";
 import { ItemAmountController } from "./subComponents/ItemAmountController";
+import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
 
 async function handleItemRemoval(
 	characterId: Guid,
 	itemId: Guid,
 	setCharacterItems: React.Dispatch<
 		React.SetStateAction<CharacterItemStackExpanded[]>
+	>,
+	setCharacterEquipments: React.Dispatch<
+		React.SetStateAction<CharacterEquipments>
 	>
 ) {
 	const body = { itemId: itemId };
@@ -34,6 +42,15 @@ async function handleItemRemoval(
 	);
 	if (!response.ok) return;
 	setCharacterItems((state) => state.filter((item) => item.item.id != itemId));
+	setCharacterEquipments((state) => ({
+		...state,
+		slots: Object.fromEntries(
+			Object.entries(state.slots).map(([slot, ids]) => [
+				slot,
+				ids.filter((id) => id !== itemId),
+			])
+		),
+	}));
 }
 function calcTotalWeight(characterItems: CharacterItemStackExpanded[]) {
 	return (
@@ -49,6 +66,9 @@ function formTable(
 	characterItems: CharacterItemStackExpanded[],
 	setCharacterItems: React.Dispatch<
 		React.SetStateAction<CharacterItemStackExpanded[]>
+	>,
+	setCharacterEquipments: React.Dispatch<
+		React.SetStateAction<CharacterEquipments>
 	>
 ): React.JSX.Element[][] {
 	const titleRow = [
@@ -121,7 +141,8 @@ function formTable(
 					handleItemRemoval(
 						characterId,
 						characterItem.item.id,
-						setCharacterItems
+						setCharacterItems,
+						setCharacterEquipments
 					)
 				}
 			/>,
@@ -144,6 +165,7 @@ function formTable(
 
 export function _CharacterItemStacksDisplay() {
 	const { characterItems, setCharacterItems } = useContext(ItemsContext);
+	const { setCharacterEquipments } = useContext(EquipmentsContext);
 	const { characterId } = useContext(CharacterIdContext);
 
 	useLayoutEffect(() => {
@@ -187,7 +209,8 @@ export function _CharacterItemStacksDisplay() {
 						tableLanes: formTable(
 							characterId,
 							characterItems,
-							setCharacterItems
+							setCharacterItems,
+							setCharacterEquipments
 						),
 					}}
 				/>

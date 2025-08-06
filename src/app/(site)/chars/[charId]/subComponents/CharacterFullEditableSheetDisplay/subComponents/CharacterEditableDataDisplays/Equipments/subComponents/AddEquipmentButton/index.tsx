@@ -3,24 +3,28 @@ import styles from "./styles.module.css";
 import { StpIcon } from "@/libs/stp@icons";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { CharacterItemStackExpanded, Guid } from "@/libs/stp@types";
-import { ItemSelectionCore } from "./subComponents/ItemSelectionCore";
+import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
+import { EquipmentSelectionCore } from "./subComponents/EquipmentSelectionCore";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const AddButton = newStyledElement.button(styles.addButton);
 
-interface AddItemButtonProps {
+interface AddEquipmentButtonProps {
 	characterId: Guid;
-	characterItems: CharacterItemStackExpanded[];
-	setCharacterItems: React.Dispatch<
-		React.SetStateAction<CharacterItemStackExpanded[]>
+	setCharacterEquipments: React.Dispatch<
+		React.SetStateAction<CharacterEquipments>
 	>;
+	slot: EquipmentSlot;
+	title: string;
+	alreadyHasItemIds?: Guid[];
 }
-export function AddItemButton({
+export function AddEquipmentButton({
 	characterId,
-	characterItems,
-	setCharacterItems,
-}: AddItemButtonProps) {
+	setCharacterEquipments,
+	slot,
+	title,
+	alreadyHasItemIds = [],
+}: AddEquipmentButtonProps) {
 	return (
 		<ButtonContainer>
 			<Dialog.Root>
@@ -32,14 +36,15 @@ export function AddItemButton({
 						<Dialog.Content maxWidth={1000}>
 							<DialogDescription />
 							<Dialog.Title
-								children={"Adicionar Skill"}
+								children={`Equipamentos para ${title.toLocaleLowerCase()} disponíveis`}
 								marginBottom={20}
 								textAlign="center"
 							/>
-							<ItemSelectionCore
+							<EquipmentSelectionCore
 								characterId={characterId}
-								characterItems={characterItems}
-								setCharacterItems={setCharacterItems}
+								setCharacterEquipments={setCharacterEquipments}
+								slot={slot}
+								alreadyHasItemIds={alreadyHasItemIds}
 							/>
 						</Dialog.Content>
 					</Dialog.Overlay>

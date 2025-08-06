@@ -13,6 +13,8 @@ export type * from "./subs/CharacterSkill";
 export type * from "./subs/CharacterSpell";
 export type * from "./subs/CharacterTrait";
 export type * from "./subs/CharacterSpellDomains";
+export type * from "./subs/CharacterEquipments";
+export * from "./subs/CharacterEquipments";
 
 export type * from "./others/CharacterBackstory";
 export type * from "./others/CharacterCoinStack";

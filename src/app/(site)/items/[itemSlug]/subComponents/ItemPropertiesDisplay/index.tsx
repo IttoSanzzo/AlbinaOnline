@@ -40,7 +40,7 @@ export default function ItemPropertiesDisplay({
 								<NotionText
 									textColor="gray"
 									textAlign="flex-center"
-									children={itemProperties.slot}
+									children={itemProperties.compatibleSlots.join(" ")}
 								/>,
 							],
 							[

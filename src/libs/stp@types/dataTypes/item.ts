@@ -1,4 +1,5 @@
 import {
+	EquipmentSlotType,
 	GenericEffect,
 	GenericExtraProperty,
 	GenericInfo,
@@ -44,7 +45,7 @@ export enum ItemSubType {
 }
 
 export type ItemProperties = {
-	slot: string;
+	compatibleSlots: [keyof typeof EquipmentSlotType];
 	weight: number;
 	attribute: string;
 	stats?: {

@@ -1,17 +1,24 @@
 import {
 	Notion2Columns,
-	NotionBox,
 	NotionTable,
 	NotionText,
 	NotionToggleHeader,
 } from "@/components/(NotionBased)";
 import { useContext, useLayoutEffect } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import { CharacterItemStackExpanded, Guid } from "@/libs/stp@types";
+import {
+	CharacterEquipments,
+	CharacterItemStackExpanded,
+	EquipmentSlot,
+	Guid,
+} from "@/libs/stp@types";
 import React from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { ItemsContext } from "../../CharacterEditableSheetContextProviders/contexts/Items";
+import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
+import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
+import { NotionGridList } from "@/components/(UTILS)";
+import { AddEquipmentButton } from "./subComponents/AddEquipmentButton";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -35,31 +42,67 @@ async function handleItemRemoval(
 	setCharacterItems((state) => state.filter((item) => item.item.id != itemId));
 }
 
+function formEquipSlotTableEntry(
+	characterId: Guid,
+	setCharacterEquipments: React.Dispatch<
+		React.SetStateAction<CharacterEquipments>
+	>,
+	slot: EquipmentSlot,
+	title: string,
+	itemIds?: Guid[]
+) {
+	return [
+		<div style={{ position: "relative" }}>
+			<AddEquipmentButton
+				characterId={characterId}
+				setCharacterEquipments={setCharacterEquipments}
+				title={title}
+				slot={slot}
+				alreadyHasItemIds={itemIds}
+			/>
+			<NotionText
+				display="block"
+				textAlign="center"
+				children={title}
+			/>
+		</div>,
+		<NotionGridList
+			withoutBorder
+			withoutMargin
+			withoutPadding
+			children={itemIds?.map((itemId) => (
+				<EquipedItemDisplay
+					key={itemId}
+					characterId={characterId}
+					slot={slot}
+					itemId={itemId}
+				/>
+			))}
+		/>,
+	];
+}
+
 export function _CharacterEquipmentsDisplay() {
-	// const { characterItems, setCharacterItems } = useContext(ItemsContext);
+	const { characterEquipments, setCharacterEquipments } =
+		useContext(EquipmentsContext);
 	const { characterId } = useContext(CharacterIdContext);
 
-	// useLayoutEffect(() => {
-	// 	authenticatedFetchAsync(
-	// 		getAlbinaApiAddress(`/chars/${characterId}/equipments`),
-	// 		{
-	// 			method: "GET",
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 		}
-	// 	).then((response) => {
-	// 		if (!response.ok) throw new Error("Failed to fetch masteries");
-	// 		response.json().then((data: CharacterItemStackExpanded[]) => {
-	// 			const orderedData = data.sort((a, b) => {
-	// 				const nameCompare = a.item.name.localeCompare(b.item.name);
-	// 				if (nameCompare !== 0) return nameCompare;
-	// 				return a.amount - b.amount;
-	// 			});
-	// 			// setCharacterItems(orderedData);
-	// 		});
-	// 	});
-	// }, [characterId]);
+	useLayoutEffect(() => {
+		authenticatedFetchAsync(
+			getAlbinaApiAddress(`/chars/${characterId}/equipments`),
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		).then(async (response) => {
+			if (!response.ok) throw new Error("Failed to fetch masteries");
+			const data: CharacterEquipments = await response.json();
+			setCharacterEquipments(data);
+		});
+	}, [characterId]);
+	if (characterEquipments == null) return null;
 
 	return (
 		<NotionToggleHeader
@@ -73,48 +116,44 @@ export function _CharacterEquipmentsDisplay() {
 					<NotionTable
 						fixedLinePositions={[1]}
 						fixedLineWidths={[50]}
+						columnBackgroundColors={[undefined, "gray"]}
 						tableData={{
 							tableLanes: [
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Frame"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Mão Principal"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Mão Secundária"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Cabeça"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Pés"
-									/>,
-									...[],
-								],
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Frame,
+									"Frame",
+									characterEquipments.slots.Frame
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.MainHand,
+									"Mão Principal",
+									characterEquipments.slots.MainHand
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.OffHand,
+									"Mão Secundária",
+									characterEquipments.slots.OffHand
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Head,
+									"Cabeça",
+									characterEquipments.slots.Head
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Feet,
+									"Pés",
+									characterEquipments.slots.Feet
+								),
 							],
 						}}
 					/>
@@ -122,73 +161,66 @@ export function _CharacterEquipmentsDisplay() {
 				colum2={
 					<NotionTable
 						fixedLinePositions={[1]}
-						fixedLineWidths={[20]}
+						fixedLineWidths={[30]}
+						columnBackgroundColors={[undefined, "gray"]}
 						tableData={{
 							tableLanes: [
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Corpo"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Braços"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Rosto"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Cinto"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Brinco"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Colar"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Pulseira"
-									/>,
-									...[],
-								],
-								[
-									<NotionText
-										display="block"
-										textAlign="center"
-										children="Anel"
-									/>,
-									...[],
-								],
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Torso,
+									"Corpo",
+									characterEquipments.slots.Torso
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Arms,
+									"Braços",
+									characterEquipments.slots.Arms
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Face,
+									"Rosto",
+									characterEquipments.slots.Face
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Waist,
+									"Cinto",
+									characterEquipments.slots.Waist
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Earring,
+									"Brinco",
+									characterEquipments.slots.Earring
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Necklace,
+									"Colar",
+									characterEquipments.slots.Necklace
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Bracelet,
+									"Pulseira",
+									characterEquipments.slots.Bracelet
+								),
+								formEquipSlotTableEntry(
+									characterId,
+									setCharacterEquipments,
+									EquipmentSlot.Ring,
+									"Anel",
+									characterEquipments.slots.Ring
+								),
 							],
 						}}
 					/>

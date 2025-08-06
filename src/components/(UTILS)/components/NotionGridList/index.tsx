@@ -8,6 +8,9 @@ interface NotionGridListProps {
 	backgroundColor?: keyof typeof NotionBackgroundColor;
 	columnWidth?: number;
 	direction?: "row" | "column";
+	withoutPadding?: boolean;
+	withoutBorder?: boolean;
+	withoutMargin?: boolean;
 }
 
 export function NotionGridList({
@@ -16,6 +19,9 @@ export function NotionGridList({
 	columnWidth,
 	backgroundColor,
 	direction = "column",
+	withoutBorder = false,
+	withoutMargin = false,
+	withoutPadding = false,
 }: NotionGridListProps) {
 	if (direction === "column") {
 		const columnsStyle: CSSProperties = {
@@ -24,7 +30,11 @@ export function NotionGridList({
 		};
 
 		return (
-			<NotionBox backgroundColor={backgroundColor}>
+			<NotionBox
+				withoutBorder={withoutBorder}
+				withoutMargin={withoutMargin}
+				withoutPadding={withoutPadding}
+				backgroundColor={backgroundColor}>
 				<ContentContainerColumn
 					style={columnsStyle}
 					children={children}
@@ -39,7 +49,11 @@ export function NotionGridList({
 	};
 
 	return (
-		<NotionBox backgroundColor={backgroundColor}>
+		<NotionBox
+			withoutBorder={withoutBorder}
+			withoutMargin={withoutMargin}
+			withoutPadding={withoutPadding}
+			backgroundColor={backgroundColor}>
 			<ContentContainerRow
 				style={columnsStyle}
 				children={children}
