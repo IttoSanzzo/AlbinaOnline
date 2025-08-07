@@ -27,6 +27,8 @@ interface NotionTableProps extends NotionPropsColor {
 	columnBackgroundColors?: (keyof typeof NotionBackgroundColor | undefined)[];
 	withHeaderRow?: boolean;
 	withHeaderColumn?: boolean;
+	withoutBorderRadius?: boolean;
+	withoutMargin?: boolean;
 	style?: CSSProperties;
 }
 
@@ -40,12 +42,18 @@ export function NotionTable({
 	withHeaderColumn = true,
 	textColor,
 	backgroundColor,
+	withoutBorderRadius,
+	withoutMargin,
 	style,
 }: NotionTableProps) {
 	const baseStyle: CSSProperties = {
 		...(textColor && { color: NotionTextColor[textColor] }),
+		...(withoutBorderRadius && { borderRadius: 0 }),
 		...(backgroundColor && {
 			backgroundColor: NotionBackgroundColor[backgroundColor],
+		}),
+		...(withoutMargin && {
+			margin: 0,
 		}),
 		...style,
 	};

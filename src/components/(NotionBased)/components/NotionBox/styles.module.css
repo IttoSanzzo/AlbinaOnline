@@ -6,4 +6,5 @@
 	border-radius: var(--rd-md);
 	margin-bottom: var(--sp-3);
 	width: 100%;
+	overflow: hidden;
 }

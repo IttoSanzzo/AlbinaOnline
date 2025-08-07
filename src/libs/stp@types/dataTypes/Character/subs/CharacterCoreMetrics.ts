@@ -1,16 +1,26 @@
-import { Guid } from "@/libs/stp@types/misc";
+import { Guid } from "@/libs/stp@types";
+
+export type Gauge = {
+	baseMax: number;
+	baseCurrent: number;
+	temporaryMaxModifier: number;
+	temporaryCurrentModifier: number;
+	effectiveMax: number;
+	effectiveCurrent: number;
+};
+export type SpeedStats = {
+	walkSpeed: number;
+	combatSpeed: number;
+	swimSpeed: number;
+	flySpeed: number;
+};
 
 export type CharacterCoreMetrics = {
 	characterId: Guid;
-	maxHp: number;
-	maxEp: number;
-	maxMp: number;
-	currentHp: number;
-	currentEp: number;
-	currentMp: number;
-	movementSpeed: number;
-	flySpeed: number;
-	swimSpeed: number;
+	HP: Gauge;
+	EP: Gauge;
+	MP: Gauge;
+	speedStats: SpeedStats;
 	armorClass: number;
 	initiative: number;
 };

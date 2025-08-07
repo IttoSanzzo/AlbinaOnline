@@ -23,7 +23,7 @@ import { CharacterFullSheetSocialDisplay } from "./subComponents/CharaterFullShe
 interface CharacterPageProps {
 	params: Promise<{ charId: Guid }>;
 }
-export default function Character({ params }: CharacterPageProps) {
+export default function CharacterPage({ params }: CharacterPageProps) {
 	const [error, setError] = useState<number | null>(null);
 	const [paramsData, setParamsData] = useState<{ charId: Guid } | null>(null);
 	const [characterData, setCharacterData] =

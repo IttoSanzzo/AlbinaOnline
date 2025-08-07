@@ -9,6 +9,8 @@ import { CharacterRaceContextProvider } from "./contexts/Race";
 import { MasteriesContextProvider } from "./contexts/Masteries";
 import { ItemsContextProvider } from "./contexts/Items";
 import { EquipmentsContextProvider } from "./contexts/Equipments";
+import { CharacterCoreMetricsContextProvider } from "./contexts/CoreMetrics";
+import { CharacterMiscMetricsContextProvider } from "./contexts/MiscMetrics";
 
 export { CharacterIdContext } from "./contexts/CharacterId";
 export { AbilityScoreContext } from "./contexts/AbilityScore";
@@ -28,15 +30,19 @@ export function CharacterEditableSheetContextProviders({
 		<CharacterIdContextProvider characterId={data.id}>
 			<CharacterAbilityScoreContextProvider abilityScore={data.abilityScore}>
 				<CharacterParametersContextProvider parameters={data.parameters}>
-					<CharacterRaceContextProvider race={data.race}>
-						<MasteriesContextProvider>
-							<ItemsContextProvider>
-								<EquipmentsContextProvider>
-									{children}
-								</EquipmentsContextProvider>
-							</ItemsContextProvider>
-						</MasteriesContextProvider>
-					</CharacterRaceContextProvider>
+					<CharacterMiscMetricsContextProvider miscMetrics={data.miscMetrics}>
+						<CharacterCoreMetricsContextProvider coreMetrics={data.coreMetrics}>
+							<CharacterRaceContextProvider race={data.race}>
+								<MasteriesContextProvider>
+									<ItemsContextProvider>
+										<EquipmentsContextProvider>
+											{children}
+										</EquipmentsContextProvider>
+									</ItemsContextProvider>
+								</MasteriesContextProvider>
+							</CharacterRaceContextProvider>
+						</CharacterCoreMetricsContextProvider>
+					</CharacterMiscMetricsContextProvider>
 				</CharacterParametersContextProvider>
 			</CharacterAbilityScoreContextProvider>
 		</CharacterIdContextProvider>

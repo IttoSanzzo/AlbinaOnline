@@ -1,4 +1,4 @@
-import { Guid, Parameters } from "../index";
+import { Guid, LanguageType, Parameters } from "../index";
 
 export type RaceInfo = {
 	introduction: string[];
@@ -16,7 +16,7 @@ export type RaceGenerals = {
 	weight: string;
 	longevity: string;
 	speed: string;
-	language: string;
+	language: keyof typeof LanguageType;
 };
 
 export type RaceParameters = Parameters;

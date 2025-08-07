@@ -1,6 +1,6 @@
 "use client";
 
-import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
+import { GenericPageContainer } from "@/components/(Design)";
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
 import { Carousel, NotionGridList } from "@/components/(UTILS)";
 import {
@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
 
-export default function Characters() {
+export default function CharsPage() {
 	const [rawCharacters, setRawCharacters] = useState<CharacterData[] | null>(
 		null
 	);
