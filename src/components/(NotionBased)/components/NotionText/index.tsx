@@ -5,8 +5,13 @@ import {
 	NotionPropsText,
 	NotionTextColor,
 } from "../../index";
-import { NotionTextContainer } from "./styledElements";
 import { CSSProperties } from "react";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const NotionTextContainer = newStyledElement.div(
+	styles.notionTextContainer
+);
 
 interface NotionTextProps extends NotionPropsColor {
 	children?: string;

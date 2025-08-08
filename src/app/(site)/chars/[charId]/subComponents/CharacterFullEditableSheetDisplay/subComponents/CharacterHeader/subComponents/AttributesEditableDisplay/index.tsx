@@ -59,11 +59,12 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 								display="block"
 								textAlign="center"
 								textColor="gray"
-								children="Atributos"
+								children="Atributos Mágicos"
 							/>
 						</div>,
 						miscMetrics.magicAttributes.length > 0 ? (
 							<NotionGridList
+								columnWidth={100}
 								withoutBorder
 								withoutMargin
 								withoutPadding

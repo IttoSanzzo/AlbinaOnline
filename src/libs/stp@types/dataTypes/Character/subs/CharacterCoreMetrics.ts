@@ -17,9 +17,9 @@ export type SpeedStats = {
 
 export type CharacterCoreMetrics = {
 	characterId: Guid;
-	HP: Gauge;
-	EP: Gauge;
-	MP: Gauge;
+	healthPoints: Gauge;
+	staminaPoints: Gauge;
+	manaPoints: Gauge;
 	speedStats: SpeedStats;
 	armorClass: number;
 	initiative: number;

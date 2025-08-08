@@ -15,11 +15,9 @@ export function PageBanner({ bannerSrc }: PageBannerProps) {
 			<Image
 				src={bannerSrc}
 				alt="Page's banner"
-				width={0}
-				height={280}
 				priority={true}
 				sizes="(max-width: 100%)"
-				fill={false}
+				fill={true}
 				quality={100}
 			/>
 		</PageBannerContainer>

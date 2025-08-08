@@ -27,11 +27,9 @@ export function EditablePageBanner({
 			<Image
 				src={banner}
 				alt="Page's banner"
-				width={0}
-				height={280}
 				priority={true}
 				sizes="(max-width: 100%)"
-				fill={false}
+				fill={true}
 				quality={100}
 			/>
 			{route && route !== "" && (

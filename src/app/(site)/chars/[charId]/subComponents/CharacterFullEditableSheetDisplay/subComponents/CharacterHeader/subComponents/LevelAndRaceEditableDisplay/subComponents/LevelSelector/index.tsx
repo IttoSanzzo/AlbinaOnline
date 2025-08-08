@@ -56,6 +56,7 @@ export function LevelSelector({ characterId, level }: LevelSelectorProps) {
 				fieldName="level"
 				min={-1}
 				max={20}
+				color="yellow"
 			/>
 		</HookedForm.Form>
 	);

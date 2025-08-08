@@ -7,6 +7,7 @@ import { CSSProperties, InputHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
 import { NumberInputInline } from "../NumberInputInline";
 import clsx from "clsx";
+import { NotionTextColor } from "@/components/(NotionBased)";
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
@@ -33,6 +34,7 @@ type NumberInputProps<TControl extends Control<any>> = {
 	min?: number;
 	max?: number;
 	step?: number;
+	color?: keyof typeof NotionTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function NumberInput<TControl extends Control<any>>({
@@ -43,6 +45,7 @@ export function NumberInput<TControl extends Control<any>>({
 	fontSize,
 	style,
 	className,
+	color,
 	...rest
 }: NumberInputProps<TControl>) {
 	const { fieldState } = useController({
@@ -69,6 +72,7 @@ export function NumberInput<TControl extends Control<any>>({
 				fieldName={fieldName}
 				fontSize={fontSize}
 				style={inputStyle}
+				color={color}
 				{...rest}
 			/>
 		</NumberInputContainer>

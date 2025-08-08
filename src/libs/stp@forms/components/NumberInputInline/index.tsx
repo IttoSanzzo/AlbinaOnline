@@ -7,6 +7,7 @@ import {
 } from "./styledElements";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
+import { NotionTextColor } from "@/components/(NotionBased)";
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
@@ -31,6 +32,7 @@ type NumberInputInlineProps<TControl extends Control<any>> = {
 	min?: number;
 	max?: number;
 	step?: number;
+	color?: keyof typeof NotionTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function NumberInputInline<TControl extends Control<any>>({
@@ -42,6 +44,7 @@ export function NumberInputInline<TControl extends Control<any>>({
 	max,
 	step,
 	className,
+	color,
 	...rest
 }: NumberInputInlineProps<TControl>) {
 	const { field } = useController({
@@ -51,17 +54,18 @@ export function NumberInputInline<TControl extends Control<any>>({
 
 	const inputStyle: CSSProperties = {
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
+		...(color && { color: NotionTextColor[color] }),
 		...style,
 	};
 
 	function handleDecrement() {
-		const newValue: number = (field.value ?? 0) - (step ? step : 1);
+		const newValue: number = (Number(field.value) ?? 0) - (step ? step : 1);
 		field.onChange(
 			min != undefined ? (newValue < min ? min : newValue) : newValue
 		);
 	}
 	function handleIncrement() {
-		const newValue: number = (field.value ?? 0) + (step ? step : 1);
+		const newValue: number = (Number(field.value) ?? 0) + (step ? step : 1);
 		field.onChange(max ? (newValue > max ? max : newValue) : newValue);
 	}
 
