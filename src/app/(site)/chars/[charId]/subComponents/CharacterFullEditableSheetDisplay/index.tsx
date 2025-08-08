@@ -27,7 +27,10 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					characterCoinStacks={characterData.coinStacks}
 				/>
-				<CharacterDrawers.Statistics characterId={characterData.id} />
+				<CharacterDrawers.Statistics
+					characterId={characterData.id}
+					characterActionPool={characterData.actionPool}
+				/>
 				<Notion2Columns
 					withoutPadding
 					withoutGap

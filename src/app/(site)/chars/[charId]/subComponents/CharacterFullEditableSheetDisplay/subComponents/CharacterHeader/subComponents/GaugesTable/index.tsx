@@ -1,6 +1,6 @@
 import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { GaugeSelection } from "./GaugeSelection";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,9 +25,11 @@ interface GaugesTableProps {}
 export function GaugesTable({}: GaugesTableProps) {
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
+
 	const {
 		control,
 		formState: { isValid },
+		setValue,
 		watch,
 	} = useForm<FormData>({
 		resolver: zodResolver(schema),
@@ -40,6 +42,15 @@ export function GaugesTable({}: GaugesTableProps) {
 			temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
 		},
 	});
+
+	useEffect(() => {
+		setValue("currentHp", coreMetrics.healthPoints.baseCurrent);
+		setValue("temporaryHp", coreMetrics.healthPoints.temporaryCurrentModifier);
+		setValue("currentEp", coreMetrics.staminaPoints.baseCurrent);
+		setValue("temporaryEp", coreMetrics.staminaPoints.temporaryCurrentModifier);
+		setValue("currentMp", coreMetrics.manaPoints.baseCurrent);
+		setValue("temporaryMp", coreMetrics.manaPoints.temporaryCurrentModifier);
+	}, [coreMetrics]);
 
 	async function onFormChange(formData: FormData): Promise<boolean> {
 		if (
@@ -101,7 +112,7 @@ export function GaugesTable({}: GaugesTableProps) {
 								control={control}
 								gauge="Hp"
 								color="red"
-								currentMax={coreMetrics.healthPoints.baseMax}
+								currentMax={coreMetrics.healthPoints.effectiveMax}
 							/>,
 						],
 						[
@@ -113,7 +124,7 @@ export function GaugesTable({}: GaugesTableProps) {
 								control={control}
 								gauge="Ep"
 								color="green"
-								currentMax={coreMetrics.staminaPoints.baseMax}
+								currentMax={coreMetrics.staminaPoints.effectiveMax}
 							/>,
 						],
 						[
@@ -125,7 +136,7 @@ export function GaugesTable({}: GaugesTableProps) {
 								control={control}
 								gauge="Mp"
 								color="blue"
-								currentMax={coreMetrics.manaPoints.baseMax}
+								currentMax={coreMetrics.manaPoints.effectiveMax}
 							/>,
 						],
 					],

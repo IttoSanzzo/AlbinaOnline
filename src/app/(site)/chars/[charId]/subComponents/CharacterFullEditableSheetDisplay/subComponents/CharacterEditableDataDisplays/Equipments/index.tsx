@@ -115,7 +115,7 @@ export function _CharacterEquipmentsDisplay() {
 				colum1={
 					<NotionTable
 						fixedLinePositions={[1]}
-						fixedLineWidths={[50]}
+						fixedLineWidths={[45]}
 						columnBackgroundColors={[undefined, "gray"]}
 						tableData={{
 							tableLanes: [
@@ -130,14 +130,14 @@ export function _CharacterEquipmentsDisplay() {
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.MainHand,
-									"Mão Principal",
+									"Mão Hábil",
 									characterEquipments.slots.MainHand
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.OffHand,
-									"Mão Secundária",
+									"Outra Mão",
 									characterEquipments.slots.OffHand
 								),
 								formEquipSlotTableEntry(
@@ -161,7 +161,7 @@ export function _CharacterEquipmentsDisplay() {
 				colum2={
 					<NotionTable
 						fixedLinePositions={[1]}
-						fixedLineWidths={[30]}
+						fixedLineWidths={[40]}
 						columnBackgroundColors={[undefined, "gray"]}
 						tableData={{
 							tableLanes: [
