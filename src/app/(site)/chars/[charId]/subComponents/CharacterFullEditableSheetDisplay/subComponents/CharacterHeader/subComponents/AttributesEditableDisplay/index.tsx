@@ -6,13 +6,33 @@ import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { AddAttributeButton } from "./subComponents/AddAttributeButton";
 import { NotionGridList } from "@/components/(UTILS)";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 async function handleRemoveAttribute(
 	characterId: Guid,
 	magicAttribute: keyof typeof MagicAttribute,
+	miscMetrics: CharacterMiscMetrics,
 	setMiscMetrics: Dispatch<SetStateAction<CharacterMiscMetrics>>
 ) {
-	console.log(magicAttribute);
+	const body = {
+		...miscMetrics,
+		magicAttributes: miscMetrics.magicAttributes.filter(
+			(characterMagicAttribute) => characterMagicAttribute != magicAttribute
+		),
+	};
+	const response = await authenticatedFetchAsync(
+		getAlbinaApiAddress(`/chars/${characterId}/misc-metrics`),
+		{
+			method: "PUT",
+			body: JSON.stringify(body),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	if (!response.ok) return;
+	setMiscMetrics(body);
 }
 
 interface AttributesEditableDisplayProps {}
@@ -49,6 +69,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 								withoutPadding
 								children={miscMetrics.magicAttributes.map((magicAttribute) => (
 									<StyledLinkWithButton
+										key={magicAttribute}
 										buttonIcon={{ name: "Trash", color: "red" }}
 										href="/spells/"
 										title={String(magicAttribute)}
@@ -56,6 +77,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 											await handleRemoveAttribute(
 												characterId,
 												magicAttribute,
+												miscMetrics,
 												setMiscMetrics
 											)
 										}
