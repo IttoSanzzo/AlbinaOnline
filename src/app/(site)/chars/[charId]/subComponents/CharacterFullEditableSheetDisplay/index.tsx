@@ -29,7 +29,7 @@ export function CharacterFullSheetEditableDisplay({
 				/>
 				<CharacterDrawers.Statistics
 					characterId={characterData.id}
-					characterActionPool={characterData.actionPool}
+					characterActionsPool={characterData.actionsPool}
 				/>
 				<Notion2Columns
 					withoutPadding

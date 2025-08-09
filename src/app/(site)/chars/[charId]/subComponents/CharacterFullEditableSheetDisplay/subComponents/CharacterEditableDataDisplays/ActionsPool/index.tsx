@@ -40,15 +40,15 @@ function formTableEntry(
 }
 
 interface CharacterActionsPoolDisplayProps {
-	characterActionPool: CharacterActionsPool;
+	characterActionsPool: CharacterActionsPool;
 }
 export function CharacterActionsPoolDisplay({
-	characterActionPool,
+	characterActionsPool,
 }: CharacterActionsPoolDisplayProps) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { characterId } = useContext(CharacterIdContext);
-	const [actionPoolState, setActionPoolState] =
-		useState<CharacterActionsPool>(characterActionPool);
+	const [actionPoolState, setActionsPoolState] =
+		useState<CharacterActionsPool>(characterActionsPool);
 
 	const {
 		control,
@@ -77,7 +77,7 @@ export function CharacterActionsPoolDisplay({
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
-		setActionPoolState((state) => ({
+		setActionsPoolState((state) => ({
 			characterId: state.characterId,
 			...body,
 		}));
@@ -91,7 +91,7 @@ export function CharacterActionsPoolDisplay({
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Ações / Turno"
-			memoryId={`${characterId}-ActionPool`}>
+			memoryId={`${characterId}-ActionsPool`}>
 			<HookedForm.Form style={{ display: "flex" }}>
 				<HookedForm.WatchedAction<FormData>
 					watch={watch}

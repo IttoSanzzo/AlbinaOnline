@@ -1,0 +1,10 @@
+.userAccessControlContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	flex-direction: row;
+	align-items: center;
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	padding: 10px;
+}

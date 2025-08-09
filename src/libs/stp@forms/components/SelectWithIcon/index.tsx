@@ -1,18 +1,23 @@
 import * as Select from "@radix-ui/react-select";
 import { Control, Controller, Path, useController } from "react-hook-form";
-import { SelectContainer, SelectError, SelectLabel } from "./styledElements";
-import styles from "./styles.module.css";
 import {
 	CheckIcon,
 	ChevronDownIcon,
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/image";
+import { CSSProperties } from "react";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const SelectContainer = newStyledElement.div(styles.selectContainer);
+export const SelectLabel = newStyledElement.label(styles.selectLabel);
+export const SelectError = newStyledElement.div(styles.selectError);
 
 export type SelectWithIconOption = {
 	value: string;
 	name: string;
-	icon: string;
+	icon?: string;
 };
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
@@ -23,6 +28,7 @@ type SelectWithIconProps<TControl extends Control<any>> = {
 	label: string;
 	placeholder?: string;
 	options: SelectWithIconOption[];
+	width?: CSSProperties["width"];
 };
 export function SelectWithIcon<TControl extends Control<any>>({
 	control,
@@ -30,6 +36,7 @@ export function SelectWithIcon<TControl extends Control<any>>({
 	label,
 	placeholder,
 	options,
+	width,
 }: SelectWithIconProps<TControl>) {
 	const { fieldState } = useController({
 		name: fieldName,
@@ -37,7 +44,7 @@ export function SelectWithIcon<TControl extends Control<any>>({
 	});
 
 	return (
-		<SelectContainer>
+		<SelectContainer style={{ width }}>
 			<SelectLabel children={label} />
 			{fieldState.error && (
 				<SelectError>{fieldState.error.message}</SelectError>

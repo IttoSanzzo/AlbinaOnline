@@ -1,0 +1,21 @@
+.transferCharacterContainer {
+	display: flex;
+}
+
+.transferCharacterButton {
+	border: 2px solid var(--cl-teal-500);
+	background-color: var(--cl-teal-500);
+	color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	font-weight: var(--fw-bold);
+	font-family: Inter;
+	padding: 10px;
+
+	transition: 0.25s linear background-color, 0.25s linear border-color;
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-teal-400);
+		border-color: var(--cl-teal-800);
+	}
+}

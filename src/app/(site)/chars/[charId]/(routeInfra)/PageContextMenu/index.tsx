@@ -3,6 +3,7 @@
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { DropdownMenu } from "@/libs/stp@radix";
 import { DeleteCharMenuItem } from "./subComponents/DeleteCharMenuItem";
+import { AccessControlItem } from "./subComponents/AccessControlItem";
 
 export function PageContextMenu() {
 	return (
@@ -17,6 +18,7 @@ export function PageContextMenu() {
 				<DropdownMenu.Content
 					side="bottom"
 					sideOffset={20}>
+					<AccessControlItem />
 					<DeleteCharMenuItem />
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>

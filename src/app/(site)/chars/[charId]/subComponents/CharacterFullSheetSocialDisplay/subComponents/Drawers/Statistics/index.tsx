@@ -34,7 +34,7 @@ export function StatisticsDrawer({
 					withoutBorderRadius
 					withoutGap
 					colum1={
-						<CharacterDataDisplays.ActionPool
+						<CharacterDataDisplays.ActionsPool
 							characterId={characterId}
 							actionsPool={actionsPool}
 						/>

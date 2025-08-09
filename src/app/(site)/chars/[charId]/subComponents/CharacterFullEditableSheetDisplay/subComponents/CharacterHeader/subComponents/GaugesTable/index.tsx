@@ -93,7 +93,7 @@ export function GaugesTable({}: GaugesTableProps) {
 	}
 
 	return (
-		<HookedForm.Form>
+		<HookedForm.Form style={{ display: "flex" }}>
 			<HookedForm.WatchedAction
 				watch={watch}
 				action={onFormChange}

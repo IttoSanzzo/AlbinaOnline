@@ -123,7 +123,7 @@ export function CharacterFullSheetSocialDisplay({
 				/>
 				<CharacterDrawers.Statistics
 					characterId={characterData.id}
-					actionsPool={characterData.actionPool}
+					actionsPool={characterData.actionsPool}
 					coreMetrics={characterData.coreMetrics}
 					miscMetrics={characterData.miscMetrics}
 				/>

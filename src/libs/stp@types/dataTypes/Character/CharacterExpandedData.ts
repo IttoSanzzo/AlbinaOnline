@@ -23,7 +23,7 @@ export type CharacterExpandedData = {
 	owner: FullUser;
 	race: RaceData;
 	abilityScore: CharacterAbilityScore;
-	actionPool: CharacterActionsPool;
+	actionsPool: CharacterActionsPool;
 	coreMetrics: CharacterCoreMetrics;
 	miscMetrics: CharacterMiscMetrics;
 	profile: CharacterProfile;

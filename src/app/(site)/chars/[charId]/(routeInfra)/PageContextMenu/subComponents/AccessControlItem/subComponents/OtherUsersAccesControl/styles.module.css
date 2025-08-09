@@ -1,0 +1,9 @@
+.otherUsersAccessControlContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	padding: 8px 10px;
+}

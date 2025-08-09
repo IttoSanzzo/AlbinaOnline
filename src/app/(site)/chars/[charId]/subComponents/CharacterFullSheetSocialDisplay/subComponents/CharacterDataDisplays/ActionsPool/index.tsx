@@ -34,7 +34,7 @@ export function CharacterActionsPoolDisplay({
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Ações / Turno"
-			memoryId={`${characterId}-ActionPool`}>
+			memoryId={`${characterId}-ActionsPool`}>
 			<div style={{ display: "flex" }}>
 				<NotionTable
 					tableData={{

@@ -4,7 +4,6 @@ import { MiddlewareFactory } from "./core/stackHandler";
 export const identityGate: MiddlewareFactory = (next) => {
 	return async (request: NextRequest, event: NextFetchEvent) => {
 		const pathname = request.nextUrl.pathname;
-		// console.log(`[MIDDLING FOR ${pathname}]`);
 		if (pathname === "/") return next(request, event);
 		const refreshToken = request.cookies.get("jwt-refresh-token")?.value;
 		if (["/login", "/register"].includes(pathname)) {

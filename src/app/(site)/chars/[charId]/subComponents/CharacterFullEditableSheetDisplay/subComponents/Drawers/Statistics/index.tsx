@@ -6,11 +6,11 @@ import React from "react";
 
 interface StatisticsDrawerProps {
 	characterId: Guid;
-	characterActionPool: CharacterActionsPool;
+	characterActionsPool: CharacterActionsPool;
 }
 function _StatisticsDrawer({
 	characterId,
-	characterActionPool,
+	characterActionsPool,
 }: StatisticsDrawerProps) {
 	return (
 		<CharacterDrawerBaseHeader
@@ -25,8 +25,8 @@ function _StatisticsDrawer({
 					withoutBorderRadius
 					withoutGap
 					colum1={
-						<CharacterEditableDataDisplays.ActionPool
-							characterActionPool={characterActionPool}
+						<CharacterEditableDataDisplays.ActionsPool
+							characterActionsPool={characterActionsPool}
 						/>
 					}
 					colum2={<CharacterEditableDataDisplays.CoreMiscAndSimpleMetrics />}
@@ -79,7 +79,7 @@ function areEqual(
 ) {
 	return (
 		prevProps.characterId === nextProps.characterId &&
-		prevProps.characterActionPool === nextProps.characterActionPool
+		prevProps.characterActionsPool === nextProps.characterActionsPool
 	);
 }
 export const StatisticsDrawer = React.memo(_StatisticsDrawer, areEqual);

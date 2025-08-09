@@ -1,0 +1,17 @@
+.manageCurrentAccessPermissionsContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	width: 100%;
+	overflow-x: scroll;
+	overflow-y: hidden;
+
+	& > * {
+		margin-bottom: -10px;
+	}
+	&:last-child {
+		margin-bottom: 25px;
+	}
+}

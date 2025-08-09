@@ -10,7 +10,7 @@ import { CharacterTraitsDisplay } from "./Traits";
 import { CharacterCoinStacksDisplay } from "./CoinStacks";
 import { CharacterItemStacksDisplay } from "./ItemStacks";
 import { CharacterEquipmentsDisplay } from "./Equipments";
-import { CharacterActionsPoolDisplay } from "./ActionPool";
+import { CharacterActionsPoolDisplay } from "./ActionsPool";
 import { CharacterGaugeEditableDisplay } from "./CharacterGaugeEditableDisplay";
 import { CoreMiscAndSimpleMetrics } from "./CoreMiscAndSimpleMetrics";
 
@@ -20,7 +20,7 @@ export const CharacterEditableDataDisplays = {
 	Equipments: CharacterEquipmentsDisplay,
 	Gauge: CharacterGaugeEditableDisplay,
 	CoreMiscAndSimpleMetrics: CoreMiscAndSimpleMetrics,
-	ActionPool: CharacterActionsPoolDisplay,
+	ActionsPool: CharacterActionsPoolDisplay,
 	Skills: CharacterSkillsDisplay,
 	Spells: CharacterSpellsDisplay,
 	Traits: CharacterTraitsDisplay,
