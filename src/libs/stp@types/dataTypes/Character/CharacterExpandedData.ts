@@ -1,7 +1,7 @@
 import {
 	CharacterAbilityScore,
 	CharacterAccessPermission,
-	CharacterActionPool,
+	CharacterActionsPool,
 	CharacterBackstory,
 	CharacterCoinStack,
 	CharacterCoreMetrics,
@@ -23,7 +23,7 @@ export type CharacterExpandedData = {
 	owner: FullUser;
 	race: RaceData;
 	abilityScore: CharacterAbilityScore;
-	actionPool: CharacterActionPool;
+	actionPool: CharacterActionsPool;
 	coreMetrics: CharacterCoreMetrics;
 	miscMetrics: CharacterMiscMetrics;
 	profile: CharacterProfile;

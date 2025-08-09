@@ -1,0 +1,192 @@
+import {
+	NotionBox,
+	NotionTable,
+	NotionText,
+	NotionToggleHeader,
+} from "@/components/(NotionBased)";
+import React, { ReactNode, useContext } from "react";
+import {
+	CharacterAbilityScore,
+	CharacterMasteryExpanded,
+	Guid,
+	masteryNames,
+	MasteryType,
+} from "@/libs/stp@types";
+import { bonusValueText } from "@/utils/AlbinaAesthetic";
+import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { StyledLink } from "@/components/(Design)";
+
+const MasteriesDrawerContainer = newStyledElement.div(
+	styles.masteriesDrawerContainer
+);
+
+function tableMasteryEntry(
+	mastery: CharacterMasteryExpanded,
+	abilityScore?: number
+) {
+	return [
+		<StyledLink
+			title={mastery.mastery.name}
+			href={`/maestrias/${mastery.mastery.slug}`}
+			icon={mastery.mastery.iconUrl}
+		/>,
+		<NotionText
+			display="block"
+			textAlign="center"
+			children={mastery.level.toString()}
+		/>,
+		bonusValueText(
+			mastery.level +
+				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0)
+		),
+	];
+}
+const tableHeaderRow = [
+	<NotionText
+		textAlign="center"
+		display="block"
+		textColor="gray"
+		children="Nome"
+	/>,
+	<NotionText
+		textAlign="center"
+		display="block"
+		textColor="gray"
+		children="Nível"
+	/>,
+	<NotionText
+		textAlign="center"
+		display="block"
+		textColor="gray"
+		children="Bônus"
+	/>,
+];
+function formTable(
+	masteries: CharacterMasteryExpanded[],
+	abilityScore: CharacterAbilityScore
+): ReactNode[][] {
+	if (masteries.length == 0) {
+		return [
+			tableHeaderRow,
+			[
+				"-",
+				<NotionText
+					textAlign="center"
+					display="block"
+					children="-"
+				/>,
+				<NotionText
+					textAlign="center"
+					display="block"
+					children="-"
+				/>,
+			],
+		];
+	}
+	return [
+		tableHeaderRow,
+		...masteries.map((mastery) => {
+			switch (mastery.mastery.type) {
+				case "Proficiency":
+					return tableMasteryEntry(mastery);
+				case "Expertise":
+					return tableMasteryEntry(
+						mastery,
+						abilityScore[
+							mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
+						] as number
+					);
+				case "Knowledge":
+					return tableMasteryEntry(
+						mastery,
+						Math.max(abilityScore.intelligence, abilityScore.wisdom)
+					);
+				case "Craft":
+					switch (mastery.mastery.subType) {
+						case "Production":
+							return tableMasteryEntry(
+								mastery,
+								Math.max(abilityScore.technique, abilityScore.intelligence)
+							);
+						case "Combatant":
+							return tableMasteryEntry(
+								mastery,
+								Math.max(abilityScore.technique, abilityScore.strength)
+							);
+						case "General":
+							return tableMasteryEntry(
+								mastery,
+								Math.max(
+									abilityScore.wisdom,
+									abilityScore.intelligence,
+									abilityScore.charisma
+								)
+							);
+					}
+				default:
+					return tableMasteryEntry(mastery);
+			}
+		}),
+	];
+}
+
+interface CharacterMasteriesFromTypeDisplayProps {
+	characterId: Guid;
+	type: keyof typeof MasteryType;
+	abilityScore: CharacterAbilityScore;
+	characterMasteries: CharacterMasteryExpanded[];
+}
+function _CharacterMasteriesFromTypeDisplay({
+	characterId,
+	type,
+	abilityScore,
+	characterMasteries,
+}: CharacterMasteriesFromTypeDisplayProps) {
+	const masteriesFromThisType = characterMasteries.filter(
+		(mastery) => mastery.mastery.type == type
+	);
+
+	return (
+		<NotionBox
+			backgroundColor="darkGray"
+			withoutBorder
+			withoutMargin={type == "Proficiency" || type == "Craft"}
+			withoutPadding>
+			<MasteriesDrawerContainer>
+				<NotionToggleHeader
+					memoryId={`${characterId}-${type}s`}
+					contentMargin="none"
+					textColor="yellow"
+					headerType="h2"
+					titleColor="orange"
+					title={`${masteryNames[type]}s`}>
+					<NotionTable
+						fixedLinePositions={[1, 3]}
+						fixedLineWidths={[50, 19]}
+						direction="row"
+						withHeaderRow
+						tableData={{
+							tableLanes: [...formTable(masteriesFromThisType, abilityScore)],
+						}}
+					/>
+				</NotionToggleHeader>
+			</MasteriesDrawerContainer>
+		</NotionBox>
+	);
+}
+
+function areEqual(
+	prevProps: CharacterMasteriesFromTypeDisplayProps,
+	nextProps: CharacterMasteriesFromTypeDisplayProps
+) {
+	return (
+		prevProps.characterId === nextProps.characterId &&
+		prevProps.type === nextProps.type
+	);
+}
+export const CharacterMasteriesFromTypeDisplay = React.memo(
+	_CharacterMasteriesFromTypeDisplay,
+	areEqual
+);

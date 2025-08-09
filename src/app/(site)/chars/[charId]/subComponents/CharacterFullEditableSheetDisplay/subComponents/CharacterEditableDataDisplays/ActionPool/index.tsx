@@ -9,7 +9,7 @@ import { useContext, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { CharacterActionPool } from "@/libs/stp@types";
+import { CharacterActionsPool } from "@/libs/stp@types";
 import z from "zod";
 
 const schema = z.object({
@@ -39,16 +39,16 @@ function formTableEntry(
 	];
 }
 
-interface CharacterActionPoolDisplayProps {
-	characterActionPool: CharacterActionPool;
+interface CharacterActionsPoolDisplayProps {
+	characterActionPool: CharacterActionsPool;
 }
-export function CharacterActionPoolDisplay({
+export function CharacterActionsPoolDisplay({
 	characterActionPool,
-}: CharacterActionPoolDisplayProps) {
+}: CharacterActionsPoolDisplayProps) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { characterId } = useContext(CharacterIdContext);
 	const [actionPoolState, setActionPoolState] =
-		useState<CharacterActionPool>(characterActionPool);
+		useState<CharacterActionsPool>(characterActionPool);
 
 	const {
 		control,

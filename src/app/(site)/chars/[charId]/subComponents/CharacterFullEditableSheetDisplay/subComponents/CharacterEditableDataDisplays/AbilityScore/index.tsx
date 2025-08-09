@@ -11,7 +11,7 @@ import {
 import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
-import { bonusValueText } from "@/utils/AlbinaAesthetic";
+import { bonusColor, bonusValueText } from "@/utils/AlbinaAesthetic";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),

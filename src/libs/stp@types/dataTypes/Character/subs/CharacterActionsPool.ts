@@ -1,6 +1,6 @@
 import { Guid } from "@/libs/stp@types/misc";
 
-export type CharacterActionPool = {
+export type CharacterActionsPool = {
 	characterId: Guid;
 	normalActions: number;
 	reactions: number;

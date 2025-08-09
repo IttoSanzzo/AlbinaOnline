@@ -11,14 +11,14 @@ import { CharacterCoinStacksDisplay } from "./CoinStacks";
 import { CharacterItemStacksDisplay } from "./ItemStacks";
 import { CharacterEquipmentsDisplay } from "./Equipments";
 import { CharacterActionsPoolDisplay } from "./ActionPool";
-import { CharacterGaugeEditableDisplay } from "./CharacterGaugeEditableDisplay";
+import { CharacterGaugeDisplay } from "./CharacterGaugeDisplay";
 import { CoreMiscAndSimpleMetrics } from "./CoreMiscAndSimpleMetrics";
 
-export const CharacterEditableDataDisplays = {
+export const CharacterDataDisplays = {
 	ItemStacks: CharacterItemStacksDisplay,
 	CoinStacks: CharacterCoinStacksDisplay,
 	Equipments: CharacterEquipmentsDisplay,
-	Gauge: CharacterGaugeEditableDisplay,
+	Gauge: CharacterGaugeDisplay,
 	CoreMiscAndSimpleMetrics: CoreMiscAndSimpleMetrics,
 	ActionPool: CharacterActionsPoolDisplay,
 	Skills: CharacterSkillsDisplay,

@@ -16,7 +16,7 @@ import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
-import { CharacterFullSheetSocialDisplay } from "./subComponents/CharaterFullSheetSocialDisplay";
+import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 
 // export const generateMetadata = routeInfra.generateMetadata;
 
@@ -102,7 +102,6 @@ export default function CharacterPage({ params }: CharacterPageProps) {
 			{accessLevel >= AccessLevel.Edit ? (
 				<CharacterFullSheetEditableDisplay characterData={characterData} />
 			) : (
-				// <CharacterFullSheetEditableDisplay characterData={characterData} />
 				<CharacterFullSheetSocialDisplay characterData={characterData} />
 			)}
 

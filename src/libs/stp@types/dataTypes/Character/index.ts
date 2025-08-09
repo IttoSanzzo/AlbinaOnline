@@ -2,8 +2,8 @@ export * from "./CharacterData";
 export * from "./CharacterExpandedData";
 
 export * from "./subs/CharacterAbilityScore";
+export * from "./subs/CharacterActionsPool";
 export * from "./subs/CharacterAccessPermission";
-export * from "./subs/CharacterActionPool";
 export * from "./subs/CharacterCoreMetrics";
 export * from "./subs/CharacterMastery";
 export * from "./subs/CharacterMiscMetrics";

@@ -1,16 +1,25 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
-import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterActionsPool, Guid } from "@/libs/stp@types";
+import { CharacterDataDisplays } from "../../CharacterDataDisplays";
+import {
+	CharacterActionsPool,
+	CharacterCoreMetrics,
+	CharacterMiscMetrics,
+	Guid,
+} from "@/libs/stp@types";
 import React from "react";
 
 interface StatisticsDrawerProps {
 	characterId: Guid;
-	characterActionPool: CharacterActionsPool;
+	actionsPool: CharacterActionsPool;
+	coreMetrics: CharacterCoreMetrics;
+	miscMetrics: CharacterMiscMetrics;
 }
-function _StatisticsDrawer({
+export function StatisticsDrawer({
 	characterId,
-	characterActionPool,
+	actionsPool,
+	coreMetrics,
+	miscMetrics,
 }: StatisticsDrawerProps) {
 	return (
 		<CharacterDrawerBaseHeader
@@ -25,18 +34,27 @@ function _StatisticsDrawer({
 					withoutBorderRadius
 					withoutGap
 					colum1={
-						<CharacterEditableDataDisplays.ActionPool
-							characterActionPool={characterActionPool}
+						<CharacterDataDisplays.ActionPool
+							characterId={characterId}
+							actionsPool={actionsPool}
 						/>
 					}
-					colum2={<CharacterEditableDataDisplays.CoreMiscAndSimpleMetrics />}
+					colum2={
+						<CharacterDataDisplays.CoreMiscAndSimpleMetrics
+							characterId={characterId}
+							coreMetrics={coreMetrics}
+							miscMetrics={miscMetrics}
+						/>
+					}
 				/>
 				<Notion2Columns
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
 					colum1={
-						<CharacterEditableDataDisplays.Gauge
+						<CharacterDataDisplays.Gauge
+							characterId={characterId}
+							coreMetrics={coreMetrics}
 							gauge="healthPoints"
 							name="Vida"
 							acronym="HP"
@@ -44,7 +62,9 @@ function _StatisticsDrawer({
 						/>
 					}
 					colum2={
-						<CharacterEditableDataDisplays.Gauge
+						<CharacterDataDisplays.Gauge
+							characterId={characterId}
+							coreMetrics={coreMetrics}
 							gauge="manaPoints"
 							name="Mana"
 							acronym="MP"
@@ -57,29 +77,18 @@ function _StatisticsDrawer({
 					withoutBorderRadius
 					withoutGap
 					colum1={
-						<CharacterEditableDataDisplays.Gauge
+						<CharacterDataDisplays.Gauge
+							characterId={characterId}
+							coreMetrics={coreMetrics}
 							gauge="staminaPoints"
 							name="Estamina"
 							acronym="EP"
 							color="green"
 						/>
 					}
-					colum2={
-						<CharacterEditableDataDisplays.Traits characterId={characterId} />
-					}
+					colum2={<CharacterDataDisplays.Traits characterId={characterId} />}
 				/>
 			</NotionBox>
 		</CharacterDrawerBaseHeader>
 	);
 }
-
-function areEqual(
-	prevProps: StatisticsDrawerProps,
-	nextProps: StatisticsDrawerProps
-) {
-	return (
-		prevProps.characterId === nextProps.characterId &&
-		prevProps.characterActionPool === nextProps.characterActionPool
-	);
-}
-export const StatisticsDrawer = React.memo(_StatisticsDrawer, areEqual);
