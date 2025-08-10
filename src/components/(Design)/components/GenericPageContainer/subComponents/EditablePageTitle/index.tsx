@@ -5,10 +5,12 @@ import { useState } from "react";
 interface EditablePageTitleProps {
 	originalTitle: string;
 	route: string;
+	titleChangeBodyPropName?: string;
 }
 export function EditablePageTitle({
 	originalTitle,
 	route,
+	titleChangeBodyPropName,
 }: EditablePageTitleProps) {
 	const [title, setTitle] = useState<string>(originalTitle);
 
@@ -17,6 +19,7 @@ export function EditablePageTitle({
 			setTitle={setTitle}
 			title={title}
 			route={route}
+			titleChangeBodyPropName={titleChangeBodyPropName}
 		/>
 	);
 }

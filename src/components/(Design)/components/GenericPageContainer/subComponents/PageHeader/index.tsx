@@ -19,6 +19,7 @@ interface PageHeaderProps {
 	borderColor?: string;
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
+	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
 }
 export function PageHeader({
@@ -28,6 +29,7 @@ export function PageHeader({
 	borderColor,
 	iconChangeRoute,
 	titleChangeRoute,
+	titleChangeBodyPropName,
 	subTitle,
 }: PageHeaderProps) {
 	const finalIcon = `${icon}?size=64`;
@@ -56,6 +58,7 @@ export function PageHeader({
 					<EditablePageTitle
 						originalTitle={title}
 						route={titleChangeRoute}
+						titleChangeBodyPropName={titleChangeBodyPropName}
 					/>
 				) : (
 					<PageTitle>{title}</PageTitle>

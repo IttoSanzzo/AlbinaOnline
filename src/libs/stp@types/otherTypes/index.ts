@@ -7,3 +7,4 @@ export type {
 	UserFavoriteType,
 } from "./UserFavoritesGrouped";
 export { LanguageType } from "./LanguageType";
+export { RoleHierarchy } from "./RoleHierarchy";

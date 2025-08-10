@@ -84,8 +84,8 @@ export function ChangeBannerButton({
 									minWidth={735}
 									minHeight={280}
 									maxSize={4_194_304}
-									maxWidth={3440}
-									maxHeight={1440}
+									maxWidth={4000}
+									maxHeight={2000}
 								/>
 								<HookedForm.SubmitButton
 									disabled={!isValid || isSubmitting}

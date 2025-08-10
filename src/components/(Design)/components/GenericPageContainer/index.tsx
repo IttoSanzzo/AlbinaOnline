@@ -20,6 +20,7 @@ interface GenericPageContainerProps {
 	bannerChangeRoute?: string;
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
+	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
 }
 
@@ -33,6 +34,7 @@ export function GenericPageContainer({
 	bannerChangeRoute,
 	iconChangeRoute,
 	titleChangeRoute,
+	titleChangeBodyPropName,
 	subTitle,
 }: GenericPageContainerProps) {
 	return (
@@ -51,6 +53,7 @@ export function GenericPageContainer({
 					isEditable={isEditable}
 					iconChangeRoute={iconChangeRoute}
 					titleChangeRoute={titleChangeRoute}
+					titleChangeBodyPropName={titleChangeBodyPropName}
 					title={title}
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}

@@ -29,11 +29,13 @@ interface ChangeTitleButtonProps {
 	setTitle: Dispatch<SetStateAction<string>>;
 	title: string;
 	route: string;
+	titleChangeBodyPropName?: string;
 }
 export function ChangeTitleButton({
 	setTitle,
 	title,
 	route,
+	titleChangeBodyPropName,
 }: ChangeTitleButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -49,8 +51,11 @@ export function ChangeTitleButton({
 	});
 
 	async function onSubmit(data: FormData) {
+		const bodyPropName = titleChangeBodyPropName
+			? titleChangeBodyPropName
+			: "name";
 		const body = {
-			name: data.newName,
+			[bodyPropName]: data.newName,
 		};
 
 		const response = await authenticatedFetchAsync(route, {
