@@ -18,4 +18,8 @@
 		background-color: var(--cl-teal-400);
 		border-color: var(--cl-teal-800);
 	}
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 }

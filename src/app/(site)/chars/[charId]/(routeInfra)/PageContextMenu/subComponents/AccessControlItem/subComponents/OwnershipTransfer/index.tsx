@@ -1,4 +1,4 @@
-import { FullUser, Guid } from "@/libs/stp@types";
+import { AccessLevel, FullUser, Guid } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useLayoutEffect, useState } from "react";
@@ -18,11 +18,13 @@ interface OwnershipTransferProps {
 	ownerId: Guid;
 	characterId: Guid;
 	characterName: string;
+	hasOwnerAccessLevel: boolean;
 }
 export function OwnershipTransfer({
 	characterId,
 	ownerId,
 	characterName,
+	hasOwnerAccessLevel,
 }: OwnershipTransferProps) {
 	const [userState, setUserState] = useState<FullUser | null>(null);
 
@@ -51,6 +53,7 @@ export function OwnershipTransfer({
 			<TransferCharacter
 				characterId={characterId}
 				characterName={characterName}
+				disabled={!hasOwnerAccessLevel}
 			/>
 		</OwnershipTransferContainer>
 	);

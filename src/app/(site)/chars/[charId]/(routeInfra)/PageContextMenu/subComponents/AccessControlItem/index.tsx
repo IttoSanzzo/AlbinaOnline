@@ -37,13 +37,14 @@ export function AccessControlItem() {
 					<Dialog.Description />
 					<div
 						style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-						{currentCharacterAccessLevel.accessLevel >= AccessLevel.Owner && (
-							<OwnershipTransfer
-								characterId={data.id}
-								ownerId={(data as unknown as CharacterData).ownerId}
-								characterName={data.name}
-							/>
-						)}
+						<OwnershipTransfer
+							characterId={data.id}
+							ownerId={(data as unknown as CharacterData).ownerId}
+							characterName={data.name}
+							hasOwnerAccessLevel={
+								currentCharacterAccessLevel.accessLevel >= AccessLevel.Owner
+							}
+						/>
 						<OtherUsersAccessControl characterId={data.id} />
 					</div>
 				</Dialog.Content>

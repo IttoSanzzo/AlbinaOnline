@@ -16,16 +16,20 @@ const TransferCharacterButton = newStyledElement.button(
 interface TransferCharacterProps {
 	characterId: Guid;
 	characterName: string;
+	disabled: boolean;
 }
 export function TransferCharacter({
 	characterId,
 	characterName,
+	disabled,
 }: TransferCharacterProps) {
 	return (
 		<TransferCharacterContainer>
 			<AlertDialog.Root>
 				<AlertDialog.Trigger asChild>
-					<TransferCharacterButton>Transferir Posse</TransferCharacterButton>
+					<TransferCharacterButton disabled={disabled}>
+						Transferir Posse
+					</TransferCharacterButton>
 				</AlertDialog.Trigger>
 
 				<AlertDialog.Portal>
