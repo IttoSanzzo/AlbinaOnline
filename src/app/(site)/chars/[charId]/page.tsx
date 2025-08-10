@@ -1,6 +1,10 @@
 "use client";
 
-import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
+import {
+	GenericPageContainer,
+	GenericPageFooter,
+	StyledLink,
+} from "@/components/(Design)";
 import { AccessLevel, CharacterExpandedData, Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import {
@@ -17,6 +21,7 @@ import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
+import { UserPageLink } from "@/components/(UTILS)";
 
 // export const generateMetadata = routeInfra.generateMetadata;
 
@@ -81,6 +86,7 @@ export default function CharacterPage({ params }: CharacterPageProps) {
 			icon={characterData.iconUrl}
 			borderColor={"#505059"}
 			isEditable={accessLevel >= AccessLevel.Edit}
+			subTitle={<UserPageLink userId={characterData.ownerId} />}
 			bannerChangeRoute={getAlbinaApiAddress(
 				`/chars/${characterData.id}/banner`
 			)}

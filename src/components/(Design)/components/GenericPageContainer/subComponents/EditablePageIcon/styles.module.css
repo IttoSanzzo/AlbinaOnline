@@ -6,9 +6,18 @@
 	border-radius: var(--rd-lg);
 	box-shadow: 0px 0px 20px var(--cl-black-3);
 
-	& img {
+	& > img {
 		height: var(--sp-30);
 		width: var(--sp-30);
+		padding: var(--sp-1);
+		border-radius: var(--rd-lg);
+		box-shadow: 0px 0px 20px var(--cl-black-3);
+		transition: 0.2s linear background;
+		background-color: var(--cl-teal-900);
 		object-fit: cover;
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
 	}
 }

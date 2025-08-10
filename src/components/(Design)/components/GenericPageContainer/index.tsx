@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
 import { StaticImageData } from "next/image";
@@ -20,6 +20,7 @@ interface GenericPageContainerProps {
 	bannerChangeRoute?: string;
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
+	subTitle?: ReactNode;
 }
 
 export function GenericPageContainer({
@@ -32,6 +33,7 @@ export function GenericPageContainer({
 	bannerChangeRoute,
 	iconChangeRoute,
 	titleChangeRoute,
+	subTitle,
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
@@ -52,6 +54,7 @@ export function GenericPageContainer({
 					title={title}
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}
+					subTitle={subTitle}
 				/>
 				{children}
 			</ContentsContainer>

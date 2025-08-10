@@ -3,11 +3,14 @@ import { EditablePageIcon } from "../EditablePageIcon";
 import { EditablePageTitle } from "../EditablePageTitle";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { ReactNode } from "react";
 
 export const PageHeaderContainer = newStyledElement.div(
 	styles.pageHeaderContainer
 );
+export const TitlesContainer = newStyledElement.div(styles.titlesContainer);
 export const PageTitle = newStyledElement.h1(styles.pageTitle);
+export const SubTitleContainer = newStyledElement.div(styles.subTitleContainer);
 
 interface PageHeaderProps {
 	isEditable: boolean;
@@ -16,6 +19,7 @@ interface PageHeaderProps {
 	borderColor?: string;
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
+	subTitle?: ReactNode;
 }
 export function PageHeader({
 	isEditable,
@@ -24,6 +28,7 @@ export function PageHeader({
 	borderColor,
 	iconChangeRoute,
 	titleChangeRoute,
+	subTitle,
 }: PageHeaderProps) {
 	const finalIcon = `${icon}?size=64`;
 
@@ -46,14 +51,17 @@ export function PageHeader({
 					}
 				/>
 			)}
-			{isEditable && titleChangeRoute && titleChangeRoute !== "" ? (
-				<EditablePageTitle
-					originalTitle={title}
-					route={titleChangeRoute}
-				/>
-			) : (
-				<PageTitle>{title}</PageTitle>
-			)}
+			<TitlesContainer>
+				{isEditable && titleChangeRoute && titleChangeRoute !== "" ? (
+					<EditablePageTitle
+						originalTitle={title}
+						route={titleChangeRoute}
+					/>
+				) : (
+					<PageTitle>{title}</PageTitle>
+				)}
+				{subTitle && <SubTitleContainer>{subTitle}</SubTitleContainer>}
+			</TitlesContainer>
 		</PageHeaderContainer>
 	);
 }

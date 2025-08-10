@@ -6,7 +6,7 @@
 	gap: 20px;
 	position: relative;
 
-	& img {
+	& > img {
 		height: var(--sp-30);
 		width: var(--sp-30);
 		padding: var(--sp-1);
@@ -36,4 +36,15 @@
 			font-size: var(--fs-4xl);
 		}
 	}
+}
+
+.titlesContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+.subTitleContainer {
+	position: absolute;
+	bottom: -25px;
+	width: max-content;
 }
