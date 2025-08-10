@@ -1,0 +1,6 @@
+.divisorContainer {
+	display: block;
+	height: 2px;
+	width: 101%;
+	margin: var(--sp-3) -0.5%;
+}

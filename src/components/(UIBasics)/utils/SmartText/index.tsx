@@ -1,14 +1,12 @@
 import { StyledLink } from "@/components/(Design)";
-import { SmartTextContainer } from "./styledElements";
-import { capitalizeTitle } from "@/utils/StringUtils";
 import { ReactNode } from "react";
-import {
-	NotionBullet,
-	NotionQuote,
-	NotionText,
-	NotionTextColor,
-	NotionToggle,
-} from "@/components/(NotionBased)";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { StandartTextColor, UIBasics } from "../..";
+
+export const SmartTextContainer = newStyledElement.div(
+	styles.smartTextContainer
+);
 
 function getSmartLink(smartSlice: string, key: any): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartLinkError-"</p>;
@@ -39,7 +37,7 @@ function getSmartToggle(smartSlice: string, key: any): ReactNode {
 	const content = smartSlice.slice(titleEnd + 1);
 
 	return (
-		<NotionToggle
+		<UIBasics.Toggle
 			key={key}
 			title={title}
 			children={content}
@@ -48,7 +46,7 @@ function getSmartToggle(smartSlice: string, key: any): ReactNode {
 }
 function getSmartQuote(quote: string, key: any): ReactNode {
 	return (
-		<NotionQuote
+		<UIBasics.Quote
 			key={key}
 			children={quote}
 		/>
@@ -56,7 +54,7 @@ function getSmartQuote(quote: string, key: any): ReactNode {
 }
 function getSmartBullet(item: string, key: any): ReactNode {
 	return (
-		<NotionBullet
+		<UIBasics.Bullet
 			key={key}
 			children={item}
 		/>
@@ -70,10 +68,10 @@ function getSmartColor(smartSlice: string, key: any): ReactNode {
 	const content = smartSlice.slice(colorEnd + 1);
 
 	return (
-		<NotionText
+		<UIBasics.Text
 			key={key}
 			children={content}
-			textColor={color as keyof typeof NotionTextColor}
+			textColor={color as keyof typeof StandartTextColor}
 		/>
 	);
 }

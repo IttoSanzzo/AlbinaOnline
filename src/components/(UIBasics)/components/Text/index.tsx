@@ -1,27 +1,28 @@
-import {
-	NotionBackgroundColor,
-	NotionPropsColor,
-	NotionTextColor,
-} from "../../index";
 import { CSSProperties } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import { SmartText } from "@/components/(UIBasics)";
+import {
+	StandartBackgroundColor,
+	StandartColorProps,
+	StandartTextColor,
+} from "../../core";
+import {
+	SmartText,
+	StandartBackgroundColorKeyToProperty,
+	StandartTextColorKeyToProperty,
+} from "../../utils";
 
-export const NotionTextContainer = newStyledElement.div(
-	styles.notionTextContainer
-);
+export const TextContainer = newStyledElement.div(styles.textContainer);
 
-interface NotionTextProps extends NotionPropsColor {
+interface TextProps extends StandartColorProps {
 	children?: string;
 	withBold?: boolean;
 	withItalic?: boolean;
 	withUnderline?: boolean;
 	textAlign?: "left" | "center" | "right" | "flex-center";
-	display?: "inline" | "block";
+	display?: CSSProperties["display"];
 }
-
-export function NotionText({
+export function Text({
 	children,
 	textColor,
 	backgroundColor,
@@ -30,24 +31,22 @@ export function NotionText({
 	withUnderline,
 	textAlign,
 	display,
-}: NotionTextProps) {
+}: TextProps) {
 	const style: CSSProperties = {
-		...(textColor && { color: NotionTextColor[textColor] }),
-		...(backgroundColor && {
-			backgroundColor: NotionBackgroundColor[backgroundColor],
-		}),
+		color: StandartTextColorKeyToProperty(textColor),
+		backgroundColor: StandartBackgroundColorKeyToProperty(backgroundColor),
 		...(withBold && { fontWeight: "bold" }),
 		...(withItalic && { fontStyle: "italic" }),
 		...(withUnderline && { textDecoration: "underline" }),
 		...(textAlign && textAlign === "flex-center"
 			? { display: "flex", justifyContent: "center" }
 			: { textAlign: textAlign }),
-		...(display && { display: display }),
+		display: display,
 	};
 
 	return (
-		<NotionTextContainer style={style}>
+		<TextContainer style={style}>
 			<SmartText content={children} />
-		</NotionTextContainer>
+		</TextContainer>
 	);
 }

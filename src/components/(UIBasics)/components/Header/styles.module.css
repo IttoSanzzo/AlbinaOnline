@@ -1,0 +1,7 @@
+.headerContainer {
+	display: block;
+	padding: var(--sp-1);
+	border-radius: var(--rd-sm);
+	margin-bottom: var(--sp-2);
+	scroll-margin-top: 60px;
+}

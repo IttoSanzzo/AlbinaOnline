@@ -1,0 +1,10 @@
+.boxContainer {
+	display: flex;
+	flex-direction: column;
+	padding: var(--sp-3) var(--sp-4) var(--sp-2);
+	border: 2px solid var(--cl-gray-600);
+	border-radius: var(--rd-md);
+	margin-bottom: var(--sp-3);
+	width: 100%;
+	overflow: hidden;
+}
