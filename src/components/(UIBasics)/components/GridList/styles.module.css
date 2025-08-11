@@ -1,0 +1,16 @@
+.contentContainerColumn {
+	column-count: 10;
+	column-width: 200px;
+	column-gap: var(--sp-1);
+
+	& > * {
+		margin-bottom: var(--sp-1);
+		margin-inline: auto;
+	}
+}
+.contentContainerRow {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: var(--sp-1);
+	justify-items: center;
+}

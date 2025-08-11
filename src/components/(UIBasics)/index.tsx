@@ -11,6 +11,13 @@ export const UIBasics = {
 	ToggleHeader: BasicComponents.ToggleHeader,
 	Table: BasicComponents.Table,
 	Divisor: BasicComponents.Divisor,
+	Carousel: BasicComponents.Carousel,
+	EmptyLine: BasicComponents.EmptyLine,
+	List: {
+		Grid: BasicComponents.GridList,
+		Bullet: BasicComponents.BulletList,
+		Quote: BasicComponents.QuoteList,
+	},
 	MultiColumn: {
 		Two: BasicComponents.TwoColumns,
 	},

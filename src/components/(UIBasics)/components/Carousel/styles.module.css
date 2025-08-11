@@ -1,0 +1,9 @@
+.carouselContainer {
+	&:active {
+		cursor: grabbing;
+	}
+}
+.slideContainer {
+	display: flex;
+	justify-content: center;
+}
