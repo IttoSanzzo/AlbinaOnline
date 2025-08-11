@@ -10,19 +10,9 @@
 	display: flex;
 	flex-direction: column;
 	margin-left: 0;
+	min-width: 0;
 	width: 100%;
 }
-
-/* @media (max-width: 480px) { */
-/* TODO what is this... */
-/* .mainContainer { */
-/* margin-left: 0; */
-/* } */
-/* } */
-/* :root[data-active-sidebar="true"] .mainContainer { */
-/* margin-left: var(--sp-52); */
-/* max-width: calc(100vw - var(--sp-52)); */
-/* } */
 
 .pageContainer {
 	transition: 5s ease-out width;

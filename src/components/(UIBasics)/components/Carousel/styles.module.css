@@ -1,4 +1,9 @@
 .carouselContainer {
+	display: flex !important;
+	width: 100% !important;
+	&:hover {
+		cursor: grab;
+	}
 	&:active {
 		cursor: grabbing;
 	}

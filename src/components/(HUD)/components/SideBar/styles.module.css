@@ -49,14 +49,15 @@
 .sideBarActivationArea {
 	position: fixed;
 	left: 0;
-	height: 100vh;
-	max-height: 100vh;
 	background-color: transparent;
-	height: 75vh;
+	height: 85vh;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 7vw;
 
+	&:hover {
+		width: 25vw;
+	}
 	:root[data-active-sidebar="true"] & {
 		display: none;
 	}

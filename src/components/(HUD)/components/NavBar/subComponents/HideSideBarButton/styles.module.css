@@ -18,6 +18,7 @@
 
 	&:hover {
 		background-color: var(--cl-gray-700);
+		cursor: pointer;
 	}
 }
 

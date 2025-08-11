@@ -1,14 +1,13 @@
 .pageBannerContainer {
+	position: relative;
 	width: 100%;
 	min-height: 145px;
 	height: 20vh;
 	max-height: 280px;
-	position: relative;
 	overflow: hidden;
 
 	& img {
 		width: 100%;
-		/* height: auto; */
 		object-fit: cover;
 	}
 }

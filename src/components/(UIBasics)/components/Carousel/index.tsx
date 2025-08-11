@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, ReactNode, useMemo } from "react";
+import { CSSProperties, ReactNode, useEffect, useMemo, useRef } from "react";
 import {
 	KeenSliderHooks,
 	KeenSliderInstance,
@@ -12,6 +12,7 @@ import { routeStorage } from "@/utils/Storage";
 import { usePathname } from "next/navigation";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { mergeRefs } from "@/utils/Data";
 
 const CarouselContainer = newStyledElement.div(styles.carouselContainer);
 const SlideContainer = newStyledElement.div(styles.slideContainer);
@@ -70,7 +71,7 @@ export function Carousel({
 		  }
 		: undefined;
 
-	const [sliderRef] = useKeenSlider<HTMLDivElement>({
+	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
 		loop,
 		mode,
 		slides: {
@@ -89,9 +90,20 @@ export function Carousel({
 		...(maxWidth && { maxWidth: `${maxWidth}px` }),
 	};
 
+	const CaroulselRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (!CaroulselRef.current || !CaroulselRef.current.parentElement) return;
+		const ro = new ResizeObserver(() => {
+			instanceRef.current?.update();
+		});
+		ro.observe(CaroulselRef.current.parentElement);
+		return () => ro.disconnect();
+	}, [instanceRef]);
+
 	return (
 		<CarouselContainer
-			ref={sliderRef}
+			ref={mergeRefs(CaroulselRef, sliderRef)}
 			className="keen-slider">
 			{slideChilds.map((slide, index) => (
 				<SlideContainer
