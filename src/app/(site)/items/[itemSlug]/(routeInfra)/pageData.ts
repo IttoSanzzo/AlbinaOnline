@@ -1,4 +1,5 @@
 import { ItemData } from "@/libs/stp@types";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 
@@ -17,7 +18,7 @@ function getSubTypeBorderColor(subType: string): string {
 export async function getPageData(itemSlug: string): Promise<ItemPageData> {
 	if (!itemSlug) return { itemData: undefined, borderColor: "" };
 
-	const response = await fetch(`${process.env.ALBINA_API}/items/${itemSlug}`, {
+	const response = await fetch(getAlbinaApiAddress(`/items/${itemSlug}`), {
 		cache: getCacheMode(),
 	});
 	if (!response.ok) return { itemData: undefined, borderColor: "" };

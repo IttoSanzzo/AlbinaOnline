@@ -13,7 +13,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function SkillsPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/skills`, {
+	const response = await fetch(getAlbinaApiAddress("/skills"), {
 		cache: getCacheMode(),
 	});
 	const allRawSkills: SkillData[] = await response.json();

@@ -18,7 +18,7 @@ const anchorNavigationData = [
 ];
 
 export default async function ItemsPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/items`, {
+	const response = await fetch(getAlbinaApiAddress("/items"), {
 		cache: getCacheMode(),
 	});
 	const allRawItems: ItemData[] = await response.json();

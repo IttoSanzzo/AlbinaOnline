@@ -14,7 +14,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function RacesPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/races`, {
+	const response = await fetch(getAlbinaApiAddress("/races"), {
 		cache: getCacheMode(),
 	});
 	const allRawRaces: RaceData[] = await response.json();

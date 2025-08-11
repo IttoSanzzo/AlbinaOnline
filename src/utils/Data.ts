@@ -1,3 +1,4 @@
+import { getAlbinaApiAddress } from "./AlbinaApi";
 import { getCacheMode } from "./Cache";
 import { pascalToCamel } from "./StringUtils";
 
@@ -29,7 +30,7 @@ type SlugMap = typeof SlugKeyMap;
 export async function fetchStaticParamSlugs<K extends keyof SlugMap>(
 	endpoint: K
 ): Promise<{ [P in SlugMap[K]]: string }[]> {
-	const response = await fetch(`${process.env.ALBINA_API}/${endpoint}`, {
+	const response = await fetch(getAlbinaApiAddress(`/${endpoint}`), {
 		cache: getCacheMode(),
 	});
 	if (!response.ok) return [];

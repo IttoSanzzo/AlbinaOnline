@@ -17,7 +17,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function MasteriesPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/maestrias`, {
+	const response = await fetch(getAlbinaApiAddress("/maestrias"), {
 		cache: getCacheMode(),
 	});
 	const allRawMasteries: MasteryData[] = await response.json();

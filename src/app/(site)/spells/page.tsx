@@ -24,7 +24,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function SpellsPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
+	const response = await fetch(getAlbinaApiAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -70,7 +70,7 @@ export default async function SpellsPage() {
 							key={DomainInfo[0]}
 							href={`/spells/${DomainInfo[1]}`}
 							title={DomainInfo[0]}
-							icon={`${process.env.ALBINA_API}/favicon/spells/${DomainInfo[1]}`}
+							icon={getAlbinaApiAddress(`/favicon/spells/${DomainInfo[1]}`)}
 						/>
 					))}
 				/>
