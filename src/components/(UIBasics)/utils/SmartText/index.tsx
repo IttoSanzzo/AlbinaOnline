@@ -4,9 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartTextColor, UIBasics } from "../..";
 
-export const SmartTextContainer = newStyledElement.div(
-	styles.smartTextContainer
-);
+const SmartTextContainer = newStyledElement.div(styles.smartTextContainer);
 
 function getSmartLink(smartSlice: string, key: any): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartLinkError-"</p>;

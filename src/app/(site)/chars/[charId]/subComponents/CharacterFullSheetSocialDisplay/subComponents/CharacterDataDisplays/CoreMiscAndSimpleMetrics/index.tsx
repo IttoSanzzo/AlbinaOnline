@@ -1,8 +1,4 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import {
 	CharacterCoreMetrics,
 	CharacterMiscMetrics,
@@ -11,11 +7,11 @@ import {
 
 function formTableEntry(title: string, value: number) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor="gray"
@@ -35,14 +31,14 @@ export function CoreMiscAndSimpleMetrics({
 	miscMetrics,
 }: CoreMiscAndSimpleMetricsProps) {
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Miscs"
 			memoryId={`${characterId}-MiscMetrics`}>
 			<div style={{ display: "flex" }}>
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [
 							formTableEntry("Carga Máxima", miscMetrics.carryCapacity),
@@ -59,6 +55,6 @@ export function CoreMiscAndSimpleMetrics({
 					}}
 				/>
 			</div>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

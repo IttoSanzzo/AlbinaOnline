@@ -1,9 +1,14 @@
 "use client";
 
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { TestFetchButtonContainer } from "./styledElements";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useUserFavorites } from "@/libs/stp@hooks";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const TestFetchButtonContainer = newStyledElement.div(
+	styles.testFetchButtonContainer
+);
 
 export function TestFetchButton() {
 	const { reloadFavorites } = useUserFavorites();

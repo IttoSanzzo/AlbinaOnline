@@ -1,5 +1,10 @@
 import { CSSProperties, ReactNode } from "react";
-import { AlertDialogButtonsContainer } from "./styledElements";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const AlertDialogButtonsContainer = newStyledElement.div(
+	styles.alertDialogButtonsContainer
+);
 
 interface ButtonsContainerProps {
 	alignment?: "start" | "center" | "end";

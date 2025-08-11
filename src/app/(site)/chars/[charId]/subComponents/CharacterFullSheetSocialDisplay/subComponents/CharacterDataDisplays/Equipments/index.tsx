@@ -1,22 +1,16 @@
-import {
-	Notion2Columns,
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
 import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
 import React from "react";
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
+import { UIBasics } from "@/components/(UIBasics)";
 
 function formEquipSlotTableEntry(title: string, itemIds?: Guid[]) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			children={title}
 		/>,
-		<NotionGridList
+		<UIBasics.List.Grid
 			withoutBorder
 			withoutMargin
 			withoutPadding
@@ -39,15 +33,15 @@ export function _CharacterEquipmentsDisplay({
 	characterEquipments,
 }: CharacterEquipmentsDisplayProps) {
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="green"
 			title="Equipamentos"
 			memoryId={`${characterId}-Equipments`}>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
-					<NotionTable
+					<UIBasics.Table
 						fixedLinePositions={[1]}
 						fixedLineWidths={[45]}
 						columnBackgroundColors={[undefined, "gray"]}
@@ -75,7 +69,7 @@ export function _CharacterEquipmentsDisplay({
 					/>
 				}
 				colum2={
-					<NotionTable
+					<UIBasics.Table
 						fixedLinePositions={[1]}
 						fixedLineWidths={[40]}
 						columnBackgroundColors={[undefined, "gray"]}
@@ -115,7 +109,7 @@ export function _CharacterEquipmentsDisplay({
 					/>
 				}
 			/>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

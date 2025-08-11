@@ -1,13 +1,18 @@
 "use client";
 
 import { z } from "zod";
-import { RegisterFormContainer } from "./styledElements";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HookedForm } from "@/libs/stp@forms";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const RegisterFormContainer = newStyledElement.form(
+	styles.registerFormContainer
+);
 
 const nicknameInvalidRegex = /[\p{C}]/u;
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;

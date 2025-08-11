@@ -9,7 +9,7 @@ export default async function Page({ params }: PageProps) {
 	const { userId } = await params;
 
 	const response = await fetch(
-		`${getAlbinaApiAddress()}/users/id/${userId}/username`,
+		getAlbinaApiAddress(`/users/id/${userId}/username`),
 		{
 			cache: "force-cache",
 		}

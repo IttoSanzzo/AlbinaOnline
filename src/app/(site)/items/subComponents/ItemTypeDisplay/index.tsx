@@ -1,6 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { ItemData } from "@/libs/stp@types";
 
 interface ItemTypeDisplayProps {
@@ -20,14 +19,14 @@ export default function ItemTypeDisplay({
 
 	if (!subTypesOrder)
 		return (
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionHeader
+				<UIBasics.Header
 					textAlign="center"
 					children={title}
 				/>
-				<NotionGridList
+				<UIBasics.List.Grid
 					backgroundColor="purple"
 					children={allItemsFromThisType.map((item) => {
 						return (
@@ -40,7 +39,7 @@ export default function ItemTypeDisplay({
 						);
 					})}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		);
 	const allItemsFromThisTypeOrdened: ItemData[] = [];
 	subTypesOrder.forEach((subType) => {
@@ -50,14 +49,14 @@ export default function ItemTypeDisplay({
 	});
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				textAlign="center"
 				children={title}
 			/>
-			<NotionGridList
+			<UIBasics.List.Grid
 				backgroundColor="purple"
 				children={allItemsFromThisTypeOrdened.map((item) => {
 					return (
@@ -70,6 +69,6 @@ export default function ItemTypeDisplay({
 					);
 				})}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

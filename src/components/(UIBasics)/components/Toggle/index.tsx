@@ -17,12 +17,12 @@ import { StandartColorKeysToProperties } from "../../utils";
 import { Triangle } from "@phosphor-icons/react/dist/ssr/Triangle";
 import { UIBasics } from "../..";
 
-export const ToggleContainer = newStyledElement.div(styles.toggleContainer);
-export const HeaderContainer = newStyledElement.div(styles.headerContainer);
-export const ToggleButtonContainer = newStyledElement.div(
+const ToggleContainer = newStyledElement.div(styles.toggleContainer);
+const HeaderContainer = newStyledElement.div(styles.headerContainer);
+const ToggleButtonContainer = newStyledElement.div(
 	styles.toggleButtonContainer
 );
-export const ContentContainer = newStyledElement.div(styles.contentContainer);
+const ContentContainer = newStyledElement.div(styles.contentContainer);
 
 function getCurrentOpenState(pathname: string, memoryName?: string) {
 	if (memoryName) {

@@ -3,6 +3,7 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -21,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function AufbringenDomainPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
+	const response = await fetch(getAlbinaApiAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -33,8 +34,8 @@ export default async function AufbringenDomainPage() {
 	return (
 		<GenericPageContainer
 			title="Domínio Aufbringen"
-			icon={`${process.env.ALBINA_API}/favicon/spells/aufbringen`}
-			banner={`${process.env.ALBINA_API}/banner/spells/aufbringen`}>
+			icon={getAlbinaApiAddress("/favicon/spells/aufbringen")}
+			banner={getAlbinaApiAddress("/banner/spells/aufbringen")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SpellTypeDisplay

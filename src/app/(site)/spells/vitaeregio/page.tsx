@@ -3,6 +3,7 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -21,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function VitaeregioDomainPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
+	const response = await fetch(getAlbinaApiAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -33,8 +34,8 @@ export default async function VitaeregioDomainPage() {
 	return (
 		<GenericPageContainer
 			title="Domínio Vitaeregio"
-			icon={`${process.env.ALBINA_API}/favicon/spells/vitaeregio`}
-			banner={`${process.env.ALBINA_API}/banner/spells/vitaeregio`}>
+			icon={getAlbinaApiAddress("/favicon/spells/vitaeregio")}
+			banner={getAlbinaApiAddress("/banner/spells/vitaeregio")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SpellTypeDisplay

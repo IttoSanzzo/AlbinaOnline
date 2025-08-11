@@ -1,5 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterAbilityScore } from "@/libs/stp@types";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
@@ -10,7 +10,7 @@ function TableAbilityScoreEntry(title: string, value: number) {
 			title={title}
 			href={"/"}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor="blue"
@@ -28,7 +28,7 @@ export function CharacterAbilityScoreDisplay({
 }: CharacterAbilityScoreDisplayProps) {
 	return (
 		<div style={{ display: "flex" }}>
-			<NotionTable
+			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
 				direction="row"
@@ -36,11 +36,11 @@ export function CharacterAbilityScoreDisplay({
 				tableData={{
 					tableLanes: [
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="gray"
 								children={"Total"}
 							/>,
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

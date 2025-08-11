@@ -3,6 +3,7 @@ import { RaceData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import RaceTypeDisplay from "./subComponents/RaceTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Humanos", id: "Humanos" },
@@ -24,8 +25,8 @@ export default async function RacesPage() {
 	return (
 		<GenericPageContainer
 			title="Raças"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/races`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/races`}>
+			icon={getAlbinaApiAddress("/favicon/core-page/races")}
+			banner={getAlbinaApiAddress("/banner/core-page/races")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<RaceTypeDisplay

@@ -1,5 +1,5 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { Guid } from "@/libs/stp@types";
 
@@ -11,12 +11,12 @@ export function SpellsDrawer({ characterId }: SpellsDrawerProps) {
 		<CharacterDrawerBaseHeader
 			title="Spells"
 			memoryId={`${characterId}-Spells`}>
-			<NotionBox
+			<UIBasics.Box
 				withoutPadding
 				withoutMargin
 				withoutBorder>
 				<CharacterEditableDataDisplays.Spells characterId={characterId} />
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { BreadcrumbContainer } from "./styledElements";
 import { usePathname } from "next/navigation";
 import { capitalizeTitle } from "@/utils/StringUtils";
 import { Breadcrumb, useBreadcrumbs } from "@/libs/stp@hooks";
@@ -8,6 +7,10 @@ import { StyledLink } from "@/components/(Design)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useMemo } from "react";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const BreadcrumbContainer = newStyledElement.div(styles.breadcrumbContainer);
 
 export function Breadcrumbs() {
 	const pathName = usePathname();

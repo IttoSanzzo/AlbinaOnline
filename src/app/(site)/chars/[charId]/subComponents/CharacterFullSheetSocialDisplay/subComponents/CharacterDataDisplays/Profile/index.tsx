@@ -1,20 +1,12 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
 import { CharacterProfile } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const TextAreasContainer = newStyledElement.div(styles.textAreasContainer);
 
@@ -54,62 +46,62 @@ export function CharacterProfileDisplay({
 				debounce={3000}
 				action={async () => false}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
-				<NotionTable
+				<UIBasics.Table
 					direction="column"
 					columnBackgroundColors={["darkGray", undefined, "darkGray"]}
 					tableData={{
 						tableLanes: [
 							[
-								<NotionText textColor="gray">Idade</NotionText>,
-								<NotionText
+								<UIBasics.Text textColor="gray">Idade</UIBasics.Text>,
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									children={characterProfile.age.toString()}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Anos
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 							[
-								<NotionText textColor="gray">Altura</NotionText>,
-								<NotionText
+								<UIBasics.Text textColor="gray">Altura</UIBasics.Text>,
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									children={characterProfile.stature.toString()}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Centímetros
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 							[
-								<NotionText textColor="gray">Peso</NotionText>,
-								<NotionText
+								<UIBasics.Text textColor="gray">Peso</UIBasics.Text>,
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									children={characterProfile.weight.toString()}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Kgs
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 						],
 					}}
 				/>
 				<HookedForm.Space height={5} />
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
@@ -163,7 +155,7 @@ export function CharacterProfileDisplay({
 				/>
 				<HookedForm.Space height={5} />
 				<HookedForm.Separator />
-			</NotionBox>
+			</UIBasics.Box>
 		</HookedForm.Form>
 	);
 }

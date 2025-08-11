@@ -1,5 +1,4 @@
-import { NotionCallout, NotionToggle } from "@/components/(NotionBased)";
-import { NotionQuoteList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { GenericInfo } from "@/libs/stp@types";
 
 interface GenericInfoCalloutProps {
@@ -9,41 +8,41 @@ interface GenericInfoCalloutProps {
 export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 	return (
 		<>
-			<NotionCallout
+			<UIBasics.Callout
 				icon={{
 					name: "Info",
 					color: "purple",
 				}}
 				titleColor="gray"
 				title={"Info"}>
-				<NotionToggle
+				<UIBasics.Toggle
 					memoryId="InfoSummary"
 					titleColor="blue"
 					title={"🪄|Resumo|🪄"}>
-					<NotionQuoteList
+					<UIBasics.List.Quote
 						withDivisor
 						quotes={info.summary}
 					/>
-				</NotionToggle>
-				<NotionToggle
+				</UIBasics.Toggle>
+				<UIBasics.Toggle
 					memoryId="InfoDescription"
 					titleColor="blue"
 					title={"🔎|Descrição Geral|🔎"}>
-					<NotionQuoteList
+					<UIBasics.List.Quote
 						withDivisor
 						quotes={info.description}
 					/>
-				</NotionToggle>
-				<NotionToggle
+				</UIBasics.Toggle>
+				<UIBasics.Toggle
 					memoryId="InfoMiscs"
 					titleColor="blue"
 					title={"💮|Miscelâneas|💮"}>
-					<NotionQuoteList
+					<UIBasics.List.Quote
 						withDivisor
 						quotes={info.miscellaneous}
 					/>
-				</NotionToggle>
-			</NotionCallout>
+				</UIBasics.Toggle>
+			</UIBasics.Callout>
 		</>
 	);
 }

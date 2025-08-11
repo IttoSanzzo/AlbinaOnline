@@ -1,28 +1,27 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterMiscMetrics } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 
 interface AttributesDisplayProps {
 	miscMetrics: CharacterMiscMetrics;
 }
 export function AttributesDisplay({ miscMetrics }: AttributesDisplayProps) {
 	return (
-		<NotionTable
+		<UIBasics.Table
 			direction="column"
 			withoutMargin
 			withoutBorderRadius
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							display="block"
 							textAlign="center"
 							textColor="gray"
 							children="Atributos Mágicos"
 						/>,
 						miscMetrics.magicAttributes.length > 0 ? (
-							<NotionGridList
+							<UIBasics.List.Grid
 								columnWidth={100}
 								withoutBorder
 								withoutMargin
@@ -36,7 +35,7 @@ export function AttributesDisplay({ miscMetrics }: AttributesDisplayProps) {
 								))}
 							/>
 						) : (
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

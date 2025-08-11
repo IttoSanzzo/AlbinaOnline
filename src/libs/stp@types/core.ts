@@ -1,4 +1,4 @@
-import { NotionTextColor } from "@/components/(NotionBased)";
+import { StandartTextColor } from "@/components/(UIBasics)";
 
 export type GenericInfo = {
 	summary: string[];
@@ -8,7 +8,7 @@ export type GenericInfo = {
 
 export type GenericEffectContent = {
 	type: string;
-	color?: keyof typeof NotionTextColor;
+	color?: keyof typeof StandartTextColor;
 	value: string;
 };
 
@@ -16,7 +16,7 @@ export type GenericEffect = {
 	id: number;
 	role: string;
 	name?: string;
-	color?: keyof typeof NotionTextColor;
+	color?: keyof typeof StandartTextColor;
 	contents: GenericEffectContent[];
 };
 

@@ -1,23 +1,26 @@
-import {
-	NotionTextColor,
-	NotionBackgroundColor,
-} from "@/components/(NotionBased)";
-import {
-	ArtworkContainer,
-	HoverTitleContainer,
-	StyledLinkCardContainer,
-	TitleContainer,
-} from "./styledElements";
 import { CSSProperties } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import {
+	StandartBackgroundColor,
+	StandartTextColor,
+} from "@/components/(UIBasics)";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const StyledLinkCardContainer = newStyledElement.div(
+	styles.styledLinkCardContainer
+);
+const ArtworkContainer = newStyledElement.div(styles.artworkContainer);
+const TitleContainer = newStyledElement.div(styles.titleContainer);
+const HoverTitleContainer = newStyledElement.div(styles.hoverTitleContainer);
 
 export interface StyledLinkCardProps {
 	href: string;
 	artworkUrl: string;
-	titleColor?: keyof typeof NotionTextColor;
-	borderColor?: keyof typeof NotionTextColor;
-	backgroundColor?: keyof typeof NotionBackgroundColor;
+	titleColor?: keyof typeof StandartTextColor;
+	borderColor?: keyof typeof StandartTextColor;
+	backgroundColor?: keyof typeof StandartBackgroundColor;
 	title: string;
 	size?: number;
 	layout?: "square" | "rectangle";
@@ -36,13 +39,13 @@ export function StyledLinkCard({
 		width: `${size}px`,
 		height: `${size + (layout == "square" ? 0 : 35)}px`,
 		...(titleColor && {
-			color: NotionTextColor[titleColor],
+			color: StandartTextColor[titleColor],
 		}),
 		...(borderColor && {
-			borderColor: NotionTextColor[borderColor],
+			borderColor: StandartTextColor[borderColor],
 		}),
 		...(backgroundColor && {
-			backgroundColor: NotionBackgroundColor[backgroundColor],
+			backgroundColor: StandartBackgroundColor[backgroundColor],
 		}),
 	};
 	const artworkContainerStyle: CSSProperties = {
@@ -50,13 +53,13 @@ export function StyledLinkCard({
 		height: `${size}px`,
 		...(layout == "rectangle" &&
 			borderColor && {
-				borderColor: NotionTextColor[borderColor],
+				borderColor: StandartTextColor[borderColor],
 			}),
 	};
 	if (layout == "square") {
 		const hoverTitleStyle: CSSProperties = {
 			...(backgroundColor && {
-				backgroundColor: NotionBackgroundColor[backgroundColor],
+				backgroundColor: StandartBackgroundColor[backgroundColor],
 			}),
 		};
 		return (

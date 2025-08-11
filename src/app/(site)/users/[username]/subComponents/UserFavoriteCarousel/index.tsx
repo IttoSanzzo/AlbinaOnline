@@ -1,6 +1,5 @@
 import { StyledLinkCard } from "@/components/(Design)";
-import { NotionBox, NotionToggleHeader } from "@/components/(NotionBased)";
-import { Carousel } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { UserFavoritesGrouped } from "@/libs/stp@types";
 import { capitalize } from "@/utils/StringUtils";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -22,12 +21,12 @@ export function UserFavoriteCarousel({
 
 	const indentifier = favoriteType == "character" ? "id" : "slug";
 	return (
-		<NotionBox backgroundColor="purple">
-			<NotionToggleHeader
+		<UIBasics.Box backgroundColor="purple">
+			<UIBasics.ToggleHeader
 				title={favoriteName}
 				titleAlign="left"
 				children={
-					<Carousel
+					<UIBasics.Carousel
 						slidesOrigin={"center"}
 						slidesSpacing={10}
 						minWidth={150}
@@ -43,6 +42,6 @@ export function UserFavoriteCarousel({
 					/>
 				}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

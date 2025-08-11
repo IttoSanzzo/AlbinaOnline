@@ -1,10 +1,4 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionHeader,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { ItemProperties } from "@/libs/stp@types";
 
 interface ItemPropertiesDisplayProps {
@@ -16,39 +10,39 @@ export default function ItemPropertiesDisplay({
 }: ItemPropertiesDisplayProps) {
 	if (!itemProperties) return <></>;
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				headerType="h2"
 				textAlign="center"
 				textColor="orange"
 				children={"¤ Propriedades ¤"}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="darkGray"
 				withoutBorder>
-				<NotionTable
+				<UIBasics.Table
 					direction="column"
 					tableData={{
 						tableLanes: [
 							[
-								<NotionText
+								<UIBasics.Text
 									textColor="purple"
 									children="📥Slot"
 								/>,
-								<NotionText
+								<UIBasics.Text
 									textColor="gray"
 									textAlign="flex-center"
 									children={itemProperties.compatibleSlots.join(" ")}
 								/>,
 							],
 							[
-								<NotionText
+								<UIBasics.Text
 									textColor="purple"
 									children="🪷Atributo do Item"
 								/>,
-								<NotionText
+								<UIBasics.Text
 									textColor="gray"
 									textAlign="flex-center"
 									children={itemProperties.attribute}
@@ -63,37 +57,37 @@ export default function ItemPropertiesDisplay({
 						itemProperties.stats.damageType != "" ||
 						itemProperties.stats.defense != "" ||
 						itemProperties.stats.range != "") && (
-						<Notion2Columns
+						<UIBasics.MultiColumn.Two
 							colum1={
-								<NotionTable
+								<UIBasics.Table
 									tableData={{
 										tableLanes: [
 											[
-												<NotionText
+												<UIBasics.Text
 													textColor="red"
 													children="🗡️Dano"
 												/>,
-												<NotionText
+												<UIBasics.Text
 													textColor="default"
 													children={itemProperties.stats.damage}
 												/>,
 											],
 											[
-												<NotionText
+												<UIBasics.Text
 													textColor="green"
 													children="🎯Acerto"
 												/>,
-												<NotionText
+												<UIBasics.Text
 													textColor="default"
 													children={itemProperties.stats.accuracy}
 												/>,
 											],
 											[
-												<NotionText
+												<UIBasics.Text
 													textColor="orange"
 													children="🛡️Defesa"
 												/>,
-												<NotionText
+												<UIBasics.Text
 													textColor="default"
 													children={itemProperties.stats.defense}
 												/>,
@@ -103,25 +97,25 @@ export default function ItemPropertiesDisplay({
 								/>
 							}
 							colum2={
-								<NotionTable
+								<UIBasics.Table
 									tableData={{
 										tableLanes: [
 											[
-												<NotionText
+												<UIBasics.Text
 													textColor="gray"
 													children="🗡️Tipo de Dano"
 												/>,
-												<NotionText
+												<UIBasics.Text
 													textColor="gray"
 													children={itemProperties.stats.damageType}
 												/>,
 											],
 											[
-												<NotionText
+												<UIBasics.Text
 													textColor="gray"
 													children="📐Alcance"
 												/>,
-												<NotionText
+												<UIBasics.Text
 													textColor="gray"
 													children={itemProperties.stats.range}
 												/>,
@@ -133,7 +127,7 @@ export default function ItemPropertiesDisplay({
 						/>
 					)}
 				{itemProperties.extras.length !== 0 && (
-					<NotionTable
+					<UIBasics.Table
 						withHeaderRow
 						textColor="gray"
 						fixedLinePositions={[1]}
@@ -141,11 +135,11 @@ export default function ItemPropertiesDisplay({
 						tableData={{
 							tableLanes: [
 								[
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Extras"
 									/>,
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Descrição"
 										textAlign="flex-center"
@@ -153,14 +147,14 @@ export default function ItemPropertiesDisplay({
 									/>,
 								],
 								...itemProperties.extras.map((extra) => [
-									<NotionText>{`⦇ ${extra.key} ⦈`}</NotionText>,
-									<NotionText>{`⪩ ${extra.value}`}</NotionText>,
+									<UIBasics.Text>{`⦇ ${extra.key} ⦈`}</UIBasics.Text>,
+									<UIBasics.Text>{`⪩ ${extra.value}`}</UIBasics.Text>,
 								]),
 							],
 						}}
 					/>
 				)}
-			</NotionBox>
-		</NotionBox>
+			</UIBasics.Box>
+		</UIBasics.Box>
 	);
 }

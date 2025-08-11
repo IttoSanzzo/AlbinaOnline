@@ -5,12 +5,9 @@ import styles from "./styles.module.css";
 import { StandartColorProps, StandartTextColor } from "../../core";
 import { UIBasics } from "../..";
 
-export const CalloutContainer = newStyledElement.div(styles.calloutContainer);
-export const HeaderContainer = newStyledElement.div(styles.headerContainer);
-export const TitleArrayContainer = newStyledElement.div(
-	styles.titleArrayContainer
-);
-export const ContentContainer = newStyledElement.div(styles.contentContainer);
+const HeaderContainer = newStyledElement.div(styles.headerContainer);
+const TitleArrayContainer = newStyledElement.div(styles.titleArrayContainer);
+const ContentContainer = newStyledElement.div(styles.contentContainer);
 
 interface CalloutProps extends StandartColorProps {
 	children?: ReactNode;

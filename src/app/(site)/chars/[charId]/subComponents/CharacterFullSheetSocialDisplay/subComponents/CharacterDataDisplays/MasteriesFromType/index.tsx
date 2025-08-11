@@ -1,9 +1,3 @@
-import {
-	NotionBox,
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import React, { ReactNode, useContext } from "react";
 import {
 	CharacterAbilityScore,
@@ -17,6 +11,7 @@ import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const MasteriesDrawerContainer = newStyledElement.div(
 	styles.masteriesDrawerContainer
@@ -32,7 +27,7 @@ function tableMasteryEntry(
 			href={`/maestrias/${mastery.mastery.slug}`}
 			icon={mastery.mastery.iconUrl}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			children={mastery.level.toString()}
@@ -44,19 +39,19 @@ function tableMasteryEntry(
 	];
 }
 const tableHeaderRow = [
-	<NotionText
+	<UIBasics.Text
 		textAlign="center"
 		display="block"
 		textColor="gray"
 		children="Nome"
 	/>,
-	<NotionText
+	<UIBasics.Text
 		textAlign="center"
 		display="block"
 		textColor="gray"
 		children="Nível"
 	/>,
-	<NotionText
+	<UIBasics.Text
 		textAlign="center"
 		display="block"
 		textColor="gray"
@@ -72,12 +67,12 @@ function formTable(
 			tableHeaderRow,
 			[
 				"-",
-				<NotionText
+				<UIBasics.Text
 					textAlign="center"
 					display="block"
 					children="-"
 				/>,
-				<NotionText
+				<UIBasics.Text
 					textAlign="center"
 					display="block"
 					children="-"
@@ -149,20 +144,20 @@ function _CharacterMasteriesFromTypeDisplay({
 	);
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="darkGray"
 			withoutBorder
 			withoutMargin={type == "Proficiency" || type == "Craft"}
 			withoutPadding>
 			<MasteriesDrawerContainer>
-				<NotionToggleHeader
+				<UIBasics.ToggleHeader
 					memoryId={`${characterId}-${type}s`}
 					contentMargin="none"
 					textColor="yellow"
 					headerType="h2"
 					titleColor="orange"
 					title={`${masteryNames[type]}s`}>
-					<NotionTable
+					<UIBasics.Table
 						fixedLinePositions={[1, 3]}
 						fixedLineWidths={[50, 19]}
 						direction="row"
@@ -171,9 +166,9 @@ function _CharacterMasteriesFromTypeDisplay({
 							tableLanes: [...formTable(masteriesFromThisType, abilityScore)],
 						}}
 					/>
-				</NotionToggleHeader>
+				</UIBasics.ToggleHeader>
 			</MasteriesDrawerContainer>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }
 

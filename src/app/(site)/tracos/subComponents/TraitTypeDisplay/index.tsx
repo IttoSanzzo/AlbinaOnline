@@ -1,6 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { TraitData } from "@/libs/stp@types";
 
 interface TraitTypeDisplayProps {
@@ -22,14 +21,14 @@ export default function TraitTypeDisplay({
 
 	if (!subTypesOrder)
 		return (
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionHeader
+				<UIBasics.Header
 					textAlign="center"
 					children={title}
 				/>
-				<NotionGridList
+				<UIBasics.List.Grid
 					backgroundColor="purple"
 					children={allTraitsFromThisType.map((trait) => {
 						return (
@@ -42,7 +41,7 @@ export default function TraitTypeDisplay({
 						);
 					})}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		);
 	const allTraitsFromThisTypeOrdened: TraitData[] = [];
 	subTypesOrder.forEach((subType) => {
@@ -52,14 +51,14 @@ export default function TraitTypeDisplay({
 	});
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				textAlign="center"
 				children={title}
 			/>
-			<NotionGridList
+			<UIBasics.List.Grid
 				backgroundColor="purple"
 				children={allTraitsFromThisTypeOrdened.map((trait) => {
 					return (
@@ -72,6 +71,6 @@ export default function TraitTypeDisplay({
 					);
 				})}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

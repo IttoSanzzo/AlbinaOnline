@@ -1,11 +1,11 @@
-import { AccessLevel, FullUser, Guid } from "@/libs/stp@types";
+import { FullUser, Guid } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import Image from "next/image";
-import { NotionHeader, NotionText } from "@/components/(NotionBased)";
 import { TransferCharacter } from "./subComponents/TransferCharacter";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const OwnershipTransferContainer = newStyledElement.div(
 	styles.ownershipTransferContainer
@@ -48,7 +48,7 @@ export function OwnershipTransfer({
 					width={60}
 					height={60}
 				/>
-				<NotionHeader headerType="h3">{userState.nickname}</NotionHeader>
+				<UIBasics.Header headerType="h3">{userState.nickname}</UIBasics.Header>
 			</OwnershipTransferUser>
 			<TransferCharacter
 				characterId={characterId}

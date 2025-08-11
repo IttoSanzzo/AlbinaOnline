@@ -1,18 +1,14 @@
 import { CSSProperties } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import {
-	StandartBackgroundColor,
-	StandartColorProps,
-	StandartTextColor,
-} from "../../core";
+import { StandartColorProps } from "../../core";
 import {
 	SmartText,
 	StandartBackgroundColorKeyToProperty,
 	StandartTextColorKeyToProperty,
 } from "../../utils";
 
-export const TextContainer = newStyledElement.div(styles.textContainer);
+const TextContainer = newStyledElement.div(styles.textContainer);
 
 interface TextProps extends StandartColorProps {
 	children?: string;

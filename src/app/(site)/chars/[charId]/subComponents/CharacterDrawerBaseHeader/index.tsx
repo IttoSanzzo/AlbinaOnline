@@ -1,14 +1,10 @@
-import {
-	NotionBackgroundColor,
-	NotionBox,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { StandartBackgroundColor, UIBasics } from "@/components/(UIBasics)";
 import { ReactNode } from "react";
 
 interface CharacterDrawerBaseHeaderProps {
 	title: string;
 	memoryId: string;
-	backgroundColor?: keyof typeof NotionBackgroundColor;
+	backgroundColor?: keyof typeof StandartBackgroundColor;
 	children?: ReactNode;
 }
 export function CharacterDrawerBaseHeader({
@@ -18,18 +14,18 @@ export function CharacterDrawerBaseHeader({
 	children,
 }: CharacterDrawerBaseHeaderProps) {
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			title={title}
 			titleColor="gray"
 			backgroundColor="darkGray"
 			contentMargin="none"
 			memoryId={memoryId}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor={backgroundColor}
 				withoutPadding
 				withoutBorder
 				children={children}
 			/>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

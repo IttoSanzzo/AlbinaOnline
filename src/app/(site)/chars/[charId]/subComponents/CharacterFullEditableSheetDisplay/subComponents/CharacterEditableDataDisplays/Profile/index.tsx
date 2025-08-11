@@ -1,9 +1,3 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useContext, useState } from "react";
@@ -16,6 +10,7 @@ import z from "zod";
 import { CharacterProfile } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const TextAreasContainer = newStyledElement.div(styles.textAreasContainer);
 
@@ -76,62 +71,62 @@ export function CharacterProfileDisplay({
 				debounce={3000}
 				action={handleWatchedAction}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
-				<NotionTable
+				<UIBasics.Table
 					direction="column"
 					columnBackgroundColors={["darkGray", undefined, "darkGray"]}
 					tableData={{
 						tableLanes: [
 							[
-								<NotionText textColor="gray">Idade</NotionText>,
+								<UIBasics.Text textColor="gray">Idade</UIBasics.Text>,
 								<HookedForm.NumberInputInline
 									control={control}
 									fieldName="age"
 									min={0}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Anos
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 							[
-								<NotionText textColor="gray">Altura</NotionText>,
+								<UIBasics.Text textColor="gray">Altura</UIBasics.Text>,
 								<HookedForm.NumberInputInline
 									control={control}
 									fieldName="stature"
 									min={0}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Centímetros
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 							[
-								<NotionText textColor="gray">Peso</NotionText>,
+								<UIBasics.Text textColor="gray">Peso</UIBasics.Text>,
 								<HookedForm.NumberInputInline
 									control={control}
 									fieldName="weight"
 									min={0}
 								/>,
-								<NotionText
+								<UIBasics.Text
 									display="block"
 									textAlign="center"
 									textColor="gray">
 									Kgs
-								</NotionText>,
+								</UIBasics.Text>,
 							],
 						],
 					}}
 				/>
 				<HookedForm.Space height={5} />
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
@@ -179,7 +174,7 @@ export function CharacterProfileDisplay({
 				/>
 				<HookedForm.Space height={5} />
 				<HookedForm.Separator />
-			</NotionBox>
+			</UIBasics.Box>
 			<HookedForm.SimpleMessage
 				message={isValid ? errorMessage : "Valor inválido detectado"}
 				color="red"

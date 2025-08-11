@@ -4,7 +4,7 @@ import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import React from "react";
 
-export const StyledLinklikeButtonContainer = newStyledElement.div(
+const StyledLinklikeButtonContainer = newStyledElement.div(
 	styles.styledLinklikeButtonContainer
 );
 

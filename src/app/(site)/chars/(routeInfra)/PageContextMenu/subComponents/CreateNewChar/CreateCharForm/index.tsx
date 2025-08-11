@@ -6,10 +6,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { FormContainer } from "./styledElements";
 import { HookedForm, SelectWithIconOption } from "@/libs/stp@forms";
 import { RaceData } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const FormContainer = newStyledElement.form(styles.formContainer);
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),

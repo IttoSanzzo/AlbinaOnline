@@ -1,10 +1,16 @@
 "use client";
 
 import { StyledLink, StyledLinkProps } from "@/components/(Design)";
-import { DragButton, SortableLinkContainer } from "./styledElements";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useRef } from "react";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const SortableLinkContainer = newStyledElement.div(
+	styles.sortableLinkContainer
+);
+const DragButton = newStyledElement.button(styles.dragButton);
 
 interface SortableLinkProps {
 	linkProps: StyledLinkProps;

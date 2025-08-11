@@ -1,12 +1,8 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-} from "@/components/(NotionBased)";
 import { CharacterExpandedData } from "@/libs/stp@types";
 import { CharacterEditableSheetContextProviders } from "./subComponents/CharacterEditableSheetContextProviders";
 import { CharacterDrawers } from "./subComponents/Drawers";
 import { CharacterHeader } from "./subComponents/CharacterHeader";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;
@@ -20,7 +16,7 @@ export function CharacterFullSheetEditableDisplay({
 				level={characterData.level}
 				race={characterData.race}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder>
 				<CharacterDrawers.Inventory
@@ -31,7 +27,7 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					characterActionsPool={characterData.actionsPool}
 				/>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutGap
 					withoutBorderRadius
@@ -51,7 +47,7 @@ export function CharacterFullSheetEditableDisplay({
 					characterProfile={characterData.profile}
 					characterBackstory={characterData.backstory.history}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterEditableSheetContextProviders>
 	);
 }

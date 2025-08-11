@@ -8,10 +8,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import {
-	useCurrentCharacterAccessLevel,
-	useCurrentPageData,
-} from "@/libs/stp@hooks";
+import { useCurrentCharacterAccessLevel } from "@/libs/stp@hooks";
 
 const UserAccessLevelControllerContainer = newStyledElement.div(
 	styles.userAccessLevelControllerContainer

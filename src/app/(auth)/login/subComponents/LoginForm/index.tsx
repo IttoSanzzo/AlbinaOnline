@@ -1,7 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { LoginFormContainer } from "./styledElements";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -9,6 +8,10 @@ import { isEmail } from "@/utils/StringUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HookedForm } from "@/libs/stp@forms";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const LoginFormContainer = newStyledElement.form(styles.loginFormContainer);
 
 const schema = z.object({
 	usernameOrEmail: z.string().min(1, "Insira o usuário."),

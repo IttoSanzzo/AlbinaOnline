@@ -1,4 +1,3 @@
-import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
 import { GaugesTable } from "./subComponents/GaugesTable";
 import { MiscsTable } from "./subComponents/MiscsTable";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@/libs/stp@types";
 import { LevelAndRaceDisplay } from "./subComponents/LevelAndRaceDisplay";
 import { AttributesDisplay } from "./subComponents/AttributesDisplay";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface CharacterHeaderProps {
 	level: number;
@@ -25,13 +25,13 @@ export function CharacterHeader({
 	miscMetrics,
 }: CharacterHeaderProps) {
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="blue"
 			withoutBorder>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="orange"
 				withoutPadding>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -43,8 +43,8 @@ export function CharacterHeader({
 					}
 					colum2={<AttributesDisplay miscMetrics={miscMetrics} />}
 				/>
-			</NotionBox>
-			<Notion2Columns
+			</UIBasics.Box>
+			<UIBasics.MultiColumn.Two
 				withoutPadding
 				colum1={<GaugesTable coreMetrics={coreMetrics} />}
 				colum2={
@@ -55,6 +55,6 @@ export function CharacterHeader({
 					/>
 				}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

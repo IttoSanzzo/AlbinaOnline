@@ -1,5 +1,4 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
 import {
 	CharacterCoinStack,
 	CharacterEquipments,
@@ -8,6 +7,7 @@ import {
 } from "@/libs/stp@types";
 import React from "react";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface InventoryDrawerProps {
 	characterId: Guid;
@@ -25,11 +25,11 @@ export function InventoryDrawer({
 		<CharacterDrawerBaseHeader
 			title="Inventário"
 			memoryId={`${characterId}-Inventory`}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutMargin
 				withoutBorder>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -50,7 +50,7 @@ export function InventoryDrawer({
 					characterId={characterId}
 					characterEquipments={characterEquipments}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

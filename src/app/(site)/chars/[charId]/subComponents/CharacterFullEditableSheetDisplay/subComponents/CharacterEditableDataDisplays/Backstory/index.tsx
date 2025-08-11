@@ -1,8 +1,3 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useContext, useState } from "react";
@@ -12,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	backstory: z.string().max(5000, "Máximo de 5000 caracteres"),
@@ -67,7 +63,7 @@ export function CharacterBackstoryDisplay({
 				debounce={3000}
 				action={handleWatchedAction}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
@@ -78,7 +74,7 @@ export function CharacterBackstoryDisplay({
 					labelBackground="gray"
 					height={300}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 			<HookedForm.SimpleMessage
 				message={isValid ? errorMessage : "Valor inválido detectado"}
 				color="red"

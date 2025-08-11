@@ -1,14 +1,10 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddTraitButton } from "./subComponents/AddTraitButton";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleTraitRemoval(
 	characterId: Guid,
@@ -42,7 +38,7 @@ function formTable(
 	>
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -51,7 +47,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -108,14 +104,14 @@ export function _CharacterTraitsDisplay({
 	}, []);
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Traços"
 			memoryId={`${characterId}-Traits`}>
 			<div style={{ position: "relative" }}>
-				<NotionTable
+				<UIBasics.Table
 					style={{ margin: 0 }}
 					withHeaderColumn={false}
 					columnBackgroundColors={["gray"]}
@@ -134,7 +130,7 @@ export function _CharacterTraitsDisplay({
 					characterId={characterId}
 				/>
 			</div>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

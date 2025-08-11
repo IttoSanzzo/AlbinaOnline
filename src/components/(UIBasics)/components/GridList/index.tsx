@@ -4,12 +4,10 @@ import styles from "./styles.module.css";
 import { StandartBackgroundColor } from "../../core";
 import { UIBasics } from "../..";
 
-export const ContentContainerColumn = newStyledElement.div(
+const ContentContainerColumn = newStyledElement.div(
 	styles.contentContainerColumn
 );
-export const ContentContainerRow = newStyledElement.div(
-	styles.contentContainerRow
-);
+const ContentContainerRow = newStyledElement.div(styles.contentContainerRow);
 
 interface GridListProps {
 	children: ReactNode;

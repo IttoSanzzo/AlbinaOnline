@@ -1,4 +1,9 @@
-import { SimpleMessageContainer } from "./styledElements";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const SimpleMessageContainer = newStyledElement.div(
+	styles.simpleMessageContainer
+);
 
 interface SimpleMessageProps {
 	message?: string;

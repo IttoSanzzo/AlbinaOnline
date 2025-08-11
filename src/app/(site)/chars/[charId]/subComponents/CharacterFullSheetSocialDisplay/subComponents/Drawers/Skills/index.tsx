@@ -1,7 +1,7 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
-import { CharacterSkill, Guid } from "@/libs/stp@types";
+import { Guid } from "@/libs/stp@types";
 
 interface SkillsDrawerProps {
 	characterId: Guid;
@@ -11,13 +11,13 @@ export function SkillsDrawer({ characterId }: SkillsDrawerProps) {
 		<CharacterDrawerBaseHeader
 			title="Skills"
 			memoryId={`${characterId}-Skills`}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="blue"
 				withoutPadding
 				withoutMargin
 				withoutBorder>
 				<CharacterDataDisplays.Skills characterId={characterId} />
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

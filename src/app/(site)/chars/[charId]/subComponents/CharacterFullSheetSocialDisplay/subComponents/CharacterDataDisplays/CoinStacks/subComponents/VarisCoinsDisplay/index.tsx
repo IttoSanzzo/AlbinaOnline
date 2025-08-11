@@ -1,16 +1,11 @@
-import {
-	NotionBox,
-	NotionHeader,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
 import { VarisCoins } from "@/libs/stp@types";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
+import { UIBasics } from "@/components/(UIBasics)";
 
 function tableParameterEntry(title: string, value: number) {
 	return [
 		<StyledFalseLink title={title} />,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor="orange"
@@ -24,19 +19,19 @@ interface VarisCoinsDisplayProps {
 }
 export function VarisCoinsDisplay({ varisCoins }: VarisCoinsDisplayProps) {
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding
 			withoutBorder
 			withoutMargin>
-			<NotionHeader
+			<UIBasics.Header
 				headerType="h2"
 				textAlign="center"
 				textColor="orange"
 				children={"Varis"}
 			/>
 			<div style={{ display: "flex" }}>
-				<NotionTable
+				<UIBasics.Table
 					fixedLinePositions={[1, 3]}
 					fixedLineWidths={[50, 12]}
 					direction="row"
@@ -45,6 +40,6 @@ export function VarisCoinsDisplay({ varisCoins }: VarisCoinsDisplayProps) {
 					}}
 				/>
 			</div>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

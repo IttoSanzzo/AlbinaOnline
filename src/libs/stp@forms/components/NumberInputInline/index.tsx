@@ -1,13 +1,20 @@
 import { StpIcon } from "@/libs/stp@icons";
-import {
-	NumberInputDecrementButton,
-	NumberInputField,
-	NumberInputFieldContainer,
-	NumberInputIncrementButton,
-} from "./styledElements";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
-import { NotionTextColor } from "@/components/(NotionBased)";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { StandartTextColor } from "@/components/(UIBasics)";
+
+const NumberInputFieldContainer = newStyledElement.div(
+	styles.numberInputFieldContainer
+);
+const NumberInputField = newStyledElement.input(styles.numberInputField);
+const NumberInputDecrementButton = newStyledElement.button(
+	styles.numberInputDecrementButton
+);
+const NumberInputIncrementButton = newStyledElement.button(
+	styles.numberInputIncrementButton
+);
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
@@ -32,7 +39,7 @@ type NumberInputInlineProps<TControl extends Control<any>> = {
 	min?: number;
 	max?: number;
 	step?: number;
-	color?: keyof typeof NotionTextColor;
+	color?: keyof typeof StandartTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function NumberInputInline<TControl extends Control<any>>({
@@ -54,7 +61,7 @@ export function NumberInputInline<TControl extends Control<any>>({
 
 	const inputStyle: CSSProperties = {
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
-		...(color && { color: NotionTextColor[color] }),
+		...(color && { color: StandartTextColor[color] }),
 		...style,
 	};
 

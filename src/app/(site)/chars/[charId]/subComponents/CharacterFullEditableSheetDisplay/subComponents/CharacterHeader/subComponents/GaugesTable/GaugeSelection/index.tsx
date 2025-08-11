@@ -2,7 +2,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { HookedForm } from "@/libs/stp@forms";
 import { Control } from "react-hook-form";
-import { NotionText, NotionTextColor } from "@/components/(NotionBased)";
+import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 
 const GaugeSelectionContainer = newStyledElement.div(
 	styles.gaugeSelectionContainer
@@ -12,7 +12,7 @@ interface GaugeSelectionProps {
 	gauge: "Hp" | "Ep" | "Mp";
 	control: Control<any>;
 	currentMax: number;
-	color: keyof typeof NotionTextColor;
+	color: keyof typeof StandartTextColor;
 }
 export function GaugeSelection({
 	gauge,
@@ -28,7 +28,7 @@ export function GaugeSelection({
 				max={currentMax}
 				color={color}
 			/>
-			<NotionText
+			<UIBasics.Text
 				textAlign="center"
 				textColor={color}
 				children={`/ ${currentMax} + `}

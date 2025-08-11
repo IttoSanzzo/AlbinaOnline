@@ -4,7 +4,6 @@ import {
 	SpellData,
 	SpellType,
 } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
@@ -12,7 +11,7 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
-import { NotionHeader, NotionToggleHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -95,7 +94,7 @@ export function SpellSelectionCore({
 			{unacquiredSpellsByLevel.map((unacquiredSpellFromThisLevel, index) => {
 				if (unacquiredSpellFromThisLevel.length === 0) return null;
 				return (
-					<NotionToggleHeader
+					<UIBasics.ToggleHeader
 						key={index}
 						memoryId={`${characterId}-AddSpell-Level-${index}`}
 						contentMargin="none"
@@ -103,7 +102,7 @@ export function SpellSelectionCore({
 						titleAlign="center"
 						titleColor="purple"
 						title={`Nível ${index}`}>
-						<NotionGridList
+						<UIBasics.List.Grid
 							columnWidth={300}
 							direction="column"
 							backgroundColor="gray"
@@ -121,7 +120,7 @@ export function SpellSelectionCore({
 								);
 							})}
 						/>
-					</NotionToggleHeader>
+					</UIBasics.ToggleHeader>
 				);
 			})}
 		</>

@@ -1,9 +1,3 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionTextColor,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
@@ -13,6 +7,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterCoreMetrics } from "@/libs/stp@types";
 import z from "zod";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
+import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 
 const schema = z
 	.object({
@@ -39,12 +34,12 @@ function formTableEntry(
 	control: Control<FormData>,
 	title: string,
 	fieldName: keyof FormData,
-	color: keyof typeof NotionTextColor,
+	color: keyof typeof StandartTextColor,
 	min?: number,
 	max?: number
 ) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
@@ -62,7 +57,7 @@ interface CharacterGaugeEditableDisplayProps {
 	gauge: "healthPoints" | "staminaPoints" | "manaPoints";
 	name: string;
 	acronym: string;
-	color: keyof typeof NotionTextColor;
+	color: keyof typeof StandartTextColor;
 }
 export function CharacterGaugeEditableDisplay({
 	gauge,
@@ -134,7 +129,7 @@ export function CharacterGaugeEditableDisplay({
 	}
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
@@ -151,7 +146,7 @@ export function CharacterGaugeEditableDisplay({
 						display: "flex",
 						flexDirection: "column",
 					}}>
-					<NotionTable
+					<UIBasics.Table
 						tableData={{
 							tableLanes: [
 								formTableEntry(
@@ -186,6 +181,6 @@ export function CharacterGaugeEditableDisplay({
 					/>
 				</div>
 			</HookedForm.Form>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

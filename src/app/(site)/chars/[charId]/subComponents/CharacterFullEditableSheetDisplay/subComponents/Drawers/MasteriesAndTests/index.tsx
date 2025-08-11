@@ -1,5 +1,4 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { Notion2Columns } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { useContext, useLayoutEffect } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -7,6 +6,7 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { CharacterMasteryExpanded, Guid } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
 import React from "react";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface MasteriesAndTestsDrawerProps {
 	characterId: Guid;
@@ -43,7 +43,7 @@ export function MasteriesAndTestsDrawer({
 			title="Maestrias & Testes"
 			memoryId={`${characterId}-MasteriesAndTests`}
 			backgroundColor="blue">
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterEditableDataDisplays.MasteriesFromType
 						characterId={characterId}
@@ -57,7 +57,7 @@ export function MasteriesAndTestsDrawer({
 					/>
 				}
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterEditableDataDisplays.MasteriesFromType
 						characterId={characterId}

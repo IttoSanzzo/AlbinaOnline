@@ -13,8 +13,8 @@ import { usePathname } from "next/navigation";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-export const CarouselContainer = newStyledElement.div(styles.carouselContainer);
-export const SlideContainer = newStyledElement.div(styles.slideContainer);
+const CarouselContainer = newStyledElement.div(styles.carouselContainer);
+const SlideContainer = newStyledElement.div(styles.slideContainer);
 
 function getCurrentPositionState(pathname: string, memoryName?: string) {
 	if (memoryName) {

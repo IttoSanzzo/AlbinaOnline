@@ -7,8 +7,8 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { EditablePageBanner } from "./subComponents/EditablePageBanner";
 
-export const MainContainer = newStyledElement.div(styles.mainContainer);
-export const ContentsContainer = newStyledElement.div(styles.contentsContainer);
+const MainContainer = newStyledElement.div(styles.mainContainer);
+const ContentsContainer = newStyledElement.div(styles.contentsContainer);
 
 interface GenericPageContainerProps {
 	children: ReactNode;

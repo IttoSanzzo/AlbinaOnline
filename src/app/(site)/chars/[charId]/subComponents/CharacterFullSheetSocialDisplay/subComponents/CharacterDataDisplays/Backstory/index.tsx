@@ -1,9 +1,9 @@
-import { NotionBox } from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import z from "zod";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	backstory: z.string().max(5000, "Máximo de 5000 caracteres"),
@@ -35,7 +35,7 @@ export function CharacterBackstoryDisplay({
 				debounce={3000}
 				action={async () => false}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
@@ -47,7 +47,7 @@ export function CharacterBackstoryDisplay({
 					height={300}
 					disabled
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</HookedForm.Form>
 	);
 }

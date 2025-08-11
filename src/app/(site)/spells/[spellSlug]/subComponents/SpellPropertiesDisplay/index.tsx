@@ -1,11 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionHeader,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { SpellProperties } from "@/libs/stp@types";
 
 interface SpellPropertiesDisplayProps {
@@ -25,28 +19,28 @@ export default function SpellPropertiesDisplay({
 	if (magicAttributes.length === 0) magicAttributes[0] = "Nenhum";
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				headerType="h2"
 				textAlign="center"
 				textColor="orange"
 				children={`¤ Feitiço Nível ${spellLevel} ¤`}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="darkGray"
 				withoutBorder>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionTable
+						<UIBasics.Table
 							textColor="gray"
 							withHeaderColumn={false}
 							withHeaderRow
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={"Domínios"}
 										/>,
@@ -63,57 +57,57 @@ export default function SpellPropertiesDisplay({
 						/>
 					}
 					colum2={
-						<NotionTable
+						<UIBasics.Table
 							textColor="gray"
 							withHeaderColumn={false}
 							withHeaderRow
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={`Atributos Mágicos`}
 										/>,
 									],
 									...magicAttributes.map((magicAttribute) => [
-										<NotionText>{magicAttribute}</NotionText>,
+										<UIBasics.Text>{magicAttribute}</UIBasics.Text>,
 									]),
 								],
 							}}
 						/>
 					}
 				/>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionTable
+						<UIBasics.Table
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children="💠Mana"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children={spellProperties.components.mana}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children="🧪Estamina"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children={spellProperties.components.stamina}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="brown"
 											children="🕰️Tempo"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="brown"
 											children={spellProperties.components.time}
 										/>,
@@ -123,45 +117,45 @@ export default function SpellPropertiesDisplay({
 						/>
 					}
 					colum2={
-						<NotionTable
+						<UIBasics.Table
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children="⏳Duração"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children={spellProperties.components.duration}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children="❇️Forma"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children={spellProperties.components.form}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children="📏Alcance"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={spellProperties.components.range}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children="📐Área"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={spellProperties.components.area}
 										/>,
@@ -172,7 +166,7 @@ export default function SpellPropertiesDisplay({
 					}
 				/>
 				{spellProperties.extras.length !== 0 && (
-					<NotionTable
+					<UIBasics.Table
 						withHeaderRow
 						textColor="gray"
 						fixedLinePositions={[1]}
@@ -180,11 +174,11 @@ export default function SpellPropertiesDisplay({
 						tableData={{
 							tableLanes: [
 								[
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Extras"
 									/>,
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Descrição"
 										textAlign="flex-center"
@@ -192,15 +186,15 @@ export default function SpellPropertiesDisplay({
 									/>,
 								],
 								...spellProperties.extras.map((extra) => [
-									<NotionText>{`⦇ ${extra.key} ⦈`}</NotionText>,
-									<NotionText>{`⪩ ${extra.value}`}</NotionText>,
+									<UIBasics.Text>{`⦇ ${extra.key} ⦈`}</UIBasics.Text>,
+									<UIBasics.Text>{`⪩ ${extra.value}`}</UIBasics.Text>,
 								]),
 							],
 						}}
 					/>
 				)}
 				{spellProperties.extras.length !== 0 && (
-					<NotionTable
+					<UIBasics.Table
 						withHeaderRow
 						textColor="gray"
 						fixedLinePositions={[1]}
@@ -208,11 +202,11 @@ export default function SpellPropertiesDisplay({
 						tableData={{
 							tableLanes: [
 								[
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Linhas"
 									/>,
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Cânticos"
 										textAlign="flex-center"
@@ -220,14 +214,14 @@ export default function SpellPropertiesDisplay({
 									/>,
 								],
 								...spellProperties.chants.map((chantLine, index) => [
-									<NotionText>{`⦇Linha ${index}⦈`}</NotionText>,
-									<NotionText>{chantLine}</NotionText>,
+									<UIBasics.Text>{`⦇Linha ${index}⦈`}</UIBasics.Text>,
+									<UIBasics.Text>{chantLine}</UIBasics.Text>,
 								]),
 							],
 						}}
 					/>
 				)}
-			</NotionBox>
-		</NotionBox>
+			</UIBasics.Box>
+		</UIBasics.Box>
 	);
 }

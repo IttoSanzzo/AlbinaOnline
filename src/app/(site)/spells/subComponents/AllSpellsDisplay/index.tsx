@@ -1,6 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { SpellData } from "@/libs/stp@types";
 
 interface AllSpellsDisplayProps {
@@ -19,19 +18,19 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 	);
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
 			{allSpellsOrdenedByLevel.map((spellLevel, level) => {
 				return (
 					<div key={level}>
-						<NotionHeader
+						<UIBasics.Header
 							textAlign="center"
 							textColor="purple"
 							children={`Nível ${level}`}
 						/>
 						{
-							<NotionGridList
+							<UIBasics.List.Grid
 								backgroundColor="purple"
 								children={spellLevel.map((spell) => (
 									<StyledLink
@@ -46,6 +45,6 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 					</div>
 				);
 			})}
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

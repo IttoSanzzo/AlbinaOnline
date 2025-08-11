@@ -1,10 +1,15 @@
-import {
-	IndexedPageLinksContainer,
-	IndexedPagesGroupContainer,
-} from "./styledElements";
-import { NotionToggle } from "@/components/(NotionBased)";
 import { StyledLink } from "@/components/(Design)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { UIBasics } from "@/components/(UIBasics)";
+
+const IndexedPagesGroupContainer = newStyledElement.div(
+	styles.indexedPagesGroupContainer
+);
+const IndexedPageLinksContainer = newStyledElement.div(
+	styles.indexedPageLinksContainer
+);
 
 export interface IndexedPage {
 	name: string;
@@ -23,7 +28,7 @@ export default function IndexedPagesGroup({
 }: IndexedPagesGroupProps) {
 	return (
 		<IndexedPagesGroupContainer>
-			<NotionToggle
+			<UIBasics.Toggle
 				memoryId={`IndexedPages/${groupName}`}
 				routeSensitiveMemory={false}
 				contentMargin="none"
@@ -43,7 +48,7 @@ export default function IndexedPagesGroup({
 						/>
 					))}
 				</IndexedPageLinksContainer>
-			</NotionToggle>
+			</UIBasics.Toggle>
 		</IndexedPagesGroupContainer>
 	);
 }

@@ -12,10 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 
-export const ChangeIconButtonContainer = newStyledElement.div(
+const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer
 );
-export const ChangeIconButtonTrigger = newStyledElement.button(
+const ChangeIconButtonTrigger = newStyledElement.button(
 	styles.changeIconButtonTrigger
 );
 

@@ -3,6 +3,7 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -21,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function AnagnosiDomainPage() {
-	const response = await fetch(`${process.env.ALBINA_API}/spells`, {
+	const response = await fetch(getAlbinaApiAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -33,8 +34,8 @@ export default async function AnagnosiDomainPage() {
 	return (
 		<GenericPageContainer
 			title="Domínio Anagnosi"
-			icon={`${process.env.ALBINA_API}/favicon/spells/anagnosi`}
-			banner={`${process.env.ALBINA_API}/banner/spells/anagnosi`}>
+			icon={getAlbinaApiAddress("/favicon/spells/anagnosi")}
+			banner={getAlbinaApiAddress("/banner/spells/anagnosi")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SpellTypeDisplay

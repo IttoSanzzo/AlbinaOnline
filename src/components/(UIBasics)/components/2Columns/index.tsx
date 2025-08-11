@@ -2,15 +2,9 @@ import { CSSProperties, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-export const TwoColumnsContainer = newStyledElement.div(
-	styles.twoColumnsContainer
-);
-export const LeftColumContainer = newStyledElement.div(
-	styles.leftColumContainer
-);
-export const RightColumContainer = newStyledElement.div(
-	styles.rightColumContainer
-);
+const TwoColumnsContainer = newStyledElement.div(styles.twoColumnsContainer);
+const LeftColumContainer = newStyledElement.div(styles.leftColumContainer);
+const RightColumContainer = newStyledElement.div(styles.rightColumContainer);
 
 function getFlexGrowFromDivision(ratio: number, side: 1 | 2): number {
 	const center = 5;

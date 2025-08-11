@@ -1,18 +1,16 @@
-import { NotionBackgroundColor } from "@/components/(NotionBased)";
 import { CSSProperties, InputHTMLAttributes, useState } from "react";
 import { Control, Controller, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import * as NextImage from "next/image";
+import { StandartBackgroundColor } from "@/components/(UIBasics)";
 // import Image from "next/image";
 
-export const ImageInputContainer = newStyledElement.div(
-	styles.imageInputContainer
-);
-export const ImageInputField = newStyledElement.input(styles.imageInputField);
-export const ImageInputLabel = newStyledElement.label(styles.imageInputLabel);
-export const ImageInputError = newStyledElement.div(styles.imageInputError);
-export const ImagePreviewContainer = newStyledElement.div(
+const ImageInputContainer = newStyledElement.div(styles.imageInputContainer);
+const ImageInputField = newStyledElement.input(styles.imageInputField);
+const ImageInputLabel = newStyledElement.label(styles.imageInputLabel);
+const ImageInputError = newStyledElement.div(styles.imageInputError);
+const ImagePreviewContainer = newStyledElement.div(
 	styles.imagePreviewContainer
 );
 
@@ -21,7 +19,7 @@ type ImageInputProps<TControl extends Control<any>> = {
 	control: TControl;
 	fieldName: Path<ExtractFieldValues<TControl>> | null;
 	label: string;
-	labelBackground?: keyof typeof NotionBackgroundColor;
+	labelBackground?: keyof typeof StandartBackgroundColor;
 	accept?: string;
 	previewMaxWidth?: CSSProperties["maxWidth"];
 	previewMaxHeight?: CSSProperties["maxHeight"];
@@ -54,7 +52,7 @@ export function ImageInput<TControl extends Control<any>>({
 	const inputStyle: CSSProperties = {};
 	const labelStyle: CSSProperties = {
 		...(labelBackground && {
-			backgroundColor: NotionBackgroundColor[labelBackground],
+			backgroundColor: StandartBackgroundColor[labelBackground],
 		}),
 	};
 

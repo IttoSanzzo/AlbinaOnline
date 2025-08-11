@@ -1,9 +1,3 @@
-import {
-	Notion2Columns,
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { useContext, useLayoutEffect } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import {
@@ -17,8 +11,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
-import { NotionGridList } from "@/components/(UTILS)";
 import { AddEquipmentButton } from "./subComponents/AddEquipmentButton";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -60,13 +54,13 @@ function formEquipSlotTableEntry(
 				slot={slot}
 				alreadyHasItemIds={itemIds}
 			/>
-			<NotionText
+			<UIBasics.Text
 				display="block"
 				textAlign="center"
 				children={title}
 			/>
 		</div>,
-		<NotionGridList
+		<UIBasics.List.Grid
 			withoutBorder
 			withoutMargin
 			withoutPadding
@@ -105,15 +99,15 @@ export function _CharacterEquipmentsDisplay() {
 	if (characterEquipments == null) return null;
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="green"
 			title="Equipamentos"
 			memoryId={`${characterId}-Equipments`}>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
-					<NotionTable
+					<UIBasics.Table
 						fixedLinePositions={[1]}
 						fixedLineWidths={[45]}
 						columnBackgroundColors={[undefined, "gray"]}
@@ -159,7 +153,7 @@ export function _CharacterEquipmentsDisplay() {
 					/>
 				}
 				colum2={
-					<NotionTable
+					<UIBasics.Table
 						fixedLinePositions={[1]}
 						fixedLineWidths={[40]}
 						columnBackgroundColors={[undefined, "gray"]}
@@ -226,7 +220,7 @@ export function _CharacterEquipmentsDisplay() {
 					/>
 				}
 			/>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

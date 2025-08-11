@@ -5,7 +5,6 @@ import {
 	MasterySubType,
 	MasteryType,
 } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 import { useContext, useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
@@ -13,6 +12,7 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { MasteriesContext } from "../../../../../../CharacterEditableSheetContextProviders";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
@@ -84,7 +84,7 @@ export function MasterySelectionCore({
 	}
 
 	return (
-		<NotionGridList
+		<UIBasics.List.Grid
 			columnWidth={300}
 			direction="column"
 			backgroundColor="gray"

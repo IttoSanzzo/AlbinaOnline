@@ -1,13 +1,15 @@
-import {
-	PasswordInputContainer,
-	PasswordInputError,
-	PasswordInputLabel,
-} from "./styledElements";
 import { CSSProperties } from "react";
 import { Control, Path, useController } from "react-hook-form";
 import * as PasswordToggleField from "@radix-ui/react-password-toggle-field";
-import styles from "./styles.module.css";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const PasswordInputContainer = newStyledElement.div(
+	styles.passwordInputContainer
+);
+const PasswordInputLabel = newStyledElement.label(styles.passwordInputLabel);
+const PasswordInputError = newStyledElement.div(styles.passwordInputError);
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 

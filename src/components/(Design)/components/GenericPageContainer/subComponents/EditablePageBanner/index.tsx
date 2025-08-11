@@ -5,10 +5,7 @@ import styles from "./styles.module.css";
 import { ChangeBannerButton } from "./subComponents/ChangeBannerButton";
 import { useState } from "react";
 
-export const EditablePageBannerContainer = newStyledElement.div(
-	styles.pageBannerContainer
-);
-export const EditBannerButton = newStyledElement.button(
+const EditablePageBannerContainer = newStyledElement.div(
 	styles.pageBannerContainer
 );
 

@@ -1,13 +1,14 @@
-import {
-	NumberInputContainer,
-	NumberInputError,
-	NumberInputLabel,
-} from "./styledElements";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
 import { NumberInputInline } from "../NumberInputInline";
 import clsx from "clsx";
-import { NotionTextColor } from "@/components/(NotionBased)";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { StandartTextColor } from "@/components/(UIBasics)";
+
+const NumberInputContainer = newStyledElement.div(styles.numberInputContainer);
+const NumberInputLabel = newStyledElement.label(styles.numberInputLabel);
+const NumberInputError = newStyledElement.div(styles.numberInputError);
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
@@ -34,7 +35,7 @@ type NumberInputProps<TControl extends Control<any>> = {
 	min?: number;
 	max?: number;
 	step?: number;
-	color?: keyof typeof NotionTextColor;
+	color?: keyof typeof StandartTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function NumberInput<TControl extends Control<any>>({

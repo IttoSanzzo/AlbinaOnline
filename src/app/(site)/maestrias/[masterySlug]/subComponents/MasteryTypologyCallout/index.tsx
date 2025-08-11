@@ -1,8 +1,4 @@
-import {
-	NotionCallout,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 function getTabulatedType(type: string) {
 	switch (type) {
@@ -69,28 +65,28 @@ export default function MasteryTypologyCallout({
 }: MasteryTypologyCalloutProps) {
 	const tableType = [
 		"💮Tipo",
-		<NotionText>{getTabulatedType(type)}</NotionText>,
+		<UIBasics.Text>{getTabulatedType(type)}</UIBasics.Text>,
 	];
 	const tableStatus = [
 		"🏷️Categoria",
-		<NotionText>{getTabulatedCategory(subType)}</NotionText>,
+		<UIBasics.Text>{getTabulatedCategory(subType)}</UIBasics.Text>,
 	];
 
 	return (
 		<>
-			<NotionCallout
+			<UIBasics.Callout
 				icon={{
 					name: "IdentificationCard",
 					color: "purple",
 				}}
 				titleColor="gray"
 				title={"Tipologia"}>
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [tableType, tableStatus],
 					}}
 				/>
-			</NotionCallout>
+			</UIBasics.Callout>
 		</>
 	);
 }

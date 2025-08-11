@@ -1,21 +1,10 @@
-import {
-	CharacterEquipments,
-	CharacterItemStackExpanded,
-	CharacterMiscMetrics,
-	EquipmentSlot,
-	EquipmentSlotType,
-	Guid,
-	isSlotCompatibleWithType,
-	ItemData,
-	MagicAttribute,
-} from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
+import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { NotionHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface AttributeSelectionCoreProps {
 	characterId: Guid;
@@ -64,15 +53,15 @@ export function AttributeSelectionCore({
 
 	if (unacquiredAttributes.length === 0) {
 		return (
-			<NotionHeader
+			<UIBasics.Header
 				textColor="gray"
 				textAlign="center">
 				Não há atributos disponíveis.
-			</NotionHeader>
+			</UIBasics.Header>
 		);
 	}
 	return (
-		<NotionGridList
+		<UIBasics.List.Grid
 			columnWidth={300}
 			direction="column"
 			backgroundColor="gray"
@@ -83,7 +72,6 @@ export function AttributeSelectionCore({
 						asChild>
 						<StyledLinklikeButton
 							title={unacquiredAttribute}
-							// icon={unacquiredAttribute.item.iconUrl}
 							onClick={() => handleAddAttribute(unacquiredAttribute)}
 						/>
 					</Dialog.Close>

@@ -1,8 +1,12 @@
 import Link, { LinkProps } from "next/link";
-import { StyledLinkContainer } from "./styledElements";
-import styles from "./styles.module.css";
 import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const StyledLinkContainer = newStyledElement.div(
+	styles.styledLinkContainer
+);
 
 export interface StyledLinkProps extends LinkProps {
 	title: string;

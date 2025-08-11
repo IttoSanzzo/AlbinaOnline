@@ -10,7 +10,7 @@ import {
 	ItemMainContainer,
 	ItemPartsContainer,
 	ItemRightHand,
-} from "../Item/styledElements";
+} from "../Item";
 import externalStyles from "../Item/styles.module.css";
 import styles from "./styles.module.css";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";

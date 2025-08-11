@@ -1,4 +1,4 @@
-import { NotionHeader, NotionDivisor } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface GenericPageFooterProps {
 	version: string;
@@ -18,21 +18,21 @@ export function GenericPageFooter({
 
 	return (
 		<>
-			<NotionDivisor />
+			<UIBasics.Divisor />
 			{lastUpdateString && (
-				<NotionHeader
+				<UIBasics.Header
 					textAlign="center"
 					headerType="h5"
 					textColor="darkGray">
 					{`Ultima atualização em ${lastUpdateString}`}
-				</NotionHeader>
+				</UIBasics.Header>
 			)}
-			<NotionHeader
+			<UIBasics.Header
 				textAlign="center"
 				headerType="h5"
 				textColor="darkGray">
 				{`『⇅ Ver. ${version}』`}
-			</NotionHeader>
+			</UIBasics.Header>
 		</>
 	);
 }

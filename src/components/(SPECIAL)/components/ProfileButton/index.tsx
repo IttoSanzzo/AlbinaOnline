@@ -1,15 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import {
-	ProfileButtonContainer,
-	ProfileMenuTriggerButton,
-} from "./styledElements";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { LogoutButton } from "./subComponents/LogoutItem";
 import { DropdownMenu } from "@/libs/stp@radix";
 import { YourProfileItem } from "./subComponents/YourProfileItem";
 import { YourEditItem } from "./subComponents/YourEditItem";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const ProfileButtonContainer = newStyledElement.div(
+	styles.profileButtonContainer
+);
+const ProfileMenuTriggerButton = newStyledElement.div(
+	styles.profileMenuTriggerButton
+);
 
 export function ProfileButton() {
 	const { user } = useCurrentUser();

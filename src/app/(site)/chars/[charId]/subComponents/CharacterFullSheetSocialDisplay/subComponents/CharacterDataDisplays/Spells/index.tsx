@@ -1,5 +1,5 @@
-import { StyledLink, StyledLinkWithButton } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -9,7 +9,7 @@ function formTable(
 	characterSpells: CharacterSpellExpanded[]
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -18,7 +18,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -37,7 +37,7 @@ function formTable(
 			if (spellsFromThisLevel.length === 0) return [];
 			return [
 				[
-					<NotionText
+					<UIBasics.Text
 						textColor="orange"
 						children={`Nível ${index}`}
 					/>,
@@ -86,7 +86,7 @@ export function _CharacterSpellsDisplay({
 	}, []);
 
 	return (
-		<NotionTable
+		<UIBasics.Table
 			style={{ margin: 0 }}
 			withHeaderColumn={false}
 			columnBackgroundColors={["gray"]}

@@ -8,10 +8,10 @@ import {
 	UIBasics,
 } from "../..";
 
-export const HorizontalTableContainer = newStyledElement.table(
+const HorizontalTableContainer = newStyledElement.table(
 	styles.horizontalTableContainer
 );
-export const VerticalTableContainer = newStyledElement.table(
+const VerticalTableContainer = newStyledElement.table(
 	styles.verticalTableContainer
 );
 

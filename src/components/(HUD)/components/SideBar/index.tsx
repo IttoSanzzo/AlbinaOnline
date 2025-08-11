@@ -1,16 +1,19 @@
 import Image from "next/image";
-import {
-	ActivePageTitle,
-	AlbinaTitle,
-	FooterContainer,
-	HeaderContainer,
-	SideBarActivationArea,
-	SideBarContainer,
-} from "./styledElements";
 import albinaLogo from "@/../public/AlbinaLogo.png";
 import Link from "next/link";
 import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
 import { DataInitComplete } from "./subComponents/DataInitComplete";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const SideBarActivationArea = newStyledElement.div(
+	styles.sideBarActivationArea
+);
+const SideBarContainer = newStyledElement.div(styles.sideBarContainer);
+const HeaderContainer = newStyledElement.div(styles.headerContainer);
+const AlbinaTitle = newStyledElement.div(styles.albinaTitle);
+const ActivePageTitle = newStyledElement.h6(styles.activePageTitle);
+const FooterContainer = newStyledElement.div(styles.footerContainer);
 
 export async function SideBar() {
 	return (

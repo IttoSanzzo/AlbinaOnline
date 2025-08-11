@@ -1,10 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
@@ -18,7 +13,7 @@ function FormSpellDomainTablePair(name: string, level: number) {
 			href={`/spells/${lowercaseName}`}
 			icon={getAlbinaApiAddress(`/favicon/spells/${lowercaseName}`)}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			children={level.toString()}
@@ -34,11 +29,11 @@ export function CharacterSpellDomainsDisplay({
 }: CharacterSpellDomainsDisplayProps) {
 	return (
 		<div>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="purple"
 				withoutBorder
 				withoutMargin>
-				<NotionTable
+				<UIBasics.Table
 					textColor="pink"
 					tableData={{
 						tableLanes: [
@@ -46,14 +41,14 @@ export function CharacterSpellDomainsDisplay({
 						],
 					}}
 				/>
-			</NotionBox>
-			<Notion2Columns
+			</UIBasics.Box>
+			<UIBasics.MultiColumn.Two
 				colum1={
-					<NotionBox
+					<UIBasics.Box
 						backgroundColor="purple"
 						withoutBorder
 						withoutMargin>
-						<NotionTable
+						<UIBasics.Table
 							textColor="pink"
 							tableData={{
 								tableLanes: [
@@ -72,14 +67,14 @@ export function CharacterSpellDomainsDisplay({
 								],
 							}}
 						/>
-					</NotionBox>
+					</UIBasics.Box>
 				}
 				colum2={
-					<NotionBox
+					<UIBasics.Box
 						backgroundColor="purple"
 						withoutBorder
 						withoutMargin>
-						<NotionTable
+						<UIBasics.Table
 							textColor="pink"
 							tableData={{
 								tableLanes: [
@@ -92,7 +87,7 @@ export function CharacterSpellDomainsDisplay({
 								],
 							}}
 						/>
-					</NotionBox>
+					</UIBasics.Box>
 				}
 			/>
 		</div>

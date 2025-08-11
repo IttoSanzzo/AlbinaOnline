@@ -1,9 +1,9 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { useContext } from "react";
 import { CoreMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import { MiscMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/MiscMetrics";
 import { ItemsContext } from "../../../CharacterEditableSheetContextProviders/contexts/Items";
 import { CharacterItemStackExpanded } from "@/libs/stp@types";
+import { UIBasics } from "@/components/(UIBasics)";
 
 function calcTotalWeight(characterItems: CharacterItemStackExpanded[]) {
 	return (
@@ -21,7 +21,7 @@ export function MiscsTable({}: MiscsTableProps) {
 	const { characterItems } = useContext(ItemsContext);
 
 	return (
-		<NotionTable
+		<UIBasics.Table
 			fixedLinePositions={[1, 3]}
 			fixedLineWidths={[28, 20]}
 			withHeaderColumn={false}
@@ -29,21 +29,21 @@ export function MiscsTable({}: MiscsTableProps) {
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Iniciativa"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
 							children={String(coreMetrics.initiative)}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Carga"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
@@ -53,11 +53,11 @@ export function MiscsTable({}: MiscsTableProps) {
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"C.A."}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
@@ -65,11 +65,11 @@ export function MiscsTable({}: MiscsTableProps) {
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Movimento"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"

@@ -1,13 +1,12 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { Dispatch, SetStateAction, useContext } from "react";
 import { MiscMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/MiscMetrics";
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { AddAttributeButton } from "./subComponents/AddAttributeButton";
-import { NotionGridList } from "@/components/(UTILS)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleRemoveAttribute(
 	characterId: Guid,
@@ -41,7 +40,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 	const { characterId } = useContext(CharacterIdContext);
 
 	return (
-		<NotionTable
+		<UIBasics.Table
 			direction="column"
 			withoutMargin
 			withoutBorderRadius
@@ -55,7 +54,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 								miscMetrics={miscMetrics}
 								setMiscMetrics={setMiscMetrics}
 							/>
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"
@@ -63,7 +62,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 							/>
 						</div>,
 						miscMetrics.magicAttributes.length > 0 ? (
-							<NotionGridList
+							<UIBasics.List.Grid
 								columnWidth={100}
 								withoutBorder
 								withoutMargin
@@ -86,7 +85,7 @@ export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
 								))}
 							/>
 						) : (
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

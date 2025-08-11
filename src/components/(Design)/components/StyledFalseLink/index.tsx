@@ -4,7 +4,7 @@ import React from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-export const StyledFalseLinkContainer = newStyledElement.div(
+const StyledFalseLinkContainer = newStyledElement.div(
 	styles.styledFalseLinkContainer
 );
 

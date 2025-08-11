@@ -5,9 +5,9 @@ import { StandartColorProps, StandartTextColor } from "../../core";
 import { StandartColorKeysToProperties } from "../../utils";
 import { UIBasics } from "../..";
 
-export const QuoteContainer = newStyledElement.div(styles.quoteContainer);
-export const BeforeBar = newStyledElement.span(styles.beforeBar);
-export const ContentContainer = newStyledElement.div(styles.contentContainer);
+const QuoteContainer = newStyledElement.div(styles.quoteContainer);
+const BeforeBar = newStyledElement.span(styles.beforeBar);
+const ContentContainer = newStyledElement.div(styles.contentContainer);
 
 interface QuoteProps extends StandartColorProps {
 	children?: ReactNode | string;

@@ -2,9 +2,9 @@ import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import AllSpellsDisplay from "./subComponents/AllSpellsDisplay";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Domínios", id: "Domínios" },
@@ -51,19 +51,19 @@ export default async function SpellsPage() {
 	return (
 		<GenericPageContainer
 			title="Todas os Spells"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/spells`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/spells`}>
+			icon={getAlbinaApiAddress("/favicon/core-page/spells")}
+			banner={getAlbinaApiAddress("/banner/core-page/spells")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionHeader
+				<UIBasics.Header
 					textAlign="center"
 					textColor="purple"
 					children={"Domínios"}
 				/>
-				<NotionGridList
+				<UIBasics.List.Grid
 					backgroundColor="darkGray"
 					children={DomainInfos.map((DomainInfo) => (
 						<StyledLink
@@ -74,7 +74,7 @@ export default async function SpellsPage() {
 						/>
 					))}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 
 			<AllSpellsDisplay allSpells={allSpells} />
 		</GenericPageContainer>

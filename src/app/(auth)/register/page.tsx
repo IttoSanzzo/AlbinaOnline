@@ -1,11 +1,14 @@
 import Link from "next/link";
-import {
-	RegisterPageContainer,
-	RegisterHeader,
-	RegisterWindow,
-	OldcomerFooter,
-} from "./styledElements";
 import { RegisterForm } from "./subComponents/RegisterForm";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const RegisterPageContainer = newStyledElement.div(
+	styles.registerPageContainer
+);
+const RegisterWindow = newStyledElement.div(styles.registerWindow);
+const RegisterHeader = newStyledElement.h1(styles.registerHeader);
+const OldcomerFooter = newStyledElement.div(styles.oldcomerFooter);
 
 interface RegisterPageProps {
 	searchParams: Promise<{ redirectTo?: string }>;

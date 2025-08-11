@@ -10,9 +10,9 @@ import { CSSProperties } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-export const SelectContainer = newStyledElement.div(styles.selectContainer);
-export const SelectLabel = newStyledElement.label(styles.selectLabel);
-export const SelectError = newStyledElement.div(styles.selectError);
+const SelectContainer = newStyledElement.div(styles.selectContainer);
+const SelectLabel = newStyledElement.label(styles.selectLabel);
+const SelectError = newStyledElement.div(styles.selectError);
 
 export type SelectWithIconOption = {
 	value: string;

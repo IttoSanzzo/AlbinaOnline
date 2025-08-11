@@ -9,14 +9,14 @@ import z from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export const NumberInputFieldContainer = newStyledElement.div(
+const NumberInputFieldContainer = newStyledElement.div(
 	styles.numberInputFieldContainer
 );
-export const NumberInputField = newStyledElement.input(styles.numberInputField);
-export const NumberInputDecrementButton = newStyledElement.button(
+const NumberInputField = newStyledElement.input(styles.numberInputField);
+const NumberInputDecrementButton = newStyledElement.button(
 	styles.numberInputDecrementButton
 );
-export const NumberInputIncrementButton = newStyledElement.button(
+const NumberInputIncrementButton = newStyledElement.button(
 	styles.numberInputIncrementButton
 );
 

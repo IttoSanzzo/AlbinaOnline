@@ -5,7 +5,6 @@ import {
 	ItemType,
 	ItemTypePluralName,
 } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
@@ -13,7 +12,7 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
-import { NotionToggleHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -95,7 +94,7 @@ export function ItemSelectionCore({
 			{unacquiredItemsByType.map((unacquiredItemsFromThisType, index) => {
 				if (unacquiredItemsFromThisType.length === 0) return null;
 				return (
-					<NotionToggleHeader
+					<UIBasics.ToggleHeader
 						key={unacquiredItemsFromThisType[0].type}
 						memoryId={`${characterId}-AddItem-Type-${unacquiredItemsFromThisType[0].type}`}
 						contentMargin="none"
@@ -105,7 +104,7 @@ export function ItemSelectionCore({
 						title={
 							ItemTypePluralName[ItemType[index] as keyof typeof ItemType]
 						}>
-						<NotionGridList
+						<UIBasics.List.Grid
 							columnWidth={300}
 							direction="column"
 							backgroundColor="gray"
@@ -123,7 +122,7 @@ export function ItemSelectionCore({
 								);
 							})}
 						/>
-					</NotionToggleHeader>
+					</UIBasics.ToggleHeader>
 				);
 			})}
 		</>

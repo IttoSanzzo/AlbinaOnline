@@ -7,14 +7,13 @@ import {
 	isSlotCompatibleWithType,
 	ItemData,
 } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 import { useContext, useMemo } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { ItemsContext } from "../../../../../../CharacterEditableSheetContextProviders/contexts/Items";
-import { NotionHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface EquipmentSelectionCoreProps {
 	characterId: Guid;
@@ -75,15 +74,15 @@ export function EquipmentSelectionCore({
 
 	if (unequippedItemIds.length === 0) {
 		return (
-			<NotionHeader
+			<UIBasics.Header
 				textColor="gray"
 				textAlign="center">
 				Não há item desse tipo para equipar.
-			</NotionHeader>
+			</UIBasics.Header>
 		);
 	}
 	return (
-		<NotionGridList
+		<UIBasics.List.Grid
 			columnWidth={300}
 			direction="column"
 			backgroundColor="gray"

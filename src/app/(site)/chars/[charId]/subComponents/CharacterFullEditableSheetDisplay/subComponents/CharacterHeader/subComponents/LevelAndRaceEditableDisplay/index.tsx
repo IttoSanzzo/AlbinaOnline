@@ -1,10 +1,10 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { RaceData } from "@/libs/stp@types";
 import { useContext, useState } from "react";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { LevelSelector } from "./subComponents/LevelSelector";
 import { RaceSelector } from "./subComponents/RaceSelector";
 import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface LevelAndRaceEditableDisplayProps {
 	level: number;
@@ -18,14 +18,14 @@ export function LevelAndRaceEditableDisplay({
 	const { characterId } = useContext(CharacterIdContext);
 
 	return (
-		<NotionTable
+		<UIBasics.Table
 			direction="column"
 			withoutMargin
 			withoutBorderRadius
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Nível"}
 						/>,
@@ -36,7 +36,7 @@ export function LevelAndRaceEditableDisplay({
 					],
 					[
 						<div style={{ position: "relative" }}>
-							<NotionText
+							<UIBasics.Text
 								textColor="gray"
 								children={"Raça"}
 							/>

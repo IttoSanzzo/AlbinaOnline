@@ -1,4 +1,5 @@
 import { MasteryData } from "@/libs/stp@types";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 
@@ -54,7 +55,7 @@ export async function getPageData(
 	if (!masterySlug) return { masteryData: undefined, borderColor: "" };
 
 	const response = await fetch(
-		`${process.env.ALBINA_API}/maestrias/${masterySlug}`,
+		getAlbinaApiAddress(`/maestrias/${masterySlug}`),
 		{
 			cache: getCacheMode(),
 		}

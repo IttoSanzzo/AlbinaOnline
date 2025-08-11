@@ -1,11 +1,9 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
-import { Notion2Columns } from "@/components/(NotionBased)";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
 import { UserFavoriteCarousel } from "./subComponents/UserFavoriteCarousel";
-import { UserFavoriteCarouselContainer } from "./styledElements";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import {
@@ -13,6 +11,13 @@ import {
 	RoleHierarchy,
 	UserFavoritesGrouped,
 } from "@/libs/stp@types";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { UIBasics } from "@/components/(UIBasics)";
+
+const UserFavoriteCarouselContainer = newStyledElement.div(
+	styles.UserFavoriteCarouselContainer
+);
 
 interface UserPageProps {
 	params: Promise<{
@@ -100,7 +105,7 @@ export default function UserPage({ params }: UserPageProps) {
 				routeBase="chars"
 				favoriteName="Personagens"
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<UserFavoriteCarouselContainer>
 						<UserFavoriteCarousel

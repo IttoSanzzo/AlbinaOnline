@@ -1,5 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSkillExpanded, Guid, SkillType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -9,7 +9,7 @@ function formTable(
 	characterSkills: CharacterSkillExpanded[]
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -18,7 +18,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -67,7 +67,7 @@ export function _CharacterSkillsDisplay({
 	}, []);
 
 	return (
-		<NotionTable
+		<UIBasics.Table
 			style={{ margin: 0 }}
 			withHeaderColumn={false}
 			columnBackgroundColors={["gray"]}

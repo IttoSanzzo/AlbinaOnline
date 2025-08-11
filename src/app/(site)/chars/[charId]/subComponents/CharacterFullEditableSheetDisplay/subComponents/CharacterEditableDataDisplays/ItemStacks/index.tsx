@@ -1,8 +1,3 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { useContext, useLayoutEffect, useState } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import {
@@ -18,6 +13,7 @@ import { ItemsContext } from "../../CharacterEditableSheetContextProviders/conte
 import { AddItemButton } from "./subComponents/AddItemButton";
 import { ItemAmountController } from "./subComponents/ItemAmountController";
 import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -72,17 +68,17 @@ function formTable(
 	>
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			textAlign="center"
 			display="block"
 			children="Quant."
 		/>,
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			textAlign="center"
 			display="block"
@@ -93,17 +89,17 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					textAlign="center"
 					display="block"
 					children="-"
 				/>,
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					textAlign="center"
 					display="block"
@@ -114,17 +110,17 @@ function formTable(
 	}
 	return [
 		[
-			<NotionText
+			<UIBasics.Text
 				textColor="gray"
 				children="Nome"
 			/>,
-			<NotionText
+			<UIBasics.Text
 				textColor="gray"
 				textAlign="center"
 				display="block"
 				children="Quant."
 			/>,
-			<NotionText
+			<UIBasics.Text
 				textColor="gray"
 				textAlign="center"
 				display="block"
@@ -151,7 +147,7 @@ function formTable(
 				itemId={characterItem.item.id}
 				characterId={characterId}
 			/>,
-			<NotionText
+			<UIBasics.Text
 				textAlign="center"
 				display="block"
 				textColor="gray"
@@ -191,14 +187,14 @@ export function _CharacterItemStacksDisplay() {
 	}, [characterId]);
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Items"
 			memoryId={`${characterId}-Items`}>
 			<div style={{ position: "relative" }}>
-				<NotionTable
+				<UIBasics.Table
 					fixedLineWidths={[30, 20]}
 					fixedLinePositions={[2, 3]}
 					style={{ margin: 0 }}
@@ -220,7 +216,7 @@ export function _CharacterItemStacksDisplay() {
 					characterId={characterId}
 				/>
 			</div>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

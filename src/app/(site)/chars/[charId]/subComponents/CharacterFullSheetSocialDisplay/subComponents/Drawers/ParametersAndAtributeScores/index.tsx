@@ -1,5 +1,5 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { Notion2Columns } from "@/components/(NotionBased)";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import {
 	CharacterAbilityScore,
@@ -25,7 +25,7 @@ export function ParametersAndAtributeScoresDrawer({
 			title="Parâmetros & Atributos"
 			memoryId={`${characterId}-ParametersAndAttributes`}
 			backgroundColor="red">
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterDataDisplays.Parameters
 						parameters={parameters}

@@ -1,5 +1,4 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
@@ -12,6 +11,7 @@ import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { bonusColor, bonusValueText } from "@/utils/AlbinaAesthetic";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),
@@ -91,7 +91,7 @@ export function CharacterAbilityScoreDisplay() {
 				isValid={isValid}
 				action={handleWatchedAction}
 			/>
-			<NotionTable
+			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
 				direction="row"
@@ -99,11 +99,11 @@ export function CharacterAbilityScoreDisplay() {
 				tableData={{
 					tableLanes: [
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="gray"
 								children={"Total"}
 							/>,
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

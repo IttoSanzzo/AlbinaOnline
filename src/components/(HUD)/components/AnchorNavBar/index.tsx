@@ -1,17 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import {
-	AnchorItem,
-	AnchorLine,
-	AnchorLines,
-	AnchorNavBarContainer,
-	TableOfContents,
-} from "./styledElements";
-import styles from "./styles.module.css";
 import { useVisibleSections } from "@/utils/Hooks";
 import { idfyString } from "@/utils/StringUtils";
 import { AnchorProps, useAnchorNavigation } from "@/libs/stp@hooks";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const AnchorNavBarContainer = newStyledElement.div(
+	styles.anchorNavBarContainer
+);
+const AnchorLines = newStyledElement.div(styles.anchorLines);
+const AnchorLine = newStyledElement.span(styles.anchorLine);
+const TableOfContents = newStyledElement.div(styles.tableOfContents);
+const AnchorItem = newStyledElement.div(styles.anchorItem);
 
 export function AnchorNavBar() {
 	const { anchors, isSet } = useAnchorNavigation();

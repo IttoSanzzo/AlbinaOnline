@@ -9,9 +9,9 @@ import {
 } from "../../utils";
 import { UIBasics } from "../..";
 
-export const BulletContainer = newStyledElement.div(styles.bulletContainer);
-export const BeforeBullet = newStyledElement.div(styles.beforeBullet);
-export const ContentContainer = newStyledElement.div(styles.contentContainer);
+const BulletContainer = newStyledElement.div(styles.bulletContainer);
+const BeforeBullet = newStyledElement.div(styles.beforeBullet);
+const ContentContainer = newStyledElement.div(styles.contentContainer);
 
 interface BulletProps extends StandartColorProps {
 	children?: ReactNode | string;

@@ -1,6 +1,6 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { RaceData } from "@/libs/stp@types";
 import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface LevelAndRaceDisplayProps {
 	level: number;
@@ -8,18 +8,18 @@ interface LevelAndRaceDisplayProps {
 }
 export function LevelAndRaceDisplay({ level, race }: LevelAndRaceDisplayProps) {
 	return (
-		<NotionTable
+		<UIBasics.Table
 			direction="column"
 			withoutMargin
 			withoutBorderRadius
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Nível"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="orange"
 							display="block"
 							textAlign="center"
@@ -27,7 +27,7 @@ export function LevelAndRaceDisplay({ level, race }: LevelAndRaceDisplayProps) {
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Raça"}
 						/>,

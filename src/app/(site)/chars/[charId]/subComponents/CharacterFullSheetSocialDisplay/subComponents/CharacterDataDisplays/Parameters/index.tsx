@@ -1,10 +1,6 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
-import {
-	CharacterAbilityScore,
-	CharacterParameters,
-	RaceData,
-} from "@/libs/stp@types";
+import { UIBasics } from "@/components/(UIBasics)";
+import { CharacterParameters, RaceData } from "@/libs/stp@types";
 
 function getParameterGradeSymbol(grade: number) {
 	switch (grade) {
@@ -23,13 +19,13 @@ function tableParameterEntry(title: string, value: number, grade: number) {
 			title={title}
 			href={"/"}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor="orange"
 			children={value.toString()}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			children={getParameterGradeSymbol(grade)}
@@ -47,7 +43,7 @@ export function CharacterParametersDisplay({
 }: CharacterParametersDisplayProps) {
 	return (
 		<div style={{ display: "flex" }}>
-			<NotionTable
+			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
 				direction="row"
@@ -55,11 +51,11 @@ export function CharacterParametersDisplay({
 				tableData={{
 					tableLanes: [
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="gray"
 								children={"Total"}
 							/>,
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

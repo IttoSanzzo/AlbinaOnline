@@ -1,6 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { RaceData } from "@/libs/stp@types";
 
 interface RaceTypeDisplayProps {
@@ -17,14 +16,14 @@ export default function ItemTypeDisplay({
 	const allRacesFromThisType = allRaces.filter((race) => race.type === type);
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				textAlign="center"
 				children={title}
 			/>
-			<NotionGridList
+			<UIBasics.List.Grid
 				backgroundColor="purple"
 				children={allRacesFromThisType.map((race) => {
 					return (
@@ -37,6 +36,6 @@ export default function ItemTypeDisplay({
 					);
 				})}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

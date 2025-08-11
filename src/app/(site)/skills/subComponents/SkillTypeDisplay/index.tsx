@@ -1,6 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
-import { NotionGridList } from "@/components/(UTILS)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { SkillData } from "@/libs/stp@types";
 
 interface SkillTypeDisplayProps {
@@ -22,14 +21,14 @@ export default function SkillTypeDisplay({
 
 	if (!subTypesOrder)
 		return (
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionHeader
+				<UIBasics.Header
 					textAlign="center"
 					children={title}
 				/>
-				<NotionGridList
+				<UIBasics.List.Grid
 					backgroundColor="purple"
 					children={allSkillsFromThisType.map((skill) => {
 						return (
@@ -42,7 +41,7 @@ export default function SkillTypeDisplay({
 						);
 					})}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		);
 	const allSkillsFromThisTypeOrdened: SkillData[] = [];
 	subTypesOrder.forEach((subType) => {
@@ -52,14 +51,14 @@ export default function SkillTypeDisplay({
 	});
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				textAlign="center"
 				children={title}
 			/>
-			<NotionGridList
+			<UIBasics.List.Grid
 				backgroundColor="purple"
 				children={allSkillsFromThisTypeOrdened.map((skill) => {
 					return (
@@ -72,6 +71,6 @@ export default function SkillTypeDisplay({
 					);
 				})}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

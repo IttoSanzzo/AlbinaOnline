@@ -3,6 +3,7 @@ import { ItemData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import ItemTypeDisplay from "./subComponents/ItemTypeDisplay";
 import { SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData = [
 	{ name: "Armamentos", id: "armamentos" },
@@ -28,8 +29,8 @@ export default async function ItemsPage() {
 	return (
 		<GenericPageContainer
 			title="Todos os Items"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/items`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/items`}>
+			icon={getAlbinaApiAddress("/favicon/core-page/items")}
+			banner={getAlbinaApiAddress("/banner/core-page/items")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<ItemTypeDisplay

@@ -1,4 +1,4 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterCoreMetrics } from "@/libs/stp@types";
 
 interface GaugesTableProps {
@@ -6,17 +6,17 @@ interface GaugesTableProps {
 }
 export function GaugesTable({ coreMetrics }: GaugesTableProps) {
 	return (
-		<NotionTable
+		<UIBasics.Table
 			fixedLinePositions={[1, 3, 4, 5]}
 			fixedLineWidths={[20, 5, 10, 5]}
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="red"
 							children="HP"
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="red"
 							display="block"
 							textAlign="center"
@@ -24,11 +24,11 @@ export function GaugesTable({ coreMetrics }: GaugesTableProps) {
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="green"
 							children="EP"
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="green"
 							display="block"
 							textAlign="center"
@@ -36,11 +36,11 @@ export function GaugesTable({ coreMetrics }: GaugesTableProps) {
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="blue"
 							children="MP"
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="blue"
 							display="block"
 							textAlign="center"

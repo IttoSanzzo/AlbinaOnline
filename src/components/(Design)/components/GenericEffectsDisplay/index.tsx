@@ -1,12 +1,12 @@
-import {
-	NotionCallout,
-	NotionHeader,
-	NotionQuote,
-	NotionText,
-} from "@/components/(NotionBased)";
-import { GenericEffectsDisplayContainer } from "./styledElements";
+import { UIBasics } from "@/components/(UIBasics)";
 import { StpIconProps } from "@/libs/stp@icons";
 import { GenericEffect } from "@/libs/stp@types";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+export const GenericEffectsDisplayContainer = newStyledElement.div(
+	styles.genericEffectsDisplayContainer
+);
 
 interface GenericEffectsDisplayProps {
 	effects: GenericEffect[];
@@ -27,7 +27,7 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 	if (effects.length == 0) return <></>;
 	return (
 		<GenericEffectsDisplayContainer>
-			<NotionHeader
+			<UIBasics.Header
 				textColor="orange"
 				backgroundColor="gray"
 				textAlign="center"
@@ -37,11 +37,11 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 				const iconProps = getIconProps(effect.role);
 				const fullTitle = effect.name ? (
 					<div style={{ display: "flex", gap: "0.5rem" }}>
-						<NotionText
+						<UIBasics.Text
 							textColor={iconProps.color}
 							children={`${effect.role} -`}
 						/>
-						<NotionText
+						<UIBasics.Text
 							textColor={effect.color}
 							children={effect.name}
 						/>
@@ -51,19 +51,19 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 				);
 
 				return (
-					<NotionCallout
+					<UIBasics.Callout
 						key={index}
 						icon={iconProps}
 						titleColor={iconProps.color}
 						title={fullTitle}>
 						{effect.contents.map((content, index) => (
-							<NotionQuote
+							<UIBasics.Quote
 								key={index}
 								children={content.value}
 								textColor={content.color}
 							/>
 						))}
-					</NotionCallout>
+					</UIBasics.Callout>
 				);
 			})}
 		</GenericEffectsDisplayContainer>

@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { OwnerPageLinkButton } from "./styledElements";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useRouter } from "next/navigation";
 import { Guid } from "@/libs/stp@types";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const OwnerPageLinkButton = newStyledElement.button(styles.ownerPageLinkButton);
 
 export interface OwnerPageLinkProps {
 	ownerId: Guid;

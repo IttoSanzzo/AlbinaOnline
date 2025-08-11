@@ -5,7 +5,6 @@ import {
 	skillNames,
 	SkillType,
 } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
 import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
@@ -13,9 +12,7 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
-import { NotionToggleHeader } from "@/components/(NotionBased)";
-
-// const ButtonContainer = newStyledElement.div(styles.buttonContainer);
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface SkillSelectionCoreProps {
 	characterId: Guid;
@@ -96,7 +93,7 @@ export function SkillSelectionCore({
 			{unacquiredSkillsByType.map((unacquiredSkillFromThisType, index) => {
 				if (unacquiredSkillFromThisType.length === 0) return null;
 				return (
-					<NotionToggleHeader
+					<UIBasics.ToggleHeader
 						key={index}
 						memoryId={`${characterId}-AddSkill-Level-${index}`}
 						contentMargin="none"
@@ -104,7 +101,7 @@ export function SkillSelectionCore({
 						titleAlign="center"
 						titleColor="blue"
 						title={skillNames[SkillType[index] as keyof typeof SkillType]}>
-						<NotionGridList
+						<UIBasics.List.Grid
 							columnWidth={300}
 							direction="column"
 							backgroundColor="gray"
@@ -122,7 +119,7 @@ export function SkillSelectionCore({
 								);
 							})}
 						/>
-					</NotionToggleHeader>
+					</UIBasics.ToggleHeader>
 				);
 			})}
 		</>

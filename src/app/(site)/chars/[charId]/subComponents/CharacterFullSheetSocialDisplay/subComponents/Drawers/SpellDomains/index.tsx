@@ -1,5 +1,5 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import { CharacterSpellDomains, Guid } from "@/libs/stp@types";
 
@@ -15,13 +15,13 @@ export function SpellDomainsDrawer({
 		<CharacterDrawerBaseHeader
 			title="Domínios"
 			memoryId={`${characterId}-SpellDomains`}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="purple"
 				withoutPadding
 				withoutMargin
 				withoutBorder>
 				<CharacterDataDisplays.SpellDomains spellDomains={spellDomains} />
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

@@ -13,10 +13,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { PageTitle } from "../../../PageHeader";
 
-export const ChangeTitleButtonContainer = newStyledElement.div(
+const ChangeTitleButtonContainer = newStyledElement.div(
 	styles.changeTitleButtonContainer
 );
-export const ChangeTitleButtonTrigger = newStyledElement.button(
+const ChangeTitleButtonTrigger = newStyledElement.button(
 	styles.changeTitleButtonTrigger
 );
 

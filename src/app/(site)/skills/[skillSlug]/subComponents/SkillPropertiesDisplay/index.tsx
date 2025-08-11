@@ -1,10 +1,4 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionHeader,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { SkillProperties } from "@/libs/stp@types";
 
 interface SkillPropertiesDisplayProps {
@@ -16,49 +10,49 @@ export default function SkillPropertiesDisplay({
 }: SkillPropertiesDisplayProps) {
 	if (!skillProperties) return <></>;
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
-			<NotionHeader
+			<UIBasics.Header
 				headerType="h2"
 				textAlign="center"
 				textColor="orange"
 				children={"¤ Propriedades ¤"}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="darkGray"
 				withoutBorder>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionTable
+						<UIBasics.Table
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children="💠Mana"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children={skillProperties.components.mana}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children="🧪Estamina"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children={skillProperties.components.stamina}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="brown"
 											children="🕰️Tempo"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="brown"
 											children={skillProperties.components.time}
 										/>,
@@ -68,45 +62,45 @@ export default function SkillPropertiesDisplay({
 						/>
 					}
 					colum2={
-						<NotionTable
+						<UIBasics.Table
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children="⏳Duração"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children={skillProperties.components.duration}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children="❇️Forma"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="green"
 											children={skillProperties.components.form}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children="📏Alcance"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={skillProperties.components.range}
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children="📐Área"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children={skillProperties.components.area}
 										/>,
@@ -117,7 +111,7 @@ export default function SkillPropertiesDisplay({
 					}
 				/>
 				{skillProperties.extras.length !== 0 && (
-					<NotionTable
+					<UIBasics.Table
 						withHeaderRow
 						textColor="gray"
 						fixedLinePositions={[1]}
@@ -125,11 +119,11 @@ export default function SkillPropertiesDisplay({
 						tableData={{
 							tableLanes: [
 								[
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Extras"
 									/>,
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Descrição"
 										textAlign="flex-center"
@@ -137,14 +131,14 @@ export default function SkillPropertiesDisplay({
 									/>,
 								],
 								...skillProperties.extras.map((extra) => [
-									<NotionText>{`⦇ ${extra.key} ⦈`}</NotionText>,
-									<NotionText>{`⪩ ${extra.value}`}</NotionText>,
+									<UIBasics.Text>{`⦇ ${extra.key} ⦈`}</UIBasics.Text>,
+									<UIBasics.Text>{`⪩ ${extra.value}`}</UIBasics.Text>,
 								]),
 							],
 						}}
 					/>
 				)}
-			</NotionBox>
-		</NotionBox>
+			</UIBasics.Box>
+		</UIBasics.Box>
 	);
 }

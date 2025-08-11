@@ -1,11 +1,7 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import {
-	CharacterProfile,
-	CharacterSpellDomains,
-	Guid,
-} from "@/libs/stp@types";
+import { CharacterProfile, Guid } from "@/libs/stp@types";
 
 interface OthersDrawerProps {
 	characterId: Guid;
@@ -21,7 +17,7 @@ export function OthersDrawer({
 		<CharacterDrawerBaseHeader
 			title="Outros"
 			memoryId={`${characterId}-Others`}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="blue"
 				withoutPadding
 				withoutMargin
@@ -32,7 +28,7 @@ export function OthersDrawer({
 				<CharacterEditableDataDisplays.Backstory
 					characterBackstory={characterBackstory}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

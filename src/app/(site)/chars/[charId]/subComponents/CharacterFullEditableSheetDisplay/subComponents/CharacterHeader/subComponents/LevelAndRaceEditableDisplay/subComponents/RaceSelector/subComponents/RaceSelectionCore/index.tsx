@@ -1,13 +1,11 @@
-import { Guid, RaceData, skillNames } from "@/libs/stp@types";
-import { NotionGridList } from "@/components/(UTILS)";
+import { Guid, RaceData } from "@/libs/stp@types";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { insertSorted } from "@/utils/Data";
-import { NotionToggleHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -58,7 +56,7 @@ export function RaceSelectionCore({
 	}
 
 	return (
-		<NotionGridList
+		<UIBasics.List.Grid
 			columnWidth={300}
 			direction="column"
 			backgroundColor="gray"

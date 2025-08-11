@@ -1,4 +1,4 @@
-import { NotionText } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export function bonusColor(bonusValue: number) {
 	return bonusValue < 0 ? "red" : bonusValue > 0 ? "green" : "gray";
@@ -6,11 +6,11 @@ export function bonusColor(bonusValue: number) {
 
 export function bonusValueText(bonusValue: number) {
 	return (
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textColor={bonusColor(bonusValue)}
 			textAlign="center">
 			{`${bonusValue >= 0 ? "+" : ""}${bonusValue}`}
-		</NotionText>
+		</UIBasics.Text>
 	);
 }

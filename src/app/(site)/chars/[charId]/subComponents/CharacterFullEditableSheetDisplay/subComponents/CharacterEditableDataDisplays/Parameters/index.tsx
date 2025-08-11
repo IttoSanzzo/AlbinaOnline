@@ -1,5 +1,4 @@
 import { StyledLink } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
@@ -11,6 +10,7 @@ import {
 } from "../../CharacterEditableSheetContextProviders";
 import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	vitality: z.coerce.number().min(0, "Mínimo de 0").max(50, "Máximo de 50"),
@@ -53,7 +53,7 @@ function tableParameterEntry(
 			max={40}
 			min={0}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			textAlign="center"
 			display="block"
 			children={getParameterGradeSymbol(grade)}
@@ -107,7 +107,7 @@ export function CharacterParametersDisplay() {
 				isValid={isValid}
 				action={handleWatchedAction}
 			/>
-			<NotionTable
+			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
 				direction="row"
@@ -115,11 +115,11 @@ export function CharacterParametersDisplay() {
 				tableData={{
 					tableLanes: [
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="gray"
 								children={"Total"}
 							/>,
-							<NotionText
+							<UIBasics.Text
 								display="block"
 								textAlign="center"
 								textColor="gray"

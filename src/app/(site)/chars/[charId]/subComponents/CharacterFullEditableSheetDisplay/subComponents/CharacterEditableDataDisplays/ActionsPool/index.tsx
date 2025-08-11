@@ -1,8 +1,3 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
@@ -11,6 +6,7 @@ import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterActionsPool } from "@/libs/stp@types";
 import z from "zod";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	normalActions: z.coerce.number().min(0, "Mínimo de 0"),
@@ -28,7 +24,7 @@ function formTableEntry(
 	fieldName: keyof FormData
 ) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
@@ -86,7 +82,7 @@ export function CharacterActionsPoolDisplay({
 	}
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
@@ -98,7 +94,7 @@ export function CharacterActionsPoolDisplay({
 					isValid={isValid}
 					action={onFormChange}
 				/>
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [
 							formTableEntry(control, "Normais", "normalActions"),
@@ -115,6 +111,6 @@ export function CharacterActionsPoolDisplay({
 					color="red"
 				/>
 			</HookedForm.Form>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

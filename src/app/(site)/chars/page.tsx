@@ -2,7 +2,6 @@
 
 import { GenericPageContainer } from "@/components/(Design)";
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
-import { Carousel, NotionGridList } from "@/components/(UTILS)";
 import {
 	SetNavBarModules,
 	useCurrentUser,
@@ -13,7 +12,7 @@ import { routeInfra } from "./(routeInfra)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import { NotionBox, NotionHeader } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export default function CharsPage() {
 	const [rawCharacters, setRawCharacters] = useState<CharacterData[] | null>(
@@ -55,18 +54,18 @@ export default function CharsPage() {
 			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
 
 			{allCharacters.length !== 0 && (
-				<NotionBox
+				<UIBasics.Box
 					withoutPadding
 					backgroundColor="darkGray">
 					{allFavoriteCharacters.length !== 0 && (
 						<>
-							<NotionHeader
+							<UIBasics.Header
 								textAlign="center"
 								textColor="yellow"
 								children={"Seus Favoritos"}
 							/>
-							<NotionBox backgroundColor="yellow">
-								<Carousel
+							<UIBasics.Box backgroundColor="yellow">
+								<UIBasics.Carousel
 									slidesOrigin={"center"}
 									slidesSpacing={10}
 									minWidth={150}
@@ -81,18 +80,18 @@ export default function CharsPage() {
 										/>
 									))}
 								/>
-							</NotionBox>
+							</UIBasics.Box>
 						</>
 					)}
 					{allUserCharacters.length !== 0 && (
 						<>
-							<NotionHeader
+							<UIBasics.Header
 								textAlign="center"
 								textColor="purple"
 								children={"Seus Personagens"}
 							/>
-							<NotionBox backgroundColor="purple">
-								<Carousel
+							<UIBasics.Box backgroundColor="purple">
+								<UIBasics.Carousel
 									slidesOrigin={"center"}
 									slidesSpacing={10}
 									minWidth={150}
@@ -107,16 +106,16 @@ export default function CharsPage() {
 										/>
 									))}
 								/>
-							</NotionBox>
+							</UIBasics.Box>
 						</>
 					)}
-					<NotionHeader
+					<UIBasics.Header
 						textAlign="center"
 						textColor="darkGray"
 						backgroundColor="darkGray"
 						children={"Todos"}
 					/>
-					<NotionGridList
+					<UIBasics.List.Grid
 						direction="row"
 						backgroundColor="blue"
 						columnWidth={150}>
@@ -131,8 +130,8 @@ export default function CharsPage() {
 								layout="rectangle"
 							/>
 						))}
-					</NotionGridList>
-				</NotionBox>
+					</UIBasics.List.Grid>
+				</UIBasics.Box>
 			)}
 		</GenericPageContainer>
 	);

@@ -4,11 +4,11 @@ import {
 	GenericPageContainer,
 	GenericPageFooter,
 } from "@/components/(Design)";
-import { NotionHeader, Notion2Columns } from "@/components/(NotionBased)";
 import { getPageData } from "./(routeInfra)";
 import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -38,13 +38,13 @@ export default async function Mastery({ params }: MasteryProps) {
 				data={masteryData}
 			/>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor="purple"
 				backgroundColor="gray"
 				textAlign="center"
 				children={"¤ Especificações ¤"}
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<MasteryTypologyCallout
 						type={masteryData.type}

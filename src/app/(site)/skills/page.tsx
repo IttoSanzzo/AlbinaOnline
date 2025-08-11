@@ -3,6 +3,7 @@ import { SkillData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SkillTypeDisplay from "./subComponents/SkillTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Genéricas", id: "genericas" },
@@ -24,8 +25,8 @@ export default async function SkillsPage() {
 	return (
 		<GenericPageContainer
 			title="Todas as Skills"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/skills`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/skills`}>
+			icon={getAlbinaApiAddress("/favicon/core-page/skills")}
+			banner={getAlbinaApiAddress("/banner/core-page/skills")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SkillTypeDisplay

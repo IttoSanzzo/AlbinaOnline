@@ -1,4 +1,3 @@
-import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
 import {
 	CharacterEquipments,
 	CharacterExpandedData,
@@ -11,6 +10,7 @@ import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const fetchCharacter = {
 	items: async (
@@ -112,7 +112,7 @@ export function CharacterFullSheetSocialDisplay({
 				coreMetrics={characterData.coreMetrics}
 				miscMetrics={characterData.miscMetrics}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder>
 				<CharacterDrawers.Inventory
@@ -127,7 +127,7 @@ export function CharacterFullSheetSocialDisplay({
 					coreMetrics={characterData.coreMetrics}
 					miscMetrics={characterData.miscMetrics}
 				/>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutGap
 					withoutBorderRadius
@@ -154,7 +154,7 @@ export function CharacterFullSheetSocialDisplay({
 					characterProfile={characterData.profile}
 					characterBackstory={characterData.backstory.history}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</>
 	);
 }

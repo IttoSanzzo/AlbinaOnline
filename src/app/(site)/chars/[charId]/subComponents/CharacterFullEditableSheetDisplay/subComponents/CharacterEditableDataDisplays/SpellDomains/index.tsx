@@ -1,10 +1,4 @@
 import { StyledLink } from "@/components/(Design)";
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -16,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	general: z.coerce.number().min(-1, "Mínimo de -1").max(10, "Máximo de 10"),
@@ -62,7 +57,7 @@ export function CommonSpellDomainTablePair(
 			href={`/spells/${lowercaseName}`}
 			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			textAlign="center"
 			display="block"
 			children={`${
@@ -119,24 +114,24 @@ export function CharacterSpellDomainsDisplay({
 				isValid={isValid}
 				action={handleWatchedAction}
 			/>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="purple"
 				withoutBorder
 				withoutMargin>
-				<NotionTable
+				<UIBasics.Table
 					textColor="pink"
 					tableData={{
 						tableLanes: [CommonSpellDomainTablePair("General", spellDomains)],
 					}}
 				/>
-			</NotionBox>
-			<Notion2Columns
+			</UIBasics.Box>
+			<UIBasics.MultiColumn.Two
 				colum1={
-					<NotionBox
+					<UIBasics.Box
 						backgroundColor="purple"
 						withoutBorder
 						withoutMargin>
-						<NotionTable
+						<UIBasics.Table
 							textColor="pink"
 							tableData={{
 								tableLanes: [
@@ -149,14 +144,14 @@ export function CharacterSpellDomainsDisplay({
 								],
 							}}
 						/>
-					</NotionBox>
+					</UIBasics.Box>
 				}
 				colum2={
-					<NotionBox
+					<UIBasics.Box
 						backgroundColor="purple"
 						withoutBorder
 						withoutMargin>
-						<NotionTable
+						<UIBasics.Table
 							textColor="pink"
 							tableData={{
 								tableLanes: [
@@ -169,7 +164,7 @@ export function CharacterSpellDomainsDisplay({
 								],
 							}}
 						/>
-					</NotionBox>
+					</UIBasics.Box>
 				}
 			/>
 			<HookedForm.SimpleMessage

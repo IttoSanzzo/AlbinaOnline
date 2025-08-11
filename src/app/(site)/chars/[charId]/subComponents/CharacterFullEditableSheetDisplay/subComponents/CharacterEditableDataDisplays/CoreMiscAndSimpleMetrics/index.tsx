@@ -1,8 +1,3 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
@@ -13,6 +8,7 @@ import { CharacterCoreMetrics, CharacterMiscMetrics } from "@/libs/stp@types";
 import { MiscMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/MiscMetrics";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import z from "zod";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schemaCore = z.object({
 	walkSpeed: z.coerce.number().min(0, "Mínimo de 0"),
@@ -34,7 +30,7 @@ function formTableEntry(
 	fieldName: keyof FormDataCore | keyof FormDataMisc
 ) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
@@ -127,7 +123,7 @@ export function CoreMiscAndSimpleMetrics() {
 	}
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
@@ -145,7 +141,7 @@ export function CoreMiscAndSimpleMetrics() {
 					action={onMiscFormChange}
 				/>
 
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [
 							formTableEntry(formMisc.control, "Carga Máxima", "carryCapacity"),
@@ -171,6 +167,6 @@ export function CoreMiscAndSimpleMetrics() {
 					color="red"
 				/>
 			</HookedForm.Form>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

@@ -1,17 +1,13 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterActionsPool, Guid } from "@/libs/stp@types";
 
 function formTableEntry(title: string, value: number) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor="gray"
@@ -29,14 +25,14 @@ export function CharacterActionsPoolDisplay({
 	actionsPool,
 }: CharacterActionsPoolDisplayProps) {
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Ações / Turno"
 			memoryId={`${characterId}-ActionsPool`}>
 			<div style={{ display: "flex" }}>
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [
 							formTableEntry("Normais", actionsPool.normalActions),
@@ -49,6 +45,6 @@ export function CharacterActionsPoolDisplay({
 					}}
 				/>
 			</div>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }

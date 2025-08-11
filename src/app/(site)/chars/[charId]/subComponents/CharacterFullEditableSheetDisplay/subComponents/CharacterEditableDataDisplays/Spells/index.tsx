@@ -1,15 +1,10 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
-import {
-	CharacterSpellExpanded,
-	Guid,
-	SpellData,
-	SpellType,
-} from "@/libs/stp@types";
+import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSpellButton } from "./subComponents/AddSpellButton";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleSpellRemoval(
 	characterId: Guid,
@@ -43,7 +38,7 @@ function formTable(
 	>
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -52,7 +47,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -71,7 +66,7 @@ function formTable(
 			if (spellsFromThisLevel.length === 0) return [];
 			return [
 				[
-					<NotionText
+					<UIBasics.Text
 						textColor="orange"
 						children={`Nível ${index}`}
 					/>,
@@ -129,7 +124,7 @@ export function _CharacterSpellsDisplay({
 
 	return (
 		<div style={{ position: "relative" }}>
-			<NotionTable
+			<UIBasics.Table
 				style={{ margin: 0 }}
 				withHeaderColumn={false}
 				columnBackgroundColors={["gray"]}

@@ -1,25 +1,13 @@
 import {
-	NotionBox,
-	NotionCallout,
-	NotionDivisor,
-	NotionQuote,
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
-import {
 	GenericPageContainer,
 	GenericPageFooter,
 	StyledLink,
 } from "@/components/(Design)";
-import {
-	EmptyLine,
-	NotionGridList,
-	NotionQuoteList,
-} from "@/components/(UTILS)";
 import { MasteryData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },
@@ -62,20 +50,20 @@ export default async function MasteriesPage() {
 	return (
 		<GenericPageContainer
 			title="Maestrias"
-			icon={`${process.env.ALBINA_API}/favicon/core-page/masteries`}
-			banner={`${process.env.ALBINA_API}/banner/core-page/masteries`}>
-			<NotionDivisor />
+			icon={getAlbinaApiAddress("/favicon/core-page/masteries")}
+			banner={getAlbinaApiAddress("/banner/core-page/masteries")}>
+			<UIBasics.Divisor />
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionToggleHeader
+				<UIBasics.ToggleHeader
 					memoryId="Proficiências"
 					titleAlign="center"
 					backgroundColor="gray"
 					title={"Proficiências"}>
-					<NotionCallout
+					<UIBasics.Callout
 						backgroundColor="blue"
 						titleColor="orange"
 						icon={{
@@ -86,58 +74,58 @@ export default async function MasteriesPage() {
 							"“Coeficientes evolutivos relacionados à habilidade de usar ferramentas de objetos.”"
 						}
 					/>
-					<NotionCallout backgroundColor="purple">
-						<NotionTable
+					<UIBasics.Callout backgroundColor="purple">
+						<UIBasics.Table
 							fixedLinePositions={[1]}
 							fixedLineWidths={[23]}
 							tableData={{
 								tableLanes: [
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="blue"
 											children="Armada"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="gray"
 											children="Relacionada à habilidade e treino com determinados tipos de armas e ferramentas."
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="orange"
 											children="Defensiva"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="gray"
 											children="Maestrias no uso “vestido” de determinados equipamento, tais como armaduras e escudos."
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="purple"
 											children="Foco"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="gray"
 											children="Relacionada à habilidade para usar focos mágicos, e desempenhar suas taumaturgias através deles."
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="red"
 											children="Estilo de Combate"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="gray"
 											children="Capacidade geral do usuário com certa vertente de arma, sendo aplicável de forma menos efetiva a uma gama maior delas."
 										/>,
 									],
 									[
-										<NotionText
+										<UIBasics.Text
 											textColor="brown"
 											children="Ferramenta"
 										/>,
-										<NotionText
+										<UIBasics.Text
 											textColor="gray"
 											children="Costume e habilidade do usuário, para manusear e aplicar uso em certas ferramentas."
 										/>,
@@ -145,9 +133,9 @@ export default async function MasteriesPage() {
 								],
 							}}
 						/>
-					</NotionCallout>
-				</NotionToggleHeader>
-				<NotionGridList backgroundColor="purple">
+					</UIBasics.Callout>
+				</UIBasics.ToggleHeader>
+				<UIBasics.List.Grid backgroundColor="purple">
 					{allProficiencyMasteriesOrdened.map((masteryData) => (
 						<StyledLink
 							key={masteryData.id}
@@ -156,20 +144,20 @@ export default async function MasteriesPage() {
 							icon={masteryData.iconUrl}
 						/>
 					))}
-				</NotionGridList>
-			</NotionBox>
+				</UIBasics.List.Grid>
+			</UIBasics.Box>
 
-			<NotionDivisor />
+			<UIBasics.Divisor />
 
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionToggleHeader
+				<UIBasics.ToggleHeader
 					memoryId="Perícias"
 					titleAlign="center"
 					backgroundColor="gray"
 					title={"Perícias"}>
-					<NotionCallout
+					<UIBasics.Callout
 						backgroundColor="blue"
 						titleColor="orange"
 						icon={{
@@ -180,8 +168,8 @@ export default async function MasteriesPage() {
 							"“Coeficientes evolutivos diretamente relacionados à suas expertises práticas.”"
 						}
 					/>
-					<NotionCallout backgroundColor="purple">
-						<NotionQuoteList
+					<UIBasics.Callout backgroundColor="purple">
+						<UIBasics.List.Quote
 							textColor="gray"
 							quotes={[
 								"Essas maestrias são aplicadas de forma direta, sempre em um teste de rolagem para as quais, são compatíveis, ou então de forma passiva, para algo na área do mesmo teste em questão. No geral, todas elas tem funcionamento simples, relacionados à rolagens, resistidas por “classes de desafio”. Ao se realizar a jogada, e obter um valor igual ou superior ao necessário, o teste é concluído com êxito, mas baixo disso, é tratada como uma falha, e então entram suas consequências.",
@@ -190,50 +178,50 @@ export default async function MasteriesPage() {
 								"Por curiosidade, ao se executar um teste de perícia com um crítico, fica aberta a escolha ao mestre de uma ou mais opções, entre:[B/Dentro de uma certa proximidade, tornar um teste falho, num êxito, através de habilidade e sorte;][B/Tornar um teste bem sucedido, em algo fenomenal, excedendo seus efeitos de alguma maneira, seja ela visual ou prática;][B/Concedendo XP naquela perícia em específico ao jogador, potencialmente aumentando seu nível nela, mudança essa com efeito imediato sobre a jogada.]",
 							]}
 						/>
-						<NotionQuote
+						<UIBasics.Quote
 							textColor="gray"
 							children={
 								<>
 									{
 										"Todas são divididas em categorias relacionadas diretamente ao Status utilizado para realizá-la: "
 									}
-									<NotionText
+									<UIBasics.Text
 										textColor="red"
 										children="Força"
 										withBold
 									/>
 									{", "}
-									<NotionText
+									<UIBasics.Text
 										textColor="blue"
 										children="Agilidade"
 										withBold
 									/>
 									{", "}
-									<NotionText
+									<UIBasics.Text
 										textColor="green"
 										children="Técnica"
 										withBold
 									/>
 									{", "}
-									<NotionText
+									<UIBasics.Text
 										textColor="orange"
 										children="Constituição"
 										withBold
 									/>
 									{", "}
-									<NotionText
+									<UIBasics.Text
 										textColor="purple"
 										children="Inteligência"
 										withBold
 									/>
 									{", "}
-									<NotionText
+									<UIBasics.Text
 										textColor="pink"
 										children="Sabedoria"
 										withBold
 									/>
 									{", e "}
-									<NotionText
+									<UIBasics.Text
 										textColor="yellow"
 										children="Carisma"
 										withBold
@@ -242,9 +230,9 @@ export default async function MasteriesPage() {
 								</>
 							}
 						/>
-					</NotionCallout>
-				</NotionToggleHeader>
-				<NotionGridList backgroundColor="purple">
+					</UIBasics.Callout>
+				</UIBasics.ToggleHeader>
+				<UIBasics.List.Grid backgroundColor="purple">
 					{allExpertiseMasteries.map((masteryData) => (
 						<StyledLink
 							key={masteryData.id}
@@ -253,20 +241,20 @@ export default async function MasteriesPage() {
 							icon={masteryData.iconUrl}
 						/>
 					))}
-				</NotionGridList>
-			</NotionBox>
+				</UIBasics.List.Grid>
+			</UIBasics.Box>
 
-			<NotionDivisor />
+			<UIBasics.Divisor />
 
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionToggleHeader
+				<UIBasics.ToggleHeader
 					memoryId="Conhecimentos"
 					titleAlign="center"
 					backgroundColor="gray"
 					title={"Conhecimentos"}>
-					<NotionCallout
+					<UIBasics.Callout
 						backgroundColor="blue"
 						titleColor="orange"
 						icon={{
@@ -277,8 +265,8 @@ export default async function MasteriesPage() {
 							"“Coeficientes evolutivos diretamente relacionados à suas expertises teóricas.”"
 						}
 					/>
-					<NotionCallout backgroundColor="purple">
-						<NotionQuoteList
+					<UIBasics.Callout backgroundColor="purple">
+						<UIBasics.List.Quote
 							textColor="gray"
 							quotes={[
 								"Essas maestrias são aplicadas de forma direta, sempre em um teste de rolagem para as quais, são compatíveis, ou então de forma passiva, para algo na área do mesmo teste em questão. No geral, todas elas tem funcionamento simples, relacionados à rolagens, resistidas por “classes de desafio”. Ao se realizar a jogada, e obter um valor igual ou superior ao necessário, o teste é concluído com êxito, mas baixo disso, é tratada como uma falha, e então entram suas consequências.",
@@ -287,33 +275,33 @@ export default async function MasteriesPage() {
 								"Por curiosidade, ao se executar um teste de conhecimento com um crítico, fica aberta a escolha ao mestre de uma ou mais opções, entre:[B/Dentro de uma certa proximidade, tornar um teste falho, num êxito, através do acaso e sorte;][B/Tornar um teste bem sucedido, em algo fenomenal, excedendo seus efeitos de alguma maneira;][B/Concedendo XP naquele conhecimento em específico ao jogador, potencialmente aumentando seu nível nele, mudança essa com efeito imediato sobre a jogada.]",
 							]}
 						/>
-						<NotionQuote
+						<UIBasics.Quote
 							textColor="gray"
 							children={
 								<>
 									{"Os conhecimentos são divididos em duas categorias: "}
-									<EmptyLine />
-									<NotionTable
+									<UIBasics.EmptyLine />
+									<UIBasics.Table
 										fixedLinePositions={[1]}
 										fixedLineWidths={[23]}
 										tableData={{
 											tableLanes: [
 												[
-													<NotionText
+													<UIBasics.Text
 														textColor="blue"
 														children="Singular"
 													/>,
-													<NotionText
+													<UIBasics.Text
 														textColor="gray"
 														children="Conhecimento relacionado a um determinado tema."
 													/>,
 												],
 												[
-													<NotionText
+													<UIBasics.Text
 														textColor="orange"
 														children="Múltiplo"
 													/>,
-													<NotionText
+													<UIBasics.Text
 														textColor="gray"
 														children="Conhecimento em uma vertente expecífica de um determinado tema."
 													/>,
@@ -324,9 +312,9 @@ export default async function MasteriesPage() {
 								</>
 							}
 						/>
-					</NotionCallout>
-				</NotionToggleHeader>
-				<NotionGridList backgroundColor="purple">
+					</UIBasics.Callout>
+				</UIBasics.ToggleHeader>
+				<UIBasics.List.Grid backgroundColor="purple">
 					{allKnowledgeMasteries.map((masteryData) => (
 						<StyledLink
 							key={masteryData.id}
@@ -335,20 +323,20 @@ export default async function MasteriesPage() {
 							icon={masteryData.iconUrl}
 						/>
 					))}
-				</NotionGridList>
-			</NotionBox>
+				</UIBasics.List.Grid>
+			</UIBasics.Box>
 
-			<NotionDivisor />
+			<UIBasics.Divisor />
 
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
-				<NotionToggleHeader
+				<UIBasics.ToggleHeader
 					memoryId="Ofícios"
 					titleAlign="center"
 					backgroundColor="gray"
 					title={"Ofícios"}>
-					<NotionCallout
+					<UIBasics.Callout
 						backgroundColor="blue"
 						titleColor="orange"
 						icon={{
@@ -359,51 +347,51 @@ export default async function MasteriesPage() {
 							"“Expertise em determinado conjunto de áreas, que sejam diretamente relacionadas ao termo profissional, ou que se tratem de uma, ou várias, atividades.”"
 						}
 					/>
-					<NotionCallout backgroundColor="purple">
-						<NotionQuoteList
+					<UIBasics.Callout backgroundColor="purple">
+						<UIBasics.List.Quote
 							textColor="gray"
 							quotes={[
 								"Essas maestrias possuem uma gama ampla de aplicações. Assim como perícias e conhecimentos, seu nível vale nos testes gerais relacionados diretamente à área do ofício em questão, como ao desempenhar a profissão em si. Por exemplo, um cocheiro, poder usar sua maestria nisso para cavalgar, ao invés da perícia [@/maestrias/cavalgar].",
 								"Como o nome já aponta, o principal aspecto dos ofícios, é que eles são formas de trabalho, não relacionados necessáriamente ao combate, e portanto, são geralmente uma possível fonte de renda, partindo da sua exerção, através do jogador.",
 							]}
 						/>
-						<NotionQuote
+						<UIBasics.Quote
 							textColor="gray"
 							children={
 								<>
 									{"Os ofícios são divididos em três categorias: "}
-									<EmptyLine />
-									<NotionTable
+									<UIBasics.EmptyLine />
+									<UIBasics.Table
 										fixedLinePositions={[1]}
 										fixedLineWidths={[23]}
 										tableData={{
 											tableLanes: [
 												[
-													<NotionText
+													<UIBasics.Text
 														textColor="green"
 														children="Geral"
 													/>,
-													<NotionText
+													<UIBasics.Text
 														textColor="gray"
 														children="Ofícios com uma ampla gama de funções desempenhadas, ou então que não se encaixa em nenhuma das outras categorias."
 													/>,
 												],
 												[
-													<NotionText
+													<UIBasics.Text
 														textColor="blue"
 														children="Produção"
 													/>,
-													<NotionText
+													<UIBasics.Text
 														textColor="gray"
 														children="Ofícios desempenhados através da criação, construção e/ou produção de bens, objetos e/ou estruturas."
 													/>,
 												],
 												[
-													<NotionText
+													<UIBasics.Text
 														textColor="red"
 														children="Combate"
 													/>,
-													<NotionText
+													<UIBasics.Text
 														textColor="gray"
 														children="Ofícios desempenhados em meio ao confronto direto, ou relacionados de alguma maneira, ao combate."
 													/>,
@@ -414,9 +402,9 @@ export default async function MasteriesPage() {
 								</>
 							}
 						/>
-					</NotionCallout>
-				</NotionToggleHeader>
-				<NotionGridList backgroundColor="purple">
+					</UIBasics.Callout>
+				</UIBasics.ToggleHeader>
+				<UIBasics.List.Grid backgroundColor="purple">
 					{allCraftMasteries.map((masteryData) => (
 						<StyledLink
 							key={masteryData.id}
@@ -425,8 +413,8 @@ export default async function MasteriesPage() {
 							icon={masteryData.iconUrl}
 						/>
 					))}
-				</NotionGridList>
-			</NotionBox>
+				</UIBasics.List.Grid>
+			</UIBasics.Box>
 
 			<GenericPageFooter version="7.0.0" />
 		</GenericPageContainer>

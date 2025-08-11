@@ -1,11 +1,16 @@
 "use client";
 
 import { useUserFavorites } from "@/libs/stp@hooks";
-import { IndexedPagesGroupsContainer } from "./styledElements";
 import IndexedPagesGroup from "./subComponents/IndexedPagesGroup";
 import SortableIndexedPagesGroup, {
 	SortableIndexedPage,
 } from "./subComponents/SortableIndexedPagesGroup";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const IndexedPagesGroupsContainer = newStyledElement.div(
+	styles.indexedPagesGroupsContainer
+);
 
 const CoreHubPageGroup = (
 	<IndexedPagesGroup

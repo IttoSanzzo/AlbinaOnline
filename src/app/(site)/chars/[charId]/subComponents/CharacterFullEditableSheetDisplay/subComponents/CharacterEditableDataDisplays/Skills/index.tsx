@@ -1,15 +1,10 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
-import {
-	CharacterSkillExpanded,
-	Guid,
-	SkillData,
-	SkillType,
-} from "@/libs/stp@types";
+import { CharacterSkillExpanded, Guid, SkillType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSkillButton } from "./subComponents/AddSkillButton";
+import { UIBasics } from "@/components/(UIBasics)";
 
 async function handleSkillRemoval(
 	characterId: Guid,
@@ -43,7 +38,7 @@ function formTable(
 	>
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -52,7 +47,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -110,7 +105,7 @@ export function _CharacterSkillsDisplay({
 
 	return (
 		<div style={{ position: "relative" }}>
-			<NotionTable
+			<UIBasics.Table
 				style={{ margin: 0 }}
 				withHeaderColumn={false}
 				columnBackgroundColors={["gray"]}

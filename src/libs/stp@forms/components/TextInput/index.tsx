@@ -1,12 +1,13 @@
-import { NotionBackgroundColor } from "@/components/(NotionBased)";
-import {
-	TextInputContainer,
-	TextInputError,
-	TextInputField,
-	TextInputLabel,
-} from "./styledElements";
+import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Control, Path, useController } from "react-hook-form";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const TextInputContainer = newStyledElement.div(styles.textInputContainer);
+const TextInputField = newStyledElement.input(styles.textInputField);
+const TextInputLabel = newStyledElement.label(styles.textInputLabel);
+const TextInputError = newStyledElement.div(styles.textInputError);
 
 type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
 
@@ -14,7 +15,7 @@ type TextInputProps<TControl extends Control<any>> = {
 	control: TControl;
 	fieldName: Path<ExtractFieldValues<TControl>>;
 	label: string;
-	labelBackground?: keyof typeof NotionBackgroundColor;
+	labelBackground?: keyof typeof StandartBackgroundColor;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -58,7 +59,7 @@ export function TextInput<TControl extends Control<any>>({
 	};
 	const labelStyle: CSSProperties = {
 		...(labelBackground && {
-			backgroundColor: NotionBackgroundColor[labelBackground],
+			backgroundColor: StandartBackgroundColor[labelBackground],
 		}),
 	};
 

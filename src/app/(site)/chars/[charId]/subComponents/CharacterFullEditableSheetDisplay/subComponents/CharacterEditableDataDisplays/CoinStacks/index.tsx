@@ -1,7 +1,5 @@
-import { NotionToggleHeader } from "@/components/(NotionBased)";
 import { useContext } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import { Carousel } from "@/components/(UTILS)";
 import {
 	CharacterCoinStack,
 	KorynCoins,
@@ -12,6 +10,7 @@ import { KorynCoinsController } from "./subComponents/KorynCoinsController";
 import { LyurCoinsController } from "./subComponents/LyurCoinsController";
 import { VarisCoinsController } from "./subComponents/VarisCoinsController";
 import React from "react";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface CharacterCoinStacksDisplayProps {
 	characterCoinStacks: CharacterCoinStack[];
@@ -41,13 +40,13 @@ export function _CharacterCoinStacksDisplay({
 	}
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Moedas"
 			memoryId={`${characterId}-Money`}>
-			<Carousel
+			<UIBasics.Carousel
 				memoryId={`${characterId}-Money`}
 				minWidth={260}
 				slidesSpacing={10}
@@ -65,7 +64,7 @@ export function _CharacterCoinStacksDisplay({
 					/>,
 				]}
 			/>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

@@ -1,8 +1,3 @@
-import {
-	SortableIndexedPageLinksContainer,
-	SortableIndexedPagesGroupContainer,
-} from "./styledElements";
-import { NotionToggle } from "@/components/(NotionBased)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useLayoutEffect, useState } from "react";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
@@ -14,6 +9,16 @@ import {
 import { SortableStyledLink } from "@/components/(SPECIAL)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UserFavoriteType } from "@/libs/stp@types";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { UIBasics } from "@/components/(UIBasics)";
+
+const SortableIndexedPagesGroupContainer = newStyledElement.div(
+	styles.sortableIndexedPagesGroupContainer
+);
+const SortableIndexedPageLinksContainer = newStyledElement.div(
+	styles.sortableIndexedPageLinksContainer
+);
 
 export interface SortableIndexedPage {
 	name: string;
@@ -89,7 +94,7 @@ export default function SortableIndexedPagesGroup({
 
 	return (
 		<SortableIndexedPagesGroupContainer>
-			<NotionToggle
+			<UIBasics.Toggle
 				memoryId={`IndexedPages/${groupName}`}
 				routeSensitiveMemory={false}
 				contentMargin="none"
@@ -120,7 +125,7 @@ export default function SortableIndexedPagesGroup({
 						</SortableContext>
 					</SortableIndexedPageLinksContainer>
 				</DndContext>
-			</NotionToggle>
+			</UIBasics.Toggle>
 		</SortableIndexedPagesGroupContainer>
 	);
 }

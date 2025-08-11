@@ -1,9 +1,14 @@
 "use client";
 
 import { List } from "@phosphor-icons/react/List";
-import { HideSideBarButtonContainer } from "./styledElements";
 import { useLayoutEffect } from "react";
 import { setCssAttribute } from "@/utils/CssPropertyUtils";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+
+const HideSideBarButtonContainer = newStyledElement.button(
+	styles.hideSideBarButtonContainer
+);
 
 export function HideSideBarButton() {
 	function handleHideSideButton() {

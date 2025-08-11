@@ -3,7 +3,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor, StandartTextColor } from "../../core";
 
-export const BoxContainer = newStyledElement.div(styles.boxContainer);
+const BoxContainer = newStyledElement.div(styles.boxContainer);
 
 interface BoxProps {
 	children?: ReactNode;

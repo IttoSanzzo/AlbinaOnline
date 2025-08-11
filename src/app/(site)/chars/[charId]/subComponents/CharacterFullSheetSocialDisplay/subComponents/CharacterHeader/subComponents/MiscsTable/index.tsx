@@ -1,4 +1,4 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 import {
 	CharacterCoreMetrics,
 	CharacterItemStackExpanded,
@@ -25,7 +25,7 @@ export function MiscsTable({
 	miscMetrics,
 }: MiscsTableProps) {
 	return (
-		<NotionTable
+		<UIBasics.Table
 			fixedLinePositions={[1, 3]}
 			fixedLineWidths={[28, 20]}
 			withHeaderColumn={false}
@@ -33,21 +33,21 @@ export function MiscsTable({
 			tableData={{
 				tableLanes: [
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Iniciativa"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
 							children={String(coreMetrics.initiative)}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Carga"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
@@ -57,11 +57,11 @@ export function MiscsTable({
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"C.A."}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"
@@ -69,11 +69,11 @@ export function MiscsTable({
 						/>,
 					],
 					[
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							children={"Movimento"}
 						/>,
-						<NotionText
+						<UIBasics.Text
 							textColor="gray"
 							display="block"
 							textAlign="center"

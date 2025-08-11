@@ -5,10 +5,10 @@ import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon, StpIconProps } from "@/libs/stp@icons";
 
-export const StyledLinkWithButtonContainer = newStyledElement.div(
+const StyledLinkWithButtonContainer = newStyledElement.div(
 	styles.styledLinkContainer
 );
-export const ActionButton = newStyledElement.button(styles.actionButton);
+const ActionButton = newStyledElement.button(styles.actionButton);
 
 export interface StyledLinkWithButtonProps extends LinkProps {
 	title: string;

@@ -5,10 +5,9 @@ import styles from "./styles.module.css";
 import { ChangeIconButton } from "./subComponents/ChangeIconButton";
 import { useState } from "react";
 
-export const EditablePageIconContainer = newStyledElement.div(
+const EditablePageIconContainer = newStyledElement.div(
 	styles.pageIconContainer
 );
-export const EditIconButton = newStyledElement.button(styles.pageIconContainer);
 
 interface EditablePageIconProps {
 	iconSrc: string;

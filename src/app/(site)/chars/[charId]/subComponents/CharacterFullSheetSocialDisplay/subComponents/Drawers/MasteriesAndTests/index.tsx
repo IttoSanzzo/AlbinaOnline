@@ -1,5 +1,5 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { Notion2Columns } from "@/components/(NotionBased)";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import {
 	CharacterAbilityScore,
@@ -23,7 +23,7 @@ export function MasteriesAndTestsDrawer({
 			title="Maestrias & Testes"
 			memoryId={`${characterId}-MasteriesAndTests`}
 			backgroundColor="blue">
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterDataDisplays.MasteriesFromType
 						characterId={characterId}
@@ -41,7 +41,7 @@ export function MasteriesAndTestsDrawer({
 					/>
 				}
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterDataDisplays.MasteriesFromType
 						characterId={characterId}

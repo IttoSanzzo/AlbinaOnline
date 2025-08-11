@@ -5,15 +5,10 @@ import {
 	GenericPageFooter,
 } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
-import {
-	Notion2Columns,
-	NotionCallout,
-	NotionHeader,
-	NotionQuote,
-} from "@/components/(NotionBased)";
 import TraitTypologyCallout from "./subComponents/TraitTypologyCallout";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -41,13 +36,13 @@ export default async function Trait({ params }: TraitProps) {
 				data={traitData}
 			/>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor="purple"
 				backgroundColor="gray"
 				textAlign="center"
 				children={"¤ Especificações ¤"}
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<TraitTypologyCallout
 						type={traitData.type}
@@ -56,12 +51,12 @@ export default async function Trait({ params }: TraitProps) {
 				}
 				colum2={<GenericInfoCallout info={traitData.info} />}
 			/>
-			<NotionCallout
+			<UIBasics.Callout
 				textColor="orange"
 				title="Requerimentos:"
 				icon={{ name: "Keyhole", color: "orange" }}
 				children={traitData.info.requirements.map((requirement, index) => (
-					<NotionQuote
+					<UIBasics.Quote
 						key={index}
 						textColor="yellow"
 						children={requirement}

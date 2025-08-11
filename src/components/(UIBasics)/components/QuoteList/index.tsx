@@ -3,9 +3,7 @@ import styles from "./styles.module.css";
 import { StandartTextColor } from "../../core";
 import { UIBasics } from "../..";
 
-export const QuoteListContainer = newStyledElement.div(
-	styles.quoteListContainer
-);
+const QuoteListContainer = newStyledElement.div(styles.quoteListContainer);
 
 interface QuoteListProps {
 	quotes?: string[];

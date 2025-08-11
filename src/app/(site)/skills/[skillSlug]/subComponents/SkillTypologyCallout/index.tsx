@@ -1,8 +1,4 @@
-import {
-	NotionCallout,
-	NotionTable,
-	NotionText,
-} from "@/components/(NotionBased)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 function getTabulatedType(type: string) {
 	switch (type) {
@@ -43,26 +39,26 @@ export default function SkillTypologyCallout({
 }: SkillTypologyCalloutProps) {
 	const tableType = [
 		"💮Tipo",
-		<NotionText>{getTabulatedType(type)}</NotionText>,
+		<UIBasics.Text>{getTabulatedType(type)}</UIBasics.Text>,
 	];
 	const tableStatus = [
 		"🏷️Sub-Tipo",
-		<NotionText>{getTabulatedSubType(subType)}</NotionText>,
+		<UIBasics.Text>{getTabulatedSubType(subType)}</UIBasics.Text>,
 	];
 
 	return (
-		<NotionCallout
+		<UIBasics.Callout
 			icon={{
 				name: "IdentificationCard",
 				color: "purple",
 			}}
 			titleColor="gray"
 			title={"Tipologia"}>
-			<NotionTable
+			<UIBasics.Table
 				tableData={{
 					tableLanes: [tableType, tableStatus],
 				}}
 			/>
-		</NotionCallout>
+		</UIBasics.Callout>
 	);
 }

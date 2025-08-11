@@ -2,9 +2,14 @@
 
 import { Star } from "@phosphor-icons/react/Star";
 import { useCurrentPageData, useUserFavorites } from "@/libs/stp@hooks";
-import { FavoriteButtonContainer } from "./styledElements";
-import { NotionTextColor } from "@/components/(NotionBased)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import styles from "./styles.module.css";
+import { StandartTextColor } from "@/components/(UIBasics)";
+
+const FavoriteButtonContainer = newStyledElement.div(
+	styles.favoriteButtonContainer
+);
 
 export function FavoriteButton() {
 	const { favorites, isLoading, reloadFavorites } = useUserFavorites();
@@ -17,7 +22,7 @@ export function FavoriteButton() {
 					title="Favorite Page"
 					disabled>
 					<Star
-						color={NotionTextColor.darkGray}
+						color={StandartTextColor.darkGray}
 						weight="fill"
 					/>
 				</button>

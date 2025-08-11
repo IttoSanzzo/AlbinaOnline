@@ -1,9 +1,5 @@
-import { StyledLink, StyledLinkWithButton } from "@/components/(Design)";
-import {
-	NotionTable,
-	NotionText,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { StyledLink } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -13,7 +9,7 @@ function formTable(
 	characterTraits: CharacterTraitExpanded[]
 ): React.JSX.Element[][] {
 	const titleRow = [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children="Nome"
 		/>,
@@ -22,7 +18,7 @@ function formTable(
 		return [
 			titleRow,
 			[
-				<NotionText
+				<UIBasics.Text
 					textColor="orange"
 					children="-"
 				/>,
@@ -71,13 +67,13 @@ export function _CharacterTraitsDisplay({
 	}, []);
 
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
 			title="Traços"
 			memoryId={`${characterId}-Traits`}>
-			<NotionTable
+			<UIBasics.Table
 				style={{ margin: 0 }}
 				withHeaderColumn={false}
 				columnBackgroundColors={["gray"]}
@@ -86,7 +82,7 @@ export function _CharacterTraitsDisplay({
 					tableLanes: formTable(characterTraits),
 				}}
 			/>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
 

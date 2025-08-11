@@ -1,21 +1,8 @@
-import {
-	GenericEffectsDisplay,
-	GenericPageContainer,
-	GenericPageFooter,
-} from "@/components/(Design)";
-import {
-	NotionText,
-	NotionHeader,
-	Notion2Columns,
-	NotionCallout,
-	NotionToggle,
-	NotionDivisor,
-	NotionTable,
-} from "@/components/(NotionBased)";
+import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
-import { NotionQuoteList } from "@/components/(UTILS)";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -55,212 +42,214 @@ export default async function Race({ params }: RaceProps) {
 				data={raceData}
 			/>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor={"orange"}
 				backgroundColor={"gray"}
 				withUnderline={true}
 				textAlign="center">
 				🏮Informações Gerais🏮
-			</NotionHeader>
-			<NotionCallout
+			</UIBasics.Header>
+			<UIBasics.Callout
 				icon={{ name: "Shuffle", color: "purple" }}
 				titleColor="purple"
 				title={"⫷Tipologia⫸"}>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionCallout
+						<UIBasics.Callout
 							icon={{ name: "TreeEvergreen", color: "pink" }}
 							backgroundColor="pink"
 							titleColor="pink"
 							title={"💮Árvore:"}>
-							<NotionText
+							<UIBasics.Text
 								textColor="pink"
 								withBold
 								withItalic>
 								{`》${raceData.type}`}
-							</NotionText>
-						</NotionCallout>
+							</UIBasics.Text>
+						</UIBasics.Callout>
 					}
 					colum2={
-						<NotionCallout
+						<UIBasics.Callout
 							icon={{ name: "TreeEvergreen", color: "yellow" }}
 							backgroundColor="yellow"
 							titleColor="yellow"
 							title={"🏵️Relação:"}>
-							<NotionText
+							<UIBasics.Text
 								textColor="yellow"
 								withBold
 								withItalic>
 								{`》${raceData.subType}`}
-							</NotionText>
-						</NotionCallout>
+							</UIBasics.Text>
+						</UIBasics.Callout>
 					}
 				/>
-			</NotionCallout>
-			<NotionCallout
+			</UIBasics.Callout>
+			<UIBasics.Callout
 				icon={{ name: "Cards", color: "red" }}
 				titleColor="red"
 				title={"⫷Informações Gerais⫸"}>
-				<NotionDivisor />
-				<NotionCallout
+				<UIBasics.Divisor />
+				<UIBasics.Callout
 					icon={{ name: "BookOpen", color: "yellow", style: "fill" }}
 					titleColor="yellow"
 					title={"Cultura, Comunidade e Curiosidades..:"}>
-					<NotionToggle
+					<UIBasics.Toggle
 						memoryId="introduction"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Cultura, Comunidade e Curiosidades..:
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionDivisor />
-						<NotionCallout
+						<UIBasics.Divisor />
+						<UIBasics.Callout
 							icon={{ name: "Sparkle", color: "orange" }}
-							title={<NotionText>{raceData.info.introduction[0]}</NotionText>}
+							title={
+								<UIBasics.Text>{raceData.info.introduction[0]}</UIBasics.Text>
+							}
 						/>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							quotes={raceData.info.introduction.slice(1)}
 						/>
-						<NotionDivisor />
-					</NotionToggle>
-					<NotionToggle
+						<UIBasics.Divisor />
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="personality"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Personalidade Comum
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.personality}
 						/>
-					</NotionToggle>
-					<NotionToggle
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="culture"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Traços de Cultura
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.culture}
 						/>
-					</NotionToggle>
-					<NotionToggle
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="miscellaneous"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Miscelâneas
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.miscellaneous}
 						/>
-					</NotionToggle>
-					<NotionToggle
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="groups"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Palheta de Agremiações
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.groups}
 						/>
-					</NotionToggle>
-					<NotionToggle
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="relations"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Relacionamento Interracial
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.relations}
 						/>
-					</NotionToggle>
-				</NotionCallout>
-				<NotionCallout
+					</UIBasics.Toggle>
+				</UIBasics.Callout>
+				<UIBasics.Callout
 					icon={{ name: "PersonArmsSpread", color: "yellow", style: "fill" }}
 					titleColor="yellow"
 					title={"Aparência e Fisiologia..:"}>
-					<NotionToggle
+					<UIBasics.Toggle
 						memoryId="description"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Descrição
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.description}
 						/>
-					</NotionToggle>
-					<NotionToggle
+					</UIBasics.Toggle>
+					<UIBasics.Toggle
 						memoryId="images"
 						textColor="orange"
 						title={
-							<NotionText
+							<UIBasics.Text
 								withUnderline
 								withItalic>
 								》Imagens
-							</NotionText>
+							</UIBasics.Text>
 						}>
-						<NotionQuoteList
+						<UIBasics.List.Quote
 							textColor="default"
 							withDivisor
 							quotes={raceData.info.images}
 						/>
-					</NotionToggle>
-				</NotionCallout>
-			</NotionCallout>
+					</UIBasics.Toggle>
+				</UIBasics.Callout>
+			</UIBasics.Callout>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor={"orange"}
 				backgroundColor={"gray"}
 				withUnderline={true}
 				textAlign="center">
 				🏮Características🏮
-			</NotionHeader>
-			<NotionCallout
+			</UIBasics.Header>
+			<UIBasics.Callout
 				icon={{ name: "SketchLogo", color: "yellow" }}
 				titleColor="yellow"
 				title={["⫦Parâmetros⫣", "⫦Gerais⫣"]}>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionTable
+						<UIBasics.Table
 							fixedLinePositions={[1]}
 							fixedLineWidths={[90]}
 							tableData={{
@@ -284,7 +273,7 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					}
 					colum2={
-						<NotionTable
+						<UIBasics.Table
 							tableData={{
 								tableLanes: [
 									["📏 Altura Média", `》 ${raceData.generals.height}`],
@@ -297,58 +286,58 @@ export default async function Race({ params }: RaceProps) {
 						/>
 					}
 				/>
-			</NotionCallout>
+			</UIBasics.Callout>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor={"orange"}
 				backgroundColor={"gray"}
 				withUnderline={true}
 				textAlign="center">
 				🏮Traços Raciais🏮
-			</NotionHeader>
-			<NotionCallout
+			</UIBasics.Header>
+			<UIBasics.Callout
 				icon={{ name: "UserCircle", color: "yellow" }}
 				titleColor="brown"
 				title={"⪼ Outros Traços"}>
 				{/* <GenericEffectsDisplay effects={raceData.traitSlugs} /> */}
-			</NotionCallout>
-			{/* <NotionCallout
+			</UIBasics.Callout>
+			{/* <UIBasics.Callout
 				icon={{ name: "UserCircleGear", color: "yellow" }}
 				titleColor="brown"
 				title={"⪼ Resistências & Fraquezas & Imunidades"}>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					colum1={
-						<NotionCallout
+						<UIBasics.Callout
 							icon={{ name: "ShieldChevron", color: "orange" }}
 							textColor="orange"
 							title={"⫷Resistências⫸"}>
-							<NotionQuoteList quotes={raceData.defensiveProfile.resistences} />
-						</NotionCallout>
+							<UIBasics.List.Quote quotes={raceData.defensiveProfile.resistences} />
+						</UIBasics.Callout>
 					}
 					colum2={
-						<NotionCallout
+						<UIBasics.Callout
 							icon={{ name: "ShieldWarning", color: "red" }}
 							textColor="red"
 							title={"⫷Fraqueza⫸"}>
-							<NotionQuoteList quotes={raceData.defensiveProfile.weaknesses} />
-						</NotionCallout>
+							<UIBasics.List.Quote quotes={raceData.defensiveProfile.weaknesses} />
+						</UIBasics.Callout>
 					}
 				/>
-				<NotionCallout
+				<UIBasics.Callout
 					icon={{ name: "ShieldCheck", color: "blue" }}
 					textColor="blue"
 					title={"⫷Imunidades⫸"}>
-					<NotionQuoteList quotes={raceData.defensiveProfile.immunities} />
-				</NotionCallout>
-			</NotionCallout> */}
+					<UIBasics.List.Quote quotes={raceData.defensiveProfile.immunities} />
+				</UIBasics.Callout>
+			</UIBasics.Callout> */}
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor={"orange"}
 				backgroundColor={"gray"}
 				withUnderline={true}
 				textAlign="center">
 				🏮Habilidades Raciais🏮
-			</NotionHeader>
+			</UIBasics.Header>
 			{/* <GenericEffectsDisplay effects={raceData.skillSlug} /> */}
 
 			<GenericPageFooter

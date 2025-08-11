@@ -1,14 +1,9 @@
-import {
-	Notion2Columns,
-	NotionBox,
-	NotionTable,
-} from "@/components/(NotionBased)";
 import { GaugesTable } from "./subComponents/GaugesTable";
 import { MiscsTable } from "./subComponents/MiscsTable";
 import { AttributesEditableDisplay } from "./subComponents/AttributesEditableDisplay";
 import { LevelAndRaceEditableDisplay } from "./subComponents/LevelAndRaceEditableDisplay";
 import { RaceData } from "@/libs/stp@types";
-import { useState } from "react";
+import { UIBasics } from "@/components/(UIBasics)";
 
 interface CharacterHeaderProps {
 	level: number;
@@ -16,13 +11,13 @@ interface CharacterHeaderProps {
 }
 export function CharacterHeader({ level, race }: CharacterHeaderProps) {
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="blue"
 			withoutBorder>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="orange"
 				withoutPadding>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -34,12 +29,12 @@ export function CharacterHeader({ level, race }: CharacterHeaderProps) {
 					}
 					colum2={<AttributesEditableDisplay />}
 				/>
-			</NotionBox>
-			<Notion2Columns
+			</UIBasics.Box>
+			<UIBasics.MultiColumn.Two
 				withoutPadding
 				colum1={<GaugesTable />}
 				colum2={<MiscsTable />}
 			/>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

@@ -1,8 +1,3 @@
-import {
-	NotionBox,
-	NotionHeader,
-	NotionTable,
-} from "@/components/(NotionBased)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
@@ -12,6 +7,7 @@ import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { KorynCoins } from "@/libs/stp@types";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	copperSmall: z.coerce.number().min(0, "Mínimo de 0"),
@@ -85,12 +81,12 @@ export function KorynCoinsController({
 	}
 
 	return (
-		<NotionBox
+		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding
 			withoutBorder
 			withoutMargin>
-			<NotionHeader
+			<UIBasics.Header
 				headerType="h2"
 				textAlign="center"
 				textColor="orange"
@@ -102,7 +98,7 @@ export function KorynCoinsController({
 					isValid={isValid}
 					action={handleWatchedAction}
 				/>
-				<NotionTable
+				<UIBasics.Table
 					fixedLinePositions={[1, 3]}
 					fixedLineWidths={[50, 12]}
 					direction="row"
@@ -127,6 +123,6 @@ export function KorynCoinsController({
 					color="red"
 				/>
 			</HookedForm.Form>
-		</NotionBox>
+		</UIBasics.Box>
 	);
 }

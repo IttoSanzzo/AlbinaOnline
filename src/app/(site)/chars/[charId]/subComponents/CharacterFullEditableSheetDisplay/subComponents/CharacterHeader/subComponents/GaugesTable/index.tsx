@@ -1,4 +1,3 @@
-import { NotionTable, NotionText } from "@/components/(NotionBased)";
 import { GaugeSelection } from "./GaugeSelection";
 import { useContext, useEffect } from "react";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
@@ -10,6 +9,7 @@ import { CoreMetricsContext } from "../../../CharacterEditableSheetContextProvid
 import { CharacterCoreMetrics } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	currentHp: z.coerce.number(),
@@ -98,13 +98,13 @@ export function GaugesTable({}: GaugesTableProps) {
 				watch={watch}
 				action={onFormChange}
 			/>
-			<NotionTable
+			<UIBasics.Table
 				fixedLinePositions={[1, 3, 4, 5]}
 				fixedLineWidths={[20, 5, 10, 5]}
 				tableData={{
 					tableLanes: [
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="red"
 								children="HP"
 							/>,
@@ -116,7 +116,7 @@ export function GaugesTable({}: GaugesTableProps) {
 							/>,
 						],
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="green"
 								children="EP"
 							/>,
@@ -128,7 +128,7 @@ export function GaugesTable({}: GaugesTableProps) {
 							/>,
 						],
 						[
-							<NotionText
+							<UIBasics.Text
 								textColor="blue"
 								children="MP"
 							/>,

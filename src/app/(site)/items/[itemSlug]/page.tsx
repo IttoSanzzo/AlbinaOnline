@@ -5,11 +5,11 @@ import {
 	GenericPageFooter,
 } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
-import { Notion2Columns, NotionHeader } from "@/components/(NotionBased)";
 import MasteryTypologyCallout from "./subComponents/ItemTypologyCallout";
 import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
+import { UIBasics } from "@/components/(UIBasics)";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -37,13 +37,13 @@ export default async function Item({ params }: ItemProps) {
 				data={itemData}
 			/>
 
-			<NotionHeader
+			<UIBasics.Header
 				textColor="purple"
 				backgroundColor="gray"
 				textAlign="center"
 				children={"¤ Especificações ¤"}
 			/>
-			<Notion2Columns
+			<UIBasics.MultiColumn.Two
 				colum1={
 					<MasteryTypologyCallout
 						type={itemData.type}

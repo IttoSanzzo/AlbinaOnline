@@ -1,5 +1,5 @@
+import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
-import { Notion2Columns, NotionBox } from "@/components/(NotionBased)";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { CharacterActionsPool, Guid } from "@/libs/stp@types";
 import React from "react";
@@ -16,11 +16,11 @@ function _StatisticsDrawer({
 		<CharacterDrawerBaseHeader
 			title="Estatísticas"
 			memoryId={`${characterId}-Statistics`}>
-			<NotionBox
+			<UIBasics.Box
 				backgroundColor="blue"
 				withoutMargin
 				withoutBorder>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -31,7 +31,7 @@ function _StatisticsDrawer({
 					}
 					colum2={<CharacterEditableDataDisplays.CoreMiscAndSimpleMetrics />}
 				/>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -52,7 +52,7 @@ function _StatisticsDrawer({
 						/>
 					}
 				/>
-				<Notion2Columns
+				<UIBasics.MultiColumn.Two
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
@@ -68,7 +68,7 @@ function _StatisticsDrawer({
 						<CharacterEditableDataDisplays.Traits characterId={characterId} />
 					}
 				/>
-			</NotionBox>
+			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
 }

@@ -1,22 +1,17 @@
-import {
-	NotionTable,
-	NotionText,
-	NotionTextColor,
-	NotionToggleHeader,
-} from "@/components/(NotionBased)";
+import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
 
 function formTableEntry(
 	title: string,
 	value: number,
-	color: keyof typeof NotionTextColor
+	color: keyof typeof StandartTextColor
 ) {
 	return [
-		<NotionText
+		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
-		<NotionText
+		<UIBasics.Text
 			display="block"
 			textAlign="center"
 			textColor={color}
@@ -31,7 +26,7 @@ interface CharacterGaugeDisplayProps {
 	gauge: "healthPoints" | "staminaPoints" | "manaPoints";
 	name: string;
 	acronym: string;
-	color: keyof typeof NotionTextColor;
+	color: keyof typeof StandartTextColor;
 }
 export function CharacterGaugeDisplay({
 	characterId,
@@ -43,7 +38,7 @@ export function CharacterGaugeDisplay({
 }: CharacterGaugeDisplayProps) {
 	const thisGauge = coreMetrics[gauge];
 	return (
-		<NotionToggleHeader
+		<UIBasics.ToggleHeader
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="yellow"
@@ -54,7 +49,7 @@ export function CharacterGaugeDisplay({
 					display: "flex",
 					flexDirection: "column",
 				}}>
-				<NotionTable
+				<UIBasics.Table
 					tableData={{
 						tableLanes: [
 							formTableEntry(`${acronym} Atual`, thisGauge.baseCurrent, color),
@@ -73,6 +68,6 @@ export function CharacterGaugeDisplay({
 					}}
 				/>
 			</div>
-		</NotionToggleHeader>
+		</UIBasics.ToggleHeader>
 	);
 }
