@@ -1,6 +1,12 @@
 "use client";
 
-import { CSSProperties, ReactNode, useEffect, useMemo, useRef } from "react";
+import {
+	CSSProperties,
+	ReactNode,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+} from "react";
 import {
 	KeenSliderHooks,
 	KeenSliderInstance,
@@ -92,7 +98,7 @@ export function Carousel({
 
 	const CaroulselRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!CaroulselRef.current || !CaroulselRef.current.parentElement) return;
 		const ro = new ResizeObserver(() => {
 			instanceRef.current?.update();

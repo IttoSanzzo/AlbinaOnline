@@ -3,6 +3,7 @@
 import {
 	CSSProperties,
 	ReactNode,
+	useCallback,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -16,6 +17,7 @@ import { StandartColorProps, StandartTextColor } from "../../core";
 import { StandartColorKeysToProperties } from "../../utils";
 import { Triangle } from "@phosphor-icons/react/dist/ssr/Triangle";
 import { UIBasics } from "../..";
+import { useDebouncedCallback } from "@/utils/General";
 
 const ToggleContainer = newStyledElement.div(styles.toggleContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);
@@ -71,26 +73,32 @@ export function Toggle({
 	}, [memoryId]);
 	const contentRef = useRef<HTMLDivElement>(null);
 
+	const updateHeight = useCallback(() => {
+		if (!contentRef.current) return;
+		const newHeight = contentRef.current.scrollHeight;
+		if (newHeight != contentMaxHeight) setContentMaxHeight(newHeight);
+	}, [contentMaxHeight]);
+	const debouncedUpdateHeight = useDebouncedCallback(updateHeight, 10);
+
 	useLayoutEffect(() => {
 		setIsOpen(getCurrentOpenState(pathname, memoryName));
+		if (contentRef.current)
+			setContentMaxHeight(contentRef.current.scrollHeight);
 	}, []);
-
-	function updateHeight() {
-		if (!contentRef.current) return;
-		const newHeight = contentRef.current!.scrollHeight;
-		if (newHeight != contentMaxHeight) setContentMaxHeight(newHeight);
-	}
 
 	useLayoutEffect(() => {
 		if (!contentRef.current) return;
-		const element = contentRef.current!;
-		const resizeObserver = new ResizeObserver(updateHeight);
-		if (element.firstElementChild)
+		const element = contentRef.current;
+		if (element.firstElementChild) {
+			const resizeObserver = new ResizeObserver(() => {
+				debouncedUpdateHeight();
+			});
 			resizeObserver.observe(element.firstElementChild);
-		return () => {
-			resizeObserver.disconnect();
-		};
-	}, [contentRef]);
+			return () => {
+				resizeObserver.disconnect();
+			};
+		}
+	}, [contentRef, debouncedUpdateHeight]);
 
 	function handleOpenButton() {
 		setMemoryOpenState(!isOpen, pathname, memoryName);
