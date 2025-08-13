@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { revalidateMetadata } from "@/utils/ServerActions";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer
@@ -29,11 +30,13 @@ interface ChangeIconButtonProps {
 	iconSrc: string;
 	setIcon: Dispatch<SetStateAction<string>>;
 	route: string;
+	metadataTag?: string;
 }
 export function ChangeIconButton({
 	iconSrc,
 	setIcon,
 	route,
+	metadataTag,
 }: ChangeIconButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -59,6 +62,7 @@ export function ChangeIconButton({
 		}
 		setOpen(false);
 		setIcon(`${iconSrc}?t=${Date.now()}`);
+		if (metadataTag) revalidateMetadata(metadataTag);
 	}
 
 	return (

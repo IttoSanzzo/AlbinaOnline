@@ -12,8 +12,13 @@ const EditablePageIconContainer = newStyledElement.div(
 interface EditablePageIconProps {
 	iconSrc: string;
 	route?: string;
+	metadataTag?: string;
 }
-export function EditablePageIcon({ iconSrc, route }: EditablePageIconProps) {
+export function EditablePageIcon({
+	iconSrc,
+	route,
+	metadataTag,
+}: EditablePageIconProps) {
 	const [icon, setIcon] = useState<string>(`${iconSrc}?t=${Date.now()}`);
 
 	return (
@@ -31,6 +36,7 @@ export function EditablePageIcon({ iconSrc, route }: EditablePageIconProps) {
 					setIcon={setIcon}
 					iconSrc={iconSrc}
 					route={route}
+					metadataTag={metadataTag}
 				/>
 			)}
 		</EditablePageIconContainer>

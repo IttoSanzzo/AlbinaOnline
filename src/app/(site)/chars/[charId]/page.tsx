@@ -1,120 +1,43 @@
-"use client";
-
-import {
-	GenericPageContainer,
-	GenericPageFooter,
-	StyledLink,
-} from "@/components/(Design)";
-import { AccessLevel, CharacterExpandedData, Guid } from "@/libs/stp@types";
+import { Metadata } from "next";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
-import {
-	Breadcrumb,
-	SetBreadcrumbs,
-	SetCurrentCharacterAccessLevel,
-	SetCurrentPageData,
-	SetNavBarModules,
-	useCurrentCharacterAccessLevel,
-} from "@/libs/stp@hooks";
-import { FavoriteButton } from "@/components/(SPECIAL)";
-import { routeInfra } from "./(routeInfra)";
-import { useEffect, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
-import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
-import { UserPageLink } from "@/components/(UTILS)";
+import CharPageContent from "./pageContent";
+import { Guid } from "@/libs/stp@types";
 
-// export const generateMetadata = routeInfra.generateMetadata;
-
-interface CharacterPageProps {
+interface CharPageServerShellProps {
 	params: Promise<{ charId: Guid }>;
 }
-export default function CharacterPage({ params }: CharacterPageProps) {
-	const [error, setError] = useState<number | null>(null);
-	const [paramsData, setParamsData] = useState<{ charId: Guid } | null>(null);
-	const [characterData, setCharacterData] =
-		useState<CharacterExpandedData | null>(null);
-	const { accessLevel } = useCurrentCharacterAccessLevel();
 
-	useEffect(() => {
-		params.then((paramsData) => setParamsData(paramsData));
-	}, [setParamsData]);
-	useEffect(() => {
-		if (paramsData == null) return;
-		authenticatedFetchAsync(`/chars/${paramsData.charId}?view=expanded`, {
+export async function generateMetadata({
+	params,
+}: CharPageServerShellProps): Promise<Metadata> {
+	const { charId } = await params;
+
+	const response = await fetch(
+		getAlbinaApiAddress(`/chars/${charId}/metadata`),
+		{
+			cache: "force-cache",
 			method: "GET",
-		}).then((response) => {
-			if (!response.ok) {
-				setError(response.status);
-			} else {
-				response.json().then((data) => {
-					setCharacterData(data.character);
-				});
-			}
-		});
-	}, [paramsData, setCharacterData]);
-	if (error != null) {
-		switch (error) {
-			case 403:
-				return <>Forbidden</>;
-			case 404:
-				return <>Not Found</>;
-			case 500:
-				return <>Interal Server Error</>;
-			default:
-				return <>Unknown</>;
+			next: {
+				tags: [`page-metadata-char-${charId}`],
+			},
 		}
-	}
-	if (paramsData == null || characterData == null) return null;
-
-	const breadcrumbs: Breadcrumb[] = [
-		{
-			href: "/chars",
-			name: "Chars",
-			icon: `${getAlbinaApiAddress()}/favicon/chars`,
-		},
-		{
-			href: "#",
-			name: characterData.name,
-			icon: characterData.iconUrl,
-		},
-	];
-
-	return (
-		<GenericPageContainer
-			title={characterData.name}
-			banner={characterData.bannerUrl}
-			icon={characterData.iconUrl}
-			borderColor={"#505059"}
-			isEditable={accessLevel >= AccessLevel.Edit}
-			subTitle={<UserPageLink userId={characterData.ownerId} />}
-			bannerChangeRoute={getAlbinaApiAddress(
-				`/chars/${characterData.id}/banner`
-			)}
-			iconChangeRoute={getAlbinaApiAddress(
-				`/chars/${characterData.id}/favicon`
-			)}
-			titleChangeRoute={getAlbinaApiAddress(`/chars/${characterData.id}/name`)}>
-			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			<SetNavBarModules
-				contextMenuButton={routeInfra.PageContextMenu}
-				favoriteButton={FavoriteButton}
-			/>
-			<SetCurrentPageData
-				type={"character"}
-				data={characterData}
-			/>
-			<SetCurrentCharacterAccessLevel characterId={characterData.id} />
-
-			{accessLevel >= AccessLevel.Edit ? (
-				<CharacterFullSheetEditableDisplay characterData={characterData} />
-			) : (
-				<CharacterFullSheetSocialDisplay characterData={characterData} />
-			)}
-
-			<GenericPageFooter
-				version="6.5.0"
-				lastUpdate={characterData.updatedAt}
-			/>
-		</GenericPageContainer>
 	);
+	if (!response.ok) {
+		return {
+			title: "Char?",
+		};
+	}
+	const data = await response.json();
+	return {
+		title: data.title,
+		icons: { icon: data.icon },
+	};
+}
+
+export default async function CharPageServerShell({
+	params,
+}: CharPageServerShellProps) {
+	const { charId } = await params;
+
+	return <CharPageContent characterId={charId} />;
 }

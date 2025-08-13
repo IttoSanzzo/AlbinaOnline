@@ -11,7 +11,7 @@ const SideBarActivationArea = newStyledElement.div(
 );
 const SideBarContainer = newStyledElement.div(styles.sideBarContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);
-const AlbinaTitle = newStyledElement.div(styles.albinaTitle);
+const AlbinaTitle = newStyledElement.h6(styles.albinaTitle);
 const ActivePageTitle = newStyledElement.h6(styles.activePageTitle);
 const FooterContainer = newStyledElement.div(styles.footerContainer);
 
@@ -21,27 +21,29 @@ export async function SideBar() {
 			<DataInitComplete />
 			<SideBarActivationArea />
 			<SideBarContainer>
-				<HeaderContainer>
-					<Link href={"/home"}>
-						<AlbinaTitle>
-							<Image
-								src={albinaLogo}
-								alt="Albina Logo"
-								width={30}
-								height={30}
-							/>
-							<h6>Albina Online</h6>
-						</AlbinaTitle>
-						<ActivePageTitle>Home</ActivePageTitle>
-					</Link>
-				</HeaderContainer>
+				<Link href={"/home"}>
+					<HeaderContainer>
+						<Image
+							src={"/favicon.png"}
+							alt="Albina Logo"
+							width={50}
+							height={50}
+						/>
+						<div>
+							<AlbinaTitle>Albina Online</AlbinaTitle>
+							<ActivePageTitle>Home</ActivePageTitle>
+						</div>
+					</HeaderContainer>
+				</Link>
 
 				<IndexedPagesGroups />
 
 				<FooterContainer>
 					<div>
 						<Image
-							src={albinaLogo}
+							src={
+								"https://www.google.com/s2/favicons?domain=https://www.notion.com/&sz=512"
+							}
 							alt=""
 							width={18}
 							height={18}

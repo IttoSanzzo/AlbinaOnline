@@ -1,64 +1,48 @@
-import {
-	GenericEffectsDisplay,
-	GenericInfoCallout,
-	GenericPageContainer,
-	GenericPageFooter,
-} from "@/components/(Design)";
-import { getPageData } from "./(routeInfra)";
-import MasteryTypologyCallout from "./subComponents/ItemTypologyCallout";
-import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
-import { FavoriteButton } from "@/components/(SPECIAL)";
-import { UIBasics } from "@/components/(UIBasics)";
+import { Metadata } from "next";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import ItemPageContent from "./pageContent";
+import { fetchStaticParamSlugs } from "@/utils/Data";
 
-export { generateStaticParams, generateMetadata } from "./(routeInfra)";
-
-interface ItemProps {
+interface ItemPageServerShellProps {
 	params: Promise<{ itemSlug: string }>;
 }
 
-export default async function Item({ params }: ItemProps) {
+export async function generateMetadata({
+	params,
+}: ItemPageServerShellProps): Promise<Metadata> {
 	const { itemSlug } = await params;
-	const ItemPageData = await getPageData(itemSlug);
-	if (ItemPageData.itemData == undefined) {
-		return <>Error</>;
-	}
-	const { itemData, borderColor } = ItemPageData;
 
-	return (
-		<GenericPageContainer
-			title={itemData.name}
-			banner={itemData.bannerUrl}
-			icon={itemData.iconUrl}
-			borderColor={borderColor}>
-			<SetNavBarModules favoriteButton={FavoriteButton} />
-			<SetCurrentPageData
-				type={"item"}
-				data={itemData}
-			/>
-
-			<UIBasics.Header
-				textColor="purple"
-				backgroundColor="gray"
-				textAlign="center"
-				children={"¤ Especificações ¤"}
-			/>
-			<UIBasics.MultiColumn.Two
-				colum1={
-					<MasteryTypologyCallout
-						type={itemData.type}
-						subType={itemData.subType}
-					/>
-				}
-				colum2={<GenericInfoCallout info={itemData.info} />}
-			/>
-			<ItemPropertiesDisplay itemProperties={itemData.properties} />
-
-			<GenericEffectsDisplay effects={itemData.effects} />
-			<GenericPageFooter
-				version={itemData.albinaVersion}
-				lastUpdate={itemData.updatedAt}
-			/>
-		</GenericPageContainer>
+	const response = await fetch(
+		getAlbinaApiAddress(`/items/${itemSlug}/metadata`),
+		{
+			cache: "force-cache",
+			method: "GET",
+			next: {
+				tags: [`page-metadata-item-${itemSlug}`],
+			},
+		}
 	);
+	if (!response.ok) {
+		return {
+			title: "???",
+		};
+	}
+	const data = await response.json();
+	return {
+		title: data.title,
+		icons: { icon: data.icon },
+	};
+}
+
+export default async function ItemPageServerShell({
+	params,
+}: ItemPageServerShellProps) {
+	const { itemSlug } = await params;
+
+	return <ItemPageContent itemSlug={itemSlug} />;
+}
+
+export async function generateStaticParams() {
+	if (process.env.NODE_ENV === "development") return [];
+	return await fetchStaticParamSlugs("items");
 }

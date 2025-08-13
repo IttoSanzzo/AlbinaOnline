@@ -3,7 +3,10 @@ import { App } from "./_app";
 import "@/styles/global.css";
 
 export const metadata: Metadata = {
-	title: "Albina Alpha1",
+	title: "Albina RPG",
+	icons: {
+		icon: "/favicon.ico",
+	},
 };
 
 export default function RootLayout({

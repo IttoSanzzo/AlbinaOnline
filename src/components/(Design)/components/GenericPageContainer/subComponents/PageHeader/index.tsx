@@ -19,6 +19,7 @@ interface PageHeaderProps {
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
+	metadataTag?: string;
 }
 export function PageHeader({
 	isEditable,
@@ -29,6 +30,7 @@ export function PageHeader({
 	titleChangeRoute,
 	titleChangeBodyPropName,
 	subTitle,
+	metadataTag,
 }: PageHeaderProps) {
 	const finalIcon = `${icon}?size=64`;
 
@@ -57,6 +59,7 @@ export function PageHeader({
 						originalTitle={title}
 						route={titleChangeRoute}
 						titleChangeBodyPropName={titleChangeBodyPropName}
+						metadataTag={metadataTag}
 					/>
 				) : (
 					<PageTitle>{title}</PageTitle>

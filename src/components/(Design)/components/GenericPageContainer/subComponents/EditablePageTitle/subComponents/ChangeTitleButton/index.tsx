@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { PageTitle } from "../../../PageHeader";
+import { revalidateMetadata } from "@/utils/ServerActions";
 
 const ChangeTitleButtonContainer = newStyledElement.div(
 	styles.changeTitleButtonContainer
@@ -30,12 +31,14 @@ interface ChangeTitleButtonProps {
 	title: string;
 	route: string;
 	titleChangeBodyPropName?: string;
+	metadataTag?: string;
 }
 export function ChangeTitleButton({
 	setTitle,
 	title,
 	route,
 	titleChangeBodyPropName,
+	metadataTag,
 }: ChangeTitleButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -71,6 +74,7 @@ export function ChangeTitleButton({
 		}
 		setOpen(false);
 		setTitle(data.newName);
+		if (metadataTag) revalidateMetadata(metadataTag);
 	}
 
 	return (

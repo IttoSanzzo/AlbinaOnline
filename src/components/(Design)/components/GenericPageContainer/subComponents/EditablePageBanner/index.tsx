@@ -9,7 +9,7 @@ const EditablePageBannerContainer = newStyledElement.div(
 	styles.pageBannerContainer
 );
 
-interface EditablePageBannerProps {
+export interface EditablePageBannerProps {
 	bannerSrc: string;
 	route?: string;
 }

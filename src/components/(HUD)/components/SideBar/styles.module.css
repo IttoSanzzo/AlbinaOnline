@@ -116,29 +116,29 @@
 }
 
 .headerContainer {
+	display: flex;
+	flex-direction: row;
 	border: 1px solid var(--cl-gray-600);
 	padding: 5px;
 	border-radius: var(--rd-md);
 	background-color: var(--cl-gray-700);
+	color: var(--cl-gray-100);
 
-	& a {
-		text-decoration: none;
-		color: var(--cl-gray-100);
-	}
-}
-.albinaTitle {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 5px;
-
-	& h6 {
-		font-size: var(--fs-xl);
+	& > div {
+		margin: auto;
 	}
 	& img {
+		margin: auto 0;
 		border-radius: var(--rd-sm);
 	}
 }
+.albinaTitle {
+	text-align: center;
+	font-size: var(--fs-xl);
+	font-family: "Lucida Sans Unicode";
+	line-height: 15px;
+}
+
 .activePageTitle {
 	text-align: center;
 	font-size: var(--fs-md);

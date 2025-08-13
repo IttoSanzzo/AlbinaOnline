@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
-import { StaticImageData } from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
@@ -22,6 +21,7 @@ interface GenericPageContainerProps {
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
+	metadataTag?: string;
 }
 
 export function GenericPageContainer({
@@ -36,6 +36,7 @@ export function GenericPageContainer({
 	titleChangeRoute,
 	titleChangeBodyPropName,
 	subTitle,
+	metadataTag,
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
@@ -58,6 +59,7 @@ export function GenericPageContainer({
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}
 					subTitle={subTitle}
+					metadataTag={metadataTag}
 				/>
 				{children}
 			</ContentsContainer>
