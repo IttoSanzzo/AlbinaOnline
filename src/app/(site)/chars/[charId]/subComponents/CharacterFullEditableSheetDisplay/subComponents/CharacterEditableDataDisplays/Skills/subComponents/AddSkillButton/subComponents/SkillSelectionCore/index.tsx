@@ -13,6 +13,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 interface SkillSelectionCoreProps {
 	characterId: Guid;
@@ -58,6 +60,7 @@ export function SkillSelectionCore({
 		const body = {
 			skillId: skill.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/skills`),
 			{
@@ -68,7 +71,11 @@ export function SkillSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterSkills((state) => {
 			const newSkill: CharacterSkillExpanded = {
 				id: Guid.Empty,

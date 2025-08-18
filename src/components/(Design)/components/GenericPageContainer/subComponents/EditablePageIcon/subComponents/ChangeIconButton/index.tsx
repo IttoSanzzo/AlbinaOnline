@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidateMetadata } from "@/utils/ServerActions";
+import toast from "react-hot-toast";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer
@@ -40,11 +41,7 @@ export function ChangeIconButton({
 }: ChangeIconButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
-	const {
-		control,
-		handleSubmit,
-		formState: { isValid, isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -52,16 +49,19 @@ export function ChangeIconButton({
 		const bodyData = new FormData();
 		bodyData.append("file", data.image);
 
+		const toastId = toast.loading("Salvando...");
 		const response = await authenticatedFetchAsync(route, {
 			method: "PUT",
 			body: bodyData,
 		});
 		if (!response.ok) {
+			toast.error("Salvamento falhou", { id: toastId });
 			setError("Salvamento falhou");
 			return;
 		}
 		setOpen(false);
 		setIcon(`${iconSrc}?t=${Date.now()}`);
+		toast.success("Salvo", { id: toastId });
 		if (metadataTag) revalidateMetadata(metadataTag);
 	}
 
@@ -80,9 +80,10 @@ export function ChangeIconButton({
 						<Dialog.Content>
 							<Dialog.Title textAlign="center">Novo Icone</Dialog.Title>
 							<DialogDescription />
-							<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+							<HookedForm.Form
+								form={form}
+								onSubmit={onSubmit}>
 								<HookedForm.ImageInput
-									control={control}
 									label="Insira nova imagem"
 									fieldName="image"
 									minWidth={256}
@@ -92,10 +93,7 @@ export function ChangeIconButton({
 									maxWidth={1440}
 									maxHeight={1440}
 								/>
-								<HookedForm.SubmitButton
-									disabled={!isValid || isSubmitting}
-									label="Salvar"
-								/>
+								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
 									<HookedForm.SimpleMessage
 										color="red"

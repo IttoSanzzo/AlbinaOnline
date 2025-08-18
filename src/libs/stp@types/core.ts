@@ -17,6 +17,7 @@ export type GenericEffect = {
 	role: string;
 	name?: string;
 	color?: keyof typeof StandartTextColor;
+	order: number;
 	contents: GenericEffectContent[];
 };
 

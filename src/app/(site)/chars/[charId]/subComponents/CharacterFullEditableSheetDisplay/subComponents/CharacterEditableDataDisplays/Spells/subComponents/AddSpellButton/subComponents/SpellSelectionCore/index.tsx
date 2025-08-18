@@ -12,6 +12,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -59,6 +61,7 @@ export function SpellSelectionCore({
 		const body = {
 			spellId: spell.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/spells`),
 			{
@@ -69,7 +72,11 @@ export function SpellSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterSpells((state) => {
 			const newSpell: CharacterSpellExpanded = {
 				id: Guid.Empty,

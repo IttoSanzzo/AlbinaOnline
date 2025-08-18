@@ -1,9 +1,10 @@
 import { StpIcon } from "@/libs/stp@icons";
 import { CSSProperties, InputHTMLAttributes } from "react";
-import { Control, Path, useController } from "react-hook-form";
+import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartTextColor } from "@/components/(UIBasics)";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const NumberInputFieldContainer = newStyledElement.div(
 	styles.numberInputFieldContainer
@@ -16,11 +17,8 @@ const NumberInputIncrementButton = newStyledElement.button(
 	styles.numberInputIncrementButton
 );
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-type NumberInputInlineProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+type NumberInputInlineProps<TFormData> = {
+	fieldName: Path<TFormData>;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -42,8 +40,7 @@ type NumberInputInlineProps<TControl extends Control<any>> = {
 	color?: keyof typeof StandartTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function NumberInputInline<TControl extends Control<any>>({
-	control,
+export function NumberInputInline<TFormData extends FieldValues>({
 	fieldName,
 	fontSize,
 	style,
@@ -53,7 +50,11 @@ export function NumberInputInline<TControl extends Control<any>>({
 	className,
 	color,
 	...rest
-}: NumberInputInlineProps<TControl>) {
+}: NumberInputInlineProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const { field } = useController({
 		name: fieldName,
 		control,
@@ -70,10 +71,12 @@ export function NumberInputInline<TControl extends Control<any>>({
 		field.onChange(
 			min != undefined ? (newValue < min ? min : newValue) : newValue
 		);
+		triggerDebounceAction();
 	}
 	function handleIncrement() {
 		const newValue: number = (Number(field.value) ?? 0) + (step ? step : 1);
 		field.onChange(max ? (newValue > max ? max : newValue) : newValue);
+		triggerDebounceAction();
 	}
 
 	return (
@@ -93,6 +96,10 @@ export function NumberInputInline<TControl extends Control<any>>({
 				{...field}
 				value={field.value ?? ""}
 				{...rest}
+				onChange={(event) => {
+					field.onChange(event);
+					triggerDebounceAction();
+				}}
 			/>
 			<NumberInputIncrementButton
 				disabled={max != undefined && field.value >= max}

@@ -8,7 +8,7 @@ interface StatisticsDrawerProps {
 	characterId: Guid;
 	characterActionsPool: CharacterActionsPool;
 }
-function _StatisticsDrawer({
+export function _StatisticsDrawer({
 	characterId,
 	characterActionsPool,
 }: StatisticsDrawerProps) {

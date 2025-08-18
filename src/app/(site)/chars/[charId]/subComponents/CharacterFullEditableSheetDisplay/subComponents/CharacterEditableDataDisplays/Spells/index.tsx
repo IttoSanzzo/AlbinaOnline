@@ -5,6 +5,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSpellButton } from "./subComponents/AddSpellButton";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 async function handleSpellRemoval(
 	characterId: Guid,
@@ -14,6 +16,7 @@ async function handleSpellRemoval(
 	>
 ) {
 	const body = { spellId: spellId };
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/spells`),
 		{
@@ -24,7 +27,11 @@ async function handleSpellRemoval(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterSpells((state) =>
 		state.filter((spell) => spell.spell.id != spellId)
 	);

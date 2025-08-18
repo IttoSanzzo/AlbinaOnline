@@ -6,10 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { CoreMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
-import { CharacterCoreMetrics } from "@/libs/stp@types";
+import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../CharacterEditableDataDisplays";
 
 const schema = z.object({
 	currentHp: z.coerce.number(),
@@ -26,30 +28,35 @@ export function GaugesTable({}: GaugesTableProps) {
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
 
-	const {
-		control,
-		formState: { isValid },
-		setValue,
-		watch,
-	} = useForm<FormData>({
+	const defaultValues = {
+		currentHp: coreMetrics.healthPoints.baseCurrent,
+		temporaryHp: coreMetrics.healthPoints.temporaryCurrentModifier,
+		currentEp: coreMetrics.staminaPoints.baseCurrent,
+		temporaryEp: coreMetrics.staminaPoints.temporaryCurrentModifier,
+		currentMp: coreMetrics.manaPoints.baseCurrent,
+		temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
+	};
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		defaultValues: {
-			currentHp: coreMetrics.healthPoints.baseCurrent,
-			temporaryHp: coreMetrics.healthPoints.temporaryCurrentModifier,
-			currentEp: coreMetrics.staminaPoints.baseCurrent,
-			temporaryEp: coreMetrics.staminaPoints.temporaryCurrentModifier,
-			currentMp: coreMetrics.manaPoints.baseCurrent,
-			temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
-		},
+		defaultValues: defaultValues,
 	});
 
 	useEffect(() => {
-		setValue("currentHp", coreMetrics.healthPoints.baseCurrent);
-		setValue("temporaryHp", coreMetrics.healthPoints.temporaryCurrentModifier);
-		setValue("currentEp", coreMetrics.staminaPoints.baseCurrent);
-		setValue("temporaryEp", coreMetrics.staminaPoints.temporaryCurrentModifier);
-		setValue("currentMp", coreMetrics.manaPoints.baseCurrent);
-		setValue("temporaryMp", coreMetrics.manaPoints.temporaryCurrentModifier);
+		form.setValue("currentHp", coreMetrics.healthPoints.baseCurrent);
+		form.setValue(
+			"temporaryHp",
+			coreMetrics.healthPoints.temporaryCurrentModifier
+		);
+		form.setValue("currentEp", coreMetrics.staminaPoints.baseCurrent);
+		form.setValue(
+			"temporaryEp",
+			coreMetrics.staminaPoints.temporaryCurrentModifier
+		);
+		form.setValue("currentMp", coreMetrics.manaPoints.baseCurrent);
+		form.setValue(
+			"temporaryMp",
+			coreMetrics.manaPoints.temporaryCurrentModifier
+		);
 	}, [coreMetrics]);
 
 	async function onFormChange(formData: FormData): Promise<boolean> {
@@ -77,6 +84,8 @@ export function GaugesTable({}: GaugesTableProps) {
 				temporaryCurrentModifier: formData.temporaryMp,
 			},
 		};
+
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/core-metrics`),
 			{
@@ -87,17 +96,20 @@ export function GaugesTable({}: GaugesTableProps) {
 				},
 			}
 		);
-		if (!response.ok) return false;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return false;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCoreMetrics(body);
 		return true;
 	}
 
 	return (
-		<HookedForm.Form style={{ display: "flex" }}>
-			<HookedForm.WatchedAction
-				watch={watch}
-				action={onFormChange}
-			/>
+		<HookedForm.Form
+			form={form}
+			style={{ display: "flex" }}
+			onChangeAction={onFormChange}>
 			<UIBasics.Table
 				fixedLinePositions={[1, 3, 4, 5]}
 				fixedLineWidths={[20, 5, 10, 5]}
@@ -109,7 +121,6 @@ export function GaugesTable({}: GaugesTableProps) {
 								children="HP"
 							/>,
 							<GaugeSelection
-								control={control}
 								gauge="Hp"
 								color="red"
 								currentMax={coreMetrics.healthPoints.effectiveMax}
@@ -121,7 +132,6 @@ export function GaugesTable({}: GaugesTableProps) {
 								children="EP"
 							/>,
 							<GaugeSelection
-								control={control}
 								gauge="Ep"
 								color="green"
 								currentMax={coreMetrics.staminaPoints.effectiveMax}
@@ -133,7 +143,6 @@ export function GaugesTable({}: GaugesTableProps) {
 								children="MP"
 							/>,
 							<GaugeSelection
-								control={control}
 								gauge="Mp"
 								color="blue"
 								currentMax={coreMetrics.manaPoints.effectiveMax}

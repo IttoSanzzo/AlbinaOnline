@@ -13,6 +13,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -60,6 +62,7 @@ export function TraitSelectionCore({
 		const body = {
 			traitId: trait.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/traits`),
 			{
@@ -70,7 +73,11 @@ export function TraitSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterTraits((state) => {
 			const newTrait: CharacterTraitExpanded = {
 				id: Guid.Empty,

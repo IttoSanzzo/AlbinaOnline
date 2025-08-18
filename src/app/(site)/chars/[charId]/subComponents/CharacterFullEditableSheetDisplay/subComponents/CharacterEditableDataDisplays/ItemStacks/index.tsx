@@ -14,6 +14,8 @@ import { AddItemButton } from "./subComponents/AddItemButton";
 import { ItemAmountController } from "./subComponents/ItemAmountController";
 import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -26,6 +28,7 @@ async function handleItemRemoval(
 	>
 ) {
 	const body = { itemId: itemId };
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/items`),
 		{
@@ -36,7 +39,11 @@ async function handleItemRemoval(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterItems((state) => state.filter((item) => item.item.id != itemId));
 	setCharacterEquipments((state) => ({
 		...state,

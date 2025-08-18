@@ -16,11 +16,7 @@ interface CharacterBackstoryDisplayProps {
 export function CharacterBackstoryDisplay({
 	characterBackstory,
 }: CharacterBackstoryDisplayProps) {
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			backstory: characterBackstory,
@@ -28,19 +24,12 @@ export function CharacterBackstoryDisplay({
 	});
 
 	return (
-		<HookedForm.Form>
-			<HookedForm.WatchedAction
-				watch={watch}
-				isValid={isValid}
-				debounce={3000}
-				action={async () => false}
-			/>
+		<HookedForm.Form form={form}>
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
 				<HookedForm.TextAreaInput
-					control={control}
 					fieldName="backstory"
 					label="História"
 					labelBackground="gray"

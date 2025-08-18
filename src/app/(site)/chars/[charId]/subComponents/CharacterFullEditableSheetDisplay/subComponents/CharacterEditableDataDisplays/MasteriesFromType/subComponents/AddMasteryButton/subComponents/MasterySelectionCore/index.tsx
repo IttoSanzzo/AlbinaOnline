@@ -13,6 +13,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { MasteriesContext } from "../../../../../../CharacterEditableSheetContextProviders";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
@@ -58,6 +60,7 @@ export function MasterySelectionCore({
 		const body = {
 			masteryId: mastery.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/masteries`),
 			{
@@ -68,7 +71,11 @@ export function MasterySelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterMasteries((state) => {
 			return [
 				...state,

@@ -4,6 +4,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import { ItemsContext } from "../../../../CharacterEditableSheetContextProviders/contexts/Items";
 import { Guid } from "@/libs/stp@types";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../..";
 
 interface ItemAmountControllerProps {
 	amount: number;
@@ -21,6 +23,7 @@ export function ItemAmountController({
 		const body = {
 			amount: value,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/items/${itemId}`),
 			{
@@ -31,7 +34,11 @@ export function ItemAmountController({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterItems((state) => {
 			return state.map((itemStack) =>
 				itemStack.itemId === itemId

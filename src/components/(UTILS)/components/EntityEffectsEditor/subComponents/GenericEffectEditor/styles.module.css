@@ -1,0 +1,8 @@
+.genericEffectEditorContainer {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	padding: 10px;
+}

@@ -4,6 +4,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
 import { Guid } from "@/libs/stp@types";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../..";
 
 interface MasteryLinkWithDeletionProps {
 	characterId: Guid;
@@ -27,6 +29,7 @@ export function MasteryLinkWithDeletion({
 			buttonIcon={{ name: "Trash", color: "red" }}
 			onClick={async () => {
 				const body = { masteryId: masteryId };
+				const toastId = toast.loading(CharToastMessage.loading);
 				const response = await authenticatedFetchAsync(
 					`${getAlbinaApiAddress()}/chars/${characterId}/masteries`,
 					{
@@ -37,7 +40,11 @@ export function MasteryLinkWithDeletion({
 						},
 					}
 				);
-				if (!response.ok) return;
+				if (!response.ok) {
+					toast.error(CharToastMessage.error, { id: toastId });
+					return;
+				}
+				toast.success(CharToastMessage.success, { id: toastId });
 				setCharacterMasteries((state) => {
 					return state.filter((mastery) => mastery.masteryId != masteryId);
 				});

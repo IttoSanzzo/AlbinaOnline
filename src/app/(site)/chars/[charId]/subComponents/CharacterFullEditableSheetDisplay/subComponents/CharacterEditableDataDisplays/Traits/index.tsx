@@ -5,6 +5,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddTraitButton } from "./subComponents/AddTraitButton";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 async function handleTraitRemoval(
 	characterId: Guid,
@@ -14,6 +16,7 @@ async function handleTraitRemoval(
 	>
 ) {
 	const body = { traitId: traitId };
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/traits`),
 		{
@@ -24,7 +27,11 @@ async function handleTraitRemoval(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterTraits((state) =>
 		state.filter((trait) => trait.trait.id != traitId)
 	);

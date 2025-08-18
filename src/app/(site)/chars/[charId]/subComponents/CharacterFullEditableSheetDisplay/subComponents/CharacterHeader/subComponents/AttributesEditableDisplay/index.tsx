@@ -7,6 +7,8 @@ import { AddAttributeButton } from "./subComponents/AddAttributeButton";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../CharacterEditableDataDisplays";
 
 async function handleRemoveAttribute(
 	characterId: Guid,
@@ -20,6 +22,7 @@ async function handleRemoveAttribute(
 			(characterMagicAttribute) => characterMagicAttribute != magicAttribute
 		),
 	};
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/misc-metrics`),
 		{
@@ -30,7 +33,11 @@ async function handleRemoveAttribute(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setMiscMetrics(body);
 }
 

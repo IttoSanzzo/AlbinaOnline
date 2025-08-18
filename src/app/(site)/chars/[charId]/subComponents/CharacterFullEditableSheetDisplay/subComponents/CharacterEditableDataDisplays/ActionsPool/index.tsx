@@ -1,12 +1,14 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterActionsPool } from "@/libs/stp@types";
 import z from "zod";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const schema = z.object({
 	normalActions: z.coerce.number().min(0, "Mínimo de 0"),
@@ -18,18 +20,14 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-function formTableEntry(
-	control: Control<FormData>,
-	title: string,
-	fieldName: keyof FormData
-) {
+function formTableEntry(title: string, fieldName: keyof FormData) {
 	return [
 		<UIBasics.Text
 			textColor="gray"
 			children={title}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
+			min={0}
 			fieldName={fieldName}
 		/>,
 	];
@@ -46,11 +44,7 @@ export function CharacterActionsPoolDisplay({
 	const [actionPoolState, setActionsPoolState] =
 		useState<CharacterActionsPool>(characterActionsPool);
 
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: { ...actionPoolState },
 	});
@@ -59,6 +53,7 @@ export function CharacterActionsPoolDisplay({
 		const body = {
 			...formData,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/action-pool`,
 			{
@@ -70,6 +65,7 @@ export function CharacterActionsPoolDisplay({
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
@@ -78,6 +74,7 @@ export function CharacterActionsPoolDisplay({
 			...body,
 		}));
 		setErrorMessage("");
+		toast.success(CharToastMessage.success, { id: toastId });
 		return true;
 	}
 
@@ -88,26 +85,26 @@ export function CharacterActionsPoolDisplay({
 			titleColor="yellow"
 			title="Ações / Turno"
 			memoryId={`${characterId}-ActionsPool`}>
-			<HookedForm.Form style={{ display: "flex" }}>
-				<HookedForm.WatchedAction<FormData>
-					watch={watch}
-					isValid={isValid}
-					action={onFormChange}
-				/>
+			<HookedForm.Form
+				form={form}
+				onChangeAction={onFormChange}
+				style={{ display: "flex" }}>
 				<UIBasics.Table
 					tableData={{
 						tableLanes: [
-							formTableEntry(control, "Normais", "normalActions"),
-							formTableEntry(control, "Bônus", "bonusActions"),
-							formTableEntry(control, "Reações", "reactions"),
-							formTableEntry(control, "Ardilosas", "cunningActions"),
-							formTableEntry(control, "Mágicas", "magicActions"),
-							formTableEntry(control, "Especiais", "specialActions"),
+							formTableEntry("Normais", "normalActions"),
+							formTableEntry("Bônus", "bonusActions"),
+							formTableEntry("Reações", "reactions"),
+							formTableEntry("Ardilosas", "cunningActions"),
+							formTableEntry("Mágicas", "magicActions"),
+							formTableEntry("Especiais", "specialActions"),
 						],
 					}}
 				/>
 				<HookedForm.SimpleMessage
-					message={isValid ? errorMessage : "Valor inválido detectado"}
+					message={
+						form.formState.isValid ? errorMessage : "Valor inválido detectado"
+					}
 					color="red"
 				/>
 			</HookedForm.Form>

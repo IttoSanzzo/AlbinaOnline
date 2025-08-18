@@ -6,6 +6,8 @@ import { MasteriesContext } from "../../../../CharacterEditableSheetContextProvi
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { Guid } from "@/libs/stp@types";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../..";
 
 interface MasteryLevelControllerProps {
 	level: number;
@@ -23,6 +25,7 @@ export function MasteryLevelController({
 		const body = {
 			level: value,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/masteries/${masteryId}`),
 			{
@@ -33,7 +36,11 @@ export function MasteryLevelController({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterMasteries((state) => {
 			return state.map((mastery) =>
 				mastery.masteryId === masteryId ? { ...mastery, level: value } : mastery

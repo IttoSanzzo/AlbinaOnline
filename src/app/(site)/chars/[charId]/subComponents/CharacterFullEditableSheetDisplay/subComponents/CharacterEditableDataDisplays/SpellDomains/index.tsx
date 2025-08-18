@@ -11,6 +11,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const schema = z.object({
 	general: z.coerce.number().min(-1, "Mínimo de -1").max(10, "Máximo de 10"),
@@ -29,7 +31,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-function FormSpellDomainTablePair(control: Control<FormData>, name: string) {
+function FormSpellDomainTablePair(name: string) {
 	const lowercaseName = name === "General" ? "" : normalizeText(name);
 	return [
 		<StyledLink
@@ -38,7 +40,6 @@ function FormSpellDomainTablePair(control: Control<FormData>, name: string) {
 			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={lowercaseName as keyof FormData}
 			max={10}
 			min={-1}
@@ -79,16 +80,13 @@ export function CharacterSpellDomainsDisplay({
 }: CharacterSpellDomainsDisplayProps) {
 	const { characterId } = useContext(CharacterIdContext);
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: spellDomains,
 	});
 
 	async function handleWatchedAction(currentValues: FormData) {
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/spell-domains`,
 			{
@@ -101,19 +99,18 @@ export function CharacterSpellDomainsDisplay({
 		);
 		if (response.ok == false) {
 			setErrorMessage("Erro durante o salvamento");
+			toast.error(CharToastMessage.error, { id: toastId });
 			return false;
 		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
 		return true;
 	}
 
 	return (
-		<HookedForm.Form>
-			<HookedForm.WatchedAction
-				watch={watch}
-				isValid={isValid}
-				action={handleWatchedAction}
-			/>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}>
 			<UIBasics.Box
 				backgroundColor="purple"
 				withoutBorder
@@ -135,12 +132,12 @@ export function CharacterSpellDomainsDisplay({
 							textColor="pink"
 							tableData={{
 								tableLanes: [
-									FormSpellDomainTablePair(control, "Impetum"),
-									FormSpellDomainTablePair(control, "Khranitel"),
-									FormSpellDomainTablePair(control, "Aufbringen"),
-									FormSpellDomainTablePair(control, "Migaku"),
-									FormSpellDomainTablePair(control, "Affaiblir"),
-									FormSpellDomainTablePair(control, "Vitaeregio"),
+									FormSpellDomainTablePair("Impetum"),
+									FormSpellDomainTablePair("Khranitel"),
+									FormSpellDomainTablePair("Aufbringen"),
+									FormSpellDomainTablePair("Migaku"),
+									FormSpellDomainTablePair("Affaiblir"),
+									FormSpellDomainTablePair("Vitaeregio"),
 								],
 							}}
 						/>
@@ -155,12 +152,12 @@ export function CharacterSpellDomainsDisplay({
 							textColor="pink"
 							tableData={{
 								tableLanes: [
-									FormSpellDomainTablePair(control, "Gaizào"),
-									FormSpellDomainTablePair(control, "Verstand"),
-									FormSpellDomainTablePair(control, "Sajak"),
-									FormSpellDomainTablePair(control, "Idaítera"),
-									FormSpellDomainTablePair(control, "Gollemhag"),
-									FormSpellDomainTablePair(control, "Anagnosi"),
+									FormSpellDomainTablePair("Gaizào"),
+									FormSpellDomainTablePair("Verstand"),
+									FormSpellDomainTablePair("Sajak"),
+									FormSpellDomainTablePair("Idaítera"),
+									FormSpellDomainTablePair("Gollemhag"),
+									FormSpellDomainTablePair("Anagnosi"),
 								],
 							}}
 						/>
@@ -168,7 +165,9 @@ export function CharacterSpellDomainsDisplay({
 				}
 			/>
 			<HookedForm.SimpleMessage
-				message={isValid ? errorMessage : "Valor inválido detectado"}
+				message={
+					form.formState.isValid ? errorMessage : "Valor inválido detectado"
+				}
 				color="red"
 			/>
 		</HookedForm.Form>

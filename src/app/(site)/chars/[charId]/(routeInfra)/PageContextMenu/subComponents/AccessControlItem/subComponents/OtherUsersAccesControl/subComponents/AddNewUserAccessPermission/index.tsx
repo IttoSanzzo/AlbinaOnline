@@ -3,7 +3,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { Dialog } from "@/libs/stp@radix";
 import { z } from "zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -34,11 +34,7 @@ export function AddNewUserAccessPermission({
 }: AddNewUserAccessPermissionProps) {
 	const [error, setError] = useState<string>("");
 	const [open, setOpen] = useState<boolean>(false);
-	const {
-		handleSubmit,
-		control,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			username: "",
@@ -92,18 +88,16 @@ export function AddNewUserAccessPermission({
 						<Dialog.Description>
 							Permite que um novo usuário possa ver o personagem.
 						</Dialog.Description>
-						<HookedForm.Form onSubmit={handleSubmit(addUserToPermissions)}>
+						<HookedForm.Form
+							form={form}
+							onSubmit={addUserToPermissions}>
 							<HookedForm.Space />
 							<HookedForm.TextInput
-								control={control}
 								fieldName="username"
 								label="Nome de Usuário"
 								placeholder="Nome de usuário a ser adicionado"
 							/>
-							<HookedForm.SubmitButton
-								label="Adicionar"
-								disabled={!isValid}
-							/>
+							<HookedForm.SubmitButton label="Adicionar" />
 							<HookedForm.SimpleMessage
 								color="red"
 								message={error}

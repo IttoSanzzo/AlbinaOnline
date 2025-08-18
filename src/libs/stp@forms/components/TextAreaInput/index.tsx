@@ -1,8 +1,9 @@
 import { CSSProperties, TextareaHTMLAttributes } from "react";
-import { Control, Path, useController } from "react-hook-form";
+import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const TextAreaInputContainer = newStyledElement.div(
 	styles.textAreaInputContainer
@@ -11,11 +12,8 @@ const TextAreaInputField = newStyledElement.textarea(styles.textAreaInputField);
 const TextAreaInputLabel = newStyledElement.label(styles.textAreaInputLabel);
 const TextAreaInputError = newStyledElement.div(styles.textAreaInputError);
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-type TextAreaInputProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+type TextAreaInputProps<TFormData> = {
+	fieldName: Path<TFormData>;
 	label: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	height?: React.CSSProperties["height"];
@@ -37,8 +35,7 @@ type TextAreaInputProps<TControl extends Control<any>> = {
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
-export function TextAreaInput<TControl extends Control<any>>({
-	control,
+export function TextAreaInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	labelBackground,
@@ -48,7 +45,11 @@ export function TextAreaInput<TControl extends Control<any>>({
 	fontSize,
 	style,
 	...rest
-}: TextAreaInputProps<TControl>) {
+}: TextAreaInputProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,
@@ -81,6 +82,10 @@ export function TextAreaInput<TControl extends Control<any>>({
 				{...field}
 				value={field.value ?? ""}
 				{...rest}
+				onChange={(event) => {
+					field.onChange(event);
+					triggerDebounceAction();
+				}}
 			/>
 		</TextAreaInputContainer>
 	);

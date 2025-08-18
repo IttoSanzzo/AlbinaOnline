@@ -67,11 +67,7 @@ export function SideActionNumberInputButtons({
 		currentValue: numberWithBounds(min, max),
 	});
 	type FormData = z.infer<typeof schema>;
-	const {
-		control,
-		formState: { isValid },
-		watch,
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			currentValue: defaultValue,
@@ -79,10 +75,10 @@ export function SideActionNumberInputButtons({
 	});
 	const { field } = useController({
 		name: "currentValue",
-		control,
+		control: form.control,
 	});
 
-	async function handleWatchAction(currentValues: FormData) {
+	async function handleWatchedAction(currentValues: FormData) {
 		action(currentValues.currentValue);
 		return true;
 	}
@@ -104,35 +100,32 @@ export function SideActionNumberInputButtons({
 	}
 
 	return (
-		// <HookedForm.Form>
-		<NumberInputFieldContainer className={className}>
-			<HookedForm.WatchedAction<FormData>
-				watch={watch}
-				isValid={isValid}
-				action={handleWatchAction}
-			/>
-			<NumberInputDecrementButton
-				disabled={min != undefined && field.value <= min}
-				type="button"
-				onClick={handleDecrement}
-				children={StpIcon({ name: "LessThan" })}
-			/>
-			<NumberInputField
-				type="number"
-				style={inputStyle}
-				max={max}
-				min={min}
-				step={step}
-				{...field}
-				{...rest}
-			/>
-			<NumberInputIncrementButton
-				disabled={max != undefined && field.value >= max}
-				type="button"
-				onClick={handleIncrement}
-				children={StpIcon({ name: "GreaterThan" })}
-			/>
-		</NumberInputFieldContainer>
-		// </HookedForm.Form>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}>
+			<NumberInputFieldContainer className={className}>
+				<NumberInputDecrementButton
+					disabled={min != undefined && field.value <= min}
+					type="button"
+					onClick={handleDecrement}
+					children={StpIcon({ name: "LessThan" })}
+				/>
+				<NumberInputField
+					type="number"
+					style={inputStyle}
+					max={max}
+					min={min}
+					step={step}
+					{...field}
+					{...rest}
+				/>
+				<NumberInputIncrementButton
+					disabled={max != undefined && field.value >= max}
+					type="button"
+					onClick={handleIncrement}
+					children={StpIcon({ name: "GreaterThan" })}
+				/>
+			</NumberInputFieldContainer>
+		</HookedForm.Form>
 	);
 }

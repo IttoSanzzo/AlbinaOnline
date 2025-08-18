@@ -1,10 +1,10 @@
-import { CSSProperties, InputHTMLAttributes, useState } from "react";
-import { Control, Controller, Path, useController } from "react-hook-form";
+import { CSSProperties, useState } from "react";
+import { Controller, FieldValues, Path } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import * as NextImage from "next/image";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
-// import Image from "next/image";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const ImageInputContainer = newStyledElement.div(styles.imageInputContainer);
 const ImageInputField = newStyledElement.input(styles.imageInputField);
@@ -14,10 +14,8 @@ const ImagePreviewContainer = newStyledElement.div(
 	styles.imagePreviewContainer
 );
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-type ImageInputProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>> | null;
+type ImageInputProps<TFormData> = {
+	fieldName: Path<TFormData>;
 	label: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	accept?: string;
@@ -31,8 +29,7 @@ type ImageInputProps<TControl extends Control<any>> = {
 	maxSize?: number;
 };
 
-export function ImageInput<TControl extends Control<any>>({
-	control,
+export function ImageInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	labelBackground,
@@ -45,7 +42,11 @@ export function ImageInput<TControl extends Control<any>>({
 	minHeight,
 	proportion,
 	maxSize = 1_048_576,
-}: ImageInputProps<TControl>) {
+}: ImageInputProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const [preview, setPreview] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
@@ -113,9 +114,9 @@ export function ImageInput<TControl extends Control<any>>({
 				</ImagePreviewContainer>
 			)}
 			<Controller
-				name={fieldName ?? ""}
+				name={fieldName}
 				control={control}
-				defaultValue={null}
+				defaultValue={null!}
 				render={({ field }) => (
 					<ImageInputField
 						type="file"
@@ -134,6 +135,7 @@ export function ImageInput<TControl extends Control<any>>({
 							setError(null);
 							setPreview(URL.createObjectURL(file));
 							field.onChange(file);
+							triggerDebounceAction();
 						}}
 					/>
 				)}

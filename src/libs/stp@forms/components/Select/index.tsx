@@ -1,5 +1,5 @@
 import * as Select from "@radix-ui/react-select";
-import { Control, Controller, Path, useController } from "react-hook-form";
+import { Controller, FieldValues, Path, useController } from "react-hook-form";
 import {
 	CheckIcon,
 	ChevronDownIcon,
@@ -9,35 +9,36 @@ import Image from "next/image";
 import { CSSProperties } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const SelectContainer = newStyledElement.div(styles.selectContainer);
 const SelectLabel = newStyledElement.label(styles.selectLabel);
 const SelectError = newStyledElement.div(styles.selectError);
 
-export type SelectWithIconOption = {
-	value: string;
+export type SelectOption = {
+	value: string | number;
 	name: string;
 	icon?: string;
 };
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-type SelectWithIconProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+type SelectProps<TFormData extends FieldValues> = {
+	fieldName: Path<TFormData>;
 	label: string;
 	placeholder?: string;
-	options: SelectWithIconOption[];
+	options: SelectOption[];
 	width?: CSSProperties["width"];
 };
-export function SelectWithIcon<TControl extends Control<any>>({
-	control,
+export function SelectComponent<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	placeholder,
 	options,
 	width,
-}: SelectWithIconProps<TControl>) {
+}: SelectProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const { fieldState } = useController({
 		name: fieldName,
 		control: control,
@@ -55,7 +56,10 @@ export function SelectWithIcon<TControl extends Control<any>>({
 				render={({ field }) => (
 					<Select.Root
 						value={field.value ?? ""}
-						onValueChange={field.onChange}>
+						onValueChange={(event) => {
+							field.onChange(event);
+							triggerDebounceAction();
+						}}>
 						<Select.Trigger className={styles.selectTrigger}>
 							<Select.Value placeholder={placeholder} />
 							<Select.Icon className={styles.selectIcon}>
@@ -73,7 +77,7 @@ export function SelectWithIcon<TControl extends Control<any>>({
 									{options.map((option) => (
 										<Select.Item
 											key={option.value}
-											value={option.value}
+											value={String(option.value)}
 											className={styles.selectItem}>
 											{option.icon && (
 												<Image

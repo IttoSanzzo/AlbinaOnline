@@ -13,6 +13,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -57,6 +59,7 @@ export function ItemSelectionCore({
 		const body = {
 			itemId: item.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/items`),
 			{
@@ -67,7 +70,11 @@ export function ItemSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterItems((state) => {
 			const newItem: CharacterItemStackExpanded = {
 				id: Guid.Empty,

@@ -1,7 +1,7 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterCoreMetrics, CharacterMiscMetrics } from "@/libs/stp@types";
@@ -9,6 +9,8 @@ import { MiscMetricsContext } from "../../CharacterEditableSheetContextProviders
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import z from "zod";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const schemaCore = z.object({
 	walkSpeed: z.coerce.number().min(0, "Mínimo de 0"),
@@ -25,7 +27,6 @@ type FormDataCore = z.infer<typeof schemaCore>;
 type FormDataMisc = z.infer<typeof schemaMisc>;
 
 function formTableEntry(
-	control: Control<FormDataCore> | Control<FormDataMisc>,
 	title: string,
 	fieldName: keyof FormDataCore | keyof FormDataMisc
 ) {
@@ -35,7 +36,6 @@ function formTableEntry(
 			children={title}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={fieldName}
 			min={0}
 		/>,
@@ -79,6 +79,7 @@ export function CoreMiscAndSimpleMetrics() {
 			initiative: formData.initiative,
 			characterId: characterId,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/core-metrics`,
 			{
@@ -90,11 +91,13 @@ export function CoreMiscAndSimpleMetrics() {
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
 		setCoreMetrics(body);
 		setErrorMessage("");
+		toast.success(CharToastMessage.success, { id: toastId });
 		return true;
 	}
 	async function onMiscFormChange(formData: FormDataMisc) {
@@ -103,6 +106,8 @@ export function CoreMiscAndSimpleMetrics() {
 			characterId: characterId,
 			carryCapacity: formData.carryCapacity,
 		};
+
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/misc-metrics`,
 			{
@@ -114,11 +119,13 @@ export function CoreMiscAndSimpleMetrics() {
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
 		setMiscMetrics(body);
 		setErrorMessage("");
+		toast.success(CharToastMessage.success, { id: toastId });
 		return true;
 	}
 
@@ -129,32 +136,37 @@ export function CoreMiscAndSimpleMetrics() {
 			titleColor="yellow"
 			title="Miscs"
 			memoryId={`${characterId}-MiscMetrics`}>
-			<HookedForm.Form style={{ display: "flex" }}>
-				<HookedForm.WatchedAction<FormDataCore>
-					watch={formCore.watch}
-					isValid={formCore.formState.isValid}
-					action={onCoreFormChange}
+			<HookedForm.Form
+				form={formMisc}
+				onChangeAction={onMiscFormChange}
+				style={{ display: "flex" }}>
+				<UIBasics.Table
+					tableData={{
+						tableLanes: [formTableEntry("Carga Máxima", "carryCapacity")],
+					}}
 				/>
-				<HookedForm.WatchedAction<FormDataMisc>
-					watch={formMisc.watch}
-					isValid={formMisc.formState.isValid}
-					action={onMiscFormChange}
+				<HookedForm.SimpleMessage
+					message={
+						formCore.formState.isValid || formMisc.formState.isValid
+							? errorMessage
+							: "Valor inválido detectado"
+					}
+					color="red"
 				/>
-
+			</HookedForm.Form>
+			<HookedForm.Form
+				form={formCore}
+				onChangeAction={onCoreFormChange}
+				style={{ display: "flex" }}>
 				<UIBasics.Table
 					tableData={{
 						tableLanes: [
-							formTableEntry(formMisc.control, "Carga Máxima", "carryCapacity"),
-							formTableEntry(formCore.control, "Iniciativa", "initiative"),
-							formTableEntry(formCore.control, "C.A.", "armorClass"),
-							formTableEntry(formCore.control, "Mov. de Andar", "walkSpeed"),
-							formTableEntry(
-								formCore.control,
-								"Mov. de Combate",
-								"combatSpeed"
-							),
-							formTableEntry(formCore.control, "Mov. de Nado", "swimSpeed"),
-							formTableEntry(formCore.control, "Mov. de Voo", "flySpeed"),
+							formTableEntry("Iniciativa", "initiative"),
+							formTableEntry("C.A.", "armorClass"),
+							formTableEntry("Mov. de Andar", "walkSpeed"),
+							formTableEntry("Mov. de Combate", "combatSpeed"),
+							formTableEntry("Mov. de Nado", "swimSpeed"),
+							formTableEntry("Mov. de Voo", "flySpeed"),
 						],
 					}}
 				/>

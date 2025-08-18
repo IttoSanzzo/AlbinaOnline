@@ -11,7 +11,7 @@ import { HookedForm } from "@/libs/stp@forms";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-const LoginFormContainer = newStyledElement.form(styles.loginFormContainer);
+// const LoginFormContainer = newStyledElement.form(styles.loginFormContainer);
 
 const schema = z.object({
 	usernameOrEmail: z.string().min(1, "Insira o usuário."),
@@ -61,11 +61,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 	const [loginCurrentMessage, setLoginCurrentMessage] = useState<string>(" ");
 	const router = useRouter();
 
-	const {
-		control,
-		handleSubmit,
-		formState: { isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -87,32 +83,28 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 	}
 
 	return (
-		<LoginFormContainer
-			onSubmit={handleSubmit(onSubmit)}
+		<HookedForm.Form
+			form={form}
+			onSubmit={onSubmit}
 			autoComplete="on">
 			<HookedForm.TextInput
 				autoComplete="username"
 				label="Usuário ou Email *"
-				control={control}
 				fieldName="usernameOrEmail"
 				placeholder="Usuário ou Email"
 			/>
 			<HookedForm.PasswordInput
 				autoComplete="current-password"
 				label="Senha *"
-				control={control}
 				fieldName="password"
 				placeholder="Senha"
 			/>
 			<HookedForm.Space />
-			<HookedForm.SubmitButton
-				label="Log In"
-				disabled={isSubmitting}
-			/>
+			<HookedForm.SubmitButton label="Log In" />
 			<HookedForm.SimpleMessage
 				message={loginCurrentMessage}
 				color={loginCurrentMessage == "Login Bem Sucedido!" ? "green" : "red"}
 			/>
-		</LoginFormContainer>
+		</HookedForm.Form>
 	);
 }

@@ -6,13 +6,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { HookedForm, SelectWithIconOption } from "@/libs/stp@forms";
+import { HookedForm, SelectOption } from "@/libs/stp@forms";
 import { RaceData } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-
-const FormContainer = newStyledElement.form(styles.formContainer);
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),
@@ -23,13 +19,9 @@ type FormData = z.infer<typeof schema>;
 
 export function CreateCharForm() {
 	const [responseMessage, setResponseMessage] = useState<string>("");
-	const [raceOptions, setRaceOptions] = useState<SelectWithIconOption[]>([]);
+	const [raceOptions, setRaceOptions] = useState<SelectOption[]>([]);
 	const router = useRouter();
-	const {
-		control,
-		handleSubmit,
-		formState: { isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -73,16 +65,16 @@ export function CreateCharForm() {
 	}
 
 	return (
-		<FormContainer onSubmit={handleSubmit(onSubmit)}>
+		<HookedForm.Form
+			form={form}
+			onSubmit={onSubmit}>
 			<HookedForm.TextInput
 				label="Nome"
-				control={control}
 				fieldName="name"
 				fontSize="lg"
 				textCentered
 			/>
-			<HookedForm.SelectWithIcon
-				control={control}
+			<HookedForm.Select
 				fieldName="raceId"
 				label="Raça"
 				placeholder="Selecione uma raça"
@@ -93,12 +85,11 @@ export function CreateCharForm() {
 			<HookedForm.SubmitButton
 				label="Criar"
 				color="green"
-				disabled={isSubmitting}
 			/>
 			<HookedForm.SimpleMessage
 				message={responseMessage}
 				color="red"
 			/>
-		</FormContainer>
+		</HookedForm.Form>
 	);
 }

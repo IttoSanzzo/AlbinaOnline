@@ -1,7 +1,7 @@
-export type { SelectWithIconOption } from "./components/SelectWithIcon/index";
+export type { SelectOption } from "./components/Select/index";
 
 import { Form } from "./components/Form";
-import { SelectWithIcon } from "./components/SelectWithIcon";
+import { SelectComponent } from "./components/Select";
 import { TextInput } from "./components/TextInput";
 import { TextAreaInput } from "./components/TextAreaInput";
 import { NumberInput } from "./components/NumberInput";
@@ -11,8 +11,12 @@ import { ImageInput } from "./components/ImageInput";
 import { SubmitButton } from "./components/SubmitButton";
 import { Space } from "./components/Space";
 import { SimpleMessage } from "./components/FailMessage";
-import { WatchedAction } from "./components/WatchedAction";
 import { Separator } from "./components/Separator";
+
+export {
+	useHookedForm,
+	HookedFormContextProvider,
+} from "./context/HookedFormContext";
 
 export const HookedForm = {
 	Form: Form,
@@ -23,9 +27,8 @@ export const HookedForm = {
 	NumberInput: NumberInput,
 	PasswordInput: PasswordInput,
 	ImageInput: ImageInput,
-	SelectWithIcon: SelectWithIcon,
+	Select: SelectComponent,
 	Space: Space,
 	Separator: Separator,
 	SimpleMessage: SimpleMessage,
-	WatchedAction: WatchedAction,
 };

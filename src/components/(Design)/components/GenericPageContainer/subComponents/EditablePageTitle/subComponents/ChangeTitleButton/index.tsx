@@ -3,7 +3,6 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { Dialog } from "@/libs/stp@radix";
-import { StpIcon } from "@/libs/stp@icons";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { HookedForm } from "@/libs/stp@forms";
 import { z } from "zod";
@@ -13,6 +12,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { PageTitle } from "../../../PageHeader";
 import { revalidateMetadata } from "@/utils/ServerActions";
+import toast from "react-hot-toast";
 
 const ChangeTitleButtonContainer = newStyledElement.div(
 	styles.changeTitleButtonContainer
@@ -42,11 +42,7 @@ export function ChangeTitleButton({
 }: ChangeTitleButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
-	const {
-		control,
-		handleSubmit,
-		formState: { isValid, isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			newName: title,
@@ -54,6 +50,7 @@ export function ChangeTitleButton({
 	});
 
 	async function onSubmit(data: FormData) {
+		const toastId = toast.loading("Salvando...");
 		const bodyPropName = titleChangeBodyPropName
 			? titleChangeBodyPropName
 			: "name";
@@ -69,9 +66,11 @@ export function ChangeTitleButton({
 			},
 		});
 		if (!response.ok) {
+			toast.error("Salvamento falhou", { id: toastId });
 			setError("Salvamento falhou");
 			return;
 		}
+		toast.success("Salvo", { id: toastId });
 		setOpen(false);
 		setTitle(data.newName);
 		if (metadataTag) revalidateMetadata(metadataTag);
@@ -91,16 +90,14 @@ export function ChangeTitleButton({
 						<Dialog.Content>
 							<Dialog.Title textAlign="center">Novo Nome</Dialog.Title>
 							<DialogDescription />
-							<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+							<HookedForm.Form
+								form={form}
+								onSubmit={onSubmit}>
 								<HookedForm.TextInput
-									control={control}
 									fieldName="newName"
 									label="Insira o nome"
 								/>
-								<HookedForm.SubmitButton
-									disabled={!isValid || isSubmitting}
-									label="Salvar"
-								/>
+								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
 									<HookedForm.SimpleMessage
 										color="red"

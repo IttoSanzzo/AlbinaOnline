@@ -8,13 +8,9 @@ import { StandartTextColor } from "@/components/(UIBasics)";
 
 const NumberInputContainer = newStyledElement.div(styles.numberInputContainer);
 const NumberInputLabel = newStyledElement.label(styles.numberInputLabel);
-const NumberInputError = newStyledElement.div(styles.numberInputError);
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-type NumberInputProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+type NumberInputProps<TFormData> = {
+	fieldName: Path<TFormData>;
 	label: string;
 	fontSize?:
 		| "xxs"
@@ -38,8 +34,9 @@ type NumberInputProps<TControl extends Control<any>> = {
 	color?: keyof typeof StandartTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function NumberInput<TControl extends Control<any>>({
-	control,
+type NewType<TFormData> = NumberInputProps<TFormData>;
+
+export function NumberInput<TFormData>({
 	fieldName,
 	label,
 	lesserPadding = false,
@@ -48,12 +45,7 @@ export function NumberInput<TControl extends Control<any>>({
 	className,
 	color,
 	...rest
-}: NumberInputProps<TControl>) {
-	const { fieldState } = useController({
-		name: fieldName,
-		control,
-	});
-
+}: NewType<TFormData>) {
 	const inputStyle: CSSProperties = {
 		padding: lesserPadding
 			? "var(--sp-4) var(--sp-4)"
@@ -64,11 +56,7 @@ export function NumberInput<TControl extends Control<any>>({
 	return (
 		<NumberInputContainer>
 			<NumberInputLabel children={label} />
-			{fieldState.error && (
-				<NumberInputError>{fieldState.error.message}</NumberInputError>
-			)}
 			<NumberInputInline
-				control={control}
 				className={clsx(className, "withButtonPadding")}
 				fieldName={fieldName}
 				fontSize={fontSize}

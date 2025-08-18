@@ -9,6 +9,8 @@ import { EquipmentsContext } from "../../../../CharacterEditableSheetContextProv
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../..";
 
 export async function handleRemoveEquipedItem(
 	characterId: Guid,
@@ -22,6 +24,7 @@ export async function handleRemoveEquipedItem(
 		itemId: itemId,
 		slot: EquipmentSlot[slot] as keyof typeof EquipmentSlot,
 	};
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/equipments`),
 		{
@@ -32,7 +35,11 @@ export async function handleRemoveEquipedItem(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterEquipments((state) => ({
 		...state,
 		slots: {

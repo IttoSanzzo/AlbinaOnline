@@ -2,7 +2,7 @@ import { StyledLink } from "@/components/(Design)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
 	AbilityScoreContext,
 	CharacterIdContext,
@@ -12,6 +12,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { bonusColor, bonusValueText } from "@/utils/AlbinaAesthetic";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),
@@ -25,7 +27,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 function TableAbilityScoreEntry(
-	control: Control<FormData>,
 	key: keyof FormData,
 	title: string,
 	value: number
@@ -37,7 +38,6 @@ function TableAbilityScoreEntry(
 			// icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={key}
 			max={40}
 			min={0}
@@ -51,17 +51,14 @@ export function CharacterAbilityScoreDisplay() {
 	const { abilityScore, setAbilityScore } = useContext(AbilityScoreContext);
 	const { characterId } = useContext(CharacterIdContext);
 
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: abilityScore,
 	});
-	const watchedValues = watch();
+	const watchedValues = form.watch();
 
 	async function handleWatchedAction(currentValues: FormData) {
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/ability-score`,
 			{
@@ -73,6 +70,7 @@ export function CharacterAbilityScoreDisplay() {
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
@@ -81,16 +79,15 @@ export function CharacterAbilityScoreDisplay() {
 			characterId: abilityScore.characterId,
 		});
 		setErrorMessage("");
+		toast.success(CharToastMessage.success, { id: toastId });
 		return true;
 	}
 
 	return (
-		<HookedForm.Form style={{ display: "flex" }}>
-			<HookedForm.WatchedAction<FormData>
-				watch={watch}
-				isValid={isValid}
-				action={handleWatchedAction}
-			/>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}
+			style={{ display: "flex" }}>
 			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
@@ -119,44 +116,29 @@ export function CharacterAbilityScoreDisplay() {
 							/>,
 							"",
 						],
+						TableAbilityScoreEntry("strength", "Força", watchedValues.strength),
 						TableAbilityScoreEntry(
-							control,
-							"strength",
-							"Força",
-							watchedValues.strength
-						),
-						TableAbilityScoreEntry(
-							control,
 							"agility",
 							"Agilidade",
 							watchedValues.agility
 						),
 						TableAbilityScoreEntry(
-							control,
 							"technique",
 							"Técnica",
 							watchedValues.technique
 						),
 						TableAbilityScoreEntry(
-							control,
 							"constitution",
 							"Constituição",
 							watchedValues.constitution
 						),
 						TableAbilityScoreEntry(
-							control,
 							"intelligence",
 							"Inteligência",
 							watchedValues.intelligence
 						),
+						TableAbilityScoreEntry("wisdom", "Sabedoria", watchedValues.wisdom),
 						TableAbilityScoreEntry(
-							control,
-							"wisdom",
-							"Sabedoria",
-							watchedValues.wisdom
-						),
-						TableAbilityScoreEntry(
-							control,
 							"charisma",
 							"Carisma",
 							watchedValues.charisma
@@ -165,7 +147,9 @@ export function CharacterAbilityScoreDisplay() {
 				}}
 			/>
 			<HookedForm.SimpleMessage
-				message={isValid ? errorMessage : "Valor inválido detectado"}
+				message={
+					form.formState.isValid ? errorMessage : "Valor inválido detectado"
+				}
 				color="red"
 			/>
 		</HookedForm.Form>

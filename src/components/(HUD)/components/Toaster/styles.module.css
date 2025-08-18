@@ -1,0 +1,22 @@
+.toasterContainer {
+	& > div > div {
+		color: var(--cl-white) !important;
+		transition: 0.25s ease-in-out background-color, 0.25s ease-in-out border;
+	}
+}
+.toasterDefault {
+	border: 1px solid var(--cl-gray-500);
+	background-color: var(--cl-gray-700) !important;
+}
+.toasterLoading {
+	border: 2px solid var(--cl-blue-600);
+	background-color: var(--cl-blue-500) !important;
+}
+.toasterSuccess {
+	border: 2px solid var(--cl-green-800);
+	background-color: var(--cl-green-400) !important;
+}
+.toasterError {
+	border: 2px solid var(--cl-red-800);
+	background-color: var(--cl-red-400) !important;
+}

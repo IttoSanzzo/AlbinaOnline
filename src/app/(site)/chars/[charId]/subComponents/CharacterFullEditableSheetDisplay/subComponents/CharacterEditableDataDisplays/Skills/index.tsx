@@ -5,6 +5,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSkillButton } from "./subComponents/AddSkillButton";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 async function handleSkillRemoval(
 	characterId: Guid,
@@ -14,6 +16,7 @@ async function handleSkillRemoval(
 	>
 ) {
 	const body = { skillId: skillId };
+	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiAddress(`/chars/${characterId}/skills`),
 		{
@@ -24,7 +27,11 @@ async function handleSkillRemoval(
 			},
 		}
 	);
-	if (!response.ok) return;
+	if (!response.ok) {
+		toast.error(CharToastMessage.error, { id: toastId });
+		return;
+	}
+	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterSkills((state) =>
 		state.filter((skill) => skill.skill.id != skillId)
 	);

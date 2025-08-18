@@ -29,23 +29,13 @@ interface CharacterProfileDisplayProps {
 export function CharacterProfileDisplay({
 	characterProfile,
 }: CharacterProfileDisplayProps) {
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: characterProfile,
 	});
 
 	return (
-		<HookedForm.Form>
-			<HookedForm.WatchedAction
-				watch={watch}
-				isValid={isValid}
-				debounce={3000}
-				action={async () => false}
-			/>
+		<HookedForm.Form form={form}>
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
@@ -105,21 +95,18 @@ export function CharacterProfileDisplay({
 					colum1={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="personalityTraces"
 								label="Traços de Personalidade"
 								labelBackground="gray"
 								disabled
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="ideals"
 								label="Ideais"
 								labelBackground="gray"
 								disabled
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="bonds"
 								label="Vínculos"
 								labelBackground="gray"
@@ -130,21 +117,18 @@ export function CharacterProfileDisplay({
 					colum2={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="summary"
 								label="Sumário"
 								labelBackground="gray"
 								disabled
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="appearanceDescription"
 								label="Aparência"
 								labelBackground="gray"
 								disabled
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="backgroundHistory"
 								label="Background"
 								labelBackground="gray"

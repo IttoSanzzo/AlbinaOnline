@@ -1,19 +1,17 @@
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { CSSProperties, InputHTMLAttributes } from "react";
-import { Control, Path, useController } from "react-hook-form";
+import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const TextInputContainer = newStyledElement.div(styles.textInputContainer);
 const TextInputField = newStyledElement.input(styles.textInputField);
 const TextInputLabel = newStyledElement.label(styles.textInputLabel);
 const TextInputError = newStyledElement.div(styles.textInputError);
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-type TextInputProps<TControl extends Control<any>> = {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+type TextInputProps<TFormData> = {
+	fieldName: Path<TFormData>;
 	label: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	fontSize?:
@@ -35,8 +33,7 @@ type TextInputProps<TControl extends Control<any>> = {
 	textCentered?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function TextInput<TControl extends Control<any>>({
-	control,
+export function TextInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	labelBackground,
@@ -45,7 +42,11 @@ export function TextInput<TControl extends Control<any>>({
 	fontSize,
 	style,
 	...rest
-}: TextInputProps<TControl>) {
+}: TextInputProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,
@@ -77,6 +78,10 @@ export function TextInput<TControl extends Control<any>>({
 				{...field}
 				value={field.value ?? ""}
 				{...rest}
+				onChange={(event) => {
+					field.onChange(event);
+					triggerDebounceAction();
+				}}
 			/>
 		</TextInputContainer>
 	);

@@ -11,7 +11,7 @@ const GlobalContainer = newStyledElement.div(styles.globalContainer);
 const MainContainer = newStyledElement.div(styles.mainContainer);
 const PageContainer = newStyledElement.div(styles.pageContainer);
 
-export default function Layout({ children }: LayoutProps) {
+export default async function Layout({ children }: LayoutProps) {
 	return (
 		<>
 			<GlobalContainer>

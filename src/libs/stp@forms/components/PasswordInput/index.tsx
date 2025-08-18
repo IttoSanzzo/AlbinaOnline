@@ -1,9 +1,10 @@
 import { CSSProperties } from "react";
-import { Control, Path, useController } from "react-hook-form";
+import { FieldValues, Path, useController } from "react-hook-form";
 import * as PasswordToggleField from "@radix-ui/react-password-toggle-field";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { useHookedForm } from "../../context/HookedFormContext";
 
 const PasswordInputContainer = newStyledElement.div(
 	styles.passwordInputContainer
@@ -11,12 +12,9 @@ const PasswordInputContainer = newStyledElement.div(
 const PasswordInputLabel = newStyledElement.label(styles.passwordInputLabel);
 const PasswordInputError = newStyledElement.div(styles.passwordInputError);
 
-type ExtractFieldValues<T> = T extends Control<infer U> ? U : never;
-
-interface PasswordInputProps<TControl extends Control<any>>
+interface PasswordInputProps<TFormData>
 	extends PasswordToggleField.PasswordToggleFieldInputProps {
-	control: TControl;
-	fieldName: Path<ExtractFieldValues<TControl>>;
+	fieldName: Path<TFormData>;
 	label: string;
 	fontSize?:
 		| "xxs"
@@ -36,8 +34,7 @@ interface PasswordInputProps<TControl extends Control<any>>
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 }
-export function PasswordInput<TControl extends Control<any>>({
-	control,
+export function PasswordInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	lesserPadding = false,
@@ -45,7 +42,11 @@ export function PasswordInput<TControl extends Control<any>>({
 	fontSize,
 	style,
 	...rest
-}: PasswordInputProps<TControl>) {
+}: PasswordInputProps<TFormData>) {
+	const {
+		form: { control },
+		triggerDebounceAction,
+	} = useHookedForm<TFormData>();
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,
@@ -72,6 +73,10 @@ export function PasswordInput<TControl extends Control<any>>({
 					{...field}
 					value={field.value ?? ""}
 					{...rest}
+					onChange={(event) => {
+						field.onChange(event);
+						triggerDebounceAction();
+					}}
 				/>
 				<PasswordToggleField.Toggle className={styles.toggleButton}>
 					<PasswordToggleField.Icon

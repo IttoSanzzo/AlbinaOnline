@@ -1,13 +1,14 @@
 import { HookedForm } from "@/libs/stp@forms";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React from "react";
 import z from "zod";
 import { UIBasics } from "@/components/(UIBasics)";
+import { CharToastMessage } from "..";
+import toast from "react-hot-toast";
 
 const schema = z.object({
 	backstory: z.string().max(5000, "Máximo de 5000 caracteres"),
@@ -22,11 +23,7 @@ export function CharacterBackstoryDisplay({
 }: CharacterBackstoryDisplayProps) {
 	const { characterId } = useContext(CharacterIdContext);
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			backstory: characterBackstory,
@@ -37,6 +34,8 @@ export function CharacterBackstoryDisplay({
 		const body = {
 			history: currentValues.backstory,
 		};
+
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/backstory`,
 			{
@@ -48,27 +47,25 @@ export function CharacterBackstoryDisplay({
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
 		return true;
 	}
 
 	return (
-		<HookedForm.Form>
-			<HookedForm.WatchedAction
-				watch={watch}
-				isValid={isValid}
-				debounce={3000}
-				action={handleWatchedAction}
-			/>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}
+			actionDebounceMs={3000}>
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
 				withoutMargin>
 				<HookedForm.TextAreaInput
-					control={control}
 					fieldName="backstory"
 					label="História"
 					labelBackground="gray"
@@ -76,7 +73,9 @@ export function CharacterBackstoryDisplay({
 				/>
 			</UIBasics.Box>
 			<HookedForm.SimpleMessage
-				message={isValid ? errorMessage : "Valor inválido detectado"}
+				message={
+					form.formState.isValid ? errorMessage : "Valor inválido detectado"
+				}
 				color="red"
 			/>
 		</HookedForm.Form>

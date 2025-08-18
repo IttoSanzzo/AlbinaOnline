@@ -6,6 +6,8 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../../../../CharacterEditableDataDisplays";
 
 // const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -41,6 +43,7 @@ export function RaceSelectionCore({
 		const body = {
 			raceId: race.id,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/race`),
 			{
@@ -51,7 +54,11 @@ export function RaceSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setRaceState(race);
 	}
 

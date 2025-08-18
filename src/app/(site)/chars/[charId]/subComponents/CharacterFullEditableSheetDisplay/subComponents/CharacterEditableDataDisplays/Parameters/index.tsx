@@ -2,7 +2,7 @@ import { StyledLink } from "@/components/(Design)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
 	ParametersContext,
 	CharacterIdContext,
@@ -11,6 +11,8 @@ import {
 import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const schema = z.object({
 	vitality: z.coerce.number().min(0, "Mínimo de 0").max(50, "Máximo de 50"),
@@ -36,7 +38,6 @@ function getParameterGradeSymbol(grade: number) {
 	return "?";
 }
 function tableParameterEntry(
-	control: Control<FormData>,
 	key: keyof FormData,
 	grade: number,
 	title: string
@@ -48,7 +49,6 @@ function tableParameterEntry(
 			// icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={key}
 			max={40}
 			min={0}
@@ -67,17 +67,14 @@ export function CharacterParametersDisplay() {
 	const { characterId } = useContext(CharacterIdContext);
 	const { race } = useContext(RaceContext);
 
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: parameters,
 	});
-	const watchedValues = watch();
+	const watchedValues = form.watch();
 
 	async function handleWatchedAction(currentValues: FormData) {
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/parameters`,
 			{
@@ -88,10 +85,12 @@ export function CharacterParametersDisplay() {
 				},
 			}
 		);
-		if (response.ok == false) {
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setParameters({
 			...watchedValues,
 			characterId: parameters.characterId,
@@ -101,12 +100,10 @@ export function CharacterParametersDisplay() {
 	}
 
 	return (
-		<HookedForm.Form style={{ display: "flex" }}>
-			<HookedForm.WatchedAction<FormData>
-				watch={watch}
-				isValid={isValid}
-				action={handleWatchedAction}
-			/>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}
+			style={{ display: "flex" }}>
 			<UIBasics.Table
 				fixedLinePositions={[1, 3]}
 				fixedLineWidths={[50, 12]}
@@ -134,31 +131,18 @@ export function CharacterParametersDisplay() {
 							"",
 						],
 						tableParameterEntry(
-							control,
 							"vitality",
 							race.parameters.vitality,
 							"Vitalidade"
 						),
+						tableParameterEntry("vigor", race.parameters.vigor, "Vigor"),
+						tableParameterEntry("mana", race.parameters.manapool, "Manapool"),
 						tableParameterEntry(
-							control,
-							"vigor",
-							race.parameters.vigor,
-							"Vigor"
-						),
-						tableParameterEntry(
-							control,
-							"mana",
-							race.parameters.manapool,
-							"Manapool"
-						),
-						tableParameterEntry(
-							control,
 							"physicalMight",
 							race.parameters.physicalPower,
 							"P. Físico"
 						),
 						tableParameterEntry(
-							control,
 							"arcanePower",
 							race.parameters.magicalPower,
 							"P. Mágico"
@@ -167,7 +151,9 @@ export function CharacterParametersDisplay() {
 				}}
 			/>
 			<HookedForm.SimpleMessage
-				message={isValid ? errorMessage : "Valor inválido detectado"}
+				message={
+					form.formState.isValid ? errorMessage : "Valor inválido detectado"
+				}
 				color="red"
 			/>
 		</HookedForm.Form>

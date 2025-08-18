@@ -27,12 +27,7 @@ export function DeleteCharForm({
 }: DeleteCharFormProps) {
 	const [responseMessage, setResponseMessage] = useState<string>("");
 	const router = useRouter();
-	const {
-		control,
-		watch,
-		handleSubmit,
-		formState: { isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -51,9 +46,10 @@ export function DeleteCharForm({
 	}
 
 	return (
-		<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+		<HookedForm.Form
+			form={form}
+			onSubmit={onSubmit}>
 			<HookedForm.TextInput
-				control={control}
 				fieldName="name"
 				label="Nome do personagem"
 				fontSize="lg"
@@ -67,7 +63,7 @@ export function DeleteCharForm({
 				<HookedForm.SubmitButton
 					label="Excluir"
 					color="red"
-					disabled={isSubmitting || watch("name") != characterName}>
+					disabled={form.watch("name") != characterName}>
 					Excluir
 				</HookedForm.SubmitButton>
 			</AlertDialog.ButtonsContainer>

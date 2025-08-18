@@ -14,6 +14,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { ItemsContext } from "../../../../../../CharacterEditableSheetContextProviders/contexts/Items";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../..";
 
 interface EquipmentSelectionCoreProps {
 	characterId: Guid;
@@ -52,6 +54,7 @@ export function EquipmentSelectionCore({
 			itemId: item.id,
 			slot: EquipmentSlot[slot] as keyof typeof EquipmentSlot,
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/equipments`),
 			{
@@ -62,7 +65,11 @@ export function EquipmentSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterEquipments((state) => ({
 			...state,
 			slots: {

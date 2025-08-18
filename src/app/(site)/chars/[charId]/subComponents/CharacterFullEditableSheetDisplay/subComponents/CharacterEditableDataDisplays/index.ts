@@ -31,3 +31,9 @@ export const CharacterEditableDataDisplays = {
 	Backstory: CharacterBackstoryDisplay,
 	Profile: CharacterProfileDisplay,
 };
+
+export const CharToastMessage = {
+	loading: "Salvando...",
+	success: "Salvo",
+	error: "Falha no salvamento",
+};

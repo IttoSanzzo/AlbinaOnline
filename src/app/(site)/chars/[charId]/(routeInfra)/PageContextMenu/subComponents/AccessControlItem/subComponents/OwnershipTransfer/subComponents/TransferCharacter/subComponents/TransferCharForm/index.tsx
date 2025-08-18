@@ -28,12 +28,7 @@ export function TransferCharForm({
 }: TransferCharFormProps) {
 	const [responseMessage, setResponseMessage] = useState<string>("");
 	const router = useRouter();
-	const {
-		control,
-		watch,
-		handleSubmit,
-		formState: { isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -56,9 +51,10 @@ export function TransferCharForm({
 	}
 
 	return (
-		<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+		<HookedForm.Form
+			form={form}
+			onSubmit={onSubmit}>
 			<HookedForm.TextInput
-				control={control}
 				fieldName="newOwnerUserName"
 				label="Nome de usuário do novo dono"
 				fontSize="lg"
@@ -66,7 +62,6 @@ export function TransferCharForm({
 				placeholder="Insira o nome de usuário do novo dono"
 			/>
 			<HookedForm.TextInput
-				control={control}
 				fieldName="charaterName"
 				label="Nome do personagem"
 				fontSize="lg"
@@ -81,7 +76,7 @@ export function TransferCharForm({
 				<HookedForm.SubmitButton
 					label="Transferir"
 					color="blue"
-					disabled={isSubmitting || watch("charaterName") != characterName}>
+					disabled={form.watch("charaterName") != characterName}>
 					Transferir
 				</HookedForm.SubmitButton>
 			</AlertDialog.ButtonsContainer>

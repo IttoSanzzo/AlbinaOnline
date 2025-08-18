@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import toast from "react-hot-toast";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer
@@ -37,11 +38,7 @@ export function ChangeBannerButton({
 }: ChangeBannerButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
-	const {
-		control,
-		handleSubmit,
-		formState: { isValid, isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -49,16 +46,19 @@ export function ChangeBannerButton({
 		const bodyData = new FormData();
 		bodyData.append("file", data.image);
 
+		const toastId = toast.loading("Salvando...");
 		const response = await authenticatedFetchAsync(route, {
 			method: "PUT",
 			body: bodyData,
 		});
 		if (!response.ok) {
+			toast.error("Salvamento falhou", { id: toastId });
 			setError("Salvamento falhou");
 			return;
 		}
 		setOpen(false);
 		setBanner(`${bannerSrc}?t=${Date.now()}`);
+		toast.success("Salvo", { id: toastId });
 	}
 
 	return (
@@ -76,9 +76,10 @@ export function ChangeBannerButton({
 						<Dialog.Content>
 							<Dialog.Title textAlign="center">Novo Banner</Dialog.Title>
 							<DialogDescription />
-							<HookedForm.Form onSubmit={handleSubmit(onSubmit)}>
+							<HookedForm.Form
+								form={form}
+								onSubmit={onSubmit}>
 								<HookedForm.ImageInput
-									control={control}
 									label="Insira nova imagem"
 									fieldName="image"
 									minWidth={735}
@@ -87,10 +88,7 @@ export function ChangeBannerButton({
 									maxWidth={4000}
 									maxHeight={2000}
 								/>
-								<HookedForm.SubmitButton
-									disabled={!isValid || isSubmitting}
-									label="Salvar"
-								/>
+								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
 									<HookedForm.SimpleMessage
 										color="red"

@@ -11,6 +11,8 @@ import { CharacterProfile } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "..";
 
 const TextAreasContainer = newStyledElement.div(styles.textAreasContainer);
 
@@ -35,16 +37,13 @@ export function CharacterProfileDisplay({
 }: CharacterProfileDisplayProps) {
 	const { characterId } = useContext(CharacterIdContext);
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		defaultValues: characterProfile,
+		defaultValues: { ...characterProfile },
 	});
 
 	async function handleWatchedAction(currentValues: FormData) {
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/profile`),
 			{
@@ -56,21 +55,19 @@ export function CharacterProfileDisplay({
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
 		return true;
 	}
 
 	return (
-		<HookedForm.Form>
-			<HookedForm.WatchedAction
-				watch={watch}
-				isValid={isValid}
-				debounce={3000}
-				action={handleWatchedAction}
-			/>
+		<HookedForm.Form
+			form={form}
+			onChangeAction={handleWatchedAction}>
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutBorder
@@ -83,7 +80,6 @@ export function CharacterProfileDisplay({
 							[
 								<UIBasics.Text textColor="gray">Idade</UIBasics.Text>,
 								<HookedForm.NumberInputInline
-									control={control}
 									fieldName="age"
 									min={0}
 								/>,
@@ -97,7 +93,6 @@ export function CharacterProfileDisplay({
 							[
 								<UIBasics.Text textColor="gray">Altura</UIBasics.Text>,
 								<HookedForm.NumberInputInline
-									control={control}
 									fieldName="stature"
 									min={0}
 								/>,
@@ -111,7 +106,6 @@ export function CharacterProfileDisplay({
 							[
 								<UIBasics.Text textColor="gray">Peso</UIBasics.Text>,
 								<HookedForm.NumberInputInline
-									control={control}
 									fieldName="weight"
 									min={0}
 								/>,
@@ -130,19 +124,16 @@ export function CharacterProfileDisplay({
 					colum1={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="personalityTraces"
 								label="Traços de Personalidade"
 								labelBackground="gray"
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="ideals"
 								label="Ideais"
 								labelBackground="gray"
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="bonds"
 								label="Vínculos"
 								labelBackground="gray"
@@ -152,19 +143,16 @@ export function CharacterProfileDisplay({
 					colum2={
 						<TextAreasContainer>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="summary"
 								label="Sumário"
 								labelBackground="gray"
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="appearanceDescription"
 								label="Aparência"
 								labelBackground="gray"
 							/>
 							<HookedForm.TextAreaInput
-								control={control}
 								fieldName="backgroundHistory"
 								label="Background"
 								labelBackground="gray"
@@ -176,7 +164,9 @@ export function CharacterProfileDisplay({
 				<HookedForm.Separator />
 			</UIBasics.Box>
 			<HookedForm.SimpleMessage
-				message={isValid ? errorMessage : "Valor inválido detectado"}
+				message={
+					form.formState.isValid ? errorMessage : "Valor inválido detectado"
+				}
 				color="red"
 			/>
 		</HookedForm.Form>

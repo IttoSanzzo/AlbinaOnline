@@ -30,11 +30,7 @@ export function UserAccessLevelController({
 	setAccessPermissionsState,
 }: UserAccessLevelControllerProps) {
 	const currentCharacterAccessLevel = useCurrentCharacterAccessLevel();
-	const {
-		control,
-		formState: { isValid },
-		watch,
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			accessLevel: accessPermission.accessLevel,
@@ -101,14 +97,10 @@ export function UserAccessLevelController({
 
 	return (
 		<UserAccessLevelControllerContainer>
-			<HookedForm.Form>
-				<HookedForm.WatchedAction
-					watch={watch}
-					isValid={isValid}
-					action={onFormChange}
-				/>
-				<HookedForm.SelectWithIcon
-					control={control}
+			<HookedForm.Form
+				form={form}
+				onChangeAction={onFormChange}>
+				<HookedForm.Select
 					fieldName="accessLevel"
 					label="Nível de Acesso"
 					width={"150px"}

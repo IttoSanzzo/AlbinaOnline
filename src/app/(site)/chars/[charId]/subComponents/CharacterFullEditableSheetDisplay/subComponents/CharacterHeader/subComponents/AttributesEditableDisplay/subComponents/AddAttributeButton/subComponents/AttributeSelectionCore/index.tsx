@@ -5,6 +5,8 @@ import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
+import toast from "react-hot-toast";
+import { CharToastMessage } from "../../../../../../../CharacterEditableDataDisplays";
 
 interface AttributeSelectionCoreProps {
 	characterId: Guid;
@@ -37,6 +39,7 @@ export function AttributeSelectionCore({
 			...miscMetrics,
 			magicAttributes: [...miscMetrics.magicAttributes, attribute],
 		};
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/chars/${characterId}/misc-metrics`),
 			{
@@ -47,7 +50,11 @@ export function AttributeSelectionCore({
 				},
 			}
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error(CharToastMessage.error, { id: toastId });
+			return;
+		}
+		toast.success(CharToastMessage.success, { id: toastId });
 		setMiscMetrics(body);
 	}
 

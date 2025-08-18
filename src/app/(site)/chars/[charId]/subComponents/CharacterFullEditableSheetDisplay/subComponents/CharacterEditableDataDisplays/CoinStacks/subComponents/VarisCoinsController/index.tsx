@@ -8,24 +8,21 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { VarisCoins } from "@/libs/stp@types";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { UIBasics } from "@/components/(UIBasics)";
+import { CharToastMessage } from "../../..";
+import toast from "react-hot-toast";
 
 const schema = z.object({
 	varis: z.coerce.number().min(0, "Mínimo de 0"),
 });
 type FormData = z.infer<typeof schema>;
 
-function tableParameterEntry(
-	control: Control<FormData>,
-	key: keyof FormData,
-	title: string
-) {
+function tableParameterEntry(key: keyof FormData, title: string) {
 	return [
 		<StyledFalseLink
 			title={title}
 			// icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={key}
 			min={0}
 		/>,
@@ -41,18 +38,14 @@ export function VarisCoinsController({
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { characterId } = useContext(CharacterIdContext);
 
-	const {
-		control,
-		watch,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		// defaultValues: varisCoins,
 		defaultValues: { varis: 0 },
 	});
-	const watchedValues = watch();
 
 	async function handleWatchedAction(currentValues: FormData) {
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/money/Varis`,
 			{
@@ -64,10 +57,12 @@ export function VarisCoinsController({
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
 		setErrorMessage("");
+		toast.success(CharToastMessage.success, { id: toastId });
 		return true;
 	}
 
@@ -83,22 +78,22 @@ export function VarisCoinsController({
 				textColor="orange"
 				children={"Varis"}
 			/>
-			<HookedForm.Form style={{ display: "flex" }}>
-				<HookedForm.WatchedAction<FormData>
-					watch={watch}
-					isValid={isValid}
-					action={handleWatchedAction}
-				/>
+			<HookedForm.Form
+				form={form}
+				onChangeAction={handleWatchedAction}
+				style={{ display: "flex" }}>
 				<UIBasics.Table
 					fixedLinePositions={[1, 3]}
 					fixedLineWidths={[50, 12]}
 					direction="row"
 					tableData={{
-						tableLanes: [tableParameterEntry(control, "varis", "Total")],
+						tableLanes: [tableParameterEntry("varis", "Total")],
 					}}
 				/>
 				<HookedForm.SimpleMessage
-					message={isValid ? errorMessage : "Valor inválido detectado"}
+					message={
+						form.formState.isValid ? errorMessage : "Valor inválido detectado"
+					}
 					color="red"
 				/>
 			</HookedForm.Form>

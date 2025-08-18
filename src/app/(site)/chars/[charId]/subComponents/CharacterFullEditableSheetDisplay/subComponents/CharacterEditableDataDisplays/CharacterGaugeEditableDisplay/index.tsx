@@ -1,13 +1,16 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Control, useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { CharacterCoreMetrics } from "@/libs/stp@types";
+import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
 import z from "zod";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
+import { CharToastMessage } from "..";
+import toast from "react-hot-toast";
+import React from "react";
 
 const schema = z
 	.object({
@@ -31,7 +34,6 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 function formTableEntry(
-	control: Control<FormData>,
 	title: string,
 	fieldName: keyof FormData,
 	color: keyof typeof StandartTextColor,
@@ -44,7 +46,6 @@ function formTableEntry(
 			children={title}
 		/>,
 		<HookedForm.NumberInputInline
-			control={control}
 			fieldName={fieldName}
 			color={color}
 			min={min}
@@ -69,31 +70,30 @@ export function CharacterGaugeEditableDisplay({
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
 
-	const {
-		control,
-		watch,
-		setValue,
-		formState: { isValid },
-	} = useForm<FormData>({
+	const defaultValues = {
+		baseCurrent: coreMetrics[gauge].baseCurrent,
+		baseMax: coreMetrics[gauge].baseMax,
+		temporaryCurrentModifier: coreMetrics[gauge].temporaryCurrentModifier,
+		temporaryMaxModifier: coreMetrics[gauge].temporaryMaxModifier,
+	};
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		defaultValues: {
-			baseCurrent: coreMetrics[gauge].baseCurrent,
-			baseMax: coreMetrics[gauge].baseMax,
-			temporaryCurrentModifier: coreMetrics[gauge].temporaryCurrentModifier,
-			temporaryMaxModifier: coreMetrics[gauge].temporaryMaxModifier,
-		},
+		defaultValues: defaultValues,
 	});
-	const watchedValues = watch();
+	const watchedValues = form.watch();
 
-	useEffect(() => {
-		setValue("baseCurrent", coreMetrics[gauge].baseCurrent);
-		setValue("baseMax", coreMetrics[gauge].baseMax);
-		setValue(
-			"temporaryCurrentModifier",
-			coreMetrics[gauge].temporaryCurrentModifier
-		);
-		setValue("temporaryMaxModifier", coreMetrics[gauge].temporaryMaxModifier);
-	}, [coreMetrics]);
+	// useEffect(() => {
+	// 	form.setValue("baseCurrent", coreMetrics[gauge].baseCurrent);
+	// 	form.setValue("baseMax", coreMetrics[gauge].baseMax);
+	// 	form.setValue(
+	// 		"temporaryCurrentModifier",
+	// 		coreMetrics[gauge].temporaryCurrentModifier
+	// 	);
+	// 	form.setValue(
+	// 		"temporaryMaxModifier",
+	// 		coreMetrics[gauge].temporaryMaxModifier
+	// 	);
+	// }, [coreMetrics]);
 
 	async function onFormChange(formData: FormData) {
 		const body: CharacterCoreMetrics = {
@@ -109,6 +109,8 @@ export function CharacterGaugeEditableDisplay({
 				effectiveMax: formData.baseMax + formData.temporaryMaxModifier,
 			},
 		};
+
+		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
 			`/chars/${characterId}/core-metrics`,
 			{
@@ -120,11 +122,13 @@ export function CharacterGaugeEditableDisplay({
 			}
 		);
 		if (response.ok == false) {
+			toast.error(CharToastMessage.error, { id: toastId });
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
 		setCoreMetrics(body);
 		setErrorMessage("");
+		toast.success("Salvo", { id: toastId });
 		return true;
 	}
 
@@ -135,12 +139,11 @@ export function CharacterGaugeEditableDisplay({
 			titleColor="yellow"
 			title={name}
 			memoryId={`${characterId}-${acronym}`}>
-			<HookedForm.Form style={{ display: "flex" }}>
-				<HookedForm.WatchedAction<FormData>
-					watch={watch}
-					isValid={isValid}
-					action={onFormChange}
-				/>
+			<HookedForm.Form
+				form={form}
+				onChangeAction={onFormChange}
+				actionDebounceMs={1000}
+				style={{ display: "flex" }}>
 				<div
 					style={{
 						display: "flex",
@@ -150,7 +153,6 @@ export function CharacterGaugeEditableDisplay({
 						tableData={{
 							tableLanes: [
 								formTableEntry(
-									control,
 									`${acronym} Atual`,
 									"baseCurrent",
 									color,
@@ -160,14 +162,12 @@ export function CharacterGaugeEditableDisplay({
 									)
 								),
 								formTableEntry(
-									control,
 									`${acronym} Temp.`,
 									"temporaryCurrentModifier",
 									color
 								),
-								formTableEntry(control, `${acronym} Max`, "baseMax", color),
+								formTableEntry(`${acronym} Max`, "baseMax", color),
 								formTableEntry(
-									control,
 									`${acronym} Max Temp.`,
 									"temporaryMaxModifier",
 									color
@@ -176,7 +176,9 @@ export function CharacterGaugeEditableDisplay({
 						}}
 					/>
 					<HookedForm.SimpleMessage
-						message={isValid ? errorMessage : "Valor inválido detectado"}
+						message={
+							form.formState.isValid ? errorMessage : "Valor inválido detectado"
+						}
 						color="red"
 					/>
 				</div>

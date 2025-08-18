@@ -10,9 +10,9 @@ import { HookedForm } from "@/libs/stp@forms";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
-const RegisterFormContainer = newStyledElement.form(
-	styles.registerFormContainer
-);
+// const RegisterFormContainer = newStyledElement.form(
+// styles.registerFormContainer
+// );
 
 const nicknameInvalidRegex = /[\p{C}]/u;
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -108,11 +108,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 		useState<string>("");
 	const router = useRouter();
 
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isSubmitting },
-	} = useForm<FormData>({
+	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
 
@@ -132,43 +128,38 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 	}
 
 	return (
-		<RegisterFormContainer onSubmit={handleSubmit(onSubmit)}>
+		<HookedForm.Form
+			form={form}
+			onSubmit={onSubmit}>
 			<HookedForm.TextInput
 				autoComplete="username"
 				label="Usuário *"
-				control={control}
 				fieldName="username"
 				placeholder="usuario-exemplar"
 			/>
 			<HookedForm.TextInput
 				label="Nome *"
-				control={control}
 				fieldName="nickname"
 				placeholder="Nome Exemplar"
 			/>
 			<HookedForm.TextInput
 				label="Email *"
-				control={control}
 				fieldName="email"
 				placeholder="email@exemplo.com"
 			/>
 			<HookedForm.PasswordInput
 				autoComplete="current-password"
 				label="Senha *"
-				control={control}
 				fieldName="password"
 				placeholder="Senha1234"
 			/>
-			<HookedForm.SubmitButton
-				label="Sign Up"
-				disabled={isSubmitting}
-			/>
+			<HookedForm.SubmitButton label="Sign Up" />
 			<HookedForm.SimpleMessage
 				message={registerCurrentMessage}
 				color={
 					registerCurrentMessage == "Cadastro Bem Sucedido!" ? "green" : "red"
 				}
 			/>
-		</RegisterFormContainer>
+		</HookedForm.Form>
 	);
 }

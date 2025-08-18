@@ -2,6 +2,7 @@
 
 import { FullUser } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "./AlbinaApi";
+import toast from "react-hot-toast";
 
 export async function authenticatedFetchAsync(
 	input: RequestInfo | URL,
@@ -14,7 +15,12 @@ export async function authenticatedFetchAsync(
 				: `${getAlbinaApiAddress()}${input.toString()}`
 			: input;
 	init.credentials = "include";
-	const response = await fetch(url, init);
+	const response = await fetch(url, init).catch(() => {
+		toast.error("Error while fetching authenticated data");
+	});
+	if (!response) {
+		return new Response(null, { status: 500, statusText: "Fetch failed" });
+	}
 
 	if (response.status === 401) {
 		const refreshed = await tryRefresh();
