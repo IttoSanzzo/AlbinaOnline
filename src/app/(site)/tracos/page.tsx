@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import TraitsPageContent from "./pageContent";
 
 export const metadata: Metadata = {
-	title: "Traits",
+	title: "Traços",
 	icons: {
 		icon: getAlbinaApiAddress("/favicon/core-page/traits"),
 	},

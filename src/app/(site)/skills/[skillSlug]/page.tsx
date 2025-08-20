@@ -1,64 +1,48 @@
-import {
-	GenericEffectsDisplay,
-	GenericInfoCallout,
-	GenericPageContainer,
-	GenericPageFooter,
-} from "@/components/(Design)";
-import { getPageData } from "./(routeInfra)";
-import SkillTypologyCallout from "./subComponents/SkillTypologyCallout";
-import SkillPropertiesDisplay from "./subComponents/SkillPropertiesDisplay";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
-import { FavoriteButton } from "@/components/(SPECIAL)";
-import { UIBasics } from "@/components/(UIBasics)";
+import { Metadata } from "next";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import SkillPageContent from "./pageContent";
+import { fetchStaticParamSlugs } from "@/utils/Data";
 
-export { generateStaticParams, generateMetadata } from "./(routeInfra)";
-
-interface SkillProps {
+interface SkillPageServerShellProps {
 	params: Promise<{ skillSlug: string }>;
 }
 
-export default async function Skill({ params }: SkillProps) {
+export async function generateMetadata({
+	params,
+}: SkillPageServerShellProps): Promise<Metadata> {
 	const { skillSlug } = await params;
-	const SkillPageData = await getPageData(skillSlug);
-	if (SkillPageData.skillData == undefined) {
-		return <>Error</>;
-	}
-	const { skillData, borderColor } = SkillPageData;
 
-	return (
-		<GenericPageContainer
-			title={skillData.name}
-			banner={skillData.bannerUrl}
-			icon={skillData.iconUrl}
-			borderColor={borderColor}>
-			<SetNavBarModules favoriteButton={FavoriteButton} />
-			<SetCurrentPageData
-				type={"skill"}
-				data={skillData}
-			/>
-
-			<UIBasics.Header
-				textColor="purple"
-				backgroundColor="gray"
-				textAlign="center"
-				children={"¤ Especificações ¤"}
-			/>
-			<UIBasics.MultiColumn.Two
-				colum1={
-					<SkillTypologyCallout
-						type={skillData.type}
-						subType={skillData.subType}
-					/>
-				}
-				colum2={<GenericInfoCallout info={skillData.info} />}
-			/>
-			<SkillPropertiesDisplay skillProperties={skillData.properties} />
-
-			<GenericEffectsDisplay effects={skillData.effects} />
-			<GenericPageFooter
-				version={skillData.albinaVersion}
-				lastUpdate={skillData.updatedAt}
-			/>
-		</GenericPageContainer>
+	const response = await fetch(
+		getAlbinaApiAddress(`/skills/${skillSlug}/metadata`),
+		{
+			cache: "force-cache",
+			method: "GET",
+			next: {
+				tags: [`page-metadata-skill-${skillSlug}`],
+			},
+		}
 	);
+	if (!response.ok) {
+		return {
+			title: "???",
+		};
+	}
+	const data = await response.json();
+	return {
+		title: data.title,
+		icons: { icon: data.icon },
+	};
+}
+
+export default async function SkillPageServerShell({
+	params,
+}: SkillPageServerShellProps) {
+	const { skillSlug } = await params;
+
+	return <SkillPageContent skillSlug={skillSlug} />;
+}
+
+export async function generateStaticParams() {
+	if (process.env.NODE_ENV === "development") return [];
+	return await fetchStaticParamSlugs("skills");
 }

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import MasteriesPageContent from "./pageContent";
 
 export const metadata: Metadata = {
-	title: "Masteries",
+	title: "Maestrias",
 	icons: {
 		icon: getAlbinaApiAddress("/favicon/core-page/maestrias"),
 	},

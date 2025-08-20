@@ -1,73 +1,48 @@
-import {
-	GenericEffectsDisplay,
-	GenericInfoCallout,
-	GenericPageContainer,
-	GenericPageFooter,
-} from "@/components/(Design)";
-import { getPageData } from "./(routeInfra)";
-import TraitTypologyCallout from "./subComponents/TraitTypologyCallout";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
-import { FavoriteButton } from "@/components/(SPECIAL)";
-import { UIBasics } from "@/components/(UIBasics)";
+import { Metadata } from "next";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import TraitPageContent from "./pageContent";
+import { fetchStaticParamSlugs } from "@/utils/Data";
 
-export { generateStaticParams, generateMetadata } from "./(routeInfra)";
-
-interface TraitProps {
+interface TraitPageServerShellProps {
 	params: Promise<{ traitSlug: string }>;
 }
 
-export default async function Trait({ params }: TraitProps) {
+export async function generateMetadata({
+	params,
+}: TraitPageServerShellProps): Promise<Metadata> {
 	const { traitSlug } = await params;
-	const TraitPageData = await getPageData(traitSlug);
-	if (TraitPageData.traitData == undefined) {
-		return <>Error</>;
-	}
-	const { traitData, borderColor } = TraitPageData;
 
-	return (
-		<GenericPageContainer
-			title={traitData.name}
-			banner={traitData.bannerUrl}
-			icon={traitData.iconUrl}
-			borderColor={borderColor}>
-			<SetNavBarModules favoriteButton={FavoriteButton} />
-			<SetCurrentPageData
-				type={"trait"}
-				data={traitData}
-			/>
-
-			<UIBasics.Header
-				textColor="purple"
-				backgroundColor="gray"
-				textAlign="center"
-				children={"¤ Especificações ¤"}
-			/>
-			<UIBasics.MultiColumn.Two
-				colum1={
-					<TraitTypologyCallout
-						type={traitData.type}
-						subType={traitData.subType}
-					/>
-				}
-				colum2={<GenericInfoCallout info={traitData.info} />}
-			/>
-			<UIBasics.Callout
-				textColor="orange"
-				title="Requerimentos:"
-				icon={{ name: "Keyhole", color: "orange" }}
-				children={traitData.info.requirements.map((requirement, index) => (
-					<UIBasics.Quote
-						key={index}
-						textColor="yellow"
-						children={requirement}
-					/>
-				))}
-			/>
-			<GenericEffectsDisplay effects={traitData.effects} />
-			<GenericPageFooter
-				version={traitData.albinaVersion}
-				lastUpdate={traitData.updatedAt}
-			/>
-		</GenericPageContainer>
+	const response = await fetch(
+		getAlbinaApiAddress(`/traits/${traitSlug}/metadata`),
+		{
+			cache: "force-cache",
+			method: "GET",
+			next: {
+				tags: [`page-metadata-trait-${traitSlug}`],
+			},
+		}
 	);
+	if (!response.ok) {
+		return {
+			title: "???",
+		};
+	}
+	const data = await response.json();
+	return {
+		title: data.title,
+		icons: { icon: data.icon },
+	};
+}
+
+export default async function TraitPageServerShell({
+	params,
+}: TraitPageServerShellProps) {
+	const { traitSlug } = await params;
+
+	return <TraitPageContent traitSlug={traitSlug} />;
+}
+
+export async function generateStaticParams() {
+	if (process.env.NODE_ENV === "development") return [];
+	return await fetchStaticParamSlugs("traits");
 }
