@@ -7,6 +7,7 @@ import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffec
 import {
 	HookedForm,
 	SelectOption,
+	zEnumKey,
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
@@ -56,12 +57,8 @@ const ItemPropertiesSchema = z.object({
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: z
-		.preprocess((type) => Number(type), z.nativeEnum(ItemType))
-		.refine((type) => type !== ItemType.Unknown),
-	subType: z
-		.preprocess((subType) => Number(subType), z.nativeEnum(ItemSubType))
-		.refine((subType) => subType !== ItemSubType.Unknown),
+	type: zEnumKey(ItemType, ["Unknown"]),
+	subType: zEnumKey(ItemSubType, ["Unknown"]),
 	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
 	properties: zJsonStringTyped<ItemProperties>(ItemPropertiesSchema),
 });

@@ -3,7 +3,6 @@
 import { GenericPageContainer } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
-import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
 import {
 	HookedForm,
 	SelectOption,
@@ -13,12 +12,15 @@ import {
 } from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
-	GenericInfo,
-	MasteryData,
-	MasterySubType,
-	MasteryType,
+	LanguageType,
+	RaceData,
+	RaceGenerals,
+	RaceInfo,
+	RaceSubType,
+	RaceType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
+import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -29,39 +31,60 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
+const RaceInfoSchema = z.object({
+	introduction: z.array(z.string()),
+	personality: z.array(z.string()),
+	culture: z.array(z.string()),
 	miscellaneous: z.array(z.string()),
+	groups: z.array(z.string()),
+	relations: z.array(z.string()),
+	description: z.array(z.string()),
+	images: z.array(z.string()),
+});
+const RaceParametersSchema = z.object({
+	vitality: z.number(),
+	vigor: z.number(),
+	manapool: z.number(),
+	physicalPower: z.number(),
+	magicalPower: z.number(),
+});
+const RaceGeneralsSchema = z.object({
+	height: z.string(),
+	weight: z.string(),
+	longevity: z.string(),
+	speed: z.string(),
+	language: zEnumKey(LanguageType, []),
 });
 
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(MasteryType, ["Unknown"]),
-	subType: zEnumKey(MasterySubType, ["Unknown"]),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
+	type: zEnumKey(RaceType, ["Unknown"]),
+	subType: zEnumKey(RaceSubType, ["Unknown"]),
+	info: zJsonStringTyped<RaceInfo>(RaceInfoSchema),
+	parameters: zJsonStringTyped<RaceParameters>(RaceParametersSchema),
+	generals: zJsonStringTyped<RaceGenerals>(RaceGeneralsSchema),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-interface EditMasteryPageContentProps {
-	mastery: MasteryData;
+interface EditRacePageContentProps {
+	race: RaceData;
 }
-export function EditMasteryPageContent({
-	mastery,
-}: EditMasteryPageContentProps) {
+export function EditRacePageContent({ race }: EditRacePageContentProps) {
 	const { user, loading } = useCurrentUser();
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, any, FormData>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
-			name: mastery.name,
-			slug: mastery.slug,
-			type: MasteryType[mastery.type].toString(),
-			subType: MasterySubType[mastery.subType].toString(),
-			info: JSON.stringify(mastery.info, null, 2),
+			name: race.name,
+			slug: race.slug,
+			type: RaceType[race.type].toString(),
+			subType: RaceSubType[race.subType].toString(),
+			info: JSON.stringify(race.info, null, 2),
+			parameters: JSON.stringify(race.parameters, null, 2),
+			generals: JSON.stringify(race.generals, null, 2),
 		},
 	});
 
@@ -72,10 +95,12 @@ export function EditMasteryPageContent({
 			type: formData.type,
 			subType: formData.subType,
 			info: formData.info,
+			parameters: formData.parameters,
+			generals: formData.generals,
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/masteries/${mastery.slug}`),
+			getAlbinaApiAddress(`/races/${race.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -89,13 +114,13 @@ export function EditMasteryPageContent({
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide(`/maestrias/${mastery.slug}`);
+		revalidatePathByClientSide(`/racas/${race.slug}`);
 	}
 
-	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
+	const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, [
 		"Unknown",
 	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
+	const subTypeOptions: SelectOption[] = enumToSelectOptions(RaceSubType, [
 		"Unknown",
 	]);
 
@@ -110,15 +135,11 @@ export function EditMasteryPageContent({
 		<GenericPageContainer
 			title=""
 			isEditable={true}
-			banner={mastery.bannerUrl}
-			icon={mastery.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(
-				`/favicon/masteries/${mastery.slug}`
-			)}
-			bannerChangeRoute={getAlbinaApiAddress(
-				`/banner/masteries/${mastery.slug}`
-			)}
-			metadataTag={`mastery-${mastery.slug}`}>
+			banner={race.bannerUrl}
+			icon={race.iconUrl}
+			iconChangeRoute={getAlbinaApiAddress(`/favicon/races/${race.slug}`)}
+			bannerChangeRoute={getAlbinaApiAddress(`/banner/races/${race.slug}`)}
+			metadataTag={`race-${race.slug}`}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
@@ -148,6 +169,18 @@ export function EditMasteryPageContent({
 					height={200}
 					style={{ fontFamily: "monospace" }}
 				/>
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="parameters"
+					label="Parameters"
+					height={200}
+					style={{ fontFamily: "monospace" }}
+				/>
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="generals"
+					label="Generals"
+					height={200}
+					style={{ fontFamily: "monospace" }}
+				/>
 
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
@@ -157,19 +190,12 @@ export function EditMasteryPageContent({
 			</HookedForm.Form>
 			<HookedForm.Space />
 			<DeletionAlertDialog
-				safetyText={mastery.name}
-				deletionRoute={getAlbinaApiAddress(`/masteries/${mastery.slug}`)}
-				routerPushRoute="/maestrias"
+				safetyText={race.name}
+				deletionRoute={getAlbinaApiAddress(`/races/${race.slug}`)}
+				routerPushRoute="/racas"
 			/>
 
 			<UIBasics.Divisor />
-
-			<EntityEffectsEditor
-				genericEffects={mastery.effects}
-				targetId={mastery.id}
-				targetType="Mastery"
-				revalidatePath={`/masteries/${mastery.slug}`}
-			/>
 		</GenericPageContainer>
 	);
 }

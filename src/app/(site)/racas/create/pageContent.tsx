@@ -2,7 +2,7 @@
 
 import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
-import { MasterySubType, MasteryType } from "@/libs/stp@types";
+import { RaceSubType, RaceType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -17,13 +17,13 @@ import { z } from "zod";
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(MasteryType, ["Unknown"]),
-	subType: zEnumKey(MasterySubType, ["Unknown"]),
+	type: zEnumKey(RaceType, ["Unknown"]),
+	subType: zEnumKey(RaceSubType, ["Unknown"]),
 });
 type FormData = z.infer<typeof schema>;
 type FormInputData = z.input<typeof schema>;
 
-export function CreateMasteryPageContent() {
+export function CreateRacePageContent() {
 	const router = useRouter();
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInputData, any, FormData>({
@@ -38,9 +38,9 @@ export function CreateMasteryPageContent() {
 			type: formData.type,
 			subType: formData.subType,
 		};
-		const toastId = toast.loading("Creating mastery...");
+		const toastId = toast.loading("Creating race...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/masteries"),
+			getAlbinaApiAddress("/races"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),
@@ -58,14 +58,14 @@ export function CreateMasteryPageContent() {
 		}
 		setError("");
 		toast.success("Created", { id: toastId });
-		revalidatePathByClientSide("/maestrias");
-		router.push(`/maestrias/${formData.slug}/edit`);
+		revalidatePathByClientSide("/racas");
+		router.push(`/racas/${formData.slug}/edit`);
 	}
 
-	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
+	const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, [
 		"Unknown",
 	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
+	const subTypeOptions: SelectOption[] = enumToSelectOptions(RaceSubType, [
 		"Unknown",
 	]);
 

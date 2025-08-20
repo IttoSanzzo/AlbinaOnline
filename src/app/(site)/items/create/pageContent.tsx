@@ -1,7 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
-import { HookedForm, SelectOption, zEnumKey } from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { ItemSubType, ItemType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
@@ -15,14 +15,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 const schema = z.object({
-	slug: z
-		.string()
-		.min(1, "Min 1 length")
-		.regex(/^[a-z0-9-]+$/, "Only lower, numbers and '-'")
-		.regex(
-			/^[a-z0-9]+(-[a-z0-9]+)*$/,
-			"Invalid slug (cannot start or end with with '-')"
-		),
+	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(ItemType, ["Unknown"]),
 	subType: zEnumKey(ItemSubType, ["Unknown"]),

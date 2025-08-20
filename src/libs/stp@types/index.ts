@@ -16,6 +16,7 @@ export {
 	ItemTypePluralName,
 } from "./dataTypes/item";
 export type { RaceData, RaceGenerals, RaceInfo } from "./dataTypes/race";
+export { RaceType, RaceSubType } from "./dataTypes/race";
 export type {
 	SkillData,
 	SkillComponents,

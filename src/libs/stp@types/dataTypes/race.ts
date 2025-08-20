@@ -1,5 +1,18 @@
 import { Guid, LanguageType, Parameters } from "../index";
 
+export enum RaceType {
+	Unknown,
+	Human,
+	Fey,
+	Demon,
+	Dragon,
+	Seirei,
+}
+export enum RaceSubType {
+	Unknown,
+	Primary,
+	Secundary,
+}
 export type RaceInfo = {
 	introduction: string[];
 	personality: string[];
@@ -25,8 +38,8 @@ export type RaceData = {
 	id: Guid;
 	slug: string;
 	name: string;
-	type: string;
-	subType: string;
+	type: keyof typeof RaceType;
+	subType: keyof typeof RaceSubType;
 	iconUrl: string;
 	bannerUrl: string;
 	info: RaceInfo;
