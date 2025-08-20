@@ -1,0 +1,16 @@
+.deleteButton {
+	display: flex;
+	border: 3px solid var(--cl-red-800);
+	padding: 10px;
+	background-color: var(--cl-red-700);
+	border-radius: var(--rd-md);
+	width: 100%;
+	color: var(--cl-red-200);
+	justify-content: center;
+	transition: 0.25s linear background-color;
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-red-500);
+	}
+}

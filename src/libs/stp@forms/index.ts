@@ -17,6 +17,7 @@ export {
 	useHookedForm,
 	HookedFormContextProvider,
 } from "./context/HookedFormContext";
+export * from "./types";
 
 export const HookedForm = {
 	Form: Form,

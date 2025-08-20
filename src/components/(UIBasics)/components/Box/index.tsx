@@ -15,6 +15,8 @@ interface BoxProps {
 	height?: React.CSSProperties["height"];
 	minWidth?: React.CSSProperties["minWidth"];
 	minHeight?: React.CSSProperties["minHeight"];
+	flexDirection?: React.CSSProperties["flexDirection"];
+	justifyContent?: React.CSSProperties["justifyContent"];
 }
 
 export function Box({
@@ -27,6 +29,8 @@ export function Box({
 	height,
 	minHeight,
 	minWidth,
+	flexDirection,
+	justifyContent,
 }: BoxProps) {
 	const style: CSSProperties = {
 		...(backgroundColor && {
@@ -42,6 +46,8 @@ export function Box({
 		height,
 		minWidth,
 		minHeight,
+		flexDirection,
+		justifyContent,
 	};
 
 	return <BoxContainer style={style}>{children}</BoxContainer>;

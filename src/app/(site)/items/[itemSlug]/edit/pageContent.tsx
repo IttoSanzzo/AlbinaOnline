@@ -1,21 +1,30 @@
 "use client";
 
-import { GenericModPageContainer } from "@/components/(Design)/components/GenericModPageContainer";
+import { GenericPageContainer } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption } from "@/libs/stp@forms";
-import { ItemData, ItemSubType, ItemType } from "@/libs/stp@types";
+import { HookedForm, SelectOption, zSlug } from "@/libs/stp@forms";
+import { useCurrentUser } from "@/libs/stp@hooks";
+import {
+	ItemData,
+	ItemSubType,
+	ItemType,
+	RoleHierarchy,
+} from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 const schema = z.object({
-	slug: z.string().min(1, "Min 1 lenght"),
+	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: z
 		.preprocess((type) => Number(type), z.nativeEnum(ItemType))
@@ -32,6 +41,7 @@ interface EditItemPageContentProps {
 	item: ItemData;
 }
 export function EditItemPageContent({ item }: EditItemPageContentProps) {
+	const { user, loading } = useCurrentUser();
 	const router = useRouter();
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInputData, any, FormData>({
@@ -45,7 +55,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				{
 					info: item.info,
 					properties: item.properties,
-					// effects: item.effects,
 				},
 				null,
 				2
@@ -61,20 +70,25 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			subType: formData.subType,
 			...JSON.parse(formData.rest),
 		};
-		// const response = await authenticatedFetchAsync(
-		// 	getAlbinaApiAddress("/items"),
-		// 	{
-		// 		method: "POST",
-		// 		body: JSON.stringify(body),
-		// 		headers: { "Content-Type": "application/json" },
-		// 	}
-		// );
-		// if (!response.ok) {
-		// 	setError(`Error while creating - ${response.status}`);
-		// 	return;
-		// }
-		// router.push(`/items/${formData.slug}`);
+		console.log(body);
+		const toastId = toast.loading("Saving...");
+		const response = await authenticatedFetchAsync(
+			getAlbinaApiAddress(`/items/${item.slug}`),
+			{
+				method: "PUT",
+				body: JSON.stringify(body),
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+		if (!response.ok) {
+			toast.error("Save failed", { id: toastId });
+			setError(`Error while saving - ${response.status}`);
+			return;
+		}
 		setError("");
+		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide(`/items/${item.slug}`);
+		// router.push(`/items/${formData.slug}`);
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
@@ -84,8 +98,30 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		"Unknown",
 	]);
 
+	useEffect(() => {
+		if (
+			!loading &&
+			user != null &&
+			RoleHierarchy[user.role] <= RoleHierarchy.Admin
+		)
+			router.push(`/items/${item.slug}`);
+	}, [user]);
+	if (
+		loading ||
+		user == null ||
+		RoleHierarchy[user.role] <= RoleHierarchy.Admin
+	)
+		return null;
+
 	return (
-		<GenericModPageContainer>
+		<GenericPageContainer
+			title=""
+			isEditable={true}
+			banner={item.bannerUrl}
+			icon={item.iconUrl}
+			iconChangeRoute={getAlbinaApiAddress(`/favicon/items/${item.slug}`)}
+			bannerChangeRoute={getAlbinaApiAddress(`/banner/items/${item.slug}`)}
+			metadataTag={`item-${item.slug}`}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
@@ -125,19 +161,21 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					color="red"
 				/>
 			</HookedForm.Form>
+			<HookedForm.Space />
+			<DeletionAlertDialog
+				safetyText={item.name}
+				deletionRoute={getAlbinaApiAddress(`/items/${item.slug}`)}
+				routerPushRoute="/items"
+			/>
+
 			<UIBasics.Divisor />
-			<UIBasics.Box backgroundColor="darkGray">
-				<UIBasics.Header
-					backgroundColor="blue"
-					textAlign="center">
-					Effects
-				</UIBasics.Header>
-				<EntityEffectsEditor
-					genericEffects={item.effects}
-					targetId={item.id}
-					targetType="Item"
-				/>
-			</UIBasics.Box>
-		</GenericModPageContainer>
+
+			<EntityEffectsEditor
+				genericEffects={item.effects}
+				targetId={item.id}
+				targetType="Item"
+				revalidatePath={`/items/${item.slug}`}
+			/>
+		</GenericPageContainer>
 	);
 }

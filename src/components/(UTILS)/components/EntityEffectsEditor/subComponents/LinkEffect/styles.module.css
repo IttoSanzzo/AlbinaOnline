@@ -1,0 +1,11 @@
+.linkEffectButton {
+	border: none;
+	background-color: var(--cl-gray-300);
+	border-radius: var(--rd-md);
+	padding: 3px 10px;
+	font-weight: var(--fw-bold);
+
+	&:hover {
+		cursor: pointer;
+	}
+}

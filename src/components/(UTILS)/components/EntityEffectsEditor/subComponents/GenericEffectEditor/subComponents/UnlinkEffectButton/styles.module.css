@@ -1,0 +1,13 @@
+.unlinkButton {
+	border: 3px solid var(--cl-gray-800);
+	padding: 0 10px;
+	background-color: var(--cl-gray-600);
+	border-radius: var(--rd-md);
+	color: var(--cl-red-200);
+	transition: 0.25s linear background-color;
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-gray-500);
+	}
+}

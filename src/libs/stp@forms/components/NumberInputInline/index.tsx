@@ -97,7 +97,9 @@ export function NumberInputInline<TFormData extends FieldValues>({
 				value={field.value ?? ""}
 				{...rest}
 				onChange={(event) => {
-					field.onChange(event);
+					const value =
+						event.target.value === "" ? null : Number(event.target.value);
+					field.onChange(value);
 					triggerDebounceAction();
 				}}
 			/>

@@ -1,4 +1,5 @@
 import { StandartTextColor } from "@/components/(UIBasics)";
+import { Guid } from "./misc";
 
 export type GenericInfo = {
 	summary: string[];
@@ -10,10 +11,12 @@ export type GenericEffectContent = {
 	type: string;
 	color?: keyof typeof StandartTextColor;
 	value: string;
+	tableData?: [];
 };
 
 export type GenericEffect = {
-	id: number;
+	id: Guid;
+	effectLinkId: Guid;
 	role: string;
 	name?: string;
 	color?: keyof typeof StandartTextColor;

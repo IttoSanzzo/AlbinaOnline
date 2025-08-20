@@ -1,19 +1,28 @@
 "use client";
 
-import { GenericModPageContainer } from "@/components/(Design)/components/GenericModPageContainer";
+import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption } from "@/libs/stp@forms";
 import { ItemSubType, ItemType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
 const schema = z.object({
-	slug: z.string().min(1, "Min 1 lenght"),
+	slug: z
+		.string()
+		.min(1, "Min 1 length")
+		.regex(/^[a-z0-9-]+$/, "Only lower, numbers and '-'")
+		.regex(
+			/^[a-z0-9]+(-[a-z0-9]+)*$/,
+			"Invalid slug (cannot start or end with with '-')"
+		),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: z
 		.preprocess((type) => Number(type), z.nativeEnum(ItemType))
@@ -39,6 +48,7 @@ export function CreateItemPageContent() {
 			type: formData.type,
 			subType: formData.subType,
 		};
+		const toastId = toast.loading("Creating item...");
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress("/items"),
 			{
@@ -48,11 +58,18 @@ export function CreateItemPageContent() {
 			}
 		);
 		if (!response.ok) {
-			setError(`Error while creating - ${response.status}`);
+			setError(
+				`Error while creating - ${response.status} ${
+					response.statusText
+				} : ${await response.text()}`
+			);
+			toast.error("Creation failed", { id: toastId });
 			return;
 		}
-		router.push(`/items/${formData.slug}`);
 		setError("");
+		toast.success("Created", { id: toastId });
+		revalidatePathByClientSide("/items");
+		router.push(`/items/${formData.slug}/edit`);
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
@@ -63,7 +80,10 @@ export function CreateItemPageContent() {
 	]);
 
 	return (
-		<GenericModPageContainer>
+		<GenericPageContainer
+			title=""
+			icon={getAlbinaApiAddress("/favicon/not-found")}
+			banner={getAlbinaApiAddress("/banner/not-found")}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
@@ -94,6 +114,6 @@ export function CreateItemPageContent() {
 					color="red"
 				/>
 			</HookedForm.Form>
-		</GenericModPageContainer>
+		</GenericPageContainer>
 	);
 }

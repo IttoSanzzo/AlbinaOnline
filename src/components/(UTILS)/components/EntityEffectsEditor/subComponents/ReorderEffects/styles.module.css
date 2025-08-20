@@ -1,0 +1,11 @@
+.reorderEffectsButton {
+	border: none;
+	background-color: var(--cl-blue-500);
+	border-radius: var(--rd-md);
+	padding: 3px 10px;
+	font-weight: var(--fw-bold);
+
+	&:hover {
+		cursor: pointer;
+	}
+}
