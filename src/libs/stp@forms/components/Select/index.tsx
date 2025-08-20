@@ -21,24 +21,24 @@ export type SelectOption = {
 	icon?: string;
 };
 
-type SelectProps<TFormData extends FieldValues> = {
-	fieldName: Path<TFormData>;
+type SelectProps<TFormInput extends FieldValues> = {
+	fieldName: Path<TFormInput>;
 	label: string;
 	placeholder?: string;
 	options: SelectOption[];
 	width?: CSSProperties["width"];
 };
-export function SelectComponent<TFormData extends FieldValues>({
+export function SelectComponent<TFormInput extends FieldValues>({
 	fieldName,
 	label,
 	placeholder,
 	options,
 	width,
-}: SelectProps<TFormData>) {
+}: SelectProps<TFormInput>) {
 	const {
 		form: { control },
 		triggerDebounceAction,
-	} = useHookedForm<TFormData>();
+	} = useHookedForm<TFormInput>();
 	const { fieldState } = useController({
 		name: fieldName,
 		control: control,

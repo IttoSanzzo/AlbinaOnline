@@ -4,10 +4,17 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zSlug } from "@/libs/stp@forms";
+import {
+	HookedForm,
+	SelectOption,
+	zJsonStringTyped,
+	zSlug,
+} from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
+	GenericInfo,
 	ItemData,
+	ItemProperties,
 	ItemSubType,
 	ItemType,
 	RoleHierarchy,
@@ -17,11 +24,34 @@ import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+
+const GenericInfoSchema = z.object({
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
+});
+const GenericExtraPropertySchema = z.object({
+	key: z.string(),
+	value: z.string(),
+});
+const ItemStatsSchema = z.object({
+	damage: z.string(),
+	accuracy: z.string(),
+	defense: z.string(),
+	damageType: z.string(),
+	range: z.string(),
+});
+const ItemPropertiesSchema = z.object({
+	compatibleSlots: z.array(z.string()),
+	weight: z.number(),
+	magicAttributes: z.array(z.string()),
+	stats: ItemStatsSchema.nullable(),
+	extras: z.array(GenericExtraPropertySchema),
+});
 
 const schema = z.object({
 	slug: zSlug(),
@@ -32,33 +62,28 @@ const schema = z.object({
 	subType: z
 		.preprocess((subType) => Number(subType), z.nativeEnum(ItemSubType))
 		.refine((subType) => subType !== ItemSubType.Unknown),
-	rest: z.string(),
+	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
+	properties: zJsonStringTyped<ItemProperties>(ItemPropertiesSchema),
 });
+type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
-type FormInputData = z.input<typeof schema>;
 
 interface EditItemPageContentProps {
 	item: ItemData;
 }
 export function EditItemPageContent({ item }: EditItemPageContentProps) {
 	const { user, loading } = useCurrentUser();
-	const router = useRouter();
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInputData, any, FormData>({
+	const form = useForm<FormInput, any, FormData>({
 		resolver: zodResolver(schema),
+		mode: "onChange",
 		defaultValues: {
 			name: item.name,
 			slug: item.slug,
 			type: ItemType[item.type].toString(),
 			subType: ItemSubType[item.subType].toString(),
-			rest: JSON.stringify(
-				{
-					info: item.info,
-					properties: item.properties,
-				},
-				null,
-				2
-			),
+			info: JSON.stringify(item.info, null, 2),
+			properties: JSON.stringify(item.properties, null, 2),
 		},
 	});
 
@@ -68,9 +93,9 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			...JSON.parse(formData.rest),
+			info: formData.info,
+			properties: formData.properties,
 		};
-		console.log(body);
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiAddress(`/items/${item.slug}`),
@@ -88,7 +113,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		setError("");
 		toast.success("Saved", { id: toastId });
 		revalidatePathByClientSide(`/items/${item.slug}`);
-		// router.push(`/items/${formData.slug}`);
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
@@ -98,14 +122,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		"Unknown",
 	]);
 
-	useEffect(() => {
-		if (
-			!loading &&
-			user != null &&
-			RoleHierarchy[user.role] <= RoleHierarchy.Admin
-		)
-			router.push(`/items/${item.slug}`);
-	}, [user]);
 	if (
 		loading ||
 		user == null ||
@@ -125,37 +141,40 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormData>
+				<HookedForm.TextInput<FormInput>
 					fieldName="slug"
 					label="Slug"
 				/>
-				<HookedForm.TextInput<FormData>
+				<HookedForm.TextInput<FormInput>
 					fieldName="name"
 					label="Name"
 				/>
-				<HookedForm.Select<FormData>
+				<HookedForm.Select<FormInput>
 					fieldName="type"
 					placeholder="Select Type"
 					label="Type"
 					options={typeOptions}
 				/>
-				<HookedForm.Select<FormData>
+				<HookedForm.Select<FormInput>
 					fieldName="subType"
 					placeholder="Select SubType"
 					label="SubType"
 					options={subTypeOptions}
 				/>
-				<HookedForm.TextAreaInput<FormData>
-					fieldName="rest"
-					label="Rest"
-					height={1000}
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="info"
+					label="Info"
+					height={200}
+					style={{ fontFamily: "monospace" }}
+				/>
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="properties"
+					label="Properties"
+					height={300}
 					style={{ fontFamily: "monospace" }}
 				/>
 
-				<HookedForm.SubmitButton
-					label="Save"
-					disabled={!form.formState.isValid || form.formState.isSubmitting}
-				/>
+				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"

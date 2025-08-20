@@ -8,7 +8,7 @@ export type {
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
 export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";
-export type { ItemData, ItemProperties } from "./dataTypes/item";
+export type { ItemData, ItemProperties, ItemStats } from "./dataTypes/item";
 export {
 	ItemType,
 	ItemSubType,

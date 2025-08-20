@@ -10,8 +10,8 @@ const TextInputField = newStyledElement.input(styles.textInputField);
 const TextInputLabel = newStyledElement.label(styles.textInputLabel);
 const TextInputError = newStyledElement.div(styles.textInputError);
 
-type TextInputProps<TFormData> = {
-	fieldName: Path<TFormData>;
+type TextInputProps<TFormInput> = {
+	fieldName: Path<TFormInput>;
 	label: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	fontSize?:
@@ -33,7 +33,7 @@ type TextInputProps<TFormData> = {
 	textCentered?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function TextInput<TFormData extends FieldValues>({
+export function TextInput<TFormInput extends FieldValues>({
 	fieldName,
 	label,
 	labelBackground,
@@ -42,11 +42,11 @@ export function TextInput<TFormData extends FieldValues>({
 	fontSize,
 	style,
 	...rest
-}: TextInputProps<TFormData>) {
+}: TextInputProps<TFormInput>) {
 	const {
 		form: { control },
 		triggerDebounceAction,
-	} = useHookedForm<TFormData>();
+	} = useHookedForm<TFormInput>();
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,

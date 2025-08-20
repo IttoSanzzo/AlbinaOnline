@@ -12,8 +12,8 @@ const TextAreaInputField = newStyledElement.textarea(styles.textAreaInputField);
 const TextAreaInputLabel = newStyledElement.label(styles.textAreaInputLabel);
 const TextAreaInputError = newStyledElement.div(styles.textAreaInputError);
 
-type TextAreaInputProps<TFormData> = {
-	fieldName: Path<TFormData>;
+type TextAreaInputProps<TFormInput> = {
+	fieldName: Path<TFormInput>;
 	label: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	height?: React.CSSProperties["height"];
@@ -35,7 +35,7 @@ type TextAreaInputProps<TFormData> = {
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
-export function TextAreaInput<TFormData extends FieldValues>({
+export function TextAreaInput<TFormInput extends FieldValues>({
 	fieldName,
 	label,
 	labelBackground,
@@ -45,11 +45,11 @@ export function TextAreaInput<TFormData extends FieldValues>({
 	fontSize,
 	style,
 	...rest
-}: TextAreaInputProps<TFormData>) {
+}: TextAreaInputProps<TFormInput>) {
 	const {
 		form: { control },
 		triggerDebounceAction,
-	} = useHookedForm<TFormData>();
+	} = useHookedForm<TFormInput>();
 	const { field, fieldState } = useController({
 		name: fieldName,
 		control: control,

@@ -44,17 +44,19 @@ export enum ItemSubType {
 	Relic,
 }
 
+export type ItemStats = {
+	damage: string;
+	accuracy: string;
+	defense: string;
+	damageType: string;
+	range: string;
+};
+
 export type ItemProperties = {
 	compatibleSlots: [keyof typeof EquipmentSlotType];
 	weight: number;
 	attribute: string;
-	stats?: {
-		damage: string;
-		accuracy: string;
-		defense: string;
-		damageType: string;
-		range: string;
-	};
+	stats?: ItemStats;
 	extras: GenericExtraProperty[];
 };
 

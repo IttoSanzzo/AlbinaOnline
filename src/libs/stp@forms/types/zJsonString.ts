@@ -30,7 +30,7 @@ export function zJsonString<T extends z.ZodTypeAny>(schema: T) {
 export function zJsonStringTyped<T>(schema: z.ZodType<any, any, unknown>) {
 	return z
 		.string()
-		.min(1, "Must provide a valid JSON")
+		.min(2, "Must provide a valid JSON")
 		.transform((val, ctx): T | typeof z.NEVER => {
 			let parsed: unknown;
 			try {
@@ -45,9 +45,16 @@ export function zJsonStringTyped<T>(schema: z.ZodType<any, any, unknown>) {
 
 			const result = schema.safeParse(parsed);
 			if (!result.success) {
-				for (const issue of result.error.issues) {
-					ctx.addIssue(issue);
-				}
+				const messages = result.error.issues
+					.map(
+						(issue) =>
+							`Error in ${issue.path.join(".") || "root"}: ${issue.message}`
+					)
+					.join("; ");
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: messages,
+				});
 				return z.NEVER;
 			}
 
