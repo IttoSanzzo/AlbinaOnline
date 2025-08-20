@@ -6,6 +6,7 @@ import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAle
 import {
 	HookedForm,
 	SelectOption,
+	zArrayString,
 	zEnumKey,
 	zJsonStringTyped,
 	zSlug,
@@ -64,6 +65,8 @@ const schema = z.object({
 	info: zJsonStringTyped<RaceInfo>(RaceInfoSchema),
 	parameters: zJsonStringTyped<RaceParameters>(RaceParametersSchema),
 	generals: zJsonStringTyped<RaceGenerals>(RaceGeneralsSchema),
+	skillSlugs: zArrayString(),
+	traitSlugs: zArrayString(),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -85,6 +88,8 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			info: JSON.stringify(race.info, null, 2),
 			parameters: JSON.stringify(race.parameters, null, 2),
 			generals: JSON.stringify(race.generals, null, 2),
+			skillSlugs: JSON.stringify(race.skillSlugs),
+			traitSlugs: JSON.stringify(race.traitSlugs),
 		},
 	});
 
@@ -97,6 +102,8 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			info: formData.info,
 			parameters: formData.parameters,
 			generals: formData.generals,
+			skillSlugs: formData.skillSlugs,
+			traitSlugs: formData.traitSlugs,
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -178,6 +185,18 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 				<HookedForm.TextAreaInput<FormInput>
 					fieldName="generals"
 					label="Generals"
+					height={200}
+					style={{ fontFamily: "monospace" }}
+				/>
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="skillSlugs"
+					label="Skill Slugs"
+					height={200}
+					style={{ fontFamily: "monospace" }}
+				/>
+				<HookedForm.TextAreaInput<FormInput>
+					fieldName="traitSlugs"
+					label="Trait Slugs"
 					height={200}
 					style={{ fontFamily: "monospace" }}
 				/>
