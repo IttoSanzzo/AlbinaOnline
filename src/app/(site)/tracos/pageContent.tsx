@@ -45,6 +45,11 @@ export default async function TraitsPageContent() {
 				type="Racial"
 			/>
 			<TraitTypeDisplay
+				title="Bençãos"
+				allTraits={allTraits}
+				type="Blessing"
+			/>
+			<TraitTypeDisplay
 				title="Únicas"
 				allTraits={allTraits}
 				type="Unique"
