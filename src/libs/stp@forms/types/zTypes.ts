@@ -30,3 +30,20 @@ export const zEnumKey = <TEnum extends object>(
 		.refine((val) => !notIncluded.includes(val as keyof TEnum), {
 			message: `${enumObj.constructor.name} cannot be excluded value`,
 		});
+
+export const zEnumKeyArray = <TEnum extends object>(
+	enumObj: TEnum,
+	notIncluded: (keyof TEnum)[] = []
+) =>
+	z
+		.array(z.string())
+		.refine((arr) => arr.every((val) => Object.keys(enumObj).includes(val)), {
+			message: `Array must contain only valid ${enumObj.constructor.name} keys`,
+		})
+		.transform((arr) => arr.map((val) => enumObj[val as keyof TEnum]))
+		.refine(
+			(arr) => arr.every((val) => !notIncluded.includes(val as keyof TEnum)),
+			{
+				message: `Array contains excluded ${enumObj.constructor.name} value`,
+			}
+		);
