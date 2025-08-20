@@ -3,6 +3,8 @@ import { getPageData } from "./(routeInfra)";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { RacialSkillsGridDisplay } from "./subComponents/RacialSkillsGridDisplay";
+import { RacialTraitsGridDisplay } from "./subComponents/RacialTraitsGridDisplay";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -288,19 +290,6 @@ export default async function RacePageContent({
 				/>
 			</UIBasics.Callout>
 
-			<UIBasics.Header
-				textColor={"orange"}
-				backgroundColor={"gray"}
-				withUnderline={true}
-				textAlign="center">
-				🏮Traços Raciais🏮
-			</UIBasics.Header>
-			<UIBasics.Callout
-				icon={{ name: "UserCircle", color: "yellow" }}
-				titleColor="brown"
-				title={"⪼ Outros Traços"}>
-				{/* <GenericEffectsDisplay effects={raceData.traitSlugs} /> */}
-			</UIBasics.Callout>
 			{/* <UIBasics.Callout
 				icon={{ name: "UserCircleGear", color: "yellow" }}
 				titleColor="brown"
@@ -331,14 +320,30 @@ export default async function RacePageContent({
 				</UIBasics.Callout>
 			</UIBasics.Callout> */}
 
-			<UIBasics.Header
-				textColor={"orange"}
-				backgroundColor={"gray"}
-				withUnderline={true}
-				textAlign="center">
-				🏮Habilidades Raciais🏮
-			</UIBasics.Header>
-			{/* <GenericEffectsDisplay effects={raceData.skillSlug} /> */}
+			{raceData.traitSlugs.length > 0 && (
+				<>
+					<UIBasics.Header
+						textColor={"orange"}
+						backgroundColor={"gray"}
+						withUnderline={true}
+						textAlign="center">
+						🏮Traços Raciais🏮
+					</UIBasics.Header>
+					<RacialTraitsGridDisplay traitSlugs={raceData.traitSlugs} />
+				</>
+			)}
+			{raceData.skillSlugs.length > 0 && (
+				<>
+					<UIBasics.Header
+						textColor={"orange"}
+						backgroundColor={"gray"}
+						withUnderline={true}
+						textAlign="center">
+						🏮Habilidades Raciais🏮
+					</UIBasics.Header>
+					<RacialSkillsGridDisplay skillSlugs={raceData.skillSlugs} />
+				</>
+			)}
 
 			<GenericPageFooter
 				version="6.4.7"

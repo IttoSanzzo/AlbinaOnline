@@ -89,6 +89,7 @@ export function EditMasteryPageContent({
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/maestrias");
 		revalidatePathByClientSide(`/maestrias/${mastery.slug}`);
 	}
 
@@ -160,6 +161,7 @@ export function EditMasteryPageContent({
 				safetyText={mastery.name}
 				deletionRoute={getAlbinaApiAddress(`/masteries/${mastery.slug}`)}
 				routerPushRoute="/maestrias"
+				revalidatePath="/maestrias"
 			/>
 
 			<UIBasics.Divisor />

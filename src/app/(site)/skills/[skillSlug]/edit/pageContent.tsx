@@ -108,6 +108,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/skills");
 		revalidatePathByClientSide(`/skills/${skill.slug}`);
 	}
 
@@ -181,6 +182,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				safetyText={skill.name}
 				deletionRoute={getAlbinaApiAddress(`/skills/${skill.slug}`)}
 				routerPushRoute="/skills"
+				revalidatePath="/skills"
 			/>
 
 			<UIBasics.Divisor />

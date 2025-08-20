@@ -121,6 +121,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/spells");
 		revalidatePathByClientSide(`/spells/${spell.slug}`);
 	}
 
@@ -207,6 +208,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				safetyText={spell.name}
 				deletionRoute={getAlbinaApiAddress(`/spells/${spell.slug}`)}
 				routerPushRoute="/spells"
+				revalidatePath="/spells"
 			/>
 
 			<UIBasics.Divisor />

@@ -109,6 +109,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/items");
 		revalidatePathByClientSide(`/items/${item.slug}`);
 	}
 
@@ -182,6 +183,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				safetyText={item.name}
 				deletionRoute={getAlbinaApiAddress(`/items/${item.slug}`)}
 				routerPushRoute="/items"
+				revalidatePath="/items"
 			/>
 
 			<UIBasics.Divisor />

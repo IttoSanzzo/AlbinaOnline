@@ -121,6 +121,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/racas");
 		revalidatePathByClientSide(`/racas/${race.slug}`);
 	}
 
@@ -189,14 +190,14 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 					style={{ fontFamily: "monospace" }}
 				/>
 				<HookedForm.TextAreaInput<FormInput>
-					fieldName="skillSlugs"
-					label="Skill Slugs"
+					fieldName="traitSlugs"
+					label="Trait Slugs"
 					height={200}
 					style={{ fontFamily: "monospace" }}
 				/>
 				<HookedForm.TextAreaInput<FormInput>
-					fieldName="traitSlugs"
-					label="Trait Slugs"
+					fieldName="skillSlugs"
+					label="Skill Slugs"
 					height={200}
 					style={{ fontFamily: "monospace" }}
 				/>
@@ -212,6 +213,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 				safetyText={race.name}
 				deletionRoute={getAlbinaApiAddress(`/races/${race.slug}`)}
 				routerPushRoute="/racas"
+				revalidatePath="/racas"
 			/>
 
 			<UIBasics.Divisor />

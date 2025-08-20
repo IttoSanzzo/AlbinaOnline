@@ -87,6 +87,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
+		revalidatePathByClientSide("/tracos");
 		revalidatePathByClientSide(`/tracos/${trait.slug}`);
 	}
 
@@ -152,6 +153,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				safetyText={trait.name}
 				deletionRoute={getAlbinaApiAddress(`/traits/${trait.slug}`)}
 				routerPushRoute="/tracos"
+				revalidatePath="/tracos"
 			/>
 
 			<UIBasics.Divisor />
