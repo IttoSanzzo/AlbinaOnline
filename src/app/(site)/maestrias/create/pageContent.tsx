@@ -2,7 +2,7 @@
 
 import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption, zEnumKey } from "@/libs/stp@forms";
-import { ItemSubType, ItemType } from "@/libs/stp@types";
+import { MasterySubType, MasteryType } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -24,13 +24,13 @@ const schema = z.object({
 			"Invalid slug (cannot start or end with with '-')"
 		),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(ItemType, ["Unknown"]),
-	subType: zEnumKey(ItemSubType, ["Unknown"]),
+	type: zEnumKey(MasteryType, ["Unknown"]),
+	subType: zEnumKey(MasterySubType, ["Unknown"]),
 });
 type FormData = z.infer<typeof schema>;
 type FormInputData = z.input<typeof schema>;
 
-export function CreateItemPageContent() {
+export function CreateMasteryPageContent() {
 	const router = useRouter();
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInputData, any, FormData>({
@@ -45,9 +45,9 @@ export function CreateItemPageContent() {
 			type: formData.type,
 			subType: formData.subType,
 		};
-		const toastId = toast.loading("Creating item...");
+		const toastId = toast.loading("Creating mastery...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/items"),
+			getAlbinaApiAddress("/masteries"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),
@@ -65,14 +65,14 @@ export function CreateItemPageContent() {
 		}
 		setError("");
 		toast.success("Created", { id: toastId });
-		revalidatePathByClientSide("/items");
-		router.push(`/items/${formData.slug}/edit`);
+		revalidatePathByClientSide("/maestrias");
+		router.push(`/maestrias/${formData.slug}/edit`);
 	}
 
-	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
+	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
 		"Unknown",
 	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType, [
+	const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
 		"Unknown",
 	]);
 

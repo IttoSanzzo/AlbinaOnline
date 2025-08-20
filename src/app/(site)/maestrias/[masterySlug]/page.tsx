@@ -1,63 +1,48 @@
-import {
-	GenericEffectsDisplay,
-	GenericInfoCallout,
-	GenericPageContainer,
-	GenericPageFooter,
-} from "@/components/(Design)";
-import { getPageData } from "./(routeInfra)";
-import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
-import { FavoriteButton } from "@/components/(SPECIAL)";
-import { UIBasics } from "@/components/(UIBasics)";
+import { Metadata } from "next";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import MasteryPageContent from "./pageContent";
+import { fetchStaticParamSlugs } from "@/utils/Data";
 
-export { generateStaticParams, generateMetadata } from "./(routeInfra)";
-
-interface MasteryProps {
+interface MasteryPageServerShellProps {
 	params: Promise<{ masterySlug: string }>;
 }
 
-export default async function Mastery({ params }: MasteryProps) {
+export async function generateMetadata({
+	params,
+}: MasteryPageServerShellProps): Promise<Metadata> {
 	const { masterySlug } = await params;
-	const MasteryPageData = await getPageData(masterySlug);
 
-	if (MasteryPageData.masteryData == undefined) {
-		return null;
-	}
-
-	const { masteryData, borderColor } = MasteryPageData;
-
-	return (
-		<GenericPageContainer
-			title={`⩤Maestria⩥ ${masteryData.name}`}
-			banner={masteryData.bannerUrl}
-			icon={masteryData.iconUrl}
-			borderColor={borderColor}>
-			<SetNavBarModules favoriteButton={FavoriteButton} />
-			<SetCurrentPageData
-				type={"mastery"}
-				data={masteryData}
-			/>
-
-			<UIBasics.Header
-				textColor="purple"
-				backgroundColor="gray"
-				textAlign="center"
-				children={"¤ Especificações ¤"}
-			/>
-			<UIBasics.MultiColumn.Two
-				colum1={
-					<MasteryTypologyCallout
-						type={masteryData.type}
-						subType={masteryData.subType}
-					/>
-				}
-				colum2={<GenericInfoCallout info={masteryData.info} />}
-			/>
-			<GenericEffectsDisplay effects={masteryData.effects} />
-			<GenericPageFooter
-				version={masteryData.albinaVersion}
-				lastUpdate={masteryData.updatedAt}
-			/>
-		</GenericPageContainer>
+	const response = await fetch(
+		getAlbinaApiAddress(`/masteries/${masterySlug}/metadata`),
+		{
+			cache: "force-cache",
+			method: "GET",
+			next: {
+				tags: [`page-metadata-mastery-${masterySlug}`],
+			},
+		}
 	);
+	if (!response.ok) {
+		return {
+			title: "???",
+		};
+	}
+	const data = await response.json();
+	return {
+		title: data.title,
+		icons: { icon: data.icon },
+	};
+}
+
+export default async function MasteryPageServerShell({
+	params,
+}: MasteryPageServerShellProps) {
+	const { masterySlug } = await params;
+
+	return <MasteryPageContent masterySlug={masterySlug} />;
+}
+
+export async function generateStaticParams() {
+	if (process.env.NODE_ENV === "development") return [];
+	return await fetchStaticParamSlugs("masteries");
 }
