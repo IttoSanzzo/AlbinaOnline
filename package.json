@@ -1,7 +1,16 @@
 {
-	"name": "albina-alpha1",
-	"version": "0.1.0",
-	"private": true,
+	"name": "albina-online",
+	"version": "1.0.0",
+	"private": false,
+	"description": "Albina Online is a private platform for interactive character management and system access for Albina RPG.",
+	"author": "Itto Sanzzo",
+	"license": "SEE LICENSE IN LICENSE",
+	"keywords": [
+		"RPG",
+		"Albina",
+		"Next.js",
+		"Character Management"
+	],
 	"scripts": {
 		"dev": "next dev --turbopack -p 11759",
 		"dev-reset": "rm -rf ./.next && next dev --turbopack -p 11759",
