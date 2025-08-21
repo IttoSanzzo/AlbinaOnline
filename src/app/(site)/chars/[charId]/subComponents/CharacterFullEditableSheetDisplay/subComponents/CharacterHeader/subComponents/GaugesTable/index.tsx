@@ -60,9 +60,15 @@ export function GaugesTable() {
 
 	async function onFormChange(formData: FormData): Promise<boolean> {
 		if (
-			formData.currentHp > coreMetrics.healthPoints.effectiveCurrent ||
-			formData.currentEp > coreMetrics.staminaPoints.effectiveCurrent ||
-			formData.currentMp > coreMetrics.manaPoints.effectiveCurrent
+			formData.currentHp >
+				coreMetrics.healthPoints.baseMax +
+					coreMetrics.healthPoints.temporaryCurrentModifier ||
+			formData.currentEp >
+				coreMetrics.staminaPoints.baseMax +
+					coreMetrics.staminaPoints.temporaryCurrentModifier ||
+			formData.currentMp >
+				coreMetrics.manaPoints.baseMax +
+					coreMetrics.manaPoints.temporaryCurrentModifier
 		)
 			return false;
 		const body: CharacterCoreMetrics = {
