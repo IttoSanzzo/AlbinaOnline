@@ -47,6 +47,7 @@ export function MasteryLevelController({
 			);
 		});
 	}
+
 	return (
 		<SideActionNumberInputButtons
 			key={masteryId}
