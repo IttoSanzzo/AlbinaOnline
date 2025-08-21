@@ -1,5 +1,4 @@
 import Image from "next/image";
-import albinaLogo from "@/../public/AlbinaLogo.png";
 import Link from "next/link";
 import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
 import { DataInitComplete } from "./subComponents/DataInitComplete";

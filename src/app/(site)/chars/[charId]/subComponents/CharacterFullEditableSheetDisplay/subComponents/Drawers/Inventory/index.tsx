@@ -1,7 +1,7 @@
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
-import { CharacterCoinStack, CharacterItemStack, Guid } from "@/libs/stp@types";
+import { CharacterCoinStack, Guid } from "@/libs/stp@types";
 import React from "react";
 
 interface InventoryDrawerProps {

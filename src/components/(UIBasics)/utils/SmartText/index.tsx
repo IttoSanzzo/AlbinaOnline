@@ -7,7 +7,7 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 
 const SmartTextContainer = newStyledElement.div(styles.smartTextContainer);
 
-function getSmartLink(smartSlice: string, key: any): ReactNode {
+function getSmartLink(smartSlice: string, key: number): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartLinkError-"</p>;
 
 	const titleEnd = smartSlice.indexOf("]");
@@ -28,7 +28,7 @@ function getSmartLink(smartSlice: string, key: any): ReactNode {
 		/>
 	);
 }
-function getSmartToggle(smartSlice: string, key: any): ReactNode {
+function getSmartToggle(smartSlice: string, key: number): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartToggleError-"</p>;
 
 	const titleEnd = smartSlice.indexOf("]");
@@ -43,7 +43,7 @@ function getSmartToggle(smartSlice: string, key: any): ReactNode {
 		/>
 	);
 }
-function getSmartQuote(quote: string, key: any): ReactNode {
+function getSmartQuote(quote: string, key: number): ReactNode {
 	return (
 		<UIBasics.Quote
 			key={key}
@@ -51,7 +51,7 @@ function getSmartQuote(quote: string, key: any): ReactNode {
 		/>
 	);
 }
-function getSmartBullet(item: string, key: any): ReactNode {
+function getSmartBullet(item: string, key: number): ReactNode {
 	return (
 		<UIBasics.Bullet
 			key={key}
@@ -59,7 +59,7 @@ function getSmartBullet(item: string, key: any): ReactNode {
 		/>
 	);
 }
-function getSmartColor(smartSlice: string, key: any): ReactNode {
+function getSmartColor(smartSlice: string, key: number): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartColorError-"</p>;
 
 	const colorEnd = smartSlice.indexOf("]");

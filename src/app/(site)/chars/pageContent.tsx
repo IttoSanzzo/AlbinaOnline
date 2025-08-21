@@ -119,7 +119,7 @@ export default function CharsPageContent() {
 						direction="row"
 						backgroundColor="blue"
 						columnWidth={150}>
-						{allCharacters.map((character, index) => (
+						{allCharacters.map((character) => (
 							<StyledOwnedLinkCard
 								key={character.id}
 								size={150}

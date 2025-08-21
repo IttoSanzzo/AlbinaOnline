@@ -12,6 +12,23 @@ const IndexedPagesGroupsContainer = newStyledElement.div(
 	styles.indexedPagesGroupsContainer
 );
 
+type FavoriteWithSlug = {
+	target: {
+		id: string;
+		name: string;
+		slug: string;
+		iconUrl: string;
+	};
+};
+
+type FavoriteWithoutSlug = {
+	target: {
+		id: string;
+		name: string;
+		iconUrl: string;
+	};
+};
+
 const CoreHubPageGroup = (
 	<IndexedPagesGroup
 		groupName="Core Hub"
@@ -40,9 +57,9 @@ export default function IndexedPagesGroups() {
 
 	const getSluggedFavoriteSortableIndexedPage = (
 		endpoint: string,
-		favoriteList: any
+		favoriteList: FavoriteWithSlug[]
 	): SortableIndexedPage[] =>
-		favoriteList.map((favorite: any): SortableIndexedPage => {
+		favoriteList.map((favorite: FavoriteWithSlug): SortableIndexedPage => {
 			return {
 				name: favorite.target.name,
 				link: `${endpoint}/${favorite.target.slug}`,
@@ -51,9 +68,9 @@ export default function IndexedPagesGroups() {
 		});
 	const getNonSluggedFavoriteSortableIndexedPage = (
 		endpoint: string,
-		favoriteList: any
+		favoriteList: FavoriteWithoutSlug[]
 	): SortableIndexedPage[] =>
-		favoriteList.map((favorite: any): SortableIndexedPage => {
+		favoriteList.map((favorite: FavoriteWithoutSlug): SortableIndexedPage => {
 			return {
 				name: favorite.target.name,
 				link: `${endpoint}/${favorite.target.id}`,

@@ -1,3 +1,4 @@
+import { LintIgnoredAny } from "@/libs/stp@types";
 import z from "zod";
 
 export function zJsonString<T extends z.ZodTypeAny>(schema: T) {
@@ -27,7 +28,9 @@ export function zJsonString<T extends z.ZodTypeAny>(schema: T) {
 			return result.data;
 		});
 }
-export function zJsonStringTyped<T>(schema: z.ZodType<any, any, unknown>) {
+export function zJsonStringTyped<T>(
+	schema: z.ZodType<LintIgnoredAny, LintIgnoredAny, unknown>
+) {
 	return z
 		.string()
 		.min(2, "Must provide a valid JSON")

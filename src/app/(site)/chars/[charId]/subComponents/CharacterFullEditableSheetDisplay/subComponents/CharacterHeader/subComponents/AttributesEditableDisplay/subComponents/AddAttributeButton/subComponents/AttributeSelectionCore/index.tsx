@@ -1,5 +1,5 @@
 import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";

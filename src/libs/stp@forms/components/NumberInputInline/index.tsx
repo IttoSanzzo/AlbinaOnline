@@ -67,14 +67,18 @@ export function NumberInputInline<TFormData extends FieldValues>({
 	};
 
 	function handleDecrement() {
-		const newValue: number = (Number(field.value) ?? 0) - (step ? step : 1);
+		const currentValue = Number(field.value);
+		const newValue: number =
+			(isNaN(currentValue) ? 0 : currentValue) - (step ? step : 1);
 		field.onChange(
 			min != undefined ? (newValue < min ? min : newValue) : newValue
 		);
 		triggerDebounceAction();
 	}
 	function handleIncrement() {
-		const newValue: number = (Number(field.value) ?? 0) + (step ? step : 1);
+		const currentValue = Number(field.value);
+		const newValue: number =
+			(isNaN(currentValue) ? 0 : currentValue) + (step ? step : 1);
 		field.onChange(max ? (newValue > max ? max : newValue) : newValue);
 		triggerDebounceAction();
 	}

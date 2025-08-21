@@ -1,7 +1,6 @@
 import {
 	MiddlewareFactory,
 	stackMiddlewares,
-	applyIfPathMatches,
 	identityGate,
 } from "./middlewares";
 

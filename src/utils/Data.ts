@@ -2,6 +2,7 @@ import { SelectOption } from "@/libs/stp@forms";
 import { getAlbinaApiAddress } from "./AlbinaApi";
 import { getCacheMode } from "./Cache";
 import { pascalToCamel } from "./StringUtils";
+import { LintIgnoredAny } from "@/libs/stp@types";
 
 export function convertEnumsFromResponse<T>(data: T): T {
 	if (Array.isArray(data)) {
@@ -57,7 +58,7 @@ export function shallowCompare<T extends object>(a: T, b: T): boolean {
 	return true;
 }
 
-export function deepCompare(a: any, b: any): boolean {
+export function deepCompare(a: LintIgnoredAny, b: LintIgnoredAny): boolean {
 	if (a === b) return true;
 
 	if (typeof a !== typeof b) return false;

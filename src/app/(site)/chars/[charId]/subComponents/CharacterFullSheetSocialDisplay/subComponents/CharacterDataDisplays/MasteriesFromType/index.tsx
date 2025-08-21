@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import {
 	CharacterAbilityScore,
 	CharacterMasteryExpanded,
@@ -120,6 +120,7 @@ function formTable(
 								)
 							);
 					}
+				// no-fallthrough
 				default:
 					return tableMasteryEntry(mastery);
 			}

@@ -18,6 +18,7 @@ interface VarisCoinsDisplayProps {
 	varisCoins: VarisCoins;
 }
 export function VarisCoinsDisplay({ varisCoins }: VarisCoinsDisplayProps) {
+	void varisCoins;
 	return (
 		<UIBasics.Box
 			backgroundColor="gray"

@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { CoreMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
-import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
+import { CharacterCoreMetrics } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
@@ -23,8 +23,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-interface GaugesTableProps {}
-export function GaugesTable({}: GaugesTableProps) {
+export function GaugesTable() {
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
 

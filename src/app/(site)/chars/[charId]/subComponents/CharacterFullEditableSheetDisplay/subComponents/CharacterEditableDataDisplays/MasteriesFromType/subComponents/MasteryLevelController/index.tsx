@@ -1,13 +1,11 @@
 import { SideActionNumberInputButtons } from "@/components/(UTILS)";
+import { Guid } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
-import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
-import { bonusValueText } from "@/utils/AlbinaAesthetic";
-import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
-import { Guid } from "@/libs/stp@types";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../..";
+import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
 
 interface MasteryLevelControllerProps {
 	level: number;

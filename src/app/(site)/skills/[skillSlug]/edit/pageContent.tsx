@@ -70,7 +70,7 @@ interface EditSkillPageContentProps {
 export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 	const { user, loading } = useCurrentUser();
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInput, any, FormData>({
+	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {

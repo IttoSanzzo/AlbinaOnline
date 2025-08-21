@@ -1,11 +1,6 @@
 import { useContext, useLayoutEffect } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import {
-	CharacterEquipments,
-	CharacterItemStackExpanded,
-	EquipmentSlot,
-	Guid,
-} from "@/libs/stp@types";
+import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
 import React from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
@@ -13,28 +8,6 @@ import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
 import { AddEquipmentButton } from "./subComponents/AddEquipmentButton";
 import { UIBasics } from "@/components/(UIBasics)";
-
-async function handleItemRemoval(
-	characterId: Guid,
-	itemId: Guid,
-	setCharacterItems: React.Dispatch<
-		React.SetStateAction<CharacterItemStackExpanded[]>
-	>
-) {
-	const body = { itemId: itemId };
-	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/items`),
-		{
-			method: "DELETE",
-			body: JSON.stringify(body),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		}
-	);
-	if (!response.ok) return;
-	setCharacterItems((state) => state.filter((item) => item.item.id != itemId));
-}
 
 function formEquipSlotTableEntry(
 	characterId: Guid,

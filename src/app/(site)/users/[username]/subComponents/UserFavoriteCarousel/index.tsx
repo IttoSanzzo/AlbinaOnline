@@ -1,8 +1,6 @@
 import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { UserFavoritesGrouped } from "@/libs/stp@types";
-import { capitalize } from "@/utils/StringUtils";
-import { newStyledElement } from "@setsu-tp/styled-components";
 
 interface UserFavoriteCarouselProps {
 	favorites: UserFavoritesGrouped;
@@ -17,8 +15,6 @@ export function UserFavoriteCarousel({
 	routeBase,
 	favoriteName,
 }: UserFavoriteCarouselProps) {
-	// const test = newStyledElement.div(style.testeContainer);
-
 	const indentifier = favoriteType == "character" ? "id" : "slug";
 	return (
 		<UIBasics.Box backgroundColor="purple">
@@ -34,7 +30,9 @@ export function UserFavoriteCarousel({
 							<StyledLinkCard
 								size={150}
 								key={favorite.target.id}
-								href={`/${routeBase}/${(favorite.target as any)[indentifier]}`}
+								href={`/${routeBase}/${String(
+									favorite.target[indentifier as keyof typeof favorite.target]
+								)}`}
 								title={favorite.target.name}
 								artworkUrl={favorite.target.iconUrl}
 							/>

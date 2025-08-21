@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import {
 	CharacterEquipments,

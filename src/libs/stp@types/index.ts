@@ -5,6 +5,7 @@ export type {
 	Parameters,
 	DefensiveProfile,
 	GenericExtraProperty,
+	LintIgnoredAny,
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
 export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";

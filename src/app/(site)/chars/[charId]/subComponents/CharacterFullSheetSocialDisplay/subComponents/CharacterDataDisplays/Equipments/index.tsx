@@ -1,4 +1,4 @@
-import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
+import { CharacterEquipments, Guid } from "@/libs/stp@types";
 import React from "react";
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
 import { UIBasics } from "@/components/(UIBasics)";

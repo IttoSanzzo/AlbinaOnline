@@ -20,7 +20,7 @@ export function useSetNavBarModules(
 	contextMenuButton?: () => ReactNode,
 	options?: { resetOnUnmount?: boolean }
 ) {
-	const { modules, setModule, clearModules } = useNavBarModulesStore(
+	const { setModule, clearModules } = useNavBarModulesStore(
 		useShallow((state) => ({
 			modules: state.modules,
 			setModule: state.setModule,

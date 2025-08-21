@@ -1,5 +1,5 @@
 import { CSSProperties, InputHTMLAttributes } from "react";
-import { Control, Path, useController } from "react-hook-form";
+import { Path } from "react-hook-form";
 import { NumberInputInline } from "../NumberInputInline";
 import clsx from "clsx";
 import { newStyledElement } from "@setsu-tp/styled-components";

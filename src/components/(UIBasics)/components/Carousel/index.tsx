@@ -72,7 +72,7 @@ export function Carousel({
 	}, [memoryId]);
 
 	const defaultChangeHandler = memoryId
-		? (event: KeenSliderInstance<{}, {}, KeenSliderHooks>) => {
+		? (event: KeenSliderInstance<object, object, KeenSliderHooks>) => {
 				setMemoryPositionState(event.track.details.rel, pathname, memoryName);
 		  }
 		: undefined;

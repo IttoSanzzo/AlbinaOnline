@@ -1,6 +1,9 @@
 import { StandartTextColor } from "@/components/(UIBasics)";
 import { Guid } from "./misc";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type LintIgnoredAny = any;
+
 export type GenericInfo = {
 	summary: string[];
 	description: string[];

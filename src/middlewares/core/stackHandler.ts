@@ -16,5 +16,6 @@ export function stackMiddlewares(
 		const next = stackMiddlewares(functions, index + 1);
 		return current(next);
 	}
-	return (request: NextRequest, event: NextFetchEvent) => NextResponse.next();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	return (_request: NextRequest, _event: NextFetchEvent) => NextResponse.next();
 }

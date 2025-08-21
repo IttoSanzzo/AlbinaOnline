@@ -8,10 +8,6 @@ import { isEmail } from "@/utils/StringUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HookedForm } from "@/libs/stp@forms";
-import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-
-// const LoginFormContainer = newStyledElement.form(styles.loginFormContainer);
 
 const schema = z.object({
 	usernameOrEmail: z.string().min(1, "Insira o usuário."),
@@ -43,7 +39,7 @@ export async function FetchLogin(
 		});
 		if (response.status != 200) return { status: response.status };
 		return { status: response.status };
-	} catch (ex) {
+	} catch {
 		return { status: 500 };
 	}
 }

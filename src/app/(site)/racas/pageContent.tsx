@@ -1,4 +1,4 @@
-import { GenericPageContainer, StyledLink } from "@/components/(Design)";
+import { GenericPageContainer } from "@/components/(Design)";
 import { RaceData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import RaceTypeDisplay from "./subComponents/RaceTypeDisplay";

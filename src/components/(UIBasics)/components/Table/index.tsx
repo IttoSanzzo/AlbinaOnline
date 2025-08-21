@@ -65,7 +65,7 @@ export function Table({
 		);
 
 	if (direction === "row") {
-		var fixedPositionIndex = -1;
+		let fixedPositionIndex = -1;
 		return (
 			<HorizontalTableContainer style={baseStyle}>
 				<tbody>
@@ -124,7 +124,7 @@ export function Table({
 	);
 
 	tableLanes.forEach((column, columnIndex) => {
-		for (var i = 0; i < column.length; ++i) {
+		for (let i = 0; i < column.length; ++i) {
 			reordenedTable[i][columnIndex] = column[i];
 		}
 	});

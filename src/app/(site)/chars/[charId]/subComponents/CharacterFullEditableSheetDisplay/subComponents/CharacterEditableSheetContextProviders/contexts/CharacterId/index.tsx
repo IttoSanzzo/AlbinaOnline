@@ -1,5 +1,5 @@
 import { Guid } from "@/libs/stp@types";
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 
 export const CharacterIdContext = createContext<{
 	characterId: Guid;

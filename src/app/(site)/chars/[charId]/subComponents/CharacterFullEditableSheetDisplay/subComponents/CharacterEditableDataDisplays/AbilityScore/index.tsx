@@ -10,7 +10,7 @@ import {
 import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
-import { bonusColor, bonusValueText } from "@/utils/AlbinaAesthetic";
+import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";

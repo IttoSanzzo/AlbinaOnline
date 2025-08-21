@@ -31,7 +31,7 @@ export function DeleteCharForm({
 		resolver: zodResolver(schema),
 	});
 
-	async function onSubmit(formData: FormData) {
+	async function onSubmit() {
 		const response = await authenticatedFetchAsync(
 			`${getAlbinaApiAddress()}/characters/${characterId}`,
 			{

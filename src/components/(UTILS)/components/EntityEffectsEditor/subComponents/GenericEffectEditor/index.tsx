@@ -50,7 +50,7 @@ export function GenericEffectEditor({
 	revalidatePath,
 }: GenericEffectEditorProps) {
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInput, any, FormData>({
+	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			name: genericEffect.name,

@@ -1,6 +1,6 @@
 "use client";
 
-import { UserFavoritesGrouped } from "@/libs/stp@types";
+import { LintIgnoredAny, UserFavoritesGrouped } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { create } from "zustand";
 
@@ -28,7 +28,7 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 				}
 			);
 			if (!response.ok) throw new Error("Not authenticated");
-			const data: { favorites: any } = await response.json();
+			const data: { favorites: LintIgnoredAny } = await response.json();
 			set({
 				favorites: {
 					character: data.favorites.Character,

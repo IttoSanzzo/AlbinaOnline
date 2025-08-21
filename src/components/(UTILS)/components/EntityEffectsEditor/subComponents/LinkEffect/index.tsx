@@ -36,7 +36,7 @@ export function LinkEffect({
 }: LinkEffectProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInput, any, FormData>({
+	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 	});
 

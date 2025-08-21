@@ -14,8 +14,7 @@ function calcTotalWeight(characterItems: CharacterItemStackExpanded[]) {
 	);
 }
 
-interface MiscsTableProps {}
-export function MiscsTable({}: MiscsTableProps) {
+export function MiscsTable() {
 	const { coreMetrics } = useContext(CoreMetricsContext);
 	const { miscMetrics } = useContext(MiscMetricsContext);
 	const { characterItems } = useContext(ItemsContext);

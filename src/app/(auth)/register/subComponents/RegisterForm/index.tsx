@@ -7,12 +7,6 @@ import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HookedForm } from "@/libs/stp@forms";
-import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-
-// const RegisterFormContainer = newStyledElement.form(
-// styles.registerFormContainer
-// );
 
 const nicknameInvalidRegex = /[\p{C}]/u;
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -75,7 +69,7 @@ async function FetchRegister(
 			return { status: response.status, message: payload.message };
 		}
 		return { status: response.status };
-	} catch (ex) {
+	} catch {
 		return { status: 500 };
 	}
 }

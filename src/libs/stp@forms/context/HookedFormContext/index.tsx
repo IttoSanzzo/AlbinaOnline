@@ -1,13 +1,17 @@
-import { debounce } from "@/utils/General";
-import { createContext, useCallback, useContext, useMemo, useRef } from "react";
+import { LintIgnoredAny } from "@/libs/stp@types";
+import { createContext, useCallback, useContext, useRef } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
+export type AnyFormValues = LintIgnoredAny;
+
 interface FormContextValue<TFormData extends FieldValues> {
-	form: UseFormReturn<any, any, TFormData>;
+	form: UseFormReturn<AnyFormValues, unknown, TFormData>;
 	triggerDebounceAction: () => void;
 }
 
-const HookedFormContext = createContext<FormContextValue<any> | null>(null);
+const HookedFormContext = createContext<FormContextValue<AnyFormValues> | null>(
+	null
+);
 
 export function useHookedForm<TFormData extends FieldValues>() {
 	const context = useContext(HookedFormContext);
@@ -17,7 +21,7 @@ export function useHookedForm<TFormData extends FieldValues>() {
 }
 
 interface HookedFormContextProviderProps<TFormData extends FieldValues> {
-	form: UseFormReturn<any, any, TFormData>;
+	form: UseFormReturn<AnyFormValues, unknown, TFormData>;
 	debounceMs?: number;
 	onChangeAction?: (data: TFormData) => void;
 	children: React.ReactNode;

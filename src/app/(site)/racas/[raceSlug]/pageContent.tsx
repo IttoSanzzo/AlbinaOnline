@@ -31,7 +31,7 @@ export default async function RacePageContent({
 	if (RacePageData.raceData == undefined) {
 		return <>Error</>;
 	}
-	const { raceData, borderColor } = RacePageData;
+	const { raceData } = RacePageData;
 
 	return (
 		<GenericPageContainer

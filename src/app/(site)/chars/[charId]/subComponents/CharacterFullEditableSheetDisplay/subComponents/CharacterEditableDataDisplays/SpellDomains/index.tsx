@@ -4,7 +4,7 @@ import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";

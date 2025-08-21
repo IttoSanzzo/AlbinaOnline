@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import { RaceData } from "@/libs/stp@types";
 
 export const RaceContext = createContext<{

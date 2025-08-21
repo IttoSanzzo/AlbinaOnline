@@ -1,7 +1,7 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../../../CharacterEditableSheetContextProviders";
 import z from "zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";

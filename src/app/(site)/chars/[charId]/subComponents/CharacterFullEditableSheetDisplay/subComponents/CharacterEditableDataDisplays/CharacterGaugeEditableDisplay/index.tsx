@@ -1,10 +1,10 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useRef, useState } from "react";
-import { Control, useForm } from "react-hook-form";
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
+import { CharacterCoreMetrics } from "@/libs/stp@types";
 import z from "zod";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";

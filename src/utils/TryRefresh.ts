@@ -15,7 +15,7 @@ export async function tryRefresh() {
 		if (response.status != 200) return { status: response.status };
 		const data = await response.json();
 		return { ...data, status: response.status };
-	} catch (ex) {
+	} catch {
 		return { status: 500 };
 	}
 }

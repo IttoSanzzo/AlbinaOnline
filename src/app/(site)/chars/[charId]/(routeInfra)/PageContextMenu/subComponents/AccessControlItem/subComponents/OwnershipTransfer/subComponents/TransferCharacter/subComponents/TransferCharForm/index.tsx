@@ -2,7 +2,6 @@
 
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,7 +26,6 @@ export function TransferCharForm({
 	characterId,
 }: TransferCharFormProps) {
 	const [responseMessage, setResponseMessage] = useState<string>("");
-	const router = useRouter();
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});

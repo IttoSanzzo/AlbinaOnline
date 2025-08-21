@@ -1,12 +1,8 @@
-import { CSSProperties, ReactNode } from "react";
+import { ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartColorProps, StandartTextColor } from "../../core";
-import {
-	StandartBackgroundColorKeyToProperty,
-	StandartColorKeysToProperties,
-	StandartTextColorKeyToProperty,
-} from "../../utils";
+import { StandartColorKeysToProperties } from "../../utils";
 import { UIBasics } from "../..";
 
 const BulletContainer = newStyledElement.div(styles.bulletContainer);

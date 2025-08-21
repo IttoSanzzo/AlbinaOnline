@@ -26,7 +26,7 @@ type FormInputData = z.input<typeof schema>;
 export function CreateSkillPageContent() {
 	const router = useRouter();
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInputData, any, FormData>({
+	const form = useForm<FormInputData, unknown, FormData>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 	});

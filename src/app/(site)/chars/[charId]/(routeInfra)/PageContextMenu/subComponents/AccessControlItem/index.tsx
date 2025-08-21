@@ -7,7 +7,6 @@ import { AccessLevel } from "@/libs/stp@types/otherTypes/AccessLevel";
 import { OwnershipTransfer } from "./subComponents/OwnershipTransfer";
 import { CharacterData } from "@/libs/stp@types";
 import { OtherUsersAccessControl } from "./subComponents/OtherUsersAccesControl";
-import { newStyledElement } from "@setsu-tp/styled-components";
 
 export function AccessControlItem() {
 	const currentCharacterAccessLevel = useCurrentCharacterAccessLevel();

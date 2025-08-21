@@ -2,7 +2,7 @@ import { Dialog } from "@/libs/stp@radix";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useState } from "react";
 import styles from "./styles.module.css";
-import { HookedForm, zSlug } from "@/libs/stp@forms";
+import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { Guid } from "@/libs/stp@types";
@@ -36,7 +36,7 @@ export function CreateEffect({
 }: CreateEffectProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
-	const form = useForm<FormInput, any, FormData>({
+	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 	});
 

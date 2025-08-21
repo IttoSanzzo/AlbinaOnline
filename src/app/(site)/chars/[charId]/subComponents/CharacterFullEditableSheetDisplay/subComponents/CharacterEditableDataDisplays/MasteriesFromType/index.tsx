@@ -161,6 +161,7 @@ function formTable(
 								)
 							);
 					}
+				// no-fallthrough
 				default:
 					return tableMasteryEntry(
 						mastery.characterId,

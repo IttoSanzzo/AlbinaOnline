@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
-import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
+import { CharacterCoreMetrics } from "@/libs/stp@types";
 
 export const CoreMetricsContext = createContext<{
 	coreMetrics: CharacterCoreMetrics;
@@ -15,7 +15,6 @@ export function CharacterCoreMetricsContextProvider({
 	children,
 }: CharacterCoreMetricsContextProviderProps) {
 	const coreMetricsState = useState<CharacterCoreMetrics>(coreMetrics);
-	const id = useState<Guid>(Guid.NewGuid());
 	const coreMetricsContextValue = useMemo(
 		() => ({
 			coreMetrics: coreMetricsState[0],

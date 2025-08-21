@@ -41,8 +41,7 @@ async function handleRemoveAttribute(
 	setMiscMetrics(body);
 }
 
-interface AttributesEditableDisplayProps {}
-export function AttributesEditableDisplay({}: AttributesEditableDisplayProps) {
+export function AttributesEditableDisplay() {
 	const { miscMetrics, setMiscMetrics } = useContext(MiscMetricsContext);
 	const { characterId } = useContext(CharacterIdContext);
 
