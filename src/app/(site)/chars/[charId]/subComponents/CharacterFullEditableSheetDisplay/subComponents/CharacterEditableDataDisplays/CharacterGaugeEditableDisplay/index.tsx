@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -82,18 +82,18 @@ export function CharacterGaugeEditableDisplay({
 	});
 	const watchedValues = form.watch();
 
-	// useEffect(() => {
-	// 	form.setValue("baseCurrent", coreMetrics[gauge].baseCurrent);
-	// 	form.setValue("baseMax", coreMetrics[gauge].baseMax);
-	// 	form.setValue(
-	// 		"temporaryCurrentModifier",
-	// 		coreMetrics[gauge].temporaryCurrentModifier
-	// 	);
-	// 	form.setValue(
-	// 		"temporaryMaxModifier",
-	// 		coreMetrics[gauge].temporaryMaxModifier
-	// 	);
-	// }, [coreMetrics]);
+	useEffect(() => {
+		form.setValue("baseCurrent", coreMetrics[gauge].baseCurrent);
+		form.setValue("baseMax", coreMetrics[gauge].baseMax);
+		form.setValue(
+			"temporaryCurrentModifier",
+			coreMetrics[gauge].temporaryCurrentModifier
+		);
+		form.setValue(
+			"temporaryMaxModifier",
+			coreMetrics[gauge].temporaryMaxModifier
+		);
+	}, [coreMetrics]);
 
 	async function onFormChange(formData: FormData) {
 		const body: CharacterCoreMetrics = {
