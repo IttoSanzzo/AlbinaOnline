@@ -42,10 +42,25 @@ function getCurrentOpenState(pathname: string, memoryName?: string) {
 	}
 	return false;
 }
+function initialGetCurrentOpenState(
+	pathname: string,
+	memoryName?: string
+): boolean | null {
+	if (memoryName) {
+		const memoryState: string | null = routeStorage.getItem(
+			pathname,
+			memoryName
+		);
+		if (!memoryState) return null;
+		return memoryState === "true";
+	}
+	return false;
+}
 function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
 	if (name) {
 		if (value) routeStorage.setItem(pathname, name, true);
-		else routeStorage.removeItem(pathname, name);
+		else routeStorage.setItem(pathname, name, false);
+		// else routeStorage.removeItem(pathname, name);
 	}
 }
 
@@ -58,6 +73,7 @@ interface ToggleHeaderProps extends StandartColorProps {
 	contentMargin?: "none" | "middle" | "full";
 	memoryId?: string;
 	routeSensitiveMemory?: boolean;
+	defaultOpenState?: boolean;
 }
 export function ToggleHeader({
 	children,
@@ -70,8 +86,9 @@ export function ToggleHeader({
 	titleAlign,
 	textColor,
 	backgroundColor,
+	defaultOpenState = false,
 }: ToggleHeaderProps) {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
 
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
@@ -89,7 +106,10 @@ export function ToggleHeader({
 	const debouncedUpdateHeight = useDebouncedCallback(updateHeight, 10);
 
 	useLayoutEffect(() => {
-		setIsOpen(getCurrentOpenState(pathname, memoryName));
+		const initialState = initialGetCurrentOpenState(pathname, memoryName);
+		if (initialState != null) {
+			setIsOpen(getCurrentOpenState(pathname, memoryName));
+		}
 		if (contentRef.current)
 			setContentMaxHeight(contentRef.current.scrollHeight);
 	}, []);

@@ -198,6 +198,7 @@ function _CharacterMasteriesFromTypeDisplay({
 			withoutPadding>
 			<MasteriesDrawerContainer>
 				<UIBasics.ToggleHeader
+					defaultOpenState={true}
 					memoryId={`${characterId}-${type}s`}
 					contentMargin="none"
 					textColor="yellow"

@@ -1,17 +1,17 @@
+import { StyledLinklikeButton } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
+import { ArraySearchFilter } from "@/components/(UTILS)";
 import {
 	CharacterSpellExpanded,
 	Guid,
 	SpellData,
 	SpellType,
 } from "@/libs/stp@types";
-import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
-import { StyledLinklikeButton } from "@/components/(Design)";
-import { Dialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
-import { UIBasics } from "@/components/(UIBasics)";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
 
@@ -23,13 +23,18 @@ interface SpellSelectionCoreProps {
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
 	>;
+	setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
+	isInBulkMode: boolean;
 }
 export function SpellSelectionCore({
 	characterId,
 	characterSpells,
 	setCharacterSpells,
+	isInBulkMode,
+	setOpenState,
 }: SpellSelectionCoreProps) {
 	const [allSpells, setAllSpells] = useState<SpellData[]>([]);
+	const [selectionPool, setSelectionPool] = useState<SpellData[]>([]);
 
 	useLayoutEffect(() => {
 		fetch(getAlbinaApiAddress("/spells"), {
@@ -40,24 +45,30 @@ export function SpellSelectionCore({
 		});
 	}, []);
 
-	if (allSpells.length == 0) return null;
-	const unacquiredSpells: SpellData[] = allSpells
-		.filter(
-			(spell) =>
-				!characterSpells.some(
-					(characterSpell) => characterSpell.spellId == spell.id
+	const unacquiredSpells: SpellData[] = useMemo(
+		() =>
+			allSpells
+				.filter(
+					(spell) =>
+						!characterSpells.some(
+							(characterSpell) => characterSpell.spellId == spell.id
+						)
 				)
-		)
-		.sort((spell1, spell2) => {
-			const levelOrder = spell1.domainLevel - spell2.domainLevel;
-			if (levelOrder !== 0) return levelOrder;
-			return spell1.name.localeCompare(spell2.name);
-		});
+				.sort((spell1, spell2) => {
+					const levelOrder = spell1.domainLevel - spell2.domainLevel;
+					if (levelOrder !== 0) return levelOrder;
+					return spell1.name.localeCompare(spell2.name);
+				}),
+		[allSpells, characterSpells]
+	);
+	if (allSpells.length == 0) return null;
+
 	const unacquiredSpellsByLevel = Array.from({ length: 13 }, (_, index) =>
-		unacquiredSpells.filter((spell) => spell.domainLevel === index)
+		selectionPool.filter((spell) => spell.domainLevel === index)
 	);
 
 	async function handleAddSpell(spell: SpellData) {
+		if (isInBulkMode == false) setOpenState(false);
 		const body = {
 			spellId: spell.id,
 		};
@@ -98,10 +109,19 @@ export function SpellSelectionCore({
 
 	return (
 		<>
+			<ArraySearchFilter
+				array={unacquiredSpells}
+				setFilteredState={setSelectionPool}
+				label="Filtro"
+				placeholder="Nome | Atributo | Domínio"
+				stringKeysToCheck={["name", "slug"]}
+				arrayKeysToCheck={["magicAttributes", "spellDomains"]}
+			/>
 			{unacquiredSpellsByLevel.map((unacquiredSpellFromThisLevel, index) => {
 				if (unacquiredSpellFromThisLevel.length === 0) return null;
 				return (
 					<UIBasics.ToggleHeader
+						defaultOpenState={true}
 						key={index}
 						memoryId={`${characterId}-AddSpell-Level-${index}`}
 						contentMargin="none"
@@ -115,15 +135,12 @@ export function SpellSelectionCore({
 							backgroundColor="gray"
 							children={unacquiredSpellFromThisLevel.map((spell) => {
 								return (
-									<Dialog.Close
+									<StyledLinklikeButton
 										key={spell.id}
-										asChild>
-										<StyledLinklikeButton
-											title={spell.name}
-											icon={spell.iconUrl}
-											onClick={() => handleAddSpell(spell)}
-										/>
-									</Dialog.Close>
+										title={spell.name}
+										icon={spell.iconUrl}
+										onClick={() => handleAddSpell(spell)}
+									/>
 								);
 							})}
 						/>

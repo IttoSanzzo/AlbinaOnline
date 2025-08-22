@@ -73,6 +73,7 @@ export function _CharacterEquipmentsDisplay() {
 
 	return (
 		<UIBasics.ToggleHeader
+			defaultOpenState={true}
 			contentMargin="none"
 			backgroundColor="darkGray"
 			titleColor="green"

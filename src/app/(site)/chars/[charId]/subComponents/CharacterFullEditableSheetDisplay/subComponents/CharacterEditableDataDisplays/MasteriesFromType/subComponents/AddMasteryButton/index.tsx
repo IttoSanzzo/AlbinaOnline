@@ -10,6 +10,8 @@ import {
 import { Dialog } from "@/libs/stp@radix";
 import { MasterySelectionCore } from "./subComponents/MasterySelectionCore";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import { StateSwitch } from "@/components/(UTILS)";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
@@ -23,9 +25,14 @@ export function AddMasteryButton({
 	characterId,
 	masteries,
 }: AddMasteryButtonProps) {
+	const [openState, setOpenState] = useState<boolean>(false);
+	const [inBulkMode, setInBulkMode] = useState<boolean>(false);
+
 	return (
 		<ButtonContainer>
-			<Dialog.Root>
+			<Dialog.Root
+				open={openState}
+				onOpenChange={setOpenState}>
 				<Dialog.Trigger asChild>
 					{StpIcon({ name: "PlusCircle" })}
 				</Dialog.Trigger>
@@ -38,10 +45,23 @@ export function AddMasteryButton({
 								marginBottom={20}
 								textAlign="center"
 							/>
+							<StateSwitch
+								label={"Bulk"}
+								state={[inBulkMode, setInBulkMode]}
+								style={{
+									position: "absolute",
+									top: 0,
+									right: 0,
+									borderTop: "none",
+									borderRight: "none",
+								}}
+							/>
 							<MasterySelectionCore
 								characterMasteries={masteries}
 								type={type}
 								characterId={characterId}
+								setOpenState={setOpenState}
+								isInBulkMode={inBulkMode}
 							/>
 						</Dialog.Content>
 					</Dialog.Overlay>

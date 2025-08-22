@@ -5,6 +5,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { CharacterSkillExpanded, Guid } from "@/libs/stp@types";
 import { SkillSelectionCore } from "./subComponents/SkillSelectionCore";
+import { useState } from "react";
+import { StateSwitch } from "@/components/(UTILS)";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const AddButton = newStyledElement.button(styles.addButton);
@@ -21,9 +23,14 @@ export function AddSkillButton({
 	characterSkills,
 	setCharacterSkills,
 }: AddSkillButtonProps) {
+	const [openState, setOpenState] = useState<boolean>(false);
+	const [inBulkMode, setInBulkMode] = useState<boolean>(false);
+
 	return (
 		<ButtonContainer>
-			<Dialog.Root>
+			<Dialog.Root
+				open={openState}
+				onOpenChange={setOpenState}>
 				<Dialog.Trigger asChild>
 					<AddButton>{StpIcon({ name: "PlusCircle" })}</AddButton>
 				</Dialog.Trigger>
@@ -36,10 +43,23 @@ export function AddSkillButton({
 								marginBottom={20}
 								textAlign="center"
 							/>
+							<StateSwitch
+								label={"Bulk"}
+								state={[inBulkMode, setInBulkMode]}
+								style={{
+									position: "absolute",
+									top: 0,
+									right: 0,
+									borderTop: "none",
+									borderRight: "none",
+								}}
+							/>
 							<SkillSelectionCore
 								characterSkills={characterSkills}
 								setCharacterSkills={setCharacterSkills}
 								characterId={characterId}
+								setOpenState={setOpenState}
+								isInBulkMode={inBulkMode}
 							/>
 						</Dialog.Content>
 					</Dialog.Overlay>

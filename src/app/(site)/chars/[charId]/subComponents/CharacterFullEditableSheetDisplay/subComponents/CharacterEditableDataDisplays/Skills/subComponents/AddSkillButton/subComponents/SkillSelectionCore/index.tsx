@@ -5,16 +5,16 @@ import {
 	skillNames,
 	SkillType,
 } from "@/libs/stp@types";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
-import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
+import { ArraySearchFilter } from "@/components/(UTILS)";
 
 interface SkillSelectionCoreProps {
 	characterId: Guid;
@@ -22,13 +22,18 @@ interface SkillSelectionCoreProps {
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
 	>;
+	setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
+	isInBulkMode: boolean;
 }
 export function SkillSelectionCore({
 	characterId,
 	characterSkills,
 	setCharacterSkills,
+	setOpenState,
+	isInBulkMode,
 }: SkillSelectionCoreProps) {
 	const [allSkills, setAllSkills] = useState<SkillData[]>([]);
+	const [selectionPool, setSelectionPool] = useState<SkillData[]>([]);
 
 	useLayoutEffect(() => {
 		fetch(getAlbinaApiAddress("/skills"), {
@@ -39,24 +44,29 @@ export function SkillSelectionCore({
 		});
 	}, []);
 
-	if (allSkills.length == 0) return null;
-	const unacquiredSkills: SkillData[] = allSkills
-		.filter(
-			(skill) =>
-				!characterSkills.some(
-					(characterSkill) => characterSkill.skillId == skill.id
+	const unacquiredSkills: SkillData[] = useMemo(
+		() =>
+			allSkills
+				.filter(
+					(skill) =>
+						!characterSkills.some(
+							(characterSkill) => characterSkill.skillId == skill.id
+						)
 				)
-		)
-		.sort((skill1, skill2) => {
-			const typeOrder = SkillType[skill1.type] - SkillType[skill2.type];
-			if (typeOrder !== 0) return typeOrder;
-			return skill1.name.localeCompare(skill2.name);
-		});
+				.sort((skill1, skill2) => {
+					const typeOrder = SkillType[skill1.type] - SkillType[skill2.type];
+					if (typeOrder !== 0) return typeOrder;
+					return skill1.name.localeCompare(skill2.name);
+				}),
+		[allSkills, characterSkills]
+	);
+	if (allSkills.length == 0) return null;
 	const unacquiredSkillsByType = Array.from({ length: 5 }, (_, index) =>
-		unacquiredSkills.filter((skill) => SkillType[skill.type] === index)
+		selectionPool.filter((skill) => SkillType[skill.type] === index)
 	);
 
 	async function handleAddSkill(skill: SkillData) {
+		if (isInBulkMode == false) setOpenState(false);
 		const body = {
 			skillId: skill.id,
 		};
@@ -97,10 +107,18 @@ export function SkillSelectionCore({
 
 	return (
 		<>
+			<ArraySearchFilter
+				array={unacquiredSkills}
+				setFilteredState={setSelectionPool}
+				label="Filtro"
+				placeholder="Nome..."
+				stringKeysToCheck={["name", "slug"]}
+			/>
 			{unacquiredSkillsByType.map((unacquiredSkillFromThisType, index) => {
 				if (unacquiredSkillFromThisType.length === 0) return null;
 				return (
 					<UIBasics.ToggleHeader
+						defaultOpenState={true}
 						key={index}
 						memoryId={`${characterId}-AddSkill-Level-${index}`}
 						contentMargin="none"
@@ -114,15 +132,12 @@ export function SkillSelectionCore({
 							backgroundColor="gray"
 							children={unacquiredSkillFromThisType.map((skill) => {
 								return (
-									<Dialog.Close
+									<StyledLinklikeButton
 										key={skill.id}
-										asChild>
-										<StyledLinklikeButton
-											title={skill.name}
-											icon={skill.iconUrl}
-											onClick={() => handleAddSkill(skill)}
-										/>
-									</Dialog.Close>
+										title={skill.name}
+										icon={skill.iconUrl}
+										onClick={() => handleAddSkill(skill)}
+									/>
 								);
 							})}
 						/>

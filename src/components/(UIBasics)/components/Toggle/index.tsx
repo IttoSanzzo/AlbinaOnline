@@ -1,5 +1,10 @@
 "use client";
 
+import { useDebouncedCallback } from "@/utils/General";
+import { routeStorage } from "@/utils/Storage";
+import { Triangle } from "@phosphor-icons/react/dist/ssr/Triangle";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import { usePathname } from "next/navigation";
 import {
 	CSSProperties,
 	ReactNode,
@@ -9,15 +14,10 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { usePathname } from "next/navigation";
-import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-import { routeStorage } from "@/utils/Storage";
+import { UIBasics } from "../..";
 import { StandartColorProps, StandartTextColor } from "../../core";
 import { StandartColorKeysToProperties } from "../../utils";
-import { Triangle } from "@phosphor-icons/react/dist/ssr/Triangle";
-import { UIBasics } from "../..";
-import { useDebouncedCallback } from "@/utils/General";
+import styles from "./styles.module.css";
 
 const ToggleContainer = newStyledElement.div(styles.toggleContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);
@@ -38,10 +38,25 @@ function getCurrentOpenState(pathname: string, memoryName?: string) {
 	}
 	return false;
 }
+function initialGetCurrentOpenState(
+	pathname: string,
+	memoryName?: string
+): boolean | null {
+	if (memoryName) {
+		const memoryState: string | null = routeStorage.getItem(
+			pathname,
+			memoryName
+		);
+		if (!memoryState) return null;
+		return memoryState === "true";
+	}
+	return false;
+}
 function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
 	if (name) {
 		if (value) routeStorage.setItem(pathname, name, true);
-		else routeStorage.removeItem(pathname, name);
+		else routeStorage.setItem(pathname, name, false);
+		// else routeStorage.removeItem(pathname, name);
 	}
 }
 
@@ -52,6 +67,7 @@ interface ToggleProps extends StandartColorProps {
 	contentMargin?: "none" | "middle" | "full";
 	memoryId?: string;
 	routeSensitiveMemory?: boolean;
+	defaultOpenState?: boolean;
 }
 export function Toggle({
 	children,
@@ -62,8 +78,9 @@ export function Toggle({
 	titleColor,
 	textColor,
 	backgroundColor,
+	defaultOpenState = false,
 }: ToggleProps) {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
 
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
@@ -81,7 +98,10 @@ export function Toggle({
 	const debouncedUpdateHeight = useDebouncedCallback(updateHeight, 10);
 
 	useLayoutEffect(() => {
-		setIsOpen(getCurrentOpenState(pathname, memoryName));
+		const initialState = initialGetCurrentOpenState(pathname, memoryName);
+		if (initialState != null) {
+			setIsOpen(getCurrentOpenState(pathname, memoryName));
+		}
 		if (contentRef.current)
 			setContentMaxHeight(contentRef.current.scrollHeight);
 	}, []);

@@ -5,28 +5,33 @@ import {
 	MasterySubType,
 	MasteryType,
 } from "@/libs/stp@types";
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useMemo, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
-import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { MasteriesContext } from "../../../../../../CharacterEditableSheetContextProviders";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
+import { ArraySearchFilter } from "@/components/(UTILS)";
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
 	characterId: Guid;
 	characterMasteries: CharacterMasteryExpanded[];
+	setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
+	isInBulkMode: boolean;
 }
 export function MasterySelectionCore({
 	type,
 	characterId,
 	characterMasteries,
+	isInBulkMode,
+	setOpenState,
 }: MasterySelectionCoreProps) {
 	const [allMasteries, setAllMasteries] = useState<MasteryData[]>([]);
+	const [selectionPool, setSelectionPool] = useState<MasteryData[]>([]);
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	useLayoutEffect(() => {
@@ -48,15 +53,20 @@ export function MasterySelectionCore({
 		});
 	}, []);
 
-	if (allMasteries.length == 0) return null;
-	const unacquiredMasteries: MasteryData[] = allMasteries.filter(
-		(mastery) =>
-			!characterMasteries.some(
-				(characterMastery) => characterMastery.masteryId == mastery.id
-			)
+	const unacquiredMasteries: MasteryData[] = useMemo(
+		() =>
+			allMasteries.filter(
+				(mastery) =>
+					!characterMasteries.some(
+						(characterMastery) => characterMastery.masteryId == mastery.id
+					)
+			),
+		[allMasteries, characterMasteries]
 	);
+	if (allMasteries.length == 0) return null;
 
 	async function handleAddMastery(mastery: MasteryData) {
+		if (isInBulkMode === false) setOpenState(false);
 		const body = {
 			masteryId: mastery.id,
 		};
@@ -91,23 +101,29 @@ export function MasterySelectionCore({
 	}
 
 	return (
-		<UIBasics.List.Grid
-			columnWidth={300}
-			direction="column"
-			backgroundColor="gray"
-			children={unacquiredMasteries.map((mastery) => {
-				return (
-					<Dialog.Close
-						key={mastery.id}
-						asChild>
+		<>
+			<ArraySearchFilter
+				array={unacquiredMasteries}
+				setFilteredState={setSelectionPool}
+				label="Filtro"
+				placeholder="Nome | Tipo | Sub Tipo"
+				stringKeysToCheck={["name", "slug", "type", "subType"]}
+			/>
+			<UIBasics.List.Grid
+				columnWidth={300}
+				direction="column"
+				backgroundColor="gray"
+				children={selectionPool.map((mastery) => {
+					return (
 						<StyledLinklikeButton
+							key={mastery.id}
 							title={mastery.name}
 							icon={mastery.iconUrl}
 							onClick={() => handleAddMastery(mastery)}
 						/>
-					</Dialog.Close>
-				);
-			})}
-		/>
+					);
+				})}
+			/>
+		</>
 	);
 }

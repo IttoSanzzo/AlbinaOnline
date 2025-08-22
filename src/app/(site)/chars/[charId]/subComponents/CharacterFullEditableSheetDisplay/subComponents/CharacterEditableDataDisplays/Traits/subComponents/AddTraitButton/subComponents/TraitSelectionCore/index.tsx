@@ -1,3 +1,6 @@
+import { StyledLinklikeButton } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
+import { ArraySearchFilter } from "@/components/(UTILS)";
 import {
 	CharacterTraitExpanded,
 	Guid,
@@ -5,18 +8,13 @@ import {
 	traitNames,
 	TraitType,
 } from "@/libs/stp@types";
-import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
-import { StyledLinklikeButton } from "@/components/(Design)";
-import { Dialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { insertSorted } from "@/utils/Data";
-import { UIBasics } from "@/components/(UIBasics)";
+import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
-
-// const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 
 interface TraitSelectionCoreProps {
 	characterId: Guid;
@@ -24,13 +22,18 @@ interface TraitSelectionCoreProps {
 	setCharacterTraits: React.Dispatch<
 		React.SetStateAction<CharacterTraitExpanded[]>
 	>;
+	setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
+	isInBulkMode: boolean;
 }
 export function TraitSelectionCore({
 	characterId,
 	characterTraits,
 	setCharacterTraits,
+	isInBulkMode,
+	setOpenState,
 }: TraitSelectionCoreProps) {
 	const [allTraits, setAllTraits] = useState<TraitData[]>([]);
+	const [selectionPool, setSelectionPool] = useState<TraitData[]>([]);
 
 	useLayoutEffect(() => {
 		fetch(getAlbinaApiAddress("/traits"), {
@@ -41,24 +44,30 @@ export function TraitSelectionCore({
 		});
 	}, []);
 
-	if (allTraits.length == 0) return null;
-	const unacquiredTraits: TraitData[] = allTraits
-		.filter(
-			(trait) =>
-				!characterTraits.some(
-					(characterTrait) => characterTrait.traitId == trait.id
+	const unacquiredTraits: TraitData[] = useMemo(
+		() =>
+			allTraits
+				.filter(
+					(trait) =>
+						!characterTraits.some(
+							(characterTrait) => characterTrait.traitId == trait.id
+						)
 				)
-		)
-		.sort((trait1, trait2) => {
-			const typeOrder = TraitType[trait1.type] - TraitType[trait2.type];
-			if (typeOrder !== 0) return typeOrder;
-			return trait1.name.localeCompare(trait2.name);
-		});
+				.sort((trait1, trait2) => {
+					const typeOrder = TraitType[trait1.type] - TraitType[trait2.type];
+					if (typeOrder !== 0) return typeOrder;
+					return trait1.name.localeCompare(trait2.name);
+				}),
+		[allTraits, characterTraits]
+	);
+	if (allTraits.length == 0) return null;
+
 	const unacquiredTraitsByType = Array.from({ length: 5 }, (_, index) =>
-		unacquiredTraits.filter((trait) => TraitType[trait.type] === index)
+		selectionPool.filter((trait) => TraitType[trait.type] === index)
 	);
 
 	async function handleAddTrait(trait: TraitData) {
+		if (isInBulkMode === false) setOpenState(false);
 		const body = {
 			traitId: trait.id,
 		};
@@ -99,10 +108,18 @@ export function TraitSelectionCore({
 
 	return (
 		<>
+			<ArraySearchFilter
+				array={unacquiredTraits}
+				setFilteredState={setSelectionPool}
+				label="Filtro"
+				placeholder="Nome..."
+				stringKeysToCheck={["name", "slug"]}
+			/>
 			{unacquiredTraitsByType.map((unacquiredTraitFromThisType, index) => {
 				if (unacquiredTraitFromThisType.length === 0) return null;
 				return (
 					<UIBasics.ToggleHeader
+						defaultOpenState={true}
 						key={index}
 						memoryId={`${characterId}-AddTrait-Level-${index}`}
 						contentMargin="none"
@@ -116,15 +133,12 @@ export function TraitSelectionCore({
 							backgroundColor="gray"
 							children={unacquiredTraitFromThisType.map((trait) => {
 								return (
-									<Dialog.Close
+									<StyledLinklikeButton
 										key={trait.id}
-										asChild>
-										<StyledLinklikeButton
-											title={trait.name}
-											icon={trait.iconUrl}
-											onClick={() => handleAddTrait(trait)}
-										/>
-									</Dialog.Close>
+										title={trait.name}
+										icon={trait.iconUrl}
+										onClick={() => handleAddTrait(trait)}
+									/>
 								);
 							})}
 						/>

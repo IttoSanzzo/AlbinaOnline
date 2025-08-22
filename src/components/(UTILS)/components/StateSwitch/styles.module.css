@@ -1,0 +1,61 @@
+.switchButton {
+	display: flex;
+	background-color: var(--cl-gray-700);
+	border: 1px solid var(--cl-gray-600);
+	border-radius: var(--rd-md);
+	padding: 3px 5px;
+	color: var(--cl-gray-200);
+	width: fit-content;
+
+	&:hover {
+		cursor: pointer !important;
+		& > div > label {
+			cursor: pointer !important;
+		}
+	}
+	&:disabled {
+		cursor: not-allowed !important;
+		opacity: 0.5 !important;
+
+		& > div > label {
+			cursor: not-allowed !important;
+		}
+	}
+}
+
+.switchInternalContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+
+	& > div {
+		position: relative;
+		border: 2px solid var(--cl-gray-300);
+		border-radius: var(--rd-3xl);
+		padding: 5px;
+		width: 40px;
+		height: 23px;
+		background-color: var(--cl-gray-800);
+
+		& > span {
+			position: absolute;
+			top: 2px;
+			width: 15px;
+			height: 15px;
+			border-radius: var(--rd-full);
+			background-color: var(--cl-white);
+
+			transition: 0.25s ease-in-out background-color,
+				0.25s ease-in-out transform;
+		}
+
+		& > .stateTrue {
+			background-color: var(--cl-white);
+		}
+		& > .stateFalse {
+			background-color: var(--cl-gray-200);
+			transform: translateX(-16px);
+		}
+	}
+}
