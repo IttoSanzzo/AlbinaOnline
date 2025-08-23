@@ -18,6 +18,7 @@
 		transition: 0.15s ease-in-out background-color;
 		&:hover {
 			background-color: var(--cl-gray-600);
+			cursor: pointer;
 		}
 	}
 	& button {

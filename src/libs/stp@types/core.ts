@@ -43,3 +43,33 @@ export type GenericExtraProperty = {
 	key: string;
 	value: string;
 };
+
+export type SearchEntryEntity =
+	| "Character"
+	| "Item"
+	| "Mastery"
+	| "Skill"
+	| "Spell"
+	| "Trait"
+	| "Race"
+	| "User";
+export type SearchEntry = {
+	entity: SearchEntryEntity;
+	id: Guid;
+	slug: string;
+	title: string;
+	type: string;
+	subType: string;
+	iconUrl: string;
+	bannerUrl: string;
+};
+export type AllSearchEntriesByType = {
+	character: SearchEntry[];
+	item: SearchEntry[];
+	mastery: SearchEntry[];
+	skill: SearchEntry[];
+	spell: SearchEntry[];
+	trait: SearchEntry[];
+	race: SearchEntry[];
+	user: SearchEntry[];
+};

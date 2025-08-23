@@ -6,6 +6,9 @@ export type {
 	DefensiveProfile,
 	GenericExtraProperty,
 	LintIgnoredAny,
+	SearchEntry,
+	AllSearchEntriesByType,
+	SearchEntryEntity,
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
 export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";
