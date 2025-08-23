@@ -77,13 +77,13 @@ const typeText = (title: string) => (
 );
 
 const typeTitles = {
-	Character: (hidden: boolean) => (hidden ? null : typeText("Character")),
+	Character: (hidden: boolean) => (hidden ? null : typeText("Personagens")),
 	Item: (hidden: boolean) => (hidden ? null : typeText("Items")),
 	Mastery: (hidden: boolean) => (hidden ? null : typeText("Maestrias")),
-	Skill: (hidden: boolean) => (hidden ? null : typeText("Raças")),
-	Spell: (hidden: boolean) => (hidden ? null : typeText("Skills")),
-	Trait: (hidden: boolean) => (hidden ? null : typeText("Spells")),
-	Race: (hidden: boolean) => (hidden ? null : typeText("Traços")),
+	Skill: (hidden: boolean) => (hidden ? null : typeText("Skills")),
+	Spell: (hidden: boolean) => (hidden ? null : typeText("Spells")),
+	Trait: (hidden: boolean) => (hidden ? null : typeText("Traços")),
+	Race: (hidden: boolean) => (hidden ? null : typeText("Raças")),
 	User: (hidden: boolean) => (hidden ? null : typeText("Usuários")),
 };
 
@@ -155,6 +155,19 @@ export function PageSearchButton() {
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
+	}, []);
+	useEffect(() => {
+		const currentSavedHistoryInMemory =
+			localStorage.getItem("SearchLinkHistory");
+		if (currentSavedHistoryInMemory === null) return;
+		try {
+			const savedParsed: SearchEntry[] = JSON.parse(
+				currentSavedHistoryInMemory
+			);
+			setUsedLinkHistory(savedParsed);
+		} catch {
+			return;
+		}
 	}, []);
 
 	const form = useForm<FormData>({
