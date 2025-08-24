@@ -1,10 +1,26 @@
 import { UIBasics } from "@/components/(UIBasics)";
 import { ItemProperties } from "@/libs/stp@types";
 
+const ItemSlotTypeName = {
+	Unknown: "Unknown",
+	Frame: "Frame",
+	OneHand: "Uma-Mão",
+	TwoHanded: "Duas-Mãos",
+	Head: "Cabeça",
+	Feet: "Pés",
+	Torso: "Torso",
+	Arms: "Braços",
+	Face: "Rosto",
+	Waist: "Cintura",
+	Earring: "Orelhas",
+	Necklace: "Pescoço",
+	Bracelet: "Pulsos",
+	Ring: "Anel",
+};
+
 interface ItemPropertiesDisplayProps {
 	itemProperties?: ItemProperties;
 }
-
 export default function ItemPropertiesDisplay({
 	itemProperties,
 }: ItemPropertiesDisplayProps) {
@@ -34,7 +50,9 @@ export default function ItemPropertiesDisplay({
 								<UIBasics.Text
 									textColor="gray"
 									textAlign="flex-center"
-									children={itemProperties.compatibleSlots.join(" ")}
+									children={itemProperties.compatibleSlots
+										.map((slot) => ItemSlotTypeName[slot])
+										.join(" ")}
 								/>,
 							],
 							[
@@ -46,6 +64,17 @@ export default function ItemPropertiesDisplay({
 									textColor="gray"
 									textAlign="flex-center"
 									children={itemProperties.attribute}
+								/>,
+							],
+							[
+								<UIBasics.Text
+									textColor="purple"
+									children="⚖️Peso"
+								/>,
+								<UIBasics.Text
+									textColor="gray"
+									textAlign="flex-center"
+									children={`${itemProperties.weight / 1000} Kgs`}
 								/>,
 							],
 						],

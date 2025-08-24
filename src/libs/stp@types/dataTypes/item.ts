@@ -15,8 +15,10 @@ export enum ItemType {
 	Wearable,
 	Accessory,
 	Consumable,
-	Special,
+	Tool,
 	Miscellaneous,
+	Special,
+	Random,
 }
 export enum ItemSubType {
 	Unknown,
@@ -42,6 +44,21 @@ export enum ItemSubType {
 	MediumFrame,
 	HeavyFrame,
 	Relic,
+	Potion,
+	Container,
+	Material,
+	ThrownWeapon,
+	Charm,
+	Catalyst,
+	Codex,
+	Ring,
+	Amulet,
+	Scroll,
+	Food,
+	Tool,
+	Key,
+	Toy,
+	Random,
 }
 
 export type ItemStats = {
@@ -86,6 +103,8 @@ export const ItemTypeName: Record<keyof typeof ItemType, string> = {
 	Consumable: "Consumível",
 	Special: "Especial",
 	Miscellaneous: "Miscelâneo",
+	Random: "Aleatório",
+	Tool: "Ferramenta",
 	Unknown: "?",
 };
 export const ItemTypePluralName: Record<keyof typeof ItemType, string> = {
@@ -98,5 +117,7 @@ export const ItemTypePluralName: Record<keyof typeof ItemType, string> = {
 	Consumable: "Consumíveis",
 	Special: "Especiais",
 	Miscellaneous: "Miscelâneos",
+	Random: "Aleatórios",
+	Tool: "Ferramentas",
 	Unknown: "?",
 };

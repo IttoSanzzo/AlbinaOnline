@@ -15,7 +15,9 @@ const anchorNavigationData = [
 	{ name: "Acessórios", id: "acessorios" },
 	{ name: "Consumíveis", id: "consumiveis" },
 	{ name: "Miscelaneos", id: "miscelaneos" },
+	{ name: "Ferramentas", id: "ferramentas" },
 	{ name: "Especiais", id: "especiais" },
+	{ name: "Aleatórios", id: "aleatorios" },
 ];
 
 export default async function ItemsPageContent() {
@@ -78,9 +80,19 @@ export default async function ItemsPageContent() {
 					type="Miscellaneous"
 				/>
 				<ItemTypeDisplay
+					title="Ferramentas"
+					allItems={allItems}
+					type="Tool"
+				/>
+				<ItemTypeDisplay
 					title="Especiais"
 					allItems={allItems}
 					type="Special"
+				/>
+				<ItemTypeDisplay
+					title="Aleatórios"
+					allItems={allItems}
+					type="Random"
 				/>
 			</UIBasics.Box>
 		</GenericPageContainer>

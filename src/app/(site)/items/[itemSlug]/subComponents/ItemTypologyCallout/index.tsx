@@ -1,6 +1,7 @@
 import { UIBasics } from "@/components/(UIBasics)";
+import { ItemSubType, ItemType } from "@/libs/stp@types";
 
-function getTabulatedType(type: string) {
+function getTabulatedType(type: keyof typeof ItemType) {
 	switch (type) {
 		case "Armament":
 			return "🌟[@/[Armamento]items#armamentos]";
@@ -20,11 +21,15 @@ function getTabulatedType(type: string) {
 			return "🌟[@/[Especial]items#especiais]";
 		case "Miscellaneous":
 			return "🌟[@/[Miscelâneo]items#miscelâneos]";
+		case "Tool":
+			return "🌟[@/[Ferramenta]items#ferramentas]";
+		case "Random":
+			return "🌟[@/[Aleatório]items#aleatorios]";
 		default:
 			return "Unknown?";
 	}
 }
-function getTabulatedCategory(subType: string) {
+function getTabulatedCategory(subType: keyof typeof ItemSubType) {
 	switch (subType) {
 		case "Grimoire":
 			return "⊱⸙Grimório⸙";
@@ -68,14 +73,44 @@ function getTabulatedCategory(subType: string) {
 			return "⊱⸙Frame Médio⸙";
 		case "HeavyFrame":
 			return "⊱⸙Frame Pesado⸙";
+		case "Amulet":
+			return "⊱⸙Amuleto⸙";
+		case "Catalyst":
+			return "⊱⸙Catalisador⸙";
+		case "Charm":
+			return "⊱⸙Talismã⸙";
+		case "Codex":
+			return "⊱⸙Codex⸙";
+		case "Container":
+			return "⊱⸙Container⸙";
+		case "Food":
+			return "⊱⸙Comida⸙";
+		case "Key":
+			return "⊱⸙Chave⸙";
+		case "Material":
+			return "⊱⸙Material⸙";
+		case "Potion":
+			return "⊱⸙Poção⸙";
+		case "Relic":
+			return "⊱⸙Relíquia⸙";
+		case "Ring":
+			return "⊱⸙Anel⸙";
+		case "Scroll":
+			return "⊱⸙Scroll⸙";
+		case "ThrownWeapon":
+			return "⊱⸙Arma de Arremesso⸙";
+		case "Tool":
+			return "⊱⸙Ferramenta⸙";
+		case "Unknown":
+			return "⊱⸙Unknown⸙";
 		default:
 			return "Unknown?";
 	}
 }
 
 interface ItemTypologyCalloutProps {
-	type: string;
-	subType: string;
+	type: keyof typeof ItemType;
+	subType: keyof typeof ItemSubType;
 }
 export default function ItemTypologyCallout({
 	type,
