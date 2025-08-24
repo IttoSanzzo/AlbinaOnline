@@ -88,6 +88,7 @@ export function NumberInputInline<TFormData extends FieldValues>({
 			<NumberInputDecrementButton
 				disabled={min != undefined && field.value <= min}
 				type="button"
+				tabIndex={-1}
 				onClick={handleDecrement}
 				children={StpIcon({ name: "LessThan" })}
 			/>
@@ -111,6 +112,7 @@ export function NumberInputInline<TFormData extends FieldValues>({
 			<NumberInputIncrementButton
 				disabled={max != undefined && field.value >= max}
 				type="button"
+				tabIndex={-1}
 				onClick={handleIncrement}
 				children={StpIcon({ name: "GreaterThan" })}
 			/>
