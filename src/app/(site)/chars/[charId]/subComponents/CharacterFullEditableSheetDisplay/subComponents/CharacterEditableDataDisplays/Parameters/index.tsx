@@ -28,12 +28,16 @@ type FormData = z.infer<typeof schema>;
 
 function getParameterGradeSymbol(grade: number) {
 	switch (grade) {
+		case 0:
+			return "0";
 		case 1:
 			return "🔻";
 		case 2:
-			return "🔸";
+			return "🔹";
 		case 3:
 			return "🔺";
+		case 4:
+			return "⚜️";
 	}
 	return "?";
 }
@@ -140,12 +144,12 @@ export function CharacterParametersDisplay() {
 						tableParameterEntry(
 							"physicalMight",
 							race.parameters.physicalPower,
-							"P. Físico"
+							"P. Física"
 						),
 						tableParameterEntry(
 							"arcanePower",
 							race.parameters.magicalPower,
-							"P. Mágico"
+							"P. Mágica"
 						),
 					],
 				}}

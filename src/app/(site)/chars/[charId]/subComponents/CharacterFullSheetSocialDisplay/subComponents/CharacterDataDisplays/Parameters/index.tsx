@@ -4,12 +4,16 @@ import { CharacterParameters, RaceData } from "@/libs/stp@types";
 
 function getParameterGradeSymbol(grade: number) {
 	switch (grade) {
+		case 0:
+			return "0";
 		case 1:
 			return "🔻";
 		case 2:
-			return "🔸";
+			return "🔹";
 		case 3:
 			return "🔺";
+		case 4:
+			return "⚜️";
 	}
 	return "?";
 }
@@ -85,12 +89,12 @@ export function CharacterParametersDisplay({
 							race.parameters.manapool
 						),
 						tableParameterEntry(
-							"P. Físico",
+							"P. Física",
 							parameters.physicalMight,
 							race.parameters.physicalPower
 						),
 						tableParameterEntry(
-							"P. Mágico",
+							"P. Mágica",
 							parameters.arcanePower,
 							race.parameters.magicalPower
 						),
