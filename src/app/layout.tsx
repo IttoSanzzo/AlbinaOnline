@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { App } from "./_app";
-import "@/styles/global.css";
+import "@/styles";
 
 export const metadata: Metadata = {
 	title: "Albina RPG",

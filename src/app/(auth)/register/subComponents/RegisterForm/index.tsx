@@ -21,6 +21,9 @@ const schema = z.object({
 		})
 		.refine((val) => /^[a-zA-Z0-9_]+$/.test(val), {
 			message: "Usuário deve conter apenas letras, numeros, e underlines.",
+		})
+		.refine((val) => /^[a-z0-9_]+$/.test(val), {
+			message: "Todas as letras do usuário devem ser minúsculas.",
 		}),
 	nickname: z
 		.string()
@@ -104,6 +107,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
+		mode: "onChange",
 	});
 
 	async function onSubmit(data: FormData) {
