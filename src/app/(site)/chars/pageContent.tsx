@@ -53,6 +53,21 @@ export default function CharsPageContent() {
 			banner={getAlbinaApiAddress("/banner/core-page/chars")}>
 			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
 
+			{allCharacters.length === 0 && (
+				<>
+					<UIBasics.Header
+						textAlign="center"
+						textColor="gray"
+						children="Você não possui personagens"
+					/>
+					<UIBasics.Header
+						textAlign="center"
+						textColor="gray"
+						headerType="h3"
+						children="...e nem acesso a algum personagem de outro jogador."
+					/>
+				</>
+			)}
 			{allCharacters.length !== 0 && (
 				<UIBasics.Box
 					withoutPadding
