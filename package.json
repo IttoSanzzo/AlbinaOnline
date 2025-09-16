@@ -25,6 +25,9 @@
 		"@dnd-kit/sortable": "^10.0.0",
 		"@dnd-kit/utilities": "^3.2.2",
 		"@hookform/resolvers": "^5.1.1",
+		"@notion-render/bookmark-plugin": "^0.0.2",
+		"@notion-render/hljs-plugin": "^0.0.2",
+		"@notionhq/client": "^5.1.0",
 		"@phosphor-icons/react": "^2.1.7",
 		"@radix-ui/react-alert-dialog": "^1.1.14",
 		"@radix-ui/react-dialog": "^1.1.14",
@@ -45,10 +48,14 @@
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.33.0",
+		"@tailwindcss/typography": "^0.5.16",
 		"@types/node": "20.19.14",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
+		"autoprefixer": "^10.4.21",
 		"eslint": "^9.33.0",
+		"postcss": "^8.5.6",
+		"tailwindcss": "^3.4.17",
 		"typescript": "5.9.2",
 		"typescript-eslint": "^8.40.0"
 	}
