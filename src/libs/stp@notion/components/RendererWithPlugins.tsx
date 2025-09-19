@@ -5,9 +5,13 @@ import "prismjs/themes/prism-tomorrow.css";
 import "katex/dist/katex.min.css";
 import { NotionComponents, NotionRenderer } from "react-notion-x";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Image from "next/image";
-import { DefaultRendererProps } from "./DefaultRenderer";
+import { DefaultRendererProps, NoBlankLink } from "./DefaultRenderer";
+import styles from "./styles.module.css";
+import clsx from "clsx";
+import { defaultMapNotionPageUrl } from "../functions/MapPageUrl";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { ExtendedRecordMap } from "notion-types";
 
 const Code = dynamic(() =>
 	import("react-notion-x/build/third-party/code").then((m) => m.Code)
@@ -47,13 +51,16 @@ interface RendererWithPluginsProps extends DefaultRendererProps {
 export function RendererWithPlugins({
 	recordMap,
 	darkMode = true,
-	fullPage = true,
+	fullPage = false,
 	className,
+	targetDatabase,
+	mapLinkImageUrlsToAlbinaApiRoute,
 	plugins,
 }: RendererWithPluginsProps) {
 	const components: Partial<NotionComponents> = {
 		nextImage: Image,
-		nextLink: Link,
+		nextLink: NoBlankLink,
+		Link: NoBlankLink,
 		Code: plugins?.Code ? Code : undefined,
 		Collection: plugins?.Collection ? Collection : undefined,
 		Equation: plugins?.Equation ? Equation : undefined,
@@ -62,10 +69,21 @@ export function RendererWithPlugins({
 	};
 	return (
 		<NotionRenderer
-			className={className}
+			className={clsx(className, styles.genericNotionXRendererStyle)}
 			recordMap={recordMap}
 			darkMode={darkMode}
 			fullPage={fullPage}
+			mapPageUrl={(
+				pageId: string,
+				recordMap?: ExtendedRecordMap | undefined
+			) => {
+				return defaultMapNotionPageUrl(pageId, recordMap, targetDatabase);
+			}}
+			mapImageUrl={
+				mapLinkImageUrlsToAlbinaApiRoute
+					? () => getAlbinaApiAddress(mapLinkImageUrlsToAlbinaApiRoute)
+					: undefined
+			}
 			components={components}
 		/>
 	);

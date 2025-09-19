@@ -21,11 +21,7 @@ export function StyledFalseLink({
 	textMode = false,
 	...rest
 }: StyledFalseLinkProps) {
-	const finalIcon = icon
-		? icon[0] === "@"
-			? icon
-			: `${icon}?size=21`
-		: AlbinaLogo;
+	const finalIcon = icon ? (icon[0] === "@" ? icon : icon) : AlbinaLogo;
 
 	return (
 		<StyledFalseLinkContainer

@@ -32,8 +32,6 @@ export function PageHeader({
 	subTitle,
 	metadataTag,
 }: PageHeaderProps) {
-	const finalIcon = `${icon}?size=64`;
-
 	return (
 		<PageHeaderContainer>
 			{isEditable && iconChangeRoute && iconChangeRoute !== "" ? (
@@ -43,7 +41,7 @@ export function PageHeader({
 				/>
 			) : (
 				<Image
-					src={finalIcon}
+					src={icon}
 					alt="Page's favicon"
 					width={512}
 					height={512}

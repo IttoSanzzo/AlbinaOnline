@@ -20,16 +20,18 @@ export interface IndexedPage {
 interface IndexedPagesGroupProps {
 	groupName: string;
 	indexedPages: IndexedPage[];
+	defaultOpenState?: boolean;
 }
-
 export default function IndexedPagesGroup({
 	groupName,
 	indexedPages,
+	defaultOpenState = false,
 }: IndexedPagesGroupProps) {
 	return (
 		<IndexedPagesGroupContainer>
 			<UIBasics.Toggle
 				memoryId={`IndexedPages/${groupName}`}
+				defaultOpenState={defaultOpenState}
 				routeSensitiveMemory={false}
 				contentMargin="none"
 				textColor="orange"

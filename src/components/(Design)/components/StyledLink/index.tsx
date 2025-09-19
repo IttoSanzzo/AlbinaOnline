@@ -27,7 +27,7 @@ export function StyledLink({
 	const finalIcon = icon
 		? icon[0] === "@"
 			? icon
-			: `${icon}`
+			: icon
 		: tryAutomaticIcon
 		? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
 		: AlbinaLogo;

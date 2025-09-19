@@ -4,6 +4,8 @@ import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
 import { DataInitComplete } from "./subComponents/DataInitComplete";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { StandartTextColor } from "@/components/(UIBasics)";
 
 const SideBarActivationArea = newStyledElement.div(
 	styles.sideBarActivationArea
@@ -38,23 +40,19 @@ export async function SideBar() {
 				<IndexedPagesGroups />
 
 				<FooterContainer>
-					<div>
-						<Image
-							src={
-								"https://www.google.com/s2/favicons?domain=https://www.notion.com/&sz=512"
-							}
-							alt=""
-							width={18}
-							height={18}
-						/>
-						<Link
-							target="blank"
-							href={
-								"https://albinarpg.notion.site/Log-de-Atualiza-es-0c26870f43e3499ab666c2fd673c1fa5"
-							}>
-							Update Logs
-						</Link>
-					</div>
+					<Link
+						href={"/changelogs"}
+						style={{ color: StandartTextColor.gray }}>
+						<div>
+							<Image
+								src={getAlbinaApiAddress("/favicon/misc/changelog")}
+								alt=""
+								width={18}
+								height={18}
+							/>
+							Changelogs
+						</div>
+					</Link>
 					<footer>
 						Created by{" "}
 						<a

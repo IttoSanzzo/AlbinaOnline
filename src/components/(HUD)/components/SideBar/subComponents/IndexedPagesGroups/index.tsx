@@ -32,6 +32,7 @@ type FavoriteWithoutSlug = {
 const CoreHubPageGroup = (
 	<IndexedPagesGroup
 		groupName="Core Hub"
+		defaultOpenState={true}
 		indexedPages={[
 			{ name: "Chars", link: "/chars" },
 			{ name: "Items", link: "/items" },
@@ -40,6 +41,7 @@ const CoreHubPageGroup = (
 			{ name: "Spells", link: "/spells" },
 			{ name: "Traços", link: "/tracos" },
 			{ name: "Raças", link: "/racas" },
+			{ name: "Codex", link: "/codex" },
 		]}
 	/>
 );

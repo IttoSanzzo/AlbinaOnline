@@ -18,9 +18,12 @@ export const Notion = {
 };
 
 const notionDsChangelogId = process.env.NOTION_DS_CHANGELOG_ID!;
+const notionDsCodexId = process.env.NOTION_DS_CODEX_ID!;
 export const NotionStaticIds = {
 	changelogDatabase: notionDsChangelogId,
+	changelogDatabasePage: notionDsChangelogId,
+	codexDatabase: notionDsCodexId,
 };
 
 export * from "./components";
-export * from "./functions/NotionhqClient";
+export * from "./functions";
