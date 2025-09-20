@@ -19,10 +19,13 @@ export const Notion = {
 
 const notionDsChangelogId = process.env.NOTION_DS_CHANGELOG_ID!;
 const notionDsCodexId = process.env.NOTION_DS_CODEX_ID!;
+const notionCodexCorePageId = process.env.NOTION_CODEX_CORE_PAGE_ID!;
+
 export const NotionStaticIds = {
 	changelogDatabase: notionDsChangelogId,
 	changelogDatabasePage: notionDsChangelogId,
 	codexDatabase: notionDsCodexId,
+	codexCorePage: notionCodexCorePageId,
 };
 
 export * from "./components";

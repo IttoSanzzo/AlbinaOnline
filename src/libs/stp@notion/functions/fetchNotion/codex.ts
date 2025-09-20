@@ -14,6 +14,16 @@ export const fetchCollection = unstable_cache(
 	["codex-collection"],
 	{ revalidate: revalidationTime }
 );
+export const fetchCorePage = unstable_cache(
+	async () => {
+		const response = await Notion.codexApi.pages.retrieve({
+			page_id: NotionStaticIds.codexCorePage,
+		});
+		return response;
+	},
+	["codex-core-page"],
+	{ revalidate: revalidationTime }
+);
 export const fetchPages = unstable_cache(
 	async () => {
 		const response = await Notion.codexApi.dataSources.query({

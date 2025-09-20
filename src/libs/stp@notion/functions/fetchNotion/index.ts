@@ -12,6 +12,7 @@ export const fetchNotion = {
 		Collection: Codex.fetchCollection,
 		Pages: Codex.fetchPages,
 		PageByPath: Codex.fetchPageByPath,
+		CorePage: Codex.fetchCorePage,
 	},
 	Generic: {
 		Page: Generic.fetchPage,

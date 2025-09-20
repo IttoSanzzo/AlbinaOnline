@@ -1,4 +1,8 @@
-import { GetDataSourceResponse, PageObjectResponse } from "@notionhq/client";
+import {
+	GetDataSourceResponse,
+	GetPageResponse,
+	PageObjectResponse,
+} from "@notionhq/client";
 
 type NotionPageImage = {
 	type: "file" | "external";
@@ -21,11 +25,15 @@ export const getNotionImage = {
 			getImage((data as { icon?: NotionPageImage }).icon),
 		PageObject: (data: PageObjectResponse) =>
 			getImage(data.icon as NotionPageImage),
+		PageResponse: (data: GetPageResponse) =>
+			getImage((data as { icon?: NotionPageImage }).icon),
 	},
 	Cover: {
 		DataSource: (data: GetDataSourceResponse) =>
 			getImage((data as { cover?: NotionPageImage }).cover),
 		PageObject: (data: PageObjectResponse) =>
 			getImage(data.cover as NotionPageImage),
+		PageResponse: (data: GetPageResponse) =>
+			getImage((data as { cover?: NotionPageImage }).cover),
 	},
 };
