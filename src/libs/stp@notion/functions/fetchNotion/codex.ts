@@ -2,7 +2,7 @@ import { Notion, NotionStaticIds } from "../..";
 import { PageObjectResponse } from "@notionhq/client";
 import { unstable_cache } from "next/cache";
 
-const revalidationTime = 60 * 60; // 1h
+const revalidationTime = Number(process.env.NOTION_FETCH_REVALIDATION_SECONDS!);
 
 export const fetchCollection = unstable_cache(
 	async () => {
