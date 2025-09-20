@@ -27,6 +27,7 @@ export default async function PageContent({
 			banner={getNotionImage.Cover.PageResponse(page)}>
 			<NotionXRenderer.Default
 				recordMap={recordMap}
+				targetDatabase="codex"
 				plugins={{
 					Collection: false,
 				}}

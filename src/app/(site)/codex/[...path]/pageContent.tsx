@@ -72,6 +72,7 @@ export default async function PageContent({
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<NotionXRenderer.Default
 				recordMap={recordMap}
+				targetDatabase="codex"
 				plugins={{
 					Collection: false,
 				}}
