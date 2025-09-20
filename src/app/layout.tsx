@@ -2,6 +2,19 @@ import type { Metadata } from "next";
 import { App } from "./_app";
 import "@/styles";
 
+import { Inter, Roboto, Roboto_Mono, Space_Mono } from "next/font/google";
+import clsx from "clsx";
+
+const inter = Inter({
+	subsets: ["latin"],
+});
+const roboto = Roboto({ subsets: ["latin"] });
+const robotoMono = Roboto_Mono({ subsets: ["latin"] });
+const spaceMono = Space_Mono({
+	subsets: ["latin"],
+	weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
 	title: "Albina RPG",
 	icons: {
@@ -15,21 +28,15 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<head>
-				<link
-					rel="preconnect"
-					href="https://fonts.googleapis.com"
-				/>
-				<link
-					rel="preconnect"
-					href="https://fonts.gstatic.com"
-				/>
-				<link
-					href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-					rel="stylesheet"
-				/>
-			</head>
+		<html
+			lang="en"
+			className={clsx(
+				inter.className,
+				roboto.className,
+				robotoMono.className,
+				spaceMono.className
+			)}>
+			<head></head>
 			<body>
 				<App>{children}</App>
 			</body>

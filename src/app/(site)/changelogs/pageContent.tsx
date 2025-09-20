@@ -27,7 +27,7 @@ export default async function PageContent({
 				]}
 			/>
 
-			<NotionXRenderer.WithPlugins
+			<NotionXRenderer.Default
 				recordMap={recordMap}
 				mapLinkImageUrlsToAlbinaApiRoute={"/favicon/misc/changelog"}
 				targetDatabase={"changelog"}

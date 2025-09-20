@@ -36,7 +36,12 @@ export default async function PageContent({
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			<NotionXRenderer.Default recordMap={recordMap} />
+			<NotionXRenderer.Default
+				recordMap={recordMap}
+				plugins={{
+					Collection: false,
+				}}
+			/>
 			<GenericPageFooter version={versionName} />
 		</GenericPageContainer>
 	);

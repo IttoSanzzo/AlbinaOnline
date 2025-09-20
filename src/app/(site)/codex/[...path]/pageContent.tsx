@@ -36,7 +36,6 @@ export default async function PageContent({
 			.slice(0, path.length - 1)
 			.map(async (pathSlug, index): Promise<Breadcrumb> => {
 				const href = `/${path.slice(0, index + 1).join("/")}`;
-				console.log(href);
 				const crumbPage = await fetchNotion.Codex.PageByPath(href);
 				if (!crumbPage)
 					return {
@@ -71,7 +70,12 @@ export default async function PageContent({
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			<NotionXRenderer.Default recordMap={recordMap} />
+			<NotionXRenderer.Default
+				recordMap={recordMap}
+				plugins={{
+					Collection: false,
+				}}
+			/>
 			<GenericPageFooter version={version} />
 		</GenericPageContainer>
 	);
