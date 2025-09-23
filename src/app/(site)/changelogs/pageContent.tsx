@@ -1,6 +1,10 @@
-import { getNotionImage, NotionXRenderer } from "@/libs/stp@notion";
+import {
+	getAnchorPropsFromNotionPage,
+	getNotionImage,
+	NotionXRenderer,
+} from "@/libs/stp@notion";
 import { GenericPageContainer } from "@/components/(Design)";
-import { SetBreadcrumbs } from "@/libs/stp@hooks";
+import { SetAnchorNavigation, SetBreadcrumbs } from "@/libs/stp@hooks";
 import { GetDataSourceResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
 
@@ -12,11 +16,14 @@ export default async function PageContent({
 	collection,
 	recordMap,
 }: PageContentProps) {
+	const anchors = getAnchorPropsFromNotionPage(recordMap);
+
 	return (
 		<GenericPageContainer
 			title={`Changelogs`}
 			icon={getNotionImage.Icon.DataSource(collection)}
 			banner={getNotionImage.Cover.DataSource(collection)}>
+			<SetAnchorNavigation anchors={anchors} />
 			<SetBreadcrumbs
 				breadcrumbs={[
 					{

@@ -43,7 +43,7 @@
 
 .tableOfContents {
 	position: fixed;
-	right: -250px;
+	right: -100%;
 	top: 10vh;
 	background-color: var(--cl-gray-800);
 	border: 2px solid var(--cl-gray-600);
@@ -101,4 +101,27 @@
 	.tableOfContents {
 		top: 15vh;
 	}
+}
+
+.line-indentation-level-0 {
+	width: 25px;
+	margin-left: 0px;
+}
+.line-indentation-level-1 {
+	width: 17px;
+	margin-left: 8px;
+}
+.line-indentation-level-2 {
+	width: 9px;
+	margin-left: 16px;
+}
+
+.item-indentation-level-0 {
+	margin-left: 0px;
+}
+.item-indentation-level-1 {
+	margin-left: 20px;
+}
+.item-indentation-level-2 {
+	margin-left: 40px;
 }

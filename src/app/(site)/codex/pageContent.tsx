@@ -1,7 +1,12 @@
-import { getNotionImage, NotionXRenderer } from "@/libs/stp@notion";
+import {
+	getAnchorPropsFromNotionPage,
+	getNotionImage,
+	NotionXRenderer,
+} from "@/libs/stp@notion";
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { GetPageResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
+import { SetAnchorNavigation } from "@/libs/stp@hooks";
 
 const getPageTitle = (page: GetPageResponse) =>
 	(
@@ -20,11 +25,15 @@ export default async function PageContent({
 }: PageContentProps) {
 	const title = getPageTitle(page);
 
+	const anchors = getAnchorPropsFromNotionPage(recordMap);
+
 	return (
 		<GenericPageContainer
 			title={title}
 			icon={getNotionImage.Icon.PageResponse(page)}
 			banner={getNotionImage.Cover.PageResponse(page)}>
+			<SetAnchorNavigation anchors={anchors} />
+
 			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"

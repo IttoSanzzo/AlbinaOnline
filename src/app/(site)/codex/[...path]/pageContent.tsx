@@ -1,10 +1,15 @@
 import {
 	fetchNotion,
+	getAnchorPropsFromNotionPage,
 	getNotionImage,
 	NotionXRenderer,
 } from "@/libs/stp@notion";
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
-import { Breadcrumb, SetBreadcrumbs } from "@/libs/stp@hooks";
+import {
+	Breadcrumb,
+	SetAnchorNavigation,
+	SetBreadcrumbs,
+} from "@/libs/stp@hooks";
 import { PageObjectResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
 import { capitalizeAll } from "@/utils/StringUtils";
@@ -64,12 +69,15 @@ export default async function PageContent({
 		},
 	];
 
+	const anchors = getAnchorPropsFromNotionPage(recordMap);
+
 	return (
 		<GenericPageContainer
 			title={name}
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
+			<SetAnchorNavigation anchors={anchors} />
 			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"

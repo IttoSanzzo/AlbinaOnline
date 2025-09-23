@@ -1,6 +1,14 @@
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
-import { Breadcrumb, SetBreadcrumbs } from "@/libs/stp@hooks";
-import { getNotionImage, NotionXRenderer } from "@/libs/stp@notion";
+import {
+	Breadcrumb,
+	SetAnchorNavigation,
+	SetBreadcrumbs,
+} from "@/libs/stp@hooks";
+import {
+	getAnchorPropsFromNotionPage,
+	getNotionImage,
+	NotionXRenderer,
+} from "@/libs/stp@notion";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { PageObjectResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
@@ -30,11 +38,14 @@ export default async function PageContent({
 		},
 	];
 
+	const anchors = getAnchorPropsFromNotionPage(recordMap);
+
 	return (
 		<GenericPageContainer
 			title={`Log ${versionName}`}
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
+			<SetAnchorNavigation anchors={anchors} />
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<NotionXRenderer.Default
 				recordMap={recordMap}

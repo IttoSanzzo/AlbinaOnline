@@ -6,6 +6,7 @@ import { idfyString } from "@/utils/StringUtils";
 import { AnchorProps, useAnchorNavigation } from "@/libs/stp@hooks";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import clsx from "clsx";
 
 const AnchorNavBarContainer = newStyledElement.div(
 	styles.anchorNavBarContainer
@@ -22,6 +23,7 @@ export function AnchorNavBar() {
 				return {
 					name: anchor.name,
 					id: idfyString(anchor.id),
+					indentation: anchor.indentation,
 				};
 		  })
 		: [];
@@ -36,18 +38,20 @@ export function AnchorNavBar() {
 				{refinedAnchors.map((anchor) => (
 					<AnchorLine
 						key={anchor.id}
-						className={
+						className={clsx(
+							styles[`line-indentation-level-${anchor.indentation ?? 0}`],
 							anchor.id === visibleId ? styles["activeAnchorLine"] : undefined
-						}
+						)}
 					/>
 				))}
 				<TableOfContents>
 					{refinedAnchors.map((anchor) => (
 						<AnchorItem
 							key={anchor.id}
-							className={
+							className={clsx(
+								styles[`item-indentation-level-${anchor.indentation ?? 0}`],
 								anchor.id === visibleId ? styles["activeAnchorItem"] : undefined
-							}>
+							)}>
 							<Link href={`#${anchor.id}`}>
 								》<div>{anchor.name}</div>
 							</Link>
