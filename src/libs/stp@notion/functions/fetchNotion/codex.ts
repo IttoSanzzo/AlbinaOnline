@@ -31,7 +31,7 @@ export const fetchPages = unstable_cache(
 			filter: {
 				property: "Status",
 				status: {
-					equals: "Done",
+					does_not_equal: "Not started",
 				},
 			},
 			sorts: [
@@ -57,7 +57,7 @@ export const fetchPageByPath = unstable_cache(
 					{
 						property: "Status",
 						status: {
-							equals: "Done",
+							does_not_equal: "Not started",
 						},
 					},
 					{

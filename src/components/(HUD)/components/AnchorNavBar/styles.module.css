@@ -48,7 +48,7 @@
 	background-color: var(--cl-gray-800);
 	border: 2px solid var(--cl-gray-600);
 	border-radius: var(--rd-md);
-	padding: var(--sp-5) var(--sp-4);
+	padding: var(--sp-4) var(--sp-3);
 	transition: 0.25s linear right;
 
 	display: flex;
@@ -59,7 +59,7 @@
 .anchorItem {
 	& a {
 		border-radius: var(--rd-sm);
-		padding: 2px var(--sp-4);
+		padding: 2px var(--sp-1);
 		text-decoration: none;
 		display: flex;
 		flex-direction: row;
