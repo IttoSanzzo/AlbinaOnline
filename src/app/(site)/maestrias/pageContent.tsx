@@ -210,13 +210,13 @@ export default async function MasteriesPageContent() {
 									/>
 									{", "}
 									<UIBasics.Text
-										textColor="purple"
+										textColor="pink"
 										children="Inteligência"
 										withBold
 									/>
 									{", "}
 									<UIBasics.Text
-										textColor="pink"
+										textColor="purple"
 										children="Sabedoria"
 										withBold
 									/>
