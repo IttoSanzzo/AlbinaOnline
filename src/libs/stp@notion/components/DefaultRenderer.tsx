@@ -13,6 +13,7 @@ import { defaultMapNotionPageUrl } from "../functions/MapPageUrl";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { ExtendedRecordMap } from "notion-types";
 import Link, { LinkProps } from "next/link";
+import { LinkPreviewInjector } from "./LinkPreviewInjector";
 
 const Code = dynamic(() =>
 	import("react-notion-x/build/third-party/code").then((m) => m.Code)
@@ -86,24 +87,28 @@ export function DefaultRenderer({
 		Modal: plugins?.Modal ? Modal : null,
 		Pdf: plugins?.Pdf ? Pdf : null,
 	};
+
 	return (
-		<NotionRenderer
-			className={clsx(className, styles.genericNotionXRendererStyle)}
-			recordMap={recordMap}
-			darkMode={darkMode}
-			fullPage={fullPage}
-			mapPageUrl={(
-				pageId: string,
-				recordMap?: ExtendedRecordMap | undefined
-			) => {
-				return defaultMapNotionPageUrl(pageId, recordMap, targetDatabase);
-			}}
-			mapImageUrl={
-				mapLinkImageUrlsToAlbinaApiRoute
-					? () => getAlbinaApiAddress(mapLinkImageUrlsToAlbinaApiRoute)
-					: undefined
-			}
-			components={components}
-		/>
+		<>
+			<NotionRenderer
+				className={clsx(className, styles.genericNotionXRendererStyle)}
+				recordMap={recordMap}
+				darkMode={darkMode}
+				fullPage={fullPage}
+				mapPageUrl={(
+					pageId: string,
+					recordMap?: ExtendedRecordMap | undefined
+				) => {
+					return defaultMapNotionPageUrl(pageId, recordMap, targetDatabase);
+				}}
+				mapImageUrl={
+					mapLinkImageUrlsToAlbinaApiRoute
+						? () => getAlbinaApiAddress(mapLinkImageUrlsToAlbinaApiRoute)
+						: undefined
+				}
+				components={components}
+			/>
+			<LinkPreviewInjector />
+		</>
 	);
 }

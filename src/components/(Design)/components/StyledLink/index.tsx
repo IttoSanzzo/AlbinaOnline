@@ -3,6 +3,7 @@ import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { LinkPreview } from "@/components/(SPECIAL)";
 
 export const StyledLinkContainer = newStyledElement.div(
 	styles.styledLinkContainer
@@ -14,6 +15,7 @@ export interface StyledLinkProps extends LinkProps {
 	icon?: string;
 	textMode?: boolean;
 	tryAutomaticIcon?: boolean;
+	usePreview?: boolean;
 }
 
 export function StyledLink({
@@ -22,6 +24,7 @@ export function StyledLink({
 	icon,
 	textMode = false,
 	tryAutomaticIcon = false,
+	usePreview = true,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -35,6 +38,12 @@ export function StyledLink({
 	return (
 		<StyledLinkContainer
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
+			{usePreview && (
+				<LinkPreview
+					href={href}
+					title={title}
+				/>
+			)}
 			<Link
 				href={href}
 				{...rest}>

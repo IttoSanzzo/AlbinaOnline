@@ -1,0 +1,15 @@
+.styledLinkPreviewActivatorArea {
+	position: absolute;
+	display: none;
+	pointer-events: none;
+	width: 0;
+	height: 0;
+}
+
+.styledLinkPreviewContainer {
+	position: absolute;
+	display: block;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+}

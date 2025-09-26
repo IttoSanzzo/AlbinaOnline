@@ -7,6 +7,7 @@ import {
 } from "@/components/(UIBasics)";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { LinkPreview } from "@/components/(SPECIAL)";
 
 const StyledLinkCardContainer = newStyledElement.div(
 	styles.styledLinkCardContainer
@@ -24,6 +25,7 @@ export interface StyledLinkCardProps {
 	title: string;
 	size?: number;
 	layout?: "square" | "rectangle";
+	usePreview?: boolean;
 }
 export function StyledLinkCard({
 	href,
@@ -34,6 +36,7 @@ export function StyledLinkCard({
 	titleColor,
 	borderColor,
 	backgroundColor,
+	usePreview = true,
 }: StyledLinkCardProps) {
 	const containerStyle: CSSProperties = {
 		width: `${size}px`,
@@ -64,6 +67,13 @@ export function StyledLinkCard({
 		};
 		return (
 			<StyledLinkCardContainer style={containerStyle}>
+				{usePreview && (
+					<LinkPreview
+						href={href}
+						title={title}
+						left={(size - 260) / 2}
+					/>
+				)}
 				<Link href={href}>
 					<ArtworkContainer style={artworkContainerStyle}>
 						<Image
@@ -82,6 +92,13 @@ export function StyledLinkCard({
 	}
 	return (
 		<StyledLinkCardContainer style={containerStyle}>
+			{usePreview && (
+				<LinkPreview
+					href={href}
+					title={title}
+					left={(size - 260) / 2}
+				/>
+			)}
 			<Link href={href}>
 				<ArtworkContainer style={artworkContainerStyle}>
 					<Image

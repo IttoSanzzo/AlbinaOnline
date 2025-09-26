@@ -351,7 +351,7 @@ export default async function MasteriesPageContent() {
 						<UIBasics.List.Quote
 							textColor="gray"
 							quotes={[
-								"Essas maestrias possuem uma gama ampla de aplicações. Assim como perícias e conhecimentos, seu nível vale nos testes gerais relacionados diretamente à área do ofício em questão, como ao desempenhar a profissão em si. Por exemplo, um cocheiro, poder usar sua maestria nisso para cavalgar, ao invés da perícia [@/maestrias/cavalgar].",
+								"Essas maestrias possuem uma gama ampla de aplicações. Assim como perícias e conhecimentos, seu nível vale nos testes gerais relacionados diretamente à área do ofício em questão, como ao desempenhar a profissão em si. Por exemplo, um cocheiro, poder usar sua maestria nisso para cavalgar, ao invés da perícia [@/[Cavalgar]maestrias/cavalgar].",
 								"Como o nome já aponta, o principal aspecto dos ofícios, é que eles são formas de trabalho, não relacionados necessáriamente ao combate, e portanto, são geralmente uma possível fonte de renda, partindo da sua exerção, através do jogador.",
 							]}
 						/>
@@ -415,7 +415,6 @@ export default async function MasteriesPageContent() {
 					))}
 				</UIBasics.List.Grid>
 			</UIBasics.Box>
-
 			<GenericPageFooter version="7.0.0" />
 		</GenericPageContainer>
 	);
