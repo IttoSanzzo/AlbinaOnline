@@ -56,6 +56,9 @@ export function TextInput<TFormInput extends FieldValues>({
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
 		...(lesserPadding && { padding: "var(--sp-4) var(--sp-4)" }),
 		...(textCentered && { textAlign: "center" }),
+		...(labelBackground && {
+			backgroundColor: StandartBackgroundColor[labelBackground],
+		}),
 		...style,
 	};
 	const labelStyle: CSSProperties = {

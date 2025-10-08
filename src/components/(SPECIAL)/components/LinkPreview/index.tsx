@@ -40,7 +40,8 @@ export function LinkPreview({
 	const handleMouseEnter = () => {
 		if (!activatorRef.current) return;
 		hoverTimeout.current = setTimeout(() => {
-			const parentComponent = activatorRef.current!.parentElement;
+			if (!activatorRef.current) return;
+			const parentComponent = activatorRef.current.parentElement;
 			if (!parentComponent) return;
 			const rect = parentComponent.getBoundingClientRect();
 			setCoords({

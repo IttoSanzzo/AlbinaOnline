@@ -42,7 +42,13 @@ export default async function PageContent({
 
 	return (
 		<GenericPageContainer
-			title={`Log ${versionName}`}
+			title={`Log ${versionName} - ${
+				(
+					page.properties.Summary as unknown as {
+						rich_text: { plain_text: string }[];
+					}
+				).rich_text[0].plain_text
+			}`}
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetAnchorNavigation anchors={anchors} />

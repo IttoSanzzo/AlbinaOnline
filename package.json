@@ -40,7 +40,7 @@
 		"keen-slider": "^6.8.6",
 		"next": "15.3.4",
 		"notion-client": "^7.6.0",
-		"notion-types": "^7.4.3",
+		"notion-types": "^7.6.0",
 		"notion-utils": "^7.6.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",

@@ -1,37 +1,42 @@
-import { GenericPageContainer, StyledLink } from "@/components/(Design)";
+"use client";
+
+import { StyledLink } from "@/components/(Design)";
 import { SpellData } from "@/libs/stp@types";
-import { getCacheMode } from "@/utils/Cache";
 import AllSpellsDisplay from "./subComponents/AllSpellsDisplay";
-import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { UIBasics } from "@/components/(UIBasics)";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { HookedForm } from "@/libs/stp@forms";
 
-const anchorNavigationData: AnchorProps[] = [
-	{ name: "Domínios", id: "Domínios" },
-	{ name: "Nível 0", id: "Nível 0" },
-	{ name: "Nível 1", id: "Nível 1" },
-	{ name: "Nível 2", id: "Nível 2" },
-	{ name: "Nível 3", id: "Nível 3" },
-	{ name: "Nível 4", id: "Nível 4" },
-	{ name: "Nível 5", id: "Nível 5" },
-	{ name: "Nível 6", id: "Nível 6" },
-	{ name: "Nível 7", id: "Nível 7" },
-	{ name: "Nível 8", id: "Nível 8" },
-	{ name: "Nível 9", id: "Nível 9" },
-	{ name: "Nível 10", id: "Nível 10" },
-	{ name: "Nível 11", id: "Nível 11" },
-	{ name: "Nível 12", id: "Nível 12" },
-];
+const schema = z.object({
+	filter: z.string().transform((filter) => filter.toLowerCase()),
+});
+type FormData = z.infer<typeof schema>;
 
-export default async function SpellsPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/spells"), {
-		cache: getCacheMode(),
+interface PageContentProps {
+	spells: SpellData[];
+}
+export default function PageContent({ spells }: PageContentProps) {
+	const form = useForm<FormData>({
+		resolver: zodResolver(schema),
+		defaultValues: {
+			filter: "",
+		},
 	});
-	const allRawSpells: SpellData[] = await response.json();
+	const filter = form.watch().filter.toLowerCase();
 
-	const allSpells: SpellData[] = allRawSpells.sort((a, b) =>
-		a.name.localeCompare(b.name)
-	);
+	const filteredSpells: SpellData[] =
+		filter.length === 0
+			? spells
+			: spells.filter(
+					(spell) =>
+						spell.name.toLowerCase().includes(filter) ||
+						spell.type.toLowerCase().includes(filter) ||
+						spell.subType.toLowerCase().includes(filter) ||
+						spell.domainLevel === Number(filter)
+			  );
 
 	const DomainInfos = [
 		["Affaiblir", "affaiblir"],
@@ -49,12 +54,7 @@ export default async function SpellsPageContent() {
 	];
 
 	return (
-		<GenericPageContainer
-			title="Todas os Spells"
-			icon={getAlbinaApiAddress("/favicon/core-page/spells")}
-			banner={getAlbinaApiAddress("/banner/core-page/spells")}>
-			<SetAnchorNavigation anchors={anchorNavigationData} />
-
+		<>
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>
@@ -76,7 +76,25 @@ export default async function SpellsPageContent() {
 				/>
 			</UIBasics.Box>
 
-			<AllSpellsDisplay allSpells={allSpells} />
-		</GenericPageContainer>
+			<UIBasics.Box
+				backgroundColor="gray"
+				withoutPadding>
+				<HookedForm.Form form={form}>
+					<HookedForm.TextInput<FormData>
+						fieldName="filter"
+						label="Filtro"
+						labelBackground="darkGray"
+					/>
+					{filteredSpells.length === 0 && (
+						<UIBasics.Header
+							textAlign="center"
+							textColor="gray"
+							children="Nenhum Resultado"
+						/>
+					)}
+				</HookedForm.Form>
+				<AllSpellsDisplay allSpells={filteredSpells} />
+			</UIBasics.Box>
+		</>
 	);
 }

@@ -14,12 +14,14 @@ export default function ItemTypeDisplay({
 	title,
 }: ItemTypeDisplayProps) {
 	const allItemsFromThisType = allItems.filter((item) => item.type === type);
+	if (allItemsFromThisType.length === 0) return <></>;
 
 	return (
 		<UIBasics.Box
 			backgroundColor="gray"
 			withoutPadding>
 			<UIBasics.ToggleHeader
+				defaultOpenState={true}
 				title={title}
 				contentMargin="none"
 				titleColor="gray"

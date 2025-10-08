@@ -16,6 +16,7 @@
 	color: var(--cl-gray-100);
 	padding: var(--sp-5) var(--sp-4);
 	border: none;
+	border-radius: inherit;
 	outline: none;
 	font-size: var(--fs-md);
 

@@ -18,9 +18,7 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 	);
 
 	return (
-		<UIBasics.Box
-			backgroundColor="gray"
-			withoutPadding>
+		<>
 			{allSpellsOrdenedByLevel.map((spellLevel, level) => {
 				return (
 					<div key={level}>
@@ -45,6 +43,6 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 					</div>
 				);
 			})}
-		</UIBasics.Box>
+		</>
 	);
 }

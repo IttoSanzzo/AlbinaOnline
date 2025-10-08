@@ -1,100 +1,113 @@
-import { GenericPageContainer } from "@/components/(Design)";
+"use client";
+
 import { ItemData } from "@/libs/stp@types";
-import { getCacheMode } from "@/utils/Cache";
 import ItemTypeDisplay from "./subComponents/ItemTypeDisplay";
-import { SetAnchorNavigation } from "@/libs/stp@hooks";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
+import { HookedForm } from "@/libs/stp@forms";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-const anchorNavigationData = [
-	{ name: "Armamentos", id: "armamentos" },
-	{ name: "Focus", id: "focus" },
-	{ name: "Escudos", id: "escudos" },
-	{ name: "Frames", id: "frames" },
-	{ name: "Vestimentas Auxiliares", id: "vestimentas-auxiliares" },
-	{ name: "Acessórios", id: "acessorios" },
-	{ name: "Consumíveis", id: "consumiveis" },
-	{ name: "Miscelaneos", id: "miscelaneos" },
-	{ name: "Ferramentas", id: "ferramentas" },
-	{ name: "Especiais", id: "especiais" },
-	{ name: "Aleatórios", id: "aleatorios" },
-];
+const schema = z.object({
+	filter: z.string().transform((filter) => filter.toLowerCase()),
+});
+type FormData = z.infer<typeof schema>;
 
-export default async function ItemsPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/items"), {
-		cache: getCacheMode(),
+interface PageContentProps {
+	items: ItemData[];
+}
+export default function PageContent({ items }: PageContentProps) {
+	const form = useForm<FormData>({
+		resolver: zodResolver(schema),
+		defaultValues: {
+			filter: "",
+		},
 	});
-	const allRawItems: ItemData[] = await response.json();
-	const allItems: ItemData[] = allRawItems.sort((a, b) =>
-		a.name.localeCompare(b.name)
-	);
+	const filter = form.watch().filter.toLowerCase();
+
+	const filteredItems: ItemData[] =
+		filter.length === 0
+			? items
+			: items.filter(
+					(item) =>
+						item.name.toLowerCase().includes(filter) ||
+						item.type.toLowerCase().includes(filter) ||
+						item.subType.toLowerCase().includes(filter)
+			  );
 
 	return (
-		<GenericPageContainer
-			title="Todos os Items"
-			icon={getAlbinaApiAddress("/favicon/core-page/items")}
-			banner={getAlbinaApiAddress("/banner/core-page/items")}>
-			<SetAnchorNavigation anchors={anchorNavigationData} />
+		<UIBasics.Box
+			backgroundColor="darkGray"
+			withoutMargin>
+			<HookedForm.Form form={form}>
+				<HookedForm.TextInput<FormData>
+					fieldName="filter"
+					label="Filtro"
+				/>
+				{filteredItems.length === 0 && (
+					<UIBasics.Header
+						textAlign="center"
+						textColor="gray"
+						children="Nenhum Resultado"
+					/>
+				)}
+			</HookedForm.Form>
 
-			<UIBasics.Box
-				backgroundColor="darkGray"
-				withoutMargin>
-				<ItemTypeDisplay
-					title="Armamentos"
-					allItems={allItems}
-					type="Armament"
-				/>
-				<ItemTypeDisplay
-					title="Focus"
-					allItems={allItems}
-					type="Focus"
-				/>
-				<ItemTypeDisplay
-					title="Escudos"
-					allItems={allItems}
-					type="Shielding"
-				/>
-				<ItemTypeDisplay
-					title="Frames"
-					allItems={allItems}
-					type="Frame"
-				/>
-				<ItemTypeDisplay
-					title="Vestimentas Auxiliares"
-					allItems={allItems}
-					type="Wearable"
-				/>
-				<ItemTypeDisplay
-					title="Acessórios"
-					allItems={allItems}
-					type="Accessory"
-				/>
-				<ItemTypeDisplay
-					title="Consumíveis"
-					allItems={allItems}
-					type="Consumable"
-				/>
-				<ItemTypeDisplay
-					title="Miscelâneos"
-					allItems={allItems}
-					type="Miscellaneous"
-				/>
-				<ItemTypeDisplay
-					title="Ferramentas"
-					allItems={allItems}
-					type="Tool"
-				/>
-				<ItemTypeDisplay
-					title="Especiais"
-					allItems={allItems}
-					type="Special"
-				/>
-				<ItemTypeDisplay
-					title="Aleatórios"
-					allItems={allItems}
-					type="Random"
-				/>
-			</UIBasics.Box>
-		</GenericPageContainer>
+			<ItemTypeDisplay
+				title="Armamentos"
+				allItems={filteredItems}
+				type="Armament"
+			/>
+			<ItemTypeDisplay
+				title="Focus"
+				allItems={filteredItems}
+				type="Focus"
+			/>
+			<ItemTypeDisplay
+				title="Escudos"
+				allItems={filteredItems}
+				type="Shielding"
+			/>
+			<ItemTypeDisplay
+				title="Frames"
+				allItems={filteredItems}
+				type="Frame"
+			/>
+			<ItemTypeDisplay
+				title="Vestimentas Auxiliares"
+				allItems={filteredItems}
+				type="Wearable"
+			/>
+			<ItemTypeDisplay
+				title="Acessórios"
+				allItems={filteredItems}
+				type="Accessory"
+			/>
+			<ItemTypeDisplay
+				title="Consumíveis"
+				allItems={filteredItems}
+				type="Consumable"
+			/>
+			<ItemTypeDisplay
+				title="Miscelâneos"
+				allItems={filteredItems}
+				type="Miscellaneous"
+			/>
+			<ItemTypeDisplay
+				title="Ferramentas"
+				allItems={filteredItems}
+				type="Tool"
+			/>
+			<ItemTypeDisplay
+				title="Especiais"
+				allItems={filteredItems}
+				type="Special"
+			/>
+			<ItemTypeDisplay
+				title="Aleatórios"
+				allItems={filteredItems}
+				type="Random"
+			/>
+		</UIBasics.Box>
 	);
 }
