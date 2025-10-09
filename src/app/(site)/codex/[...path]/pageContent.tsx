@@ -65,20 +65,18 @@ export default async function PageContent({
 		},
 	];
 
-	// const anchors = getAnchorPropsFromNotionPage(recordMap);
-
 	return (
 		<GenericPageContainer
 			title={name}
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			{/* <SetAnchorNavigation anchors={anchors} /> */}
 			<SetNotionPageAnchorNavigation />
 
 			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"
+				targetRoot="/codex/from-id"
 				plugins={{
 					Collection: false,
 				}}

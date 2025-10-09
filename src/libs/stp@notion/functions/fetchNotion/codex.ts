@@ -74,3 +74,13 @@ export const fetchPageByPath = unstable_cache(
 	["codex-page"],
 	{ revalidate: revalidationTime }
 );
+export const fetchPageById = unstable_cache(
+	async (id: string) => {
+		const response = await Notion.codexApi.pages.retrieve({
+			page_id: id,
+		});
+		return response;
+	},
+	["codex-core-page"],
+	{ revalidate: revalidationTime }
+);

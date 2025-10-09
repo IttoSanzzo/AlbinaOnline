@@ -26,12 +26,12 @@ export default async function PageContent({
 			title={title}
 			icon={getNotionImage.Icon.PageResponse(page)}
 			banner={getNotionImage.Cover.PageResponse(page)}>
-			{/* <SetAnchorNavigation anchors={anchors} /> */}
 			<SetNotionPageAnchorNavigation />
 
 			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"
+				targetRoot="/codex/from-id"
 				plugins={{
 					Collection: false,
 				}}

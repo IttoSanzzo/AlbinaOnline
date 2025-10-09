@@ -59,6 +59,7 @@ export interface DefaultRendererProps {
 	darkMode?: boolean;
 	mapLinkImageUrlsToAlbinaApiRoute?: string;
 	targetDatabase?: "changelog" | "codex";
+	targetRoot?: string;
 	className?: string;
 	plugins?: RendererPlugins;
 }
@@ -69,6 +70,7 @@ export function DefaultRenderer({
 	fullPage = false,
 	className,
 	targetDatabase,
+	targetRoot,
 	mapLinkImageUrlsToAlbinaApiRoute,
 	plugins,
 }: DefaultRendererProps) {
@@ -99,7 +101,12 @@ export function DefaultRenderer({
 					pageId: string,
 					recordMap?: ExtendedRecordMap | undefined
 				) => {
-					return defaultMapNotionPageUrl(pageId, recordMap, targetDatabase);
+					return defaultMapNotionPageUrl(
+						pageId,
+						recordMap,
+						targetDatabase,
+						targetRoot
+					);
 				}}
 				mapImageUrl={
 					mapLinkImageUrlsToAlbinaApiRoute
