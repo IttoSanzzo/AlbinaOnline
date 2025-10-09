@@ -1,19 +1,15 @@
 import {
 	fetchNotion,
-	getAnchorPropsFromNotionPage,
 	getNotionImage,
 	NotionXRenderer,
 } from "@/libs/stp@notion";
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
-import {
-	Breadcrumb,
-	SetAnchorNavigation,
-	SetBreadcrumbs,
-} from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs } from "@/libs/stp@hooks";
 import { PageObjectResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
 import { capitalizeAll } from "@/utils/StringUtils";
 import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import SetNotionPageAnchorNavigation from "@/libs/stp@notion/components/SetNotionPageAnchorNavigation";
 
 const getPageName = (page: PageObjectResponse) =>
 	(page.properties.Name as unknown as { title: [{ plain_text: string }] })
@@ -69,7 +65,7 @@ export default async function PageContent({
 		},
 	];
 
-	const anchors = getAnchorPropsFromNotionPage(recordMap);
+	// const anchors = getAnchorPropsFromNotionPage(recordMap);
 
 	return (
 		<GenericPageContainer
@@ -77,7 +73,9 @@ export default async function PageContent({
 			icon={getNotionImage.Icon.PageObject(page)}
 			banner={getNotionImage.Cover.PageObject(page)}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			<SetAnchorNavigation anchors={anchors} />
+			{/* <SetAnchorNavigation anchors={anchors} /> */}
+			<SetNotionPageAnchorNavigation />
+
 			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"
