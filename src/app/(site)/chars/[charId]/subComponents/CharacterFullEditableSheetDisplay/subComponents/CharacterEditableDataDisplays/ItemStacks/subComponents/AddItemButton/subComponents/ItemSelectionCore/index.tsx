@@ -7,7 +7,7 @@ import {
 	ItemType,
 	ItemTypePluralName,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -40,7 +40,7 @@ export function ItemSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<ItemData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress("/items"), {
+		fetch(getAlbinaApiFullAddress("/items"), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -73,7 +73,7 @@ export function ItemSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/items`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

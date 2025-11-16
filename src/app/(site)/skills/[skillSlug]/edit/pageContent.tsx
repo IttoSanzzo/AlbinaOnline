@@ -20,7 +20,7 @@ import {
 	SkillType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -94,7 +94,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/skills/${skill.slug}`),
+			getAlbinaApiFullAddress(`/skills/${skill.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -132,8 +132,10 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			isEditable={true}
 			banner={skill.bannerUrl}
 			icon={skill.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(`/favicon/skills/${skill.slug}`)}
-			bannerChangeRoute={getAlbinaApiAddress(`/banner/skills/${skill.slug}`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/skills/${skill.slug}`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(
+				`/banner/skills/${skill.slug}`
+			)}
 			metadataTag={`skill-${skill.slug}`}>
 			<HookedForm.Form
 				form={form}
@@ -180,7 +182,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={skill.name}
-				deletionRoute={getAlbinaApiAddress(`/skills/${skill.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/skills/${skill.slug}`)}
 				routerPushRoute="/skills"
 				revalidatePath="/skills"
 			/>

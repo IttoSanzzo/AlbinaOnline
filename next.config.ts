@@ -41,13 +41,23 @@ const nextConfig: NextConfig = {
 				pathname: "/**",
 			},
 			{
+				protocol: "https",
+				hostname: "albinaapi.setsu.party",
+				pathname: "/**",
+			},
+			{
+				protocol: "http",
+				hostname: "albinaapi.setsu.party",
+				pathname: "/**",
+			},
+			{
 				protocol: "http",
 				hostname: "*.*.*.*",
 				pathname: "/**",
 			},
 		],
 	},
-	allowedDevOrigins: ["localhost", "*.*.*.*"],
+	allowedDevOrigins: ["localhost", "*.*.*.*", "albina.setsu.party"],
 };
 
 export default nextConfig;

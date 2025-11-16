@@ -1,6 +1,6 @@
 import { Guid, RaceData } from "@/libs/stp@types";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
@@ -24,7 +24,7 @@ export function RaceSelectionCore({
 	const [allRaces, setAllRaces] = useState<RaceData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress("/races"), {
+		fetch(getAlbinaApiFullAddress("/races"), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -45,7 +45,7 @@ export function RaceSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/race`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/race`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

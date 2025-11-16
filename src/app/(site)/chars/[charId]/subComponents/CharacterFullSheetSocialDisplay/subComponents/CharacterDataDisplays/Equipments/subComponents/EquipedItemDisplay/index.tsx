@@ -1,7 +1,7 @@
 import { Guid, ItemData } from "@/libs/stp@types";
 import React, { useLayoutEffect, useState } from "react";
 import { StyledLink } from "@/components/(Design)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 interface EquipedItemDisplayProps {
 	itemId: Guid;
@@ -10,7 +10,7 @@ function _EquipedItemDisplay({ itemId }: EquipedItemDisplayProps) {
 	const [itemData, setItemData] = useState<ItemData | null>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/items?id=${itemId}`), {
+		fetch(getAlbinaApiFullAddress(`/items?id=${itemId}`), {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",

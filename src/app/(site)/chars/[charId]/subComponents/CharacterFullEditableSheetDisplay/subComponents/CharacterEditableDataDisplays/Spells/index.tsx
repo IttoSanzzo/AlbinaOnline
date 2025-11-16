@@ -1,6 +1,6 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSpellButton } from "./subComponents/AddSpellButton";
@@ -18,7 +18,7 @@ async function handleSpellRemoval(
 	const body = { spellId: spellId };
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/spells`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
@@ -112,7 +112,7 @@ export function _CharacterSpellsDisplay({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/spells`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 			{
 				method: "GET",
 			}

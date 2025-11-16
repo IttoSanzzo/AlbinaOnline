@@ -19,7 +19,7 @@ import {
 	TraitType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -73,7 +73,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/traits/${trait.slug}`),
+			getAlbinaApiFullAddress(`/traits/${trait.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -109,8 +109,10 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			isEditable={true}
 			banner={trait.bannerUrl}
 			icon={trait.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(`/favicon/traits/${trait.slug}`)}
-			bannerChangeRoute={getAlbinaApiAddress(`/banner/traits/${trait.slug}`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/traits/${trait.slug}`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(
+				`/banner/traits/${trait.slug}`
+			)}
 			metadataTag={`trait-${trait.slug}`}>
 			<HookedForm.Form
 				form={form}
@@ -151,7 +153,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={trait.name}
-				deletionRoute={getAlbinaApiAddress(`/traits/${trait.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/traits/${trait.slug}`)}
 				routerPushRoute="/tracos"
 				revalidatePath="/tracos"
 			/>

@@ -1,7 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 
@@ -49,7 +49,7 @@ export function _CharacterTraitsDisplay({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/traits`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 			{
 				method: "GET",
 			}

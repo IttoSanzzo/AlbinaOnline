@@ -1,10 +1,10 @@
 "use client";
 
-import { getAlbinaApiAddress } from "./AlbinaApi";
+import { getAlbinaApiFullAddress } from "./AlbinaApi";
 
 export async function tryRefresh() {
 	try {
-		const response = await fetch(`${getAlbinaApiAddress()}/auth/refresh`, {
+		const response = await fetch(`${getAlbinaApiFullAddress()}/auth/refresh`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

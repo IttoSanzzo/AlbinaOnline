@@ -1,7 +1,7 @@
 "use client";
 
 import { FullUser } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "./AlbinaApi";
+import { getAlbinaApiFullAddress } from "./AlbinaApi";
 import toast from "react-hot-toast";
 
 export async function authenticatedFetchAsync(
@@ -12,7 +12,7 @@ export async function authenticatedFetchAsync(
 		typeof input === "string" || input instanceof URL
 			? input.toString().startsWith("http")
 				? input.toString()
-				: `${getAlbinaApiAddress()}${input.toString()}`
+				: `${getAlbinaApiFullAddress()}${input.toString()}`
 			: input;
 	init.credentials = "include";
 	const response = await fetch(url, init).catch(() => {
@@ -33,7 +33,7 @@ export async function authenticatedFetchAsync(
 let refreshingLock: Promise<boolean> | null = null;
 async function tryRefresh(): Promise<boolean> {
 	if (!refreshingLock) {
-		refreshingLock = fetch(`${getAlbinaApiAddress()}/auth/refresh`, {
+		refreshingLock = fetch(`${getAlbinaApiFullAddress()}/auth/refresh`, {
 			method: "POST",
 			credentials: "include",
 		})

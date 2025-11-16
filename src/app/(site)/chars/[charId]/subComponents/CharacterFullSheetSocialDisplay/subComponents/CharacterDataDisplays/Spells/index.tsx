@@ -1,7 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 
@@ -68,7 +68,7 @@ export function _CharacterSpellsDisplay({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/spells`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 			{
 				method: "GET",
 			}

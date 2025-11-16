@@ -8,7 +8,7 @@ import {
 	ItemData,
 } from "@/libs/stp@types";
 import { useContext, useMemo } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -56,7 +56,7 @@ export function EquipmentSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/equipments`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

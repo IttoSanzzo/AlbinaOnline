@@ -8,7 +8,7 @@ import z from "zod";
 import { Guid } from "@/libs/stp@types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import toast from "react-hot-toast";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
@@ -49,7 +49,7 @@ export function LinkEffect({
 		};
 		const toastId = toast.loading("Linking...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/effect-links"),
+			getAlbinaApiFullAddress("/effect-links"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import SkillPageContent from "./pageContent";
 import { fetchStaticParamSlugs } from "@/utils/Data";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
 	const { skillSlug } = await params;
 
 	const response = await fetch(
-		getAlbinaApiAddress(`/skills/${skillSlug}/metadata`),
+		getAlbinaApiFullAddress(`/skills/${skillSlug}/metadata`),
 		{
 			cache: "force-cache",
 			method: "GET",

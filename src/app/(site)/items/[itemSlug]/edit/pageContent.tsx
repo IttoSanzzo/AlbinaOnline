@@ -20,7 +20,7 @@ import {
 	ItemType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -95,7 +95,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/items/${item.slug}`),
+			getAlbinaApiFullAddress(`/items/${item.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -133,8 +133,8 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			isEditable={true}
 			banner={item.bannerUrl}
 			icon={item.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(`/favicon/items/${item.slug}`)}
-			bannerChangeRoute={getAlbinaApiAddress(`/banner/items/${item.slug}`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/items/${item.slug}`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(`/banner/items/${item.slug}`)}
 			metadataTag={`item-${item.slug}`}>
 			<HookedForm.Form
 				form={form}
@@ -181,7 +181,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={item.name}
-				deletionRoute={getAlbinaApiAddress(`/items/${item.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/items/${item.slug}`)}
 				routerPushRoute="/items"
 				revalidatePath="/items"
 			/>

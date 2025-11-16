@@ -8,7 +8,7 @@ import { Breadcrumb, SetBreadcrumbs } from "@/libs/stp@hooks";
 import { PageObjectResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
 import { capitalizeAll } from "@/utils/StringUtils";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import SetNotionPageAnchorNavigation from "@/libs/stp@notion/components/SetNotionPageAnchorNavigation";
 
 const getPageName = (page: PageObjectResponse) =>
@@ -42,7 +42,7 @@ export default async function PageContent({
 					return {
 						href: `/codex${href}`,
 						name: capitalizeAll(pathSlug),
-						icon: getAlbinaApiAddress("/favicon/misc/codex"),
+						icon: getAlbinaApiFullAddress("/favicon/misc/codex"),
 					};
 				return {
 					href: `/codex${href}`,
@@ -55,7 +55,7 @@ export default async function PageContent({
 		{
 			href: "/codex",
 			name: "Codex",
-			icon: getAlbinaApiAddress("/favicon/core-page/codex"),
+			icon: getAlbinaApiFullAddress("/favicon/core-page/codex"),
 		},
 		...fillerBreadcrumbs,
 		{

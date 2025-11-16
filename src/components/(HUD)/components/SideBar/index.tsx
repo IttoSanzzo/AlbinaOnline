@@ -4,7 +4,7 @@ import IndexedPagesGroups from "./subComponents/IndexedPagesGroups";
 import { DataInitComplete } from "./subComponents/DataInitComplete";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StandartTextColor } from "@/components/(UIBasics)";
 
 const SideBarActivationArea = newStyledElement.div(
@@ -45,7 +45,7 @@ export async function SideBar() {
 						style={{ color: StandartTextColor.gray }}>
 						<div>
 							<Image
-								src={getAlbinaApiAddress("/favicon/misc/changelog")}
+								src={getAlbinaApiFullAddress("/favicon/misc/changelog")}
 								alt=""
 								width={18}
 								height={18}

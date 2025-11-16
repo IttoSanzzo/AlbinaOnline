@@ -1,5 +1,5 @@
 import { RaceData } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 
@@ -18,7 +18,7 @@ function getSubTypeBorderColor(subType: string): string {
 export async function getPageData(raceSlug: string): Promise<RacePageData> {
 	if (!raceSlug) return { raceData: undefined, borderColor: "" };
 
-	const response = await fetch(getAlbinaApiAddress(`/races/${raceSlug}`), {
+	const response = await fetch(getAlbinaApiFullAddress(`/races/${raceSlug}`), {
 		cache: getCacheMode(),
 	});
 	if (!response.ok) return { raceData: undefined, borderColor: "" };

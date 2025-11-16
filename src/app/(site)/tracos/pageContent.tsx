@@ -3,7 +3,7 @@ import { TraitData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import TraitTypeDisplay from "./subComponents/TraitTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Genéricas", id: "genericas" },
@@ -13,7 +13,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function TraitsPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/traits"), {
+	const response = await fetch(getAlbinaApiFullAddress("/traits"), {
 		cache: getCacheMode(),
 	});
 	const allRawTraits: TraitData[] = await response.json();
@@ -25,8 +25,8 @@ export default async function TraitsPageContent() {
 	return (
 		<GenericPageContainer
 			title="Todas as Traits"
-			icon={getAlbinaApiAddress("/favicon/core-page/traits")}
-			banner={getAlbinaApiAddress("/banner/core-page/traits")}>
+			icon={getAlbinaApiFullAddress("/favicon/core-page/traits")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/traits")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<TraitTypeDisplay

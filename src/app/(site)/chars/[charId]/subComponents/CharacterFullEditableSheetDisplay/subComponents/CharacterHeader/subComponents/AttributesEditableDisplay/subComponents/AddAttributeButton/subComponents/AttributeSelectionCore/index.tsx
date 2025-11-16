@@ -1,6 +1,6 @@
 import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { Dispatch, SetStateAction } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -41,7 +41,7 @@ export function AttributeSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/misc-metrics`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/misc-metrics`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

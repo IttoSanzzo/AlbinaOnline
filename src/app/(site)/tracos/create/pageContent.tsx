@@ -3,7 +3,7 @@
 import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { TraitSubType, TraitType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -40,7 +40,7 @@ export function CreateTraitPageContent() {
 		};
 		const toastId = toast.loading("Creating trait...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/traits"),
+			getAlbinaApiFullAddress("/traits"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),
@@ -70,8 +70,8 @@ export function CreateTraitPageContent() {
 	return (
 		<GenericPageContainer
 			title=""
-			icon={getAlbinaApiAddress("/favicon/not-found")}
-			banner={getAlbinaApiAddress("/banner/not-found")}>
+			icon={getAlbinaApiFullAddress("/favicon/not-found")}
+			banner={getAlbinaApiFullAddress("/banner/not-found")}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

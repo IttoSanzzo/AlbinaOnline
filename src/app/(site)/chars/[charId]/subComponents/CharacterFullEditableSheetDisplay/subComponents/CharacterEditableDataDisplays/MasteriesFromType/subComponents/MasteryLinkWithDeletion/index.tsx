@@ -1,5 +1,5 @@
 import { StyledLinkWithButton } from "@/components/(Design)/components/StyledLinkWithButton";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
@@ -25,13 +25,13 @@ export function MasteryLinkWithDeletion({
 		<StyledLinkWithButton
 			title={name}
 			href={`/maestrias/${slug}`}
-			icon={`${getAlbinaApiAddress()}/favicon/maestrias/${slug}`}
+			icon={`${getAlbinaApiFullAddress()}/favicon/maestrias/${slug}`}
 			buttonIcon={{ name: "Trash", color: "red" }}
 			onClick={async () => {
 				const body = { masteryId: masteryId };
 				const toastId = toast.loading(CharToastMessage.loading);
 				const response = await authenticatedFetchAsync(
-					`${getAlbinaApiAddress()}/chars/${characterId}/masteries`,
+					`${getAlbinaApiFullAddress()}/chars/${characterId}/masteries`,
 					{
 						method: "DELETE",
 						body: JSON.stringify(body),

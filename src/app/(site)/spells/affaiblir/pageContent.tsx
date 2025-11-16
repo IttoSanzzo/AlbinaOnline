@@ -3,7 +3,7 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -22,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function AffaiblirPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/spells"), {
+	const response = await fetch(getAlbinaApiFullAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -34,8 +34,8 @@ export default async function AffaiblirPageContent() {
 	return (
 		<GenericPageContainer
 			title="Domínio Affaiblir"
-			icon={getAlbinaApiAddress("/favicon/spells/affaiblir")}
-			banner={getAlbinaApiAddress("/banner/spells/affaiblir")}>
+			icon={getAlbinaApiFullAddress("/favicon/spells/affaiblir")}
+			banner={getAlbinaApiFullAddress("/banner/spells/affaiblir")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SpellTypeDisplay

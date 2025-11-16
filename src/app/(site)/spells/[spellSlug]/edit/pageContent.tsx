@@ -23,7 +23,7 @@ import {
 	SpellDomain,
 	MagicAttribute,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -107,7 +107,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/spells/${spell.slug}`),
+			getAlbinaApiFullAddress(`/spells/${spell.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -141,8 +141,10 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			isEditable={true}
 			banner={spell.bannerUrl}
 			icon={spell.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(`/favicon/spells/${spell.slug}`)}
-			bannerChangeRoute={getAlbinaApiAddress(`/banner/spells/${spell.slug}`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/spells/${spell.slug}`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(
+				`/banner/spells/${spell.slug}`
+			)}
 			metadataTag={`spell-${spell.slug}`}>
 			<HookedForm.Form
 				form={form}
@@ -206,7 +208,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={spell.name}
-				deletionRoute={getAlbinaApiAddress(`/spells/${spell.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/spells/${spell.slug}`)}
 				routerPushRoute="/spells"
 				revalidatePath="/spells"
 			/>

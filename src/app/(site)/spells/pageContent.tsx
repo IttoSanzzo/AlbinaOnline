@@ -4,7 +4,7 @@ import { StyledLink } from "@/components/(Design)";
 import { SpellData } from "@/libs/stp@types";
 import AllSpellsDisplay from "./subComponents/AllSpellsDisplay";
 import { UIBasics } from "@/components/(UIBasics)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,7 +70,7 @@ export default function PageContent({ spells }: PageContentProps) {
 							key={DomainInfo[0]}
 							href={`/spells/${DomainInfo[1]}`}
 							title={DomainInfo[0]}
-							icon={getAlbinaApiAddress(`/favicon/spells/${DomainInfo[1]}`)}
+							icon={getAlbinaApiFullAddress(`/favicon/spells/${DomainInfo[1]}`)}
 						/>
 					))}
 				/>

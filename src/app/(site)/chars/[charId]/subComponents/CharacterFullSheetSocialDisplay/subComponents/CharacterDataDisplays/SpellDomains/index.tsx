@@ -1,7 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSpellDomains } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
 import React from "react";
 
@@ -11,7 +11,7 @@ function FormSpellDomainTablePair(name: string, level: number) {
 		<StyledLink
 			title={name}
 			href={`/spells/${lowercaseName}`}
-			icon={getAlbinaApiAddress(`/favicon/spells/${lowercaseName}`)}
+			icon={getAlbinaApiFullAddress(`/favicon/spells/${lowercaseName}`)}
 		/>,
 		<UIBasics.Text
 			display="block"

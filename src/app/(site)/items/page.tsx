@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { getCacheMode } from "@/utils/Cache";
 import { ItemData } from "@/libs/stp@types";
@@ -9,7 +9,7 @@ import { SetAnchorNavigation } from "@/libs/stp@hooks";
 export const metadata: Metadata = {
 	title: "Items",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/items"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
 	},
 };
 
@@ -28,7 +28,7 @@ const anchorNavigationData = [
 ];
 
 export default async function ItemsPageServerShell() {
-	const response = await fetch(getAlbinaApiAddress("/items"), {
+	const response = await fetch(getAlbinaApiFullAddress("/items"), {
 		cache: getCacheMode(),
 	});
 	const items: ItemData[] = await response.json();
@@ -37,8 +37,8 @@ export default async function ItemsPageServerShell() {
 	return (
 		<GenericPageContainer
 			title="Todos os Items"
-			icon={getAlbinaApiAddress("/favicon/core-page/items")}
-			banner={getAlbinaApiAddress("/banner/core-page/items")}>
+			icon={getAlbinaApiFullAddress("/favicon/core-page/items")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/items")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<PageContent items={ordenedItems} />;
 		</GenericPageContainer>

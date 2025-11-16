@@ -1,5 +1,5 @@
 import { SideActionNumberInputButtons } from "@/components/(UTILS)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import { ItemsContext } from "../../../../CharacterEditableSheetContextProviders/contexts/Items";
@@ -25,7 +25,7 @@ export function ItemAmountController({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/items/${itemId}`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/items/${itemId}`),
 			{
 				method: "PATCH",
 				body: JSON.stringify(body),

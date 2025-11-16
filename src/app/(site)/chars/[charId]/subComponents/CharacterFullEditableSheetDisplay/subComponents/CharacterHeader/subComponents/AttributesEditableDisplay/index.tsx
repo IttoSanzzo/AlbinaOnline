@@ -5,7 +5,7 @@ import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { AddAttributeButton } from "./subComponents/AddAttributeButton";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../CharacterEditableDataDisplays";
@@ -24,7 +24,7 @@ async function handleRemoveAttribute(
 	};
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/misc-metrics`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/misc-metrics`),
 		{
 			method: "PUT",
 			body: JSON.stringify(body),

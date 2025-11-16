@@ -5,7 +5,7 @@ import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
 import { CharacterData } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useEffect, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import z from "zod";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,7 @@ export default function CharsPageContent() {
 	const filter = form.watch().filter.toLowerCase();
 
 	useEffect(() => {
-		authenticatedFetchAsync(getAlbinaApiAddress("/chars"), {
+		authenticatedFetchAsync(getAlbinaApiFullAddress("/chars"), {
 			cache: "no-cache",
 		}).then((response) => {
 			response

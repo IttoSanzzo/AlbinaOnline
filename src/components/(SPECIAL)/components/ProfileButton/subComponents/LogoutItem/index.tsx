@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertDialog, DropdownMenu } from "@/libs/stp@radix";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useRouter } from "next/navigation";
 import { resetAllStores } from "@/libs/stp@hooks";
 
@@ -9,7 +9,7 @@ export function LogoutButton() {
 	const router = useRouter();
 
 	async function handleLogout() {
-		const response = await fetch(`${getAlbinaApiAddress()}/auth/logout`, {
+		const response = await fetch(`${getAlbinaApiFullAddress()}/auth/logout`, {
 			method: "POST",
 			credentials: "include",
 		});

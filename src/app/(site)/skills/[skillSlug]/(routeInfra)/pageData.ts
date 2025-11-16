@@ -1,5 +1,5 @@
 import { SkillData } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 
@@ -18,9 +18,12 @@ function getSubTypeBorderColor(subType: string): string {
 export async function getPageData(skillSlug: string): Promise<SkillPageData> {
 	if (!skillSlug) return { skillData: undefined, borderColor: "" };
 
-	const response = await fetch(getAlbinaApiAddress(`/skills/${skillSlug}`), {
-		cache: getCacheMode(),
-	});
+	const response = await fetch(
+		getAlbinaApiFullAddress(`/skills/${skillSlug}`),
+		{
+			cache: getCacheMode(),
+		}
+	);
 	if (!response.ok) return { skillData: undefined, borderColor: "" };
 	const skillData = convertEnumsFromResponse<SkillData>(await response.json());
 

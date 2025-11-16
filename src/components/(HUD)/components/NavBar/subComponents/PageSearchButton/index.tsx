@@ -10,7 +10,7 @@ import {
 	SearchEntry,
 	SearchEntryEntity,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -181,7 +181,7 @@ export function PageSearchButton() {
 	async function onQueryChange(formData: FormData) {
 		if (formData.query.length === 0) return;
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(
+			getAlbinaApiFullAddress(
 				`/search?query=${encodeURIComponent(formData.query)}`
 			),
 			{ method: "GET", next: { revalidate: 120 } }

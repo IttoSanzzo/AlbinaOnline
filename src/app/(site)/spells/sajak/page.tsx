@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import SajakPageContent from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Sajak",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/spells/sajak"),
+		icon: getAlbinaApiFullAddress("/favicon/spells/sajak"),
 	},
 };
 

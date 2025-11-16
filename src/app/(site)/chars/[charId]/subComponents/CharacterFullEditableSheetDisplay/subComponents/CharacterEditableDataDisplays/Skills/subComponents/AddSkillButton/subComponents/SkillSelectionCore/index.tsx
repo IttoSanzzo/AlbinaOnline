@@ -6,7 +6,7 @@ import {
 	SkillType,
 } from "@/libs/stp@types";
 import { useLayoutEffect, useMemo, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -36,7 +36,7 @@ export function SkillSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<SkillData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress("/skills"), {
+		fetch(getAlbinaApiFullAddress("/skills"), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -72,7 +72,7 @@ export function SkillSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/skills`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/skills`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

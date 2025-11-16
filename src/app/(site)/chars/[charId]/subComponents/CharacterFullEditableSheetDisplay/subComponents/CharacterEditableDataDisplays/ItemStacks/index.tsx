@@ -7,7 +7,7 @@ import {
 } from "@/libs/stp@types";
 import React from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { ItemsContext } from "../../CharacterEditableSheetContextProviders/contexts/Items";
 import { AddItemButton } from "./subComponents/AddItemButton";
@@ -30,7 +30,7 @@ async function handleItemRemoval(
 	const body = { itemId: itemId };
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/items`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/items`),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
@@ -173,7 +173,7 @@ export function _CharacterItemStacksDisplay() {
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/items`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
 			{
 				method: "GET",
 				headers: {

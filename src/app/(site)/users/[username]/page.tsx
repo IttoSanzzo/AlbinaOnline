@@ -4,7 +4,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
 import { UserFavoriteCarousel } from "./subComponents/UserFavoriteCarousel";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import {
 	FullUser,
@@ -32,7 +32,7 @@ export default function UserPage({ params }: UserPageProps) {
 	useLayoutEffect(() => {
 		params.then((paramStore) => {
 			authenticatedFetchAsync(
-				`${getAlbinaApiAddress()}/users/${paramStore.username}`,
+				`${getAlbinaApiFullAddress()}/users/${paramStore.username}`,
 				{
 					method: "GET",
 				}
@@ -41,7 +41,7 @@ export default function UserPage({ params }: UserPageProps) {
 				const data = await response.json();
 				setUser(data.user);
 				authenticatedFetchAsync(
-					`${getAlbinaApiAddress()}/users/${
+					`${getAlbinaApiFullAddress()}/users/${
 						data.user.username
 					}/favorites/grouped`,
 					{
@@ -75,7 +75,7 @@ export default function UserPage({ params }: UserPageProps) {
 		{
 			href: "/users",
 			name: "Users",
-			icon: getAlbinaApiAddress("/favicon/users"),
+			icon: getAlbinaApiFullAddress("/favicon/users"),
 		},
 		{
 			href: "#",
@@ -94,9 +94,11 @@ export default function UserPage({ params }: UserPageProps) {
 				user.id === currentUser.user.id ||
 				RoleHierarchy[currentUser.user.role] >= RoleHierarchy.Admin
 			}
-			bannerChangeRoute={getAlbinaApiAddress(`/users/id/${user.id}/banner`)}
-			iconChangeRoute={getAlbinaApiAddress(`/users/id/${user.id}/favicon`)}
-			titleChangeRoute={getAlbinaApiAddress(`/users/id/${user.id}/nickname`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(`/users/id/${user.id}/banner`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/users/id/${user.id}/favicon`)}
+			titleChangeRoute={getAlbinaApiFullAddress(
+				`/users/id/${user.id}/nickname`
+			)}
 			titleChangeBodyPropName={"nickname"}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<UserFavoriteCarousel

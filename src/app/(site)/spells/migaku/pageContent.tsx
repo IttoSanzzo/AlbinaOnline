@@ -3,7 +3,7 @@ import { SpellData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -22,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function MigakuPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/spells"), {
+	const response = await fetch(getAlbinaApiFullAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -34,8 +34,8 @@ export default async function MigakuPageContent() {
 	return (
 		<GenericPageContainer
 			title="Domínio Migaku"
-			icon={getAlbinaApiAddress("/favicon/spells/migaku")}
-			banner={getAlbinaApiAddress("/banner/spells/migaku")}>
+			icon={getAlbinaApiFullAddress("/favicon/spells/migaku")}
+			banner={getAlbinaApiFullAddress("/banner/spells/migaku")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<SpellTypeDisplay

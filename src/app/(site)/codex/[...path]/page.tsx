@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { capitalizeAll } from "@/utils/StringUtils";
 import { fetchNotion, getNotionImage, Notion } from "@/libs/stp@notion";
 import { redirect } from "next/navigation";
@@ -23,7 +23,7 @@ export async function generateMetadata({
 		return {
 			title: capitalizeAll(path[path.length - 1]),
 			icons: {
-				icon: getAlbinaApiAddress("/favicon/misc/codex"),
+				icon: getAlbinaApiFullAddress("/favicon/misc/codex"),
 			},
 		};
 	return {

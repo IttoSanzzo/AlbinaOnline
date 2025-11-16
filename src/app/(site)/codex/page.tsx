@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import PageContent from "./pageContent";
 import { fetchNotion, Notion } from "@/libs/stp@notion";
@@ -6,7 +6,7 @@ import { fetchNotion, Notion } from "@/libs/stp@notion";
 export const metadata: Metadata = {
 	title: "Codex",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/codex"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/codex"),
 	},
 };
 

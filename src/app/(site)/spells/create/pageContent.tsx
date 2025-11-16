@@ -3,7 +3,7 @@
 import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { SpellSubType, SpellType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -40,7 +40,7 @@ export function CreateSpellPageContent() {
 		};
 		const toastId = toast.loading("Creating spell...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/spells"),
+			getAlbinaApiFullAddress("/spells"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),
@@ -68,8 +68,8 @@ export function CreateSpellPageContent() {
 	return (
 		<GenericPageContainer
 			title=""
-			icon={getAlbinaApiAddress("/favicon/not-found")}
-			banner={getAlbinaApiAddress("/banner/not-found")}>
+			icon={getAlbinaApiFullAddress("/favicon/not-found")}
+			banner={getAlbinaApiFullAddress("/banner/not-found")}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

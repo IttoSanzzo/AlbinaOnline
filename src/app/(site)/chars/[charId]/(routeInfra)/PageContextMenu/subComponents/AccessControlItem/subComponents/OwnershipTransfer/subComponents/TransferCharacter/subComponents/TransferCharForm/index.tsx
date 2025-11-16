@@ -1,6 +1,6 @@
 "use client";
 
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -35,7 +35,7 @@ export function TransferCharForm({
 			username: formData.newOwnerUserName,
 		};
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiAddress()}/characters/${characterId}/owner`,
+			`${getAlbinaApiFullAddress()}/characters/${characterId}/owner`,
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

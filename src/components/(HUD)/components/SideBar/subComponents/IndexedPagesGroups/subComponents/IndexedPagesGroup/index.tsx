@@ -1,5 +1,5 @@
 import { StyledLink } from "@/components/(Design)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
@@ -45,7 +45,7 @@ export default function IndexedPagesGroup({
 							icon={
 								indexedPage.image != undefined
 									? indexedPage.image
-									: `${getAlbinaApiAddress()}/favicon/${indexedPage.link}`
+									: `${getAlbinaApiFullAddress()}/favicon/${indexedPage.link}`
 							}
 						/>
 					))}

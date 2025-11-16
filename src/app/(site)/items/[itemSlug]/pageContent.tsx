@@ -9,7 +9,7 @@ import ItemPropertiesDisplay from "./subComponents/ItemPropertiesDisplay";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import { ItemData } from "@/libs/stp@types";
@@ -20,7 +20,7 @@ interface ItemPageContentProps {
 export default async function ItemPageContent({
 	itemSlug,
 }: ItemPageContentProps) {
-	const response = await fetch(getAlbinaApiAddress(`/items/${itemSlug}`), {
+	const response = await fetch(getAlbinaApiFullAddress(`/items/${itemSlug}`), {
 		cache: getCacheMode(),
 	});
 	if (!response.ok) return <>Error</>;

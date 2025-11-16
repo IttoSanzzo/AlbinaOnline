@@ -1,6 +1,6 @@
 "use client";
 
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ export function CreateCharForm() {
 	});
 
 	useEffect(() => {
-		fetch(`${getAlbinaApiAddress()}/races`, {
+		fetch(`${getAlbinaApiFullAddress()}/races`, {
 			cache: "force-cache",
 		})
 			.then((response) => response.json())
@@ -47,7 +47,7 @@ export function CreateCharForm() {
 
 	async function onSubmit(formData: FormData) {
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiAddress()}/characters`,
+			`${getAlbinaApiFullAddress()}/characters`,
 			{
 				method: "POST",
 				headers: {

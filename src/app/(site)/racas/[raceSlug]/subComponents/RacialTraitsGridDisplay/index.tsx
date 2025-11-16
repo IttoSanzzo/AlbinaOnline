@@ -1,23 +1,26 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { TraitData } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 
 interface RacialTraitLinkProps {
 	traitSlug: string;
 }
 export async function RacialTraitLink({ traitSlug }: RacialTraitLinkProps) {
-	const response = await fetch(getAlbinaApiAddress(`/traits/${traitSlug}`), {
-		method: "GET",
-		cache: getCacheMode(),
-	});
+	const response = await fetch(
+		getAlbinaApiFullAddress(`/traits/${traitSlug}`),
+		{
+			method: "GET",
+			cache: getCacheMode(),
+		}
+	);
 	if (!response.ok) {
 		return (
 			<StyledLink
 				href={`/tracos/${traitSlug}`}
 				title={`FAILED: ${traitSlug}`}
-				icon={getAlbinaApiAddress(`/favicon/not-found`)}
+				icon={getAlbinaApiFullAddress(`/favicon/not-found`)}
 			/>
 		);
 	}

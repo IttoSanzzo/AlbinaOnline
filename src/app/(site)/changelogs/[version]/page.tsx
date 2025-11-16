@@ -1,7 +1,7 @@
 import { fetchNotion, getNotionImage, Notion } from "@/libs/stp@notion";
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { PageObjectResponse } from "@notionhq/client";
 import PageContent from "./pageContent";
 
@@ -22,7 +22,7 @@ export async function generateMetadata({
 		return {
 			title: `Log ${version}`,
 			icons: {
-				icon: getAlbinaApiAddress("/favicon/misc/changelog"),
+				icon: getAlbinaApiFullAddress("/favicon/misc/changelog"),
 			},
 		};
 	return {

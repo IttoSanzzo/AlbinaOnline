@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditItemPageContent } from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Edit Item",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/items"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
 	},
 };
 
@@ -16,7 +16,7 @@ export default async function EditItemPageServerShell({
 	params,
 }: EditItemPageServerShellProps) {
 	const { itemSlug } = await params;
-	const response = await fetch(getAlbinaApiAddress(`/items/${itemSlug}`));
+	const response = await fetch(getAlbinaApiFullAddress(`/items/${itemSlug}`));
 	if (!response.ok) return <></>;
 	return <EditItemPageContent item={await response.json()} />;
 }

@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import PageContent from "./pageContent";
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
@@ -10,7 +10,7 @@ import { MasteryData } from "@/libs/stp@types";
 export const metadata: Metadata = {
 	title: "Maestrias",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/maestrias"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/maestrias"),
 	},
 };
 
@@ -22,7 +22,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function MasteriesPageServerShell() {
-	const response = await fetch(getAlbinaApiAddress("/maestrias"), {
+	const response = await fetch(getAlbinaApiFullAddress("/maestrias"), {
 		cache: getCacheMode(),
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
@@ -33,8 +33,8 @@ export default async function MasteriesPageServerShell() {
 	return (
 		<GenericPageContainer
 			title="Maestrias"
-			icon={getAlbinaApiAddress("/favicon/core-page/masteries")}
-			banner={getAlbinaApiAddress("/banner/core-page/masteries")}>
+			icon={getAlbinaApiFullAddress("/favicon/core-page/masteries")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/masteries")}>
 			<UIBasics.Divisor />
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<PageContent masteries={masteries} />

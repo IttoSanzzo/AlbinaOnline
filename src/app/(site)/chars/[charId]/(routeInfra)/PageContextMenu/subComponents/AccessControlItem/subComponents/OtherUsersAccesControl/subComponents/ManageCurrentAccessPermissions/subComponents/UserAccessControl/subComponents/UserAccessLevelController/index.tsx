@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useCurrentCharacterAccessLevel } from "@/libs/stp@hooks";
 
 const UserAccessLevelControllerContainer = newStyledElement.div(
@@ -46,7 +46,7 @@ export function UserAccessLevelController({
 			accessLevel: formData.accessLevel,
 		};
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(
+			getAlbinaApiFullAddress(
 				`/chars/${accessPermission.characterId}/access-permissions`
 			),
 			{

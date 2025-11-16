@@ -1,5 +1,5 @@
 import { HookedForm } from "@/libs/stp@forms";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
@@ -45,7 +45,7 @@ export function CharacterProfileDisplay({
 	async function handleWatchedAction(currentValues: FormData) {
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/profile`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/profile`),
 			{
 				method: "PUT",
 				body: JSON.stringify(currentValues),

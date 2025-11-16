@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const AddNewUserAccessPermissionContainer = newStyledElement.div(
 	styles.addNewUserAccessPermissionContainer
@@ -47,7 +47,7 @@ export function AddNewUserAccessPermission({
 			accessLevel: AccessLevel.ViewOnly,
 		};
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/access-permissions`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/access-permissions`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

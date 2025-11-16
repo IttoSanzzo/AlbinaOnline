@@ -7,7 +7,7 @@ import {
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { EquipmentsContext } from "../../../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { StyledLinkWithButton } from "@/components/(Design)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../..";
@@ -26,7 +26,7 @@ export async function handleRemoveEquipedItem(
 	};
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/equipments`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
@@ -63,7 +63,7 @@ function _EquipedItemDisplay({
 	const [itemData, setItemData] = useState<ItemData | null>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/items?id=${itemId}`), {
+		fetch(getAlbinaApiFullAddress(`/items?id=${itemId}`), {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",

@@ -1,6 +1,6 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterSkillExpanded, Guid, SkillType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSkillButton } from "./subComponents/AddSkillButton";
@@ -18,7 +18,7 @@ async function handleSkillRemoval(
 	const body = { skillId: skillId };
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/skills`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/skills`),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
@@ -93,7 +93,7 @@ export function _CharacterSkillsDisplay({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/skills`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/skills`),
 			{
 				method: "GET",
 			}

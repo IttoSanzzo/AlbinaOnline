@@ -1,5 +1,5 @@
 import { SpellData } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 
@@ -18,9 +18,12 @@ function getSubTypeBorderColor(subType: string): string {
 export async function getPageData(spellSlug: string): Promise<SpellPageData> {
 	if (!spellSlug) return { spellData: undefined, borderColor: "" };
 
-	const response = await fetch(getAlbinaApiAddress(`/spells/${spellSlug}`), {
-		cache: getCacheMode(),
-	});
+	const response = await fetch(
+		getAlbinaApiFullAddress(`/spells/${spellSlug}`),
+		{
+			cache: getCacheMode(),
+		}
+	);
 	if (!response.ok) return { spellData: undefined, borderColor: "" };
 	const spellData = convertEnumsFromResponse<SpellData>(await response.json());
 

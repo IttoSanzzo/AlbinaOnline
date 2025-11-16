@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { capitalizeTitle } from "@/utils/StringUtils";
 import { Breadcrumb, useBreadcrumbs } from "@/libs/stp@hooks";
 import { StyledLink } from "@/components/(Design)";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useMemo } from "react";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -26,7 +26,7 @@ export function Breadcrumbs() {
 			return {
 				name: capitalizeTitle(segments[i].replace(/[-]+/g, " ")),
 				href: allLinks[i],
-				icon: `${getAlbinaApiAddress()}/favicon/${segments
+				icon: `${getAlbinaApiFullAddress()}/favicon/${segments
 					.slice(0, i + 1)
 					.join("/")}`,
 			};

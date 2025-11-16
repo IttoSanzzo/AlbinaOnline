@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { GenericEffect } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +35,9 @@ export function ChangeEffectRole({
 	async function onSubmit(formData: FormData) {
 		const toastId = toast.loading("Saving new role...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/effect-links/${genericEffect.effectLinkId}/role`),
+			getAlbinaApiFullAddress(
+				`/effect-links/${genericEffect.effectLinkId}/role`
+			),
 			{
 				method: "PUT",
 				body: JSON.stringify(formData),

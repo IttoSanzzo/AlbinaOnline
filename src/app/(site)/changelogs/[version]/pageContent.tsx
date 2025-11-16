@@ -9,7 +9,7 @@ import {
 	getNotionImage,
 	NotionXRenderer,
 } from "@/libs/stp@notion";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { PageObjectResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
 
@@ -29,12 +29,12 @@ export default async function PageContent({
 		{
 			href: "/changelogs",
 			name: "Changelogs",
-			icon: getAlbinaApiAddress("/favicon/core-page/changelogs"),
+			icon: getAlbinaApiFullAddress("/favicon/core-page/changelogs"),
 		},
 		{
 			href: `/changelogs/${versionName}`,
 			name: versionName,
-			icon: getAlbinaApiAddress("/favicon/core-page/changelogs"),
+			icon: getAlbinaApiFullAddress("/favicon/core-page/changelogs"),
 		},
 	];
 

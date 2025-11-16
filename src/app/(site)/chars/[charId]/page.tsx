@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import CharPageContent from "./pageContent";
 import { Guid } from "@/libs/stp@types";
 
@@ -13,7 +13,7 @@ export async function generateMetadata({
 	const { charId } = await params;
 
 	const response = await fetch(
-		getAlbinaApiAddress(`/chars/${charId}/metadata`),
+		getAlbinaApiFullAddress(`/chars/${charId}/metadata`),
 		{
 			cache: "force-cache",
 			method: "GET",

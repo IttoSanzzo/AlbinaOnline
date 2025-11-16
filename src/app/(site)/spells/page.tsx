@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { GenericPageContainer } from "@/components/(Design)";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
@@ -9,7 +9,7 @@ import PageContent from "./pageContent";
 export const metadata: Metadata = {
 	title: "Spells",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/spells"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/spells"),
 	},
 };
 
@@ -31,7 +31,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function SpellsPageServerShell() {
-	const response = await fetch(getAlbinaApiAddress("/spells"), {
+	const response = await fetch(getAlbinaApiFullAddress("/spells"), {
 		cache: getCacheMode(),
 	});
 	const allRawSpells: SpellData[] = await response.json();
@@ -42,8 +42,8 @@ export default async function SpellsPageServerShell() {
 	return (
 		<GenericPageContainer
 			title="Todas os Spells"
-			icon={getAlbinaApiAddress("/favicon/core-page/spells")}
-			banner={getAlbinaApiAddress("/banner/core-page/spells")}>
+			icon={getAlbinaApiFullAddress("/favicon/core-page/spells")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/spells")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<PageContent spells={allSpells} />
 		</GenericPageContainer>

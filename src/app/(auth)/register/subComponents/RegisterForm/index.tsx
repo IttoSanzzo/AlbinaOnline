@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HookedForm } from "@/libs/stp@forms";
@@ -58,7 +58,7 @@ async function FetchRegister(
 	props: RegisterProps
 ): Promise<{ status: number; message?: string }> {
 	try {
-		const response = await fetch(`${getAlbinaApiAddress()}/auth/register`, {
+		const response = await fetch(`${getAlbinaApiFullAddress()}/auth/register`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

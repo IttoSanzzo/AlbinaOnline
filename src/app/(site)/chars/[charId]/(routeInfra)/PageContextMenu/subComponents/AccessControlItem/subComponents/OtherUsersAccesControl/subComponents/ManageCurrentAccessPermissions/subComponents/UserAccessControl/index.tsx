@@ -1,6 +1,6 @@
 import { CharacterAccessPermission, FullUser } from "@/libs/stp@types";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import Image from "next/image";
 import Link from "next/link";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -27,7 +27,7 @@ async function handleRemoveUserAccess(
 		userId: accessPermission.userId,
 	};
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(
+		getAlbinaApiFullAddress(
 			`/chars/${accessPermission.characterId}/access-permissions`
 		),
 		{
@@ -58,7 +58,7 @@ export function UserAccessControl({
 	const [user, setUser] = useState<FullUser | null>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/users/id/${accessPermission.userId}`), {
+		fetch(getAlbinaApiFullAddress(`/users/id/${accessPermission.userId}`), {
 			method: "GET",
 		}).then(async (response) => {
 			if (!response.ok) return;

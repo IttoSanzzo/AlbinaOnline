@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useLayoutEffect, useState } from "react";
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
@@ -49,7 +49,7 @@ async function postReorderAsync(
 	newPosition: number
 ) {
 	await authenticatedFetchAsync(
-		`${getAlbinaApiAddress()}/users/me/favorites/reorder`,
+		`${getAlbinaApiFullAddress()}/users/me/favorites/reorder`,
 		{
 			headers: {
 				"Content-Type": "application/json",
@@ -116,7 +116,7 @@ export default function SortableIndexedPagesGroup({
 										icon:
 											indexedPage.image != undefined
 												? indexedPage.image
-												: `${getAlbinaApiAddress()}/favicon/${
+												: `${getAlbinaApiFullAddress()}/favicon/${
 														indexedPage.link
 												  }`,
 									}}

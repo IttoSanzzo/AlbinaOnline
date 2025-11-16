@@ -1,6 +1,6 @@
 import { CharacterAccessPermission, Guid } from "@/libs/stp@types";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { AddNewUserAccessPermission } from "./subComponents/AddNewUserAccessPermission";
 import { ManageCurrentAccessPermissions } from "./subComponents/ManageCurrentAccessPermissions";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -21,7 +21,7 @@ export function OtherUsersAccessControl({
 	>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/chars/${characterId}/access-permissions`), {
+		fetch(getAlbinaApiFullAddress(`/chars/${characterId}/access-permissions`), {
 			method: "GET",
 		}).then(async (response) => {
 			if (!response.ok) return;

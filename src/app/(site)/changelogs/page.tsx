@@ -1,4 +1,4 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import PageContent from "./pageContent";
 import { fetchNotion } from "@/libs/stp@notion";
@@ -6,7 +6,7 @@ import { fetchNotion } from "@/libs/stp@notion";
 export const metadata: Metadata = {
 	title: "Changelogs",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/changelogs"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/changelogs"),
 	},
 };
 

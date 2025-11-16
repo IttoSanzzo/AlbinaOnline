@@ -1,6 +1,6 @@
 "use client";
 
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useUserFavorites } from "@/libs/stp@hooks";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -22,7 +22,7 @@ export function TestFetchButton() {
 		};
 
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiAddress()}/users/me/favorites/reorder`,
+			`${getAlbinaApiFullAddress()}/users/me/favorites/reorder`,
 			{
 				headers: {
 					"Content-Type": "application/json",

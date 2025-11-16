@@ -1,5 +1,5 @@
 import { Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { redirect } from "next/navigation";
 
 interface PageProps {
@@ -9,7 +9,7 @@ export default async function Page({ params }: PageProps) {
 	const { userId } = await params;
 
 	const response = await fetch(
-		getAlbinaApiAddress(`/users/id/${userId}/username`),
+		getAlbinaApiFullAddress(`/users/id/${userId}/username`),
 		{
 			cache: "force-cache",
 		}

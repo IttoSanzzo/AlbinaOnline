@@ -2,7 +2,7 @@ import { FullUser, Guid } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useLayoutEffect, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import Image from "next/image";
 import { TransferCharacter } from "./subComponents/TransferCharacter";
 import { UIBasics } from "@/components/(UIBasics)";
@@ -29,7 +29,7 @@ export function OwnershipTransfer({
 	const [userState, setUserState] = useState<FullUser | null>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/users/id/${ownerId}`), {
+		fetch(getAlbinaApiFullAddress(`/users/id/${ownerId}`), {
 			method: "GET",
 		}).then(async (response) => {
 			if (!response.ok) return;

@@ -1,23 +1,26 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { SkillData } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 
 interface RacialSkillLinkProps {
 	skillSlug: string;
 }
 export async function RacialSkillLink({ skillSlug }: RacialSkillLinkProps) {
-	const response = await fetch(getAlbinaApiAddress(`/skills/${skillSlug}`), {
-		method: "GET",
-		cache: getCacheMode(),
-	});
+	const response = await fetch(
+		getAlbinaApiFullAddress(`/skills/${skillSlug}`),
+		{
+			method: "GET",
+			cache: getCacheMode(),
+		}
+	);
 	if (!response.ok) {
 		return (
 			<StyledLink
 				href={`/skills/${skillSlug}`}
 				title={`FAILED: ${skillSlug}`}
-				icon={getAlbinaApiAddress(`/favicon/not-found`)}
+				icon={getAlbinaApiFullAddress(`/favicon/not-found`)}
 			/>
 		);
 	}

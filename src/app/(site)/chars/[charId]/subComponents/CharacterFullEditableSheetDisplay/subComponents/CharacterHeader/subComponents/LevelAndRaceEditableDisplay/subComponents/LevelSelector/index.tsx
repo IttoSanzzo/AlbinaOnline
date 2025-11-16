@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,7 @@ export function LevelSelector({ characterId, level }: LevelSelectorProps) {
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/level`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/level`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

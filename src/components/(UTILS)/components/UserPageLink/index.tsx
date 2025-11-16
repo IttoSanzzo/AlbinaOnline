@@ -2,7 +2,7 @@
 
 import { StyledLink } from "@/components/(Design)";
 import { FullUser, Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useLayoutEffect, useState } from "react";
 
 interface UserPageLinkProps {
@@ -12,7 +12,7 @@ export function UserPageLink({ userId }: UserPageLinkProps) {
 	const [user, setUser] = useState<FullUser | null>(null);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/users/id/${userId}`), {
+		fetch(getAlbinaApiFullAddress(`/users/id/${userId}`), {
 			method: "GET",
 		}).then(async (response) => {
 			if (!response.ok) return;

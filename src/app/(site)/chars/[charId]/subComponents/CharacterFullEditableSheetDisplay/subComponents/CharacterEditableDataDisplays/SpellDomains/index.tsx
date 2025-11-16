@@ -1,7 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { HookedForm } from "@/libs/stp@forms";
 import { CharacterSpellDomains } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,7 +37,7 @@ function FormSpellDomainTablePair(name: string) {
 		<StyledLink
 			title={name}
 			href={`/spells/${lowercaseName}`}
-			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
+			icon={`${getAlbinaApiFullAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<HookedForm.NumberInputInline
 			fieldName={lowercaseName as keyof FormData}
@@ -56,7 +56,7 @@ export function CommonSpellDomainTablePair(
 		<StyledLink
 			title={name}
 			href={`/spells/${lowercaseName}`}
-			icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
+			icon={`${getAlbinaApiFullAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
 		<UIBasics.Text
 			textAlign="center"

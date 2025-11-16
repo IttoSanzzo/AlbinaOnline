@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useRouter } from "next/navigation";
 import { Guid } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -17,7 +17,7 @@ export default function OwnerPageLink({ ownerId }: OwnerPageLinkProps) {
 	async function handleClick() {
 		try {
 			const response = await fetch(
-				`${getAlbinaApiAddress()}/users/id/${ownerId}/username`,
+				`${getAlbinaApiFullAddress()}/users/id/${ownerId}/username`,
 				{
 					cache: "force-cache",
 				}
@@ -33,7 +33,7 @@ export default function OwnerPageLink({ ownerId }: OwnerPageLinkProps) {
 	return (
 		<OwnerPageLinkButton onClick={handleClick}>
 			<Image
-				src={`${getAlbinaApiAddress()}/users/id/${ownerId}/favicon`}
+				src={`${getAlbinaApiFullAddress()}/users/id/${ownerId}/favicon`}
 				alt="Owner Avatar"
 				width={30}
 				height={30}

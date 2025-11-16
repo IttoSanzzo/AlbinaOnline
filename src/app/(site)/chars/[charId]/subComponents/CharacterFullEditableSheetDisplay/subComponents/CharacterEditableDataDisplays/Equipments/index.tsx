@@ -3,7 +3,7 @@ import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders
 import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
 import React from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
 import { AddEquipmentButton } from "./subComponents/AddEquipmentButton";
@@ -56,7 +56,7 @@ export function _CharacterEquipmentsDisplay() {
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/equipments`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
 			{
 				method: "GET",
 				headers: {

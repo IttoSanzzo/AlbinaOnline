@@ -7,7 +7,7 @@ import {
 	SpellData,
 	SpellType,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -37,7 +37,7 @@ export function SpellSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<SpellData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress("/spells"), {
+		fetch(getAlbinaApiFullAddress("/spells"), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -74,7 +74,7 @@ export function SpellSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/spells`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

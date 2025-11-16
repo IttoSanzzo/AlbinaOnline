@@ -1,6 +1,6 @@
 "use client";
 
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,7 +33,7 @@ export function DeleteCharForm({
 
 	async function onSubmit() {
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiAddress()}/characters/${characterId}`,
+			`${getAlbinaApiFullAddress()}/characters/${characterId}`,
 			{
 				method: "DELETE",
 				headers: {

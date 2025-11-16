@@ -22,7 +22,7 @@ import {
 	RoleHierarchy,
 } from "@/libs/stp@types";
 import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -107,7 +107,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/races/${race.slug}`),
+			getAlbinaApiFullAddress(`/races/${race.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -145,8 +145,8 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			isEditable={true}
 			banner={race.bannerUrl}
 			icon={race.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(`/favicon/races/${race.slug}`)}
-			bannerChangeRoute={getAlbinaApiAddress(`/banner/races/${race.slug}`)}
+			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/races/${race.slug}`)}
+			bannerChangeRoute={getAlbinaApiFullAddress(`/banner/races/${race.slug}`)}
 			metadataTag={`race-${race.slug}`}>
 			<HookedForm.Form
 				form={form}
@@ -211,7 +211,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={race.name}
-				deletionRoute={getAlbinaApiAddress(`/races/${race.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/races/${race.slug}`)}
 				routerPushRoute="/racas"
 				revalidatePath="/racas"
 			/>

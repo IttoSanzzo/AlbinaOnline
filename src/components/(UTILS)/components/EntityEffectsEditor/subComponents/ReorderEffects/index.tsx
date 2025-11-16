@@ -8,7 +8,7 @@ import z from "zod";
 import { GenericEffect, Guid } from "@/libs/stp@types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import toast from "react-hot-toast";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
@@ -64,7 +64,7 @@ export function ReorderEffects({
 		};
 		const toastId = toast.loading("Reordening...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/effect-links/reorder"),
+			getAlbinaApiFullAddress("/effect-links/reorder"),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

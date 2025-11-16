@@ -3,7 +3,7 @@
 import { GenericPageContainer } from "@/components/(Design)";
 import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { MasterySubType, MasteryType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -40,7 +40,7 @@ export function CreateMasteryPageContent() {
 		};
 		const toastId = toast.loading("Creating mastery...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress("/masteries"),
+			getAlbinaApiFullAddress("/masteries"),
 			{
 				method: "POST",
 				body: JSON.stringify(body),
@@ -72,8 +72,8 @@ export function CreateMasteryPageContent() {
 	return (
 		<GenericPageContainer
 			title=""
-			icon={getAlbinaApiAddress("/favicon/not-found")}
-			banner={getAlbinaApiAddress("/banner/not-found")}>
+			icon={getAlbinaApiFullAddress("/favicon/not-found")}
+			banner={getAlbinaApiFullAddress("/banner/not-found")}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

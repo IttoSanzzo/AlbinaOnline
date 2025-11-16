@@ -6,7 +6,7 @@ import {
 	MasteryType,
 } from "@/libs/stp@types";
 import { useContext, useLayoutEffect, useMemo, useState } from "react";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -35,7 +35,7 @@ export function MasterySelectionCore({
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress(`/masteries?type=${type}`), {
+		fetch(getAlbinaApiFullAddress(`/masteries?type=${type}`), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -72,7 +72,7 @@ export function MasterySelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/masteries`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/masteries`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

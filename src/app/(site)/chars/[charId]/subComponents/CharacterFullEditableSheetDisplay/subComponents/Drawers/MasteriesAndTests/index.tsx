@@ -2,7 +2,7 @@ import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { useContext, useLayoutEffect } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { CharacterMasteryExpanded, Guid } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
 import React from "react";
@@ -18,7 +18,7 @@ export function MasteriesAndTestsDrawer({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/masteries`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/masteries`),
 			{
 				method: "GET",
 				headers: {

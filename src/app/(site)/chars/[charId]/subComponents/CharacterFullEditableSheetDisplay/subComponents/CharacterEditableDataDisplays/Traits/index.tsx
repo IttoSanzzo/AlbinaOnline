@@ -1,6 +1,6 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddTraitButton } from "./subComponents/AddTraitButton";
@@ -18,7 +18,7 @@ async function handleTraitRemoval(
 	const body = { traitId: traitId };
 	const toastId = toast.loading(CharToastMessage.loading);
 	const response = await authenticatedFetchAsync(
-		getAlbinaApiAddress(`/chars/${characterId}/traits`),
+		getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
@@ -93,7 +93,7 @@ export function _CharacterTraitsDisplay({
 
 	useLayoutEffect(() => {
 		authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/traits`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 			{
 				method: "GET",
 			}

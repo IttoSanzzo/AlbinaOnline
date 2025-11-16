@@ -1,6 +1,6 @@
 import { SideActionNumberInputButtons } from "@/components/(UTILS)";
 import { Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { useContext } from "react";
 import toast from "react-hot-toast";
@@ -25,7 +25,7 @@ export function MasteryLevelController({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/masteries/${masteryId}`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/masteries/${masteryId}`),
 			{
 				method: "PATCH",
 				body: JSON.stringify(body),

@@ -10,7 +10,7 @@ import Image from "next/image";
 import styles from "./styles.module.css";
 import clsx from "clsx";
 import { defaultMapNotionPageUrl } from "../functions/MapPageUrl";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { ExtendedRecordMap } from "notion-types";
 import Link, { LinkProps } from "next/link";
 import { LinkPreviewInjector } from "./LinkPreviewInjector";
@@ -110,7 +110,7 @@ export function DefaultRenderer({
 				}}
 				mapImageUrl={
 					mapLinkImageUrlsToAlbinaApiRoute
-						? () => getAlbinaApiAddress(mapLinkImageUrlsToAlbinaApiRoute)
+						? () => getAlbinaApiFullAddress(mapLinkImageUrlsToAlbinaApiRoute)
 						: undefined
 				}
 				components={components}

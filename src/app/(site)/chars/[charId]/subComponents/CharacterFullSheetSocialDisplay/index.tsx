@@ -9,7 +9,7 @@ import { CharacterDrawers } from "./subComponents/Drawers";
 import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 
 const fetchCharacter = {
@@ -18,7 +18,7 @@ const fetchCharacter = {
 		setCharacterItems: Dispatch<SetStateAction<CharacterItemStackExpanded[]>>
 	) => {
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/items`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
 			{
 				method: "GET",
 				headers: {
@@ -42,7 +42,7 @@ const fetchCharacter = {
 		setCharacterMasteries: Dispatch<SetStateAction<CharacterMasteryExpanded[]>>
 	) => {
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/masteries`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/masteries`),
 			{
 				method: "GET",
 				headers: {
@@ -66,7 +66,7 @@ const fetchCharacter = {
 		setCharacterEquipments: Dispatch<SetStateAction<CharacterEquipments | null>>
 	) => {
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/equipments`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
 			{
 				method: "GET",
 				headers: {

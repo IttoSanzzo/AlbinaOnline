@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditMasteryPageContent } from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Edit Mastery",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/masteries"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/masteries"),
 	},
 };
 
@@ -17,7 +17,7 @@ export default async function EditMasteryPageServerShell({
 }: EditMasteryPageServerShellProps) {
 	const { masterySlug } = await params;
 	const response = await fetch(
-		getAlbinaApiAddress(`/masteries/${masterySlug}`)
+		getAlbinaApiFullAddress(`/masteries/${masterySlug}`)
 	);
 	if (!response.ok) return null;
 	return <EditMasteryPageContent mastery={await response.json()} />;

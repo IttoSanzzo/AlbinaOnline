@@ -19,7 +19,7 @@ import {
 	MasteryType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { revalidatePathByClientSide } from "@/utils/ServerActions";
@@ -75,7 +75,7 @@ export function EditMasteryPageContent({
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/masteries/${mastery.slug}`),
+			getAlbinaApiFullAddress(`/masteries/${mastery.slug}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),
@@ -113,10 +113,10 @@ export function EditMasteryPageContent({
 			isEditable={true}
 			banner={mastery.bannerUrl}
 			icon={mastery.iconUrl}
-			iconChangeRoute={getAlbinaApiAddress(
+			iconChangeRoute={getAlbinaApiFullAddress(
 				`/favicon/masteries/${mastery.slug}`
 			)}
-			bannerChangeRoute={getAlbinaApiAddress(
+			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/banner/masteries/${mastery.slug}`
 			)}
 			metadataTag={`mastery-${mastery.slug}`}>
@@ -159,7 +159,7 @@ export function EditMasteryPageContent({
 			<HookedForm.Space />
 			<DeletionAlertDialog
 				safetyText={mastery.name}
-				deletionRoute={getAlbinaApiAddress(`/masteries/${mastery.slug}`)}
+				deletionRoute={getAlbinaApiFullAddress(`/masteries/${mastery.slug}`)}
 				routerPushRoute="/maestrias"
 				revalidatePath="/maestrias"
 			/>

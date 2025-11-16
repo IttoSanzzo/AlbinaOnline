@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartTextColor, UIBasics } from "../..";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const SmartTextContainer = newStyledElement.div(styles.smartTextContainer);
 
@@ -23,7 +23,7 @@ function getSmartLink(smartSlice: string, key: number): ReactNode {
 			key={key}
 			title={title}
 			href={href}
-			icon={getAlbinaApiAddress(`/favicon${iconUrl}`)}
+			icon={getAlbinaApiFullAddress(`/favicon${iconUrl}`)}
 			textMode={true}
 		/>
 	);

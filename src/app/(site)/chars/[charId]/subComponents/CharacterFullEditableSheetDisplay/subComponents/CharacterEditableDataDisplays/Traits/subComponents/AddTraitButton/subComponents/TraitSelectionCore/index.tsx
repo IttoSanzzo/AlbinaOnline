@@ -8,7 +8,7 @@ import {
 	traitNames,
 	TraitType,
 } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -36,7 +36,7 @@ export function TraitSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<TraitData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiAddress("/traits"), {
+		fetch(getAlbinaApiFullAddress("/traits"), {
 			method: "GET",
 			cache: getCacheMode(),
 		}).then(async (response) => {
@@ -73,7 +73,7 @@ export function TraitSelectionCore({
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/traits`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 			{
 				method: "POST",
 				body: JSON.stringify(body),

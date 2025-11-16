@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditTraitPageContent } from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Edit Trait",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/traits"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/traits"),
 	},
 };
 
@@ -16,7 +16,7 @@ export default async function EditTraitPageServerShell({
 	params,
 }: EditTraitPageServerShellProps) {
 	const { traitSlug } = await params;
-	const response = await fetch(getAlbinaApiAddress(`/traits/${traitSlug}`));
+	const response = await fetch(getAlbinaApiFullAddress(`/traits/${traitSlug}`));
 	if (!response.ok) return <></>;
 	return <EditTraitPageContent trait={await response.json()} />;
 }

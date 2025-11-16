@@ -7,7 +7,7 @@ import z from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { CoreMetricsContext } from "../../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
 import { CharacterCoreMetrics } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
@@ -92,7 +92,7 @@ export function GaugesTable() {
 
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/chars/${characterId}/core-metrics`),
+			getAlbinaApiFullAddress(`/chars/${characterId}/core-metrics`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

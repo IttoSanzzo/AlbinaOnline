@@ -3,7 +3,7 @@ import { RaceData } from "@/libs/stp@types";
 import { getCacheMode } from "@/utils/Cache";
 import RaceTypeDisplay from "./subComponents/RaceTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Humanos", id: "Humanos" },
@@ -14,7 +14,7 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function RacesPageContent() {
-	const response = await fetch(getAlbinaApiAddress("/races"), {
+	const response = await fetch(getAlbinaApiFullAddress("/races"), {
 		cache: getCacheMode(),
 	});
 	const allRawRaces: RaceData[] = await response.json();
@@ -25,8 +25,8 @@ export default async function RacesPageContent() {
 	return (
 		<GenericPageContainer
 			title="Raças"
-			icon={getAlbinaApiAddress("/favicon/core-page/races")}
-			banner={getAlbinaApiAddress("/banner/core-page/races")}>
+			icon={getAlbinaApiFullAddress("/favicon/core-page/races")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/races")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 
 			<RaceTypeDisplay

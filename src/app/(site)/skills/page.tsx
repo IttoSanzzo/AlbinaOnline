@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import SkillsPageContent from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Skills",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/skills"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/skills"),
 	},
 };
 

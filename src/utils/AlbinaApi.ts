@@ -1,8 +1,10 @@
-const AlbinaApiHost = process.env.NEXT_PUBLIC_ALBINA_API_HOST;
+const AlbinaApiAddress = process.env.NEXT_PUBLIC_ALBINA_API_ADDRESS;
 const AlbinaApiPort = process.env.NEXT_PUBLIC_ALBINA_API_PORT;
-const AlbinaApiAddress = `http://${AlbinaApiHost}:${AlbinaApiPort}`;
+const AlbinaApiSecure = process.env.NEXT_PUBLIC_ALBINA_API_SECURE === "true";
+const AlbinaApiProtocol = AlbinaApiSecure ? "https://" : "http://";
+const AlbinaApiFullAddress = `${AlbinaApiProtocol}${AlbinaApiAddress}`;
 
-export function getAlbinaApiAddress(route?: string): string {
-	if (route) return AlbinaApiAddress + route;
-	return AlbinaApiAddress;
+export function getAlbinaApiFullAddress(route?: string): string {
+	if (route) return AlbinaApiFullAddress + route;
+	return AlbinaApiFullAddress;
 }

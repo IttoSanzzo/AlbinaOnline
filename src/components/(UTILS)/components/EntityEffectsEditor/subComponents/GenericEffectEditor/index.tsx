@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm, SelectOption, zJsonStringTyped } from "@/libs/stp@forms";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { UIBasics } from "@/components/(UIBasics)";
@@ -62,7 +62,7 @@ export function GenericEffectEditor({
 	async function onSubmit(formData: FormData) {
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiAddress(`/effects/${genericEffect.id}`),
+			getAlbinaApiFullAddress(`/effects/${genericEffect.id}`),
 			{
 				method: "PUT",
 				body: JSON.stringify(formData),

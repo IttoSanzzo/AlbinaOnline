@@ -1,11 +1,11 @@
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditSkillPageContent } from "./pageContent";
 
 export const metadata: Metadata = {
 	title: "Edit Skill",
 	icons: {
-		icon: getAlbinaApiAddress("/favicon/core-page/skills"),
+		icon: getAlbinaApiFullAddress("/favicon/core-page/skills"),
 	},
 };
 
@@ -16,7 +16,7 @@ export default async function EditSkillPageServerShell({
 	params,
 }: EditSkillPageServerShellProps) {
 	const { skillSlug } = await params;
-	const response = await fetch(getAlbinaApiAddress(`/skills/${skillSlug}`));
+	const response = await fetch(getAlbinaApiFullAddress(`/skills/${skillSlug}`));
 	if (!response.ok) return <></>;
 	return <EditSkillPageContent skill={await response.json()} />;
 }

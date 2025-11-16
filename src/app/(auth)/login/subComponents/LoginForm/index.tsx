@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { isEmail } from "@/utils/StringUtils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,7 @@ export async function FetchLogin(
 				? { password: props.password, username: props.username }
 				: { password: props.password, email: props.email };
 
-		const response = await fetch(`${getAlbinaApiAddress()}/auth/login`, {
+		const response = await fetch(`${getAlbinaApiFullAddress()}/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

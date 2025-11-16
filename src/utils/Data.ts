@@ -1,5 +1,5 @@
 import { SelectOption } from "@/libs/stp@forms";
-import { getAlbinaApiAddress } from "./AlbinaApi";
+import { getAlbinaApiFullAddress } from "./AlbinaApi";
 import { getCacheMode } from "./Cache";
 import { pascalToCamel } from "./StringUtils";
 import { LintIgnoredAny } from "@/libs/stp@types";
@@ -32,7 +32,7 @@ type SlugMap = typeof SlugKeyMap;
 export async function fetchStaticParamSlugs<K extends keyof SlugMap>(
 	endpoint: K
 ): Promise<{ [P in SlugMap[K]]: string }[]> {
-	const response = await fetch(getAlbinaApiAddress(`/${endpoint}`), {
+	const response = await fetch(getAlbinaApiFullAddress(`/${endpoint}`), {
 		cache: getCacheMode(),
 	});
 	if (!response.ok) return [];

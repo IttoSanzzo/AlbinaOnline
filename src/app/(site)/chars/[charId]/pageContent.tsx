@@ -2,7 +2,7 @@
 
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { AccessLevel, CharacterExpandedData, Guid } from "@/libs/stp@types";
-import { getAlbinaApiAddress } from "@/utils/AlbinaApi";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import {
 	Breadcrumb,
 	SetBreadcrumbs,
@@ -59,7 +59,7 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 		{
 			href: "/chars",
 			name: "Chars",
-			icon: `${getAlbinaApiAddress()}/favicon/chars`,
+			icon: `${getAlbinaApiFullAddress()}/favicon/chars`,
 		},
 		{
 			href: "#",
@@ -76,13 +76,15 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			borderColor={"#505059"}
 			isEditable={accessLevel >= AccessLevel.Edit}
 			subTitle={<UserPageLink userId={characterData.ownerId} />}
-			bannerChangeRoute={getAlbinaApiAddress(
+			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/chars/${characterData.id}/banner`
 			)}
-			iconChangeRoute={getAlbinaApiAddress(
+			iconChangeRoute={getAlbinaApiFullAddress(
 				`/chars/${characterData.id}/favicon`
 			)}
-			titleChangeRoute={getAlbinaApiAddress(`/chars/${characterData.id}/name`)}
+			titleChangeRoute={getAlbinaApiFullAddress(
+				`/chars/${characterData.id}/name`
+			)}
 			metadataTag={`char-${characterData.id}`}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<SetNavBarModules
