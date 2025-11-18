@@ -4,13 +4,16 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { GenericPageContainer } from "@/components/(Design)";
 import { SetNavBarModules } from "@/libs/stp@hooks";
 import { routeInfra } from "./(routeInfra)";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Chars",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/chars"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/chars"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/chars"),
 	},
-};
+	route: "/chars",
+});
 
 export default function CharsPageServerShell() {
 	return (

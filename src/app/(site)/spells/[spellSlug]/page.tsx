@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import SpellPageContent from "./pageContent";
 import { fetchStaticParamSlugs } from "@/utils/Data";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
 
 interface SpellPageServerShellProps {
 	params: Promise<{ spellSlug: string }>;
@@ -23,15 +25,20 @@ export async function generateMetadata({
 		}
 	);
 	if (!response.ok) {
-		return {
-			title: "???",
-		};
+		return assembleMetadata({
+			title: "Spell Not Found",
+		});
 	}
-	const data = await response.json();
-	return {
+	const data: MetadataData = await response.json();
+	return assembleMetadata({
 		title: data.title,
-		icons: { icon: data.icon },
-	};
+		description: data.description,
+		icon: data.icon,
+		ogImage: {
+			url: data.ogImage,
+		},
+		route: `/spells/${spellSlug}`,
+	});
 }
 
 export default async function SpellPageServerShell({

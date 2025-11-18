@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { PageObjectResponse } from "@notionhq/client";
 import PageContent from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 const getPageName = (page: PageObjectResponse) =>
 	(page.properties.Version as unknown as { title: [{ plain_text: string }] })
@@ -19,18 +20,26 @@ export async function generateMetadata({
 	const { version } = await params;
 	const page = await fetchNotion.Changelog.PageByVersion(version);
 	if (!page)
-		return {
+		return assembleMetadata({
 			title: `Log ${version}`,
-			icons: {
-				icon: getAlbinaApiFullAddress("/favicon/misc/changelog"),
+			icon: getAlbinaApiFullAddress("/favicon/misc/changelog"),
+			ogImage: {
+				url: getAlbinaApiFullAddress("/banner/misc/changelog"),
 			},
-		};
-	return {
+			route: `/changelogs/${version}`,
+		});
+	return assembleMetadata({
 		title: `Log ${getPageName(page)}`,
-		icons: {
-			icon: getNotionImage.Icon.PageObject(page),
+		icon:
+			getNotionImage.Icon.PageObject(page) ??
+			getAlbinaApiFullAddress("/favicon/misc/changelog"),
+		ogImage: {
+			url:
+				getNotionImage.Cover.PageObject(page) ??
+				getAlbinaApiFullAddress("/banner/misc/changelog"),
 		},
-	};
+		route: `/changelogs/${version}`,
+	});
 }
 
 export default async function ChangelogPageServerShell({

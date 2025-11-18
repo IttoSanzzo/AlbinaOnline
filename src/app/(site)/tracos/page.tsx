@@ -1,13 +1,16 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import TraitsPageContent from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Traços",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/traits"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/tracos"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/tracos"),
 	},
-};
+	route: "/tracos",
+});
 
 export default async function TraitsPageServerShell() {
 	return <TraitsPageContent />;

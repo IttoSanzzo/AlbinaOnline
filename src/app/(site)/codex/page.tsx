@@ -2,13 +2,16 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import PageContent from "./pageContent";
 import { fetchNotion, Notion } from "@/libs/stp@notion";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Codex",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/codex"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/codex"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/codex"),
 	},
-};
+	route: "/codex",
+});
 
 export default async function PageServerShell() {
 	const page = await fetchNotion.Codex.CorePage();

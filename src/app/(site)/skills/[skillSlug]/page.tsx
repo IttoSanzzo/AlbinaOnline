@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import SkillPageContent from "./pageContent";
 import { fetchStaticParamSlugs } from "@/utils/Data";
+import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 interface SkillPageServerShellProps {
 	params: Promise<{ skillSlug: string }>;
@@ -23,15 +25,20 @@ export async function generateMetadata({
 		}
 	);
 	if (!response.ok) {
-		return {
-			title: "???",
-		};
+		return assembleMetadata({
+			title: "Skill Not Found",
+		});
 	}
-	const data = await response.json();
-	return {
+	const data: MetadataData = await response.json();
+	return assembleMetadata({
 		title: data.title,
-		icons: { icon: data.icon },
-	};
+		description: data.description,
+		icon: data.icon,
+		ogImage: {
+			url: data.ogImage,
+		},
+		route: `/skills/${skillSlug}`,
+	});
 }
 
 export default async function SkillPageServerShell({

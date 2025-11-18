@@ -5,6 +5,7 @@ import { fetchNotion, getNotionImage, Notion } from "@/libs/stp@notion";
 import { PageObjectResponse } from "@notionhq/client";
 import PageContent from "../../[...path]/pageContent";
 import { redirect } from "next/navigation";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 const getPageName = (page: PageObjectResponse) =>
 	(page.properties.Name as unknown as { title: [{ plain_text: string }] })
@@ -27,18 +28,26 @@ export async function generateMetadata({
 	const page = await fetchNotion.Codex.PageByPath(fullPath);
 	const path = fullPath.split("/");
 	if (!page)
-		return {
+		return assembleMetadata({
 			title: capitalizeAll(path[path.length - 1]),
-			icons: {
-				icon: getAlbinaApiFullAddress("/favicon/misc/codex"),
+			icon: getAlbinaApiFullAddress("/favicon/misc/codex"),
+			ogImage: {
+				url: getAlbinaApiFullAddress("/banner/misc/codex"),
 			},
-		};
-	return {
+			route: `/codex${fullPath}`,
+		});
+	return assembleMetadata({
 		title: getPageName(page),
-		icons: {
-			icon: getNotionImage.Icon.PageObject(page),
+		icon:
+			getNotionImage.Icon.PageObject(page) ??
+			getAlbinaApiFullAddress("/favicon/misc/codex"),
+		ogImage: {
+			url:
+				getNotionImage.Cover.PageObject(page) ??
+				getAlbinaApiFullAddress("/banner/misc/codex"),
 		},
-	};
+		route: `/codex${fullPath}`,
+	});
 }
 
 export default async function ChangelogPageServerShell({

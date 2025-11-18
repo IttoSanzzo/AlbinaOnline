@@ -6,13 +6,16 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getCacheMode } from "@/utils/Cache";
 import { MasteryData } from "@/libs/stp@types";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Maestrias",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/maestrias"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/maestrias"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/maestrias"),
 	},
-};
+	route: "/maestrias",
+});
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Proficiências", id: "Proficiências" },

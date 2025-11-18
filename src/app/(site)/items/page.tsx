@@ -5,13 +5,16 @@ import { ItemData } from "@/libs/stp@types";
 import PageContent from "./pageContent";
 import { GenericPageContainer } from "@/components/(Design)";
 import { SetAnchorNavigation } from "@/libs/stp@hooks";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Items",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/items"),
 	},
-};
+	route: "/items",
+});
 
 const anchorNavigationData = [
 	{ name: "Armamentos", id: "armamentos" },

@@ -1,10 +1,12 @@
 import { StyledLink } from "@/components/(Design)";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Sandbox",
-};
+	route: "/sandbox",
+});
 
 export default async function SandBox() {
 	if (process.env.NODE_ENV === "production") return notFound();

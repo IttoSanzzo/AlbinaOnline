@@ -2,13 +2,16 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import PageContent from "./pageContent";
 import { fetchNotion } from "@/libs/stp@notion";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Changelogs",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/changelogs"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/changelogs"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/changelogs"),
 	},
-};
+	route: "/changelogs",
+});
 
 export default async function PageServerShell() {
 	const collection = await fetchNotion.Changelog.Collection();

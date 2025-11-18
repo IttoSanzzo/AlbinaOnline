@@ -1,13 +1,16 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import RacesPageContent from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Raças",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/races"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/racas"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/racas"),
 	},
-};
+	route: "/racas",
+});
 
 export default async function RacesPageServerShell() {
 	return <RacesPageContent />;

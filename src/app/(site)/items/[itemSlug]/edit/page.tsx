@@ -1,13 +1,15 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditItemPageContent } from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Edit Item",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/items"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/items"),
 	},
-};
+});
 
 interface EditItemPageServerShellProps {
 	params: Promise<{ itemSlug: string }>;

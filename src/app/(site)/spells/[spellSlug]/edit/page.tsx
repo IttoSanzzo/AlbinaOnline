@@ -1,13 +1,15 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditSpellPageContent } from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Edit Spell",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/spells"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/spells"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/spells"),
 	},
-};
+});
 
 interface EditSpellPageServerShellProps {
 	params: Promise<{ spellSlug: string }>;

@@ -5,13 +5,16 @@ import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getCacheMode } from "@/utils/Cache";
 import { SpellData } from "@/libs/stp@types";
 import PageContent from "./pageContent";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = assembleMetadata({
 	title: "Spells",
-	icons: {
-		icon: getAlbinaApiFullAddress("/favicon/core-page/spells"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/spells"),
+	ogImage: {
+		url: getAlbinaApiFullAddress("/banner/core-page/spells"),
 	},
-};
+	route: "/spells",
+});
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Domínios", id: "Domínios" },

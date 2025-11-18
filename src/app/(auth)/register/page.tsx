@@ -2,6 +2,8 @@ import Link from "next/link";
 import { RegisterForm } from "./subComponents/RegisterForm";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { Metadata } from "next";
+import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 const RegisterPageContainer = newStyledElement.div(
 	styles.registerPageContainer
@@ -9,6 +11,11 @@ const RegisterPageContainer = newStyledElement.div(
 const RegisterWindow = newStyledElement.div(styles.registerWindow);
 const RegisterHeader = newStyledElement.h1(styles.registerHeader);
 const OldcomerFooter = newStyledElement.div(styles.oldcomerFooter);
+
+export const metadata: Metadata = assembleMetadata({
+	title: "Criar conta",
+	route: "/register",
+});
 
 interface RegisterPageProps {
 	searchParams: Promise<{ redirectTo?: string }>;
