@@ -4,13 +4,11 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import React, { HTMLAttributes, ReactNode, useEffect, useRef } from "react";
 import VanillaTilt, { TiltOptions } from "vanilla-tilt";
 
-interface TiltProps extends TiltOptions {}
-
 const TiltContainer = newStyledElement.div("tiltContainer");
 
 type Props = {
 	children?: ReactNode;
-	options?: TiltProps;
+	options?: TiltOptions;
 } & HTMLAttributes<HTMLDivElement>;
 
 export function Tilt({ children, options, ...props }: Props) {
@@ -23,7 +21,7 @@ export function Tilt({ children, options, ...props }: Props) {
 
 		return () => {
 			if (tilt.current) {
-				// @ts-ignore
+				// @ts-expect-error - Expected
 				tilt.current.vanillaTilt.destroy();
 			}
 		};
