@@ -12,11 +12,11 @@ export function YourEditItem({ userUsername }: YourEditProps) {
 			<Link href={`/users/${userUsername}/configuracoes`}>
 				<DropdownMenu.Item
 					iconProps={{
-						name: "AddressBookTabs",
+						name: "GearFine",
 						color: "green",
 						style: "bold",
 					}}>
-					Editar Perfil
+					Configurações
 				</DropdownMenu.Item>
 			</Link>
 		</div>

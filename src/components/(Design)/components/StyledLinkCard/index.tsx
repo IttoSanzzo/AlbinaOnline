@@ -63,6 +63,9 @@ export function StyledLinkCard({
 		const hoverTitleStyle: CSSProperties = {
 			...(backgroundColor && {
 				backgroundColor: StandartBackgroundColor[backgroundColor],
+				...(titleColor && {
+					color: StandartTextColor[titleColor],
+				}),
 			}),
 		};
 		return (
@@ -108,7 +111,14 @@ export function StyledLinkCard({
 						height={size - 1}
 					/>
 				</ArtworkContainer>
-				<TitleContainer>{title}</TitleContainer>
+				<TitleContainer
+					style={{
+						...(titleColor && {
+							color: StandartTextColor[titleColor],
+						}),
+					}}>
+					{title}
+				</TitleContainer>
 			</Link>
 		</StyledLinkCardContainer>
 	);

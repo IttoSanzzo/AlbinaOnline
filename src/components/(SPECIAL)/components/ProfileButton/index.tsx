@@ -8,6 +8,7 @@ import { YourProfileItem } from "./subComponents/YourProfileItem";
 import { YourEditItem } from "./subComponents/YourEditItem";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { AllUsersItem } from "./subComponents/AllUsersItem";
 
 const ProfileButtonContainer = newStyledElement.div(
 	styles.profileButtonContainer
@@ -42,6 +43,8 @@ export function ProfileButton() {
 
 						<YourProfileItem userUsername={user.username} />
 						<YourEditItem userUsername={user.username} />
+						<DropdownMenu.Separator />
+						<AllUsersItem />
 						<DropdownMenu.Separator />
 						<LogoutButton />
 					</DropdownMenu.Content>
