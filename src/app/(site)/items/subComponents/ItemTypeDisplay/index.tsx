@@ -1,4 +1,4 @@
-import { StyledLink } from "@/components/(Design)";
+import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { ItemData } from "@/libs/stp@types";
 
@@ -28,14 +28,25 @@ export default function ItemTypeDisplay({
 				memoryId={type}>
 				<UIBasics.List.Grid
 					backgroundColor="purple"
+					columnWidth={100}
+					direction="row"
 					children={allItemsFromThisType.map((item) => {
 						return (
-							<StyledLink
+							<StyledLinkCard
 								key={item.id}
 								title={item.name}
 								href={`items/${item.slug}`}
-								icon={item.iconUrl}
+								artworkUrl={item.iconUrl}
+								size={100}
+								layout="rectangle"
+								titleWrap
 							/>
+							// <StyledLink
+							// 	key={item.id}
+							// 	title={item.name}
+							// 	href={`items/${item.slug}`}
+							// 	icon={item.iconUrl}
+							// />
 						);
 					})}
 				/>

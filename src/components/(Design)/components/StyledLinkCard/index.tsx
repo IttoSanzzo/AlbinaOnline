@@ -25,6 +25,7 @@ export interface StyledLinkCardProps {
 	borderColor?: keyof typeof StandartTextColor;
 	backgroundColor?: keyof typeof StandartBackgroundColor;
 	title: string;
+	titleWrap?: boolean;
 	size?: number;
 	layout?: "square" | "rectangle";
 	usePreview?: boolean;
@@ -35,6 +36,7 @@ export function StyledLinkCard({
 	artworkUrl,
 	size = 150,
 	layout = "square",
+	titleWrap = false,
 	titleColor,
 	borderColor,
 	backgroundColor,
@@ -71,6 +73,9 @@ export function StyledLinkCard({
 				backgroundColor: StandartBackgroundColor[backgroundColor],
 				...(titleColor && {
 					color: StandartTextColor[titleColor],
+				}),
+				...(titleWrap && {
+					textWrap: "wrap",
 				}),
 			}),
 		};
@@ -132,6 +137,10 @@ export function StyledLinkCard({
 						style={{
 							...(titleColor && {
 								color: StandartTextColor[titleColor],
+							}),
+							...(titleWrap && {
+								textWrap: "balance",
+								textAlign: "center",
 							}),
 						}}>
 						{title}

@@ -43,7 +43,7 @@ export default async function ItemsPageServerShell() {
 			icon={getAlbinaApiFullAddress("/favicon/core-page/items")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/items")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
-			<PageContent items={ordenedItems} />;
+			<PageContent items={ordenedItems} />
 		</GenericPageContainer>
 	);
 }
