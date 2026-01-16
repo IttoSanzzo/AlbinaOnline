@@ -5,6 +5,8 @@ import OwnerPageLink, {
 } from "./subComponents/OwnerPageLink";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { Tilt } from "../Tilt";
+import { TiltOptions } from "vanilla-tilt";
 
 const StyledOwnedLinkCardContainer = newStyledElement.div(
 	styles.styledOwnedLinkCardContainer
@@ -21,19 +23,25 @@ export function StyledOwnedLinkCard({
 	size = 150,
 	...rest
 }: StyledOwnedLinkCardProps) {
+	const tiltOptions: TiltOptions = {
+		reverse: true,
+		max: 15,
+	};
 	const ownerImageContainerStyle: CSSProperties = {
 		top: size - 32,
 	};
 
 	return (
-		<StyledOwnedLinkCardContainer>
-			<StyledLinkCard
-				size={size}
-				{...rest}
-			/>
-			<OwnerPageLinkContainer style={ownerImageContainerStyle}>
-				<OwnerPageLink ownerId={ownerId} />
-			</OwnerPageLinkContainer>
-		</StyledOwnedLinkCardContainer>
+		<Tilt options={tiltOptions}>
+			<StyledOwnedLinkCardContainer>
+				<StyledLinkCard
+					size={size}
+					{...rest}
+				/>
+				<OwnerPageLinkContainer style={ownerImageContainerStyle}>
+					<OwnerPageLink ownerId={ownerId} />
+				</OwnerPageLinkContainer>
+			</StyledOwnedLinkCardContainer>
+		</Tilt>
 	);
 }

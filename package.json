@@ -38,7 +38,7 @@
 		"@setsu-tp/styled-components": "^1.1.0",
 		"clsx": "^2.1.1",
 		"keen-slider": "^6.8.6",
-		"next": "15.3.4",
+		"next": "^15.5.9",
 		"notion-client": "^7.6.0",
 		"notion-types": "^7.6.0",
 		"notion-utils": "^7.6.0",
@@ -47,6 +47,7 @@
 		"react-hook-form": "^7.58.0",
 		"react-hot-toast": "^2.6.0",
 		"react-notion-x": "^7.6.0",
+		"vanilla-tilt": "^1.8.1",
 		"zod": "^3.25.67",
 		"zustand": "^5.0.5"
 	},

@@ -8,6 +8,8 @@ import {
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
+import { Tilt } from "../Tilt";
+import { TiltOptions } from "vanilla-tilt";
 
 const StyledLinkCardContainer = newStyledElement.div(
 	styles.styledLinkCardContainer
@@ -38,6 +40,10 @@ export function StyledLinkCard({
 	backgroundColor,
 	usePreview = true,
 }: StyledLinkCardProps) {
+	const tiltOptions: TiltOptions = {
+		reverse: true,
+		max: 15,
+	};
 	const containerStyle: CSSProperties = {
 		width: `${size}px`,
 		height: `${size + (layout == "square" ? 0 : 35)}px`,
@@ -69,7 +75,43 @@ export function StyledLinkCard({
 			}),
 		};
 		return (
-			<StyledLinkCardContainer style={containerStyle}>
+			<Tilt options={tiltOptions}>
+				<StyledLinkCardContainer
+					style={containerStyle}
+					data-tilt>
+					{usePreview && (
+						<LinkPreview
+							href={href}
+							title={title}
+							left={(size - 260) / 2}
+						/>
+					)}
+					<Link href={href}>
+						<ArtworkContainer style={artworkContainerStyle}>
+							<Image
+								src={artworkUrl}
+								alt=""
+								width={size - 1}
+								height={size - 1}
+							/>
+						</ArtworkContainer>
+						<HoverTitleContainer style={hoverTitleStyle}>
+							{title}
+						</HoverTitleContainer>
+					</Link>
+				</StyledLinkCardContainer>
+			</Tilt>
+		);
+	}
+	return (
+		<Tilt options={tiltOptions}>
+			<StyledLinkCardContainer
+				style={containerStyle}
+				// data-tilt
+				// data-tilt-max="50"
+				// data-tilt-speed="400"
+				// data-tilt-perspective="500"
+			>
 				{usePreview && (
 					<LinkPreview
 						href={href}
@@ -86,40 +128,16 @@ export function StyledLinkCard({
 							height={size - 1}
 						/>
 					</ArtworkContainer>
-					<HoverTitleContainer style={hoverTitleStyle}>
+					<TitleContainer
+						style={{
+							...(titleColor && {
+								color: StandartTextColor[titleColor],
+							}),
+						}}>
 						{title}
-					</HoverTitleContainer>
+					</TitleContainer>
 				</Link>
 			</StyledLinkCardContainer>
-		);
-	}
-	return (
-		<StyledLinkCardContainer style={containerStyle}>
-			{usePreview && (
-				<LinkPreview
-					href={href}
-					title={title}
-					left={(size - 260) / 2}
-				/>
-			)}
-			<Link href={href}>
-				<ArtworkContainer style={artworkContainerStyle}>
-					<Image
-						src={artworkUrl}
-						alt=""
-						width={size - 1}
-						height={size - 1}
-					/>
-				</ArtworkContainer>
-				<TitleContainer
-					style={{
-						...(titleColor && {
-							color: StandartTextColor[titleColor],
-						}),
-					}}>
-					{title}
-				</TitleContainer>
-			</Link>
-		</StyledLinkCardContainer>
+		</Tilt>
 	);
 }

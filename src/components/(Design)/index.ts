@@ -10,3 +10,4 @@ export { StyledLinkCard } from "./components/StyledLinkCard";
 export { StyledOwnedLinkCard } from "./components/StyledOwnedLinkCard";
 
 export { StyledLinklikeButton } from "./components/StyledLinklikeButton";
+export { Tilt } from "./components/Tilt";
