@@ -1,19 +1,21 @@
 "use client";
 
-import { GenericPageContainer } from "@/components/(Design)";
+import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
 import { UserFavoriteCarousel } from "./subComponents/UserFavoriteCarousel";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import {
+	CharacterData,
 	FullUser,
 	RoleHierarchy,
 	UserFavoritesGrouped,
 } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import { UIBasics } from "@/components/(UIBasics)";
+import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
+import Link from "next/link";
 
 const UserFavoriteCarouselContainer = newStyledElement.div(
 	styles.UserFavoriteCarouselContainer
@@ -26,9 +28,12 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 	const currentUser = useCurrentUser();
 	const [user, setUser] = useState<FullUser | null>(null);
 	const [favorites, setFavorites] = useState<UserFavoritesGrouped | null>(null);
+	const [userCharacters, setUserCharacters] = useState<CharacterData[] | null>(
+		[]
+	);
 
 	useLayoutEffect(() => {
-		authenticatedFetchAsync(`${getAlbinaApiFullAddress()}/users/${username}`, {
+		authenticatedFetchAsync(getAlbinaApiFullAddress(`/users/${username}`), {
 			method: "GET",
 		}).then(async (response) => {
 			if (!response.ok) return;
@@ -54,11 +59,19 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 					trait: data.favorites.Trait,
 				});
 			});
+			authenticatedFetchAsync(getAlbinaApiFullAddress("/users/me/chars"), {
+				method: "GET",
+			}).then(async (response) => {
+				if (!response.ok) return;
+				const data = await response.json();
+				setUserCharacters(data.characters);
+			});
 		});
 	}, [username]);
 	if (
 		user == null ||
 		favorites == null ||
+		userCharacters == null ||
 		currentUser.loading ||
 		currentUser.user === null
 	)
@@ -82,7 +95,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 			title={user.nickname}
 			banner={user.bannerUrl}
 			icon={user.iconUrl}
-			subTitle={<>{user.role}</>}
+			subTitle={user.role}
 			isEditable={
 				user.id === currentUser.user.id ||
 				RoleHierarchy[currentUser.user.role] >= RoleHierarchy.Admin
@@ -94,58 +107,105 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 			)}
 			titleChangeBodyPropName={"nickname"}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
-			<UserFavoriteCarousel
-				favoriteType="character"
-				favorites={favorites}
-				routeBase="chars"
-				favoriteName="Personagens"
-			/>
-			<UIBasics.MultiColumn.Two
-				colum1={
-					<UserFavoriteCarouselContainer>
-						<UserFavoriteCarousel
-							favoriteType="item"
-							favorites={favorites}
-							routeBase="items"
-							favoriteName="Items"
-						/>
-						<UserFavoriteCarousel
-							favoriteType="mastery"
-							favorites={favorites}
-							routeBase="maestrias"
-							favoriteName="Maestrias"
-						/>
-						<UserFavoriteCarousel
-							favoriteType="skill"
-							favorites={favorites}
-							routeBase="skills"
-							favoriteName="Skills"
-						/>
-					</UserFavoriteCarouselContainer>
-				}
-				colum2={
-					<UserFavoriteCarouselContainer>
-						<UserFavoriteCarousel
-							favoriteType="spell"
-							favorites={favorites}
-							routeBase="spells"
-							favoriteName="Spells"
-						/>
-						<UserFavoriteCarousel
-							favoriteType="trait"
-							favorites={favorites}
-							routeBase="tracos"
-							favoriteName="Traços"
-						/>
-						<UserFavoriteCarousel
-							favoriteType="race"
-							favorites={favorites}
-							routeBase="racas"
-							favoriteName="Raças"
-						/>
-					</UserFavoriteCarouselContainer>
-				}
-			/>
+
+			<UIBasics.Box backgroundColor="darkGray">
+				<UIBasics.Header
+					textAlign="center"
+					textColor="orange">
+					<Link
+						style={{ color: StandartTextColor.red }}
+						href={"/chars"}>
+						Fichas
+					</Link>
+				</UIBasics.Header>
+				<UIBasics.Box
+					height={125}
+					withoutBorderRadius
+					withoutMargin
+					backgroundColor="darkGray">
+					<UIBasics.Carousel
+						slidesOrigin={"center"}
+						slidesSpacing={10}
+						minWidth={100}
+						slideChilds={userCharacters.map((char) => (
+							<StyledLinkCard
+								size={100}
+								key={char.id}
+								href={`/chars/${char.id}`}
+								title={char.name}
+								artworkUrl={getAlbinaApiFullAddress(
+									`/favicon/chars/${char.id}`
+								)}
+							/>
+						))}
+					/>
+				</UIBasics.Box>
+			</UIBasics.Box>
+			<UIBasics.Box
+				withoutPadding
+				backgroundColor="darkGray"
+				withoutBorder>
+				<UIBasics.Header
+					textAlign="center"
+					textColor="orange"
+					children={"Favoritos"}
+				/>
+				<UserFavoriteCarousel
+					favoriteType="character"
+					favorites={favorites}
+					routeBase="chars"
+					favoriteName="Personagens"
+				/>
+				<UIBasics.MultiColumn.Two
+					withoutGap
+					withoutPadding
+					withoutBorderRadius
+					colum1={
+						<UserFavoriteCarouselContainer>
+							<UserFavoriteCarousel
+								favoriteType="item"
+								favorites={favorites}
+								routeBase="items"
+								favoriteName="Items"
+							/>
+							<UserFavoriteCarousel
+								favoriteType="mastery"
+								favorites={favorites}
+								routeBase="maestrias"
+								favoriteName="Maestrias"
+							/>
+							<UserFavoriteCarousel
+								favoriteType="skill"
+								favorites={favorites}
+								routeBase="skills"
+								favoriteName="Skills"
+							/>
+						</UserFavoriteCarouselContainer>
+					}
+					colum2={
+						<UserFavoriteCarouselContainer>
+							<UserFavoriteCarousel
+								favoriteType="spell"
+								favorites={favorites}
+								routeBase="spells"
+								favoriteName="Spells"
+							/>
+							<UserFavoriteCarousel
+								favoriteType="trait"
+								favorites={favorites}
+								routeBase="tracos"
+								favoriteName="Traços"
+							/>
+							<UserFavoriteCarousel
+								favoriteType="race"
+								favorites={favorites}
+								routeBase="racas"
+								favoriteName="Raças"
+							/>
+						</UserFavoriteCarouselContainer>
+					}
+				/>
+			</UIBasics.Box>
 		</GenericPageContainer>
 	);
 }

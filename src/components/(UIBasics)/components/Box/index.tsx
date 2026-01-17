@@ -10,6 +10,7 @@ interface BoxProps {
 	withoutPadding?: boolean;
 	withoutBorder?: boolean;
 	withoutMargin?: boolean;
+	withoutBorderRadius?: boolean;
 	backgroundColor?: keyof typeof StandartBackgroundColor;
 	width?: React.CSSProperties["width"];
 	height?: React.CSSProperties["height"];
@@ -24,6 +25,7 @@ export function Box({
 	withoutPadding = false,
 	withoutBorder = false,
 	withoutMargin = false,
+	withoutBorderRadius = false,
 	backgroundColor,
 	width,
 	height,
@@ -42,6 +44,7 @@ export function Box({
 		...(withoutBorder && {
 			border: 0,
 		}),
+		...(withoutBorderRadius && { borderRadius: 0 }),
 		width,
 		height,
 		minWidth,
