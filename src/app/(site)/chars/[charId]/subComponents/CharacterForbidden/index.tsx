@@ -30,7 +30,6 @@ export function CharacterForbidden({ characterId }: CharacterForbiddenProps) {
 			}
 		});
 	}, [characterId]);
-	if (owner == null) return <>Forbidden</>;
 
 	return (
 		<CharacterForbiddenContainer>
@@ -42,11 +41,21 @@ export function CharacterForbidden({ characterId }: CharacterForbiddenProps) {
 				textColor="gray">
 				Solicite acesso ao dono
 			</UIBasics.Header>
-			<StyledLinkCard
-				href={`/users/${owner.username}`}
-				title={owner.nickname}
-				artworkUrl={getAlbinaApiFullAddress(`/favicon/users/${owner.username}`)}
-			/>
+			{owner != null ? (
+				<StyledLinkCard
+					href={`/users/${owner.username}`}
+					title={owner.nickname}
+					artworkUrl={getAlbinaApiFullAddress(
+						`/favicon/users/${owner.username}`,
+					)}
+				/>
+			) : (
+				<StyledLinkCard
+					href={`/users`}
+					title={"Users"}
+					artworkUrl={getAlbinaApiFullAddress(`/favicon/users`)}
+				/>
+			)}
 		</CharacterForbiddenContainer>
 	);
 }
