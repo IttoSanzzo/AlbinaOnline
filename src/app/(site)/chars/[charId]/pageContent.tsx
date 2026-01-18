@@ -18,6 +18,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 import { UserPageLink } from "@/components/(UTILS)";
+import { CharacterForbidden } from "./subComponents/CharacterForbidden";
 
 interface CharPageContentProps {
 	characterId: Guid;
@@ -44,7 +45,7 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 	if (error != null) {
 		switch (error) {
 			case 403:
-				return <>Forbidden</>;
+				return <CharacterForbidden characterId={characterId} />;
 			case 404:
 				return <>Not Found</>;
 			case 500:
@@ -77,13 +78,13 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			isEditable={accessLevel >= AccessLevel.Edit}
 			subTitle={<UserPageLink userId={characterData.ownerId} />}
 			bannerChangeRoute={getAlbinaApiFullAddress(
-				`/chars/${characterData.id}/banner`
+				`/chars/${characterData.id}/banner`,
 			)}
 			iconChangeRoute={getAlbinaApiFullAddress(
-				`/chars/${characterData.id}/favicon`
+				`/chars/${characterData.id}/favicon`,
 			)}
 			titleChangeRoute={getAlbinaApiFullAddress(
-				`/chars/${characterData.id}/name`
+				`/chars/${characterData.id}/name`,
 			)}
 			metadataTag={`char-${characterData.id}`}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
