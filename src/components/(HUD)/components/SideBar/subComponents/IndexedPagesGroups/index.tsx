@@ -9,7 +9,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const IndexedPagesGroupsContainer = newStyledElement.div(
-	styles.indexedPagesGroupsContainer
+	styles.indexedPagesGroupsContainer,
 );
 
 type FavoriteWithSlug = {
@@ -42,6 +42,9 @@ const CoreHubPageGroup = (
 			{ name: "Traços", link: "/tracos" },
 			{ name: "Raças", link: "/racas" },
 			{ name: "Codex", link: "/codex" },
+			...(process.env.NODE_ENV === "development"
+				? [{ name: "Sandbox", link: "/sandbox" }]
+				: []),
 		]}
 	/>
 );
@@ -59,7 +62,7 @@ export default function IndexedPagesGroups() {
 
 	const getSluggedFavoriteSortableIndexedPage = (
 		endpoint: string,
-		favoriteList: FavoriteWithSlug[]
+		favoriteList: FavoriteWithSlug[],
 	): SortableIndexedPage[] =>
 		favoriteList.map((favorite: FavoriteWithSlug): SortableIndexedPage => {
 			return {
@@ -70,7 +73,7 @@ export default function IndexedPagesGroups() {
 		});
 	const getNonSluggedFavoriteSortableIndexedPage = (
 		endpoint: string,
-		favoriteList: FavoriteWithoutSlug[]
+		favoriteList: FavoriteWithoutSlug[],
 	): SortableIndexedPage[] =>
 		favoriteList.map((favorite: FavoriteWithoutSlug): SortableIndexedPage => {
 			return {
@@ -90,7 +93,7 @@ export default function IndexedPagesGroups() {
 					groupType="Character"
 					indexedPages={getNonSluggedFavoriteSortableIndexedPage(
 						"/chars",
-						favorites.character
+						favorites.character,
 					)}
 				/>
 			)}
@@ -100,7 +103,7 @@ export default function IndexedPagesGroups() {
 					groupType="Item"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/items",
-						favorites.item
+						favorites.item,
 					)}
 				/>
 			)}
@@ -110,7 +113,7 @@ export default function IndexedPagesGroups() {
 					groupType="Mastery"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/maestrias",
-						favorites.mastery
+						favorites.mastery,
 					)}
 				/>
 			)}
@@ -120,7 +123,7 @@ export default function IndexedPagesGroups() {
 					groupType="Skill"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/skills",
-						favorites.skill
+						favorites.skill,
 					)}
 				/>
 			)}
@@ -130,7 +133,7 @@ export default function IndexedPagesGroups() {
 					groupType="Spell"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/spells",
-						favorites.spell
+						favorites.spell,
 					)}
 				/>
 			)}
@@ -140,7 +143,7 @@ export default function IndexedPagesGroups() {
 					groupType="Trait"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/tracos",
-						favorites.trait
+						favorites.trait,
 					)}
 				/>
 			)}
@@ -150,7 +153,7 @@ export default function IndexedPagesGroups() {
 					groupType="Race"
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/racas",
-						favorites.race
+						favorites.race,
 					)}
 				/>
 			)}

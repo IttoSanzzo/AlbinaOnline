@@ -37,8 +37,8 @@ export default function UsersPageContent() {
 					setUsers(
 						data.users
 							? data.users.sort((a, b) => a.nickname.localeCompare(b.nickname))
-							: []
-					)
+							: [],
+					),
 				);
 		});
 	}, [setUsers]);
@@ -62,8 +62,8 @@ export default function UsersPageContent() {
 					(user) =>
 						user.username.toLowerCase().includes(filter) ||
 						user.nickname.toLowerCase().includes(filter) ||
-						user.role.toLowerCase().includes(filter)
-			  );
+						user.role.toLowerCase().includes(filter),
+				);
 
 	return (
 		<UIBasics.Box
@@ -100,7 +100,7 @@ export default function UsersPageContent() {
 								.filter(
 									(user) =>
 										RoleHierarchy[user.role] >= RoleHierarchy.Admin &&
-										RoleHierarchy[user.role] != RoleHierarchy.Bot
+										RoleHierarchy[user.role] != RoleHierarchy.Bot,
 								)
 								.map((user) => (
 									<StyledLinkCard
@@ -109,7 +109,7 @@ export default function UsersPageContent() {
 										href={`/users/${user.username}`}
 										title={user.nickname}
 										artworkUrl={getAlbinaApiFullAddress(
-											`/users/${user.username}/favicon`
+											`/users/${user.username}/favicon`,
 										)}
 										layout="rectangle"
 										borderColor="red"
@@ -137,7 +137,7 @@ export default function UsersPageContent() {
 									href={`/users/${user.username}`}
 									title={user.nickname}
 									artworkUrl={getAlbinaApiFullAddress(
-										`/users/${user.username}/favicon`
+										`/users/${user.username}/favicon`,
 									)}
 									layout="rectangle"
 									borderColor={
@@ -178,7 +178,7 @@ export default function UsersPageContent() {
 										href={`/users/${user.username}`}
 										title={user.nickname}
 										artworkUrl={getAlbinaApiFullAddress(
-											`/users/${user.username}/favicon`
+											`/users/${user.username}/favicon`,
 										)}
 										layout="rectangle"
 										titleColor="yellow"
