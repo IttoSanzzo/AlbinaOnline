@@ -18,7 +18,7 @@ import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import Link from "next/link";
 
 const UserFavoriteCarouselContainer = newStyledElement.div(
-	styles.UserFavoriteCarouselContainer
+	styles.UserFavoriteCarouselContainer,
 );
 
 interface UserPageContentProps {
@@ -29,7 +29,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 	const [user, setUser] = useState<FullUser | null>(null);
 	const [favorites, setFavorites] = useState<UserFavoritesGrouped | null>(null);
 	const [userCharacters, setUserCharacters] = useState<CharacterData[] | null>(
-		[]
+		[],
 	);
 
 	useLayoutEffect(() => {
@@ -45,7 +45,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 				}/favorites/grouped`,
 				{
 					method: "GET",
-				}
+				},
 			).then(async (response) => {
 				if (!response.ok) return;
 				const data = await response.json();
@@ -59,9 +59,12 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 					trait: data.favorites.Trait,
 				});
 			});
-			authenticatedFetchAsync(getAlbinaApiFullAddress("/users/me/chars"), {
-				method: "GET",
-			}).then(async (response) => {
+			authenticatedFetchAsync(
+				getAlbinaApiFullAddress(`/users/${username}/chars`),
+				{
+					method: "GET",
+				},
+			).then(async (response) => {
 				if (!response.ok) return;
 				const data = await response.json();
 				setUserCharacters(data.characters);
@@ -103,7 +106,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 			bannerChangeRoute={getAlbinaApiFullAddress(`/users/id/${user.id}/banner`)}
 			iconChangeRoute={getAlbinaApiFullAddress(`/users/id/${user.id}/favicon`)}
 			titleChangeRoute={getAlbinaApiFullAddress(
-				`/users/id/${user.id}/nickname`
+				`/users/id/${user.id}/nickname`,
 			)}
 			titleChangeBodyPropName={"nickname"}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
@@ -134,7 +137,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 								href={`/chars/${char.id}`}
 								title={char.name}
 								artworkUrl={getAlbinaApiFullAddress(
-									`/favicon/chars/${char.id}`
+									`/favicon/chars/${char.id}`,
 								)}
 							/>
 						))}
