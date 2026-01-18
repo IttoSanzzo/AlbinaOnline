@@ -12,7 +12,7 @@ import { Tilt } from "../Tilt";
 import { TiltOptions } from "vanilla-tilt";
 
 const StyledLinkCardContainer = newStyledElement.div(
-	styles.styledLinkCardContainer
+	styles.styledLinkCardContainer,
 );
 const ArtworkContainer = newStyledElement.div(styles.artworkContainer);
 const TitleContainer = newStyledElement.div(styles.titleContainer);
@@ -74,9 +74,10 @@ export function StyledLinkCard({
 				...(titleColor && {
 					color: StandartTextColor[titleColor],
 				}),
-				...(titleWrap && {
-					textWrap: "wrap",
-				}),
+			}),
+			...(titleWrap && {
+				textWrap: "balance",
+				textAlign: "center",
 			}),
 		};
 		return (
@@ -110,13 +111,7 @@ export function StyledLinkCard({
 	}
 	return (
 		<Tilt options={tiltOptions}>
-			<StyledLinkCardContainer
-				style={containerStyle}
-				// data-tilt
-				// data-tilt-max="50"
-				// data-tilt-speed="400"
-				// data-tilt-perspective="500"
-			>
+			<StyledLinkCardContainer style={containerStyle}>
 				{usePreview && (
 					<LinkPreview
 						href={href}

@@ -4,7 +4,7 @@ import { UserFavoritesGrouped } from "@/libs/stp@types";
 import Link from "next/link";
 
 function generalRouteForFavoriteGroupType(
-	favoriteType: keyof UserFavoritesGrouped
+	favoriteType: keyof UserFavoritesGrouped,
 ) {
 	switch (favoriteType) {
 		case "character":
@@ -70,9 +70,10 @@ export function UserFavoriteCarousel({
 							size={100}
 							key={favorite.target.id}
 							href={`/${routeBase}/${String(
-								favorite.target[indentifier as keyof typeof favorite.target]
+								favorite.target[indentifier as keyof typeof favorite.target],
 							)}`}
 							title={favorite.target.name}
+							titleWrap
 							artworkUrl={favorite.target.iconUrl}
 						/>
 					))}

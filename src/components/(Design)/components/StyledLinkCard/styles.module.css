@@ -43,6 +43,7 @@
 	justify-content: center;
 	align-items: center;
 	word-break: break-all;
+	width: 100%;
 }
 .hoverTitleContainer {
 	position: absolute;
