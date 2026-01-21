@@ -1,0 +1,40 @@
+.diceResultHistoryViewContainer {
+	position: relative;
+	margin: auto;
+	height: 95%;
+	margin-top: 5%;
+	display: flex;
+	gap: 10px;
+	overflow: hidden;
+
+	& > div {
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+}
+
+.resetButton {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+
+	width: 40px;
+	height: 40px;
+	border-radius: var(--rd-full);
+	background-color: var(--cl-gray-700);
+	overflow: hidden;
+	border: 2px solid var(--cl-gray-500);
+
+	transition: 0.25s linear background-color;
+
+	& img {
+		background-color: none;
+		margin-left: -2px;
+		margin-top: -2px;
+	}
+
+	&:hover {
+		background-color: var(--cl-gray-500);
+		cursor: pointer;
+	}
+}

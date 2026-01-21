@@ -8,3 +8,9 @@ export type {
 } from "./UserFavoritesGrouped";
 export { LanguageType } from "./LanguageType";
 export { RoleHierarchy } from "./RoleHierarchy";
+export type {
+	DiceIterationResult,
+	DiceNode,
+	DiceResults,
+	DiceResultsWithTimestamp,
+} from "./DiceRoller";

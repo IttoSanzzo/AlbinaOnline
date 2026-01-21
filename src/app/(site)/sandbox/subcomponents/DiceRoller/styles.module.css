@@ -1,0 +1,33 @@
+.diceRollerContainer {
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+	width: 50px;
+	height: 50px;
+	border-radius: var(--rd-full);
+}
+
+.diceRollerTriggerButton {
+	width: inherit;
+	height: inherit;
+	overflow: hidden;
+	border: none;
+	background: none;
+	border-radius: inherit;
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.overlay {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.content {
+	min-width: 400px;
+	width: 90vw;
+	max-width: 1000px;
+	min-height: 300px;
+	height: 80vh;
+	max-height: 800px;
+}

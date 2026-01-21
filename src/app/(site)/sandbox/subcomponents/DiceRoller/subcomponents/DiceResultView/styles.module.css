@@ -1,0 +1,39 @@
+.diceResultViewContainer {
+	position: relative;
+	overflow: scroll;
+	height: fit-content;
+	max-height: 500px;
+	box-shadow: 0px 2px 5px black;
+	flex-shrink: 0;
+	background-color: var(--cl-gray-800);
+}
+
+.diceExpression {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	padding: 0px 15px;
+	background-color: var(--cl-gray-600);
+	border-bottom-right-radius: var(--rd-sm);
+	color: var(--cl-gray-300);
+}
+
+.uniqueCenteredNumberNodesResults {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	padding: 0px 15px;
+	background-color: var(--cl-gray-600);
+	border-top-left-radius: var(--rd-sm);
+	color: var(--cl-gray-300);
+}
+
+.uniqueCenteredNumberResult {
+	margin: auto;
+	font-size: 50px;
+	text-shadow: 2px 2px 8px black;
+}
+
+.diceResultBackline {
+	color: var(--cl-gray-300);
+}

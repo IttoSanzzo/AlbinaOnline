@@ -1,0 +1,43 @@
+.diceRollerCoreContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	height: 94%;
+	overflow-y: scroll;
+}
+
+.rightHand {
+	display: flex;
+	flex-direction: column;
+	width: 48%;
+	height: 100%;
+	justify-content: flex-end;
+	/* border: 1px solid red; */
+}
+
+.diceViewToast {
+	background: transparent !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	min-height: unset !important;
+}
+
+@media (max-width: 970px) {
+	.diceRollerCoreContainer {
+		flex-direction: column;
+	}
+	.rightHand {
+		width: 100%;
+		height: 50%;
+	}
+}
+@media (max-height: 480px) {
+	.diceRollerCoreContainer {
+		flex-direction: row;
+		height: 85%;
+	}
+	.rightHand {
+		height: 100%;
+	}
+}

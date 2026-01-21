@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react";
+import { CSSProperties, forwardRef, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor, StandartTextColor } from "../../core";
@@ -18,22 +18,27 @@ interface BoxProps {
 	minHeight?: React.CSSProperties["minHeight"];
 	flexDirection?: React.CSSProperties["flexDirection"];
 	justifyContent?: React.CSSProperties["justifyContent"];
+	classname?: string;
 }
 
-export function Box({
-	children,
-	withoutPadding = false,
-	withoutBorder = false,
-	withoutMargin = false,
-	withoutBorderRadius = false,
-	backgroundColor,
-	width,
-	height,
-	minHeight,
-	minWidth,
-	flexDirection,
-	justifyContent,
-}: BoxProps) {
+export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
+	{
+		children,
+		withoutPadding = false,
+		withoutBorder = false,
+		withoutMargin = false,
+		withoutBorderRadius = false,
+		backgroundColor,
+		width,
+		height,
+		minHeight,
+		minWidth,
+		flexDirection,
+		justifyContent,
+		classname,
+	}: BoxProps,
+	ref,
+) {
 	const style: CSSProperties = {
 		...(backgroundColor && {
 			backgroundColor: StandartBackgroundColor[backgroundColor],
@@ -53,5 +58,12 @@ export function Box({
 		justifyContent,
 	};
 
-	return <BoxContainer style={style}>{children}</BoxContainer>;
-}
+	return (
+		<BoxContainer
+			ref={ref}
+			style={style}
+			className={classname}>
+			{children}
+		</BoxContainer>
+	);
+});
