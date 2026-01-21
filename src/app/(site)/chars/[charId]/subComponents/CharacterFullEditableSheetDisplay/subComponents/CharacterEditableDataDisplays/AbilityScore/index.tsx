@@ -45,7 +45,8 @@ function TableAbilityScoreEntry(
 			min={0}
 		/>,
 		<span
-			style={{ background: "none", border: "none" }}
+			style={{ background: "none", border: "none", cursor: "pointer" }}
+			title="Clique para rolar"
 			onClick={() => {
 				postDiceRoll(`1d20${bonusValue >= 0 ? "+" : ""}${bonusValue}`, {
 					showToast: true,
