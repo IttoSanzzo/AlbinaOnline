@@ -76,12 +76,14 @@ interface SimpleLeftHandProps {
 	primaryColor: string;
 	secondaryColor: string;
 	size: number;
+	standaloneMode?: boolean;
 }
 export function SimpleLeftHand({
 	addDiceResultToHistory,
 	primaryColor,
 	secondaryColor,
 	size,
+	standaloneMode = false,
 }: SimpleLeftHandProps) {
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
@@ -104,7 +106,8 @@ export function SimpleLeftHand({
 	}
 
 	return (
-		<SimpleLeftHandContainer>
+		<SimpleLeftHandContainer
+			style={standaloneMode ? { height: "50%", margin: "auto" } : undefined}>
 			<UIBasics.List.Grid
 				direction="row"
 				columnWidth={100}

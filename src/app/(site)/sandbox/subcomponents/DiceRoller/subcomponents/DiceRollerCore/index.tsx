@@ -61,10 +61,14 @@ export async function postDiceRoll(
 
 interface DiceRollerCoreProps {
 	mode: "simple" | "advanced";
+	standaloneMode?: boolean;
 	primaryColor: `#${string}`;
 	secondaryColor: `#${string}`;
 }
-export function DiceRollerCore({ mode }: DiceRollerCoreProps) {
+export function DiceRollerCore({
+	mode,
+	standaloneMode = false,
+}: DiceRollerCoreProps) {
 	const [diceHistory, setDiceHistory] = useState<DiceResultsWithTimestamp[]>(
 		[],
 	);
@@ -98,6 +102,7 @@ export function DiceRollerCore({ mode }: DiceRollerCoreProps) {
 					primaryColor={StandartTextColor.orange}
 					secondaryColor={StandartTextColor.darkGray}
 					size={100}
+					standaloneMode={standaloneMode}
 				/>
 			) : (
 				<></>
