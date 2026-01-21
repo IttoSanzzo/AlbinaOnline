@@ -20,9 +20,10 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { MasteryLevelController } from "./subComponents/MasteryLevelController";
 import { UIBasics } from "@/components/(UIBasics)";
+import { postDiceRoll } from "@/components/(SPECIAL)/components/DiceRoller/subcomponents/DiceRollerCore";
 
 const MasteriesDrawerContainer = newStyledElement.div(
-	styles.masteriesDrawerContainer
+	styles.masteriesDrawerContainer,
 );
 
 function tableMasteryEntry(
@@ -31,8 +32,11 @@ function tableMasteryEntry(
 	name: string,
 	slug: string,
 	level: number,
-	abilityScore?: number
+	abilityScore?: number,
 ) {
+	const bonusValue =
+		Number(level) +
+		(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0);
 	return [
 		<MasteryLinkWithDeletion
 			characterId={characterId}
@@ -45,10 +49,16 @@ function tableMasteryEntry(
 			characterId={characterId}
 			masteryId={masteryId}
 		/>,
-		bonusValueText(
-			Number(level) +
-				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0)
-		),
+		<span
+			style={{ background: "none", border: "none" }}
+			onClick={() => {
+				postDiceRoll(`1d20${bonusValue >= 0 ? "+" : ""}${bonusValue}`, {
+					showToast: true,
+					saveToHistory: true,
+				});
+			}}>
+			{bonusValueText(bonusValue)}
+		</span>,
 	];
 }
 function tableHeaderRow() {
@@ -75,7 +85,7 @@ function tableHeaderRow() {
 }
 function formTable(
 	masteries: CharacterMasteryExpanded[],
-	abilityScore: CharacterAbilityScore
+	abilityScore: CharacterAbilityScore,
 ): ReactNode[][] {
 	if (masteries.length == 0) {
 		return [
@@ -105,7 +115,7 @@ function formTable(
 						mastery.mastery.id,
 						mastery.mastery.name,
 						mastery.mastery.slug,
-						mastery.level
+						mastery.level,
 					);
 				case "Expertise":
 					return tableMasteryEntry(
@@ -116,7 +126,7 @@ function formTable(
 						mastery.level,
 						abilityScore[
 							mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
-						] as number
+						] as number,
 					);
 				case "Knowledge":
 					return tableMasteryEntry(
@@ -125,7 +135,7 @@ function formTable(
 						mastery.mastery.name,
 						mastery.mastery.slug,
 						mastery.level,
-						Math.max(abilityScore.intelligence, abilityScore.wisdom)
+						Math.max(abilityScore.intelligence, abilityScore.wisdom),
 					);
 				case "Craft":
 					switch (mastery.mastery.subType) {
@@ -136,7 +146,7 @@ function formTable(
 								mastery.mastery.name,
 								mastery.mastery.slug,
 								mastery.level,
-								Math.max(abilityScore.technique, abilityScore.intelligence)
+								Math.max(abilityScore.technique, abilityScore.intelligence),
 							);
 						case "Combatant":
 							return tableMasteryEntry(
@@ -145,7 +155,7 @@ function formTable(
 								mastery.mastery.name,
 								mastery.mastery.slug,
 								mastery.level,
-								Math.max(abilityScore.technique, abilityScore.strength)
+								Math.max(abilityScore.technique, abilityScore.strength),
 							);
 						case "General":
 							return tableMasteryEntry(
@@ -157,8 +167,8 @@ function formTable(
 								Math.max(
 									abilityScore.wisdom,
 									abilityScore.intelligence,
-									abilityScore.charisma
-								)
+									abilityScore.charisma,
+								),
 							);
 					}
 				// no-fallthrough
@@ -168,7 +178,7 @@ function formTable(
 						mastery.mastery.id,
 						mastery.mastery.name,
 						mastery.mastery.slug,
-						mastery.level
+						mastery.level,
 					);
 			}
 		}),
@@ -187,7 +197,7 @@ function _CharacterMasteriesFromTypeDisplay({
 	const { characterMasteries } = useContext(MasteriesContext);
 
 	const masteriesFromThisType = characterMasteries.filter(
-		(mastery) => mastery.mastery.type == type
+		(mastery) => mastery.mastery.type == type,
 	);
 
 	return (
@@ -227,7 +237,7 @@ function _CharacterMasteriesFromTypeDisplay({
 
 function areEqual(
 	prevProps: CharacterMasteriesFromTypeDisplayProps,
-	nextProps: CharacterMasteriesFromTypeDisplayProps
+	nextProps: CharacterMasteriesFromTypeDisplayProps,
 ) {
 	return (
 		prevProps.characterId === nextProps.characterId &&
@@ -236,5 +246,5 @@ function areEqual(
 }
 export const CharacterMasteriesFromTypeDisplay = React.memo(
 	_CharacterMasteriesFromTypeDisplay,
-	areEqual
+	areEqual,
 );

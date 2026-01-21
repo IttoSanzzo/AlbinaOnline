@@ -1,7 +1,7 @@
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { Metadata } from "next";
-import { DiceRollerCore } from "../sandbox/subcomponents/DiceRoller/subcomponents/DiceRollerCore";
 import { StandartTextColor } from "@/components/(UIBasics)";
+import { DiceRollerCore } from "@/components/(SPECIAL)";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Dice Roller",

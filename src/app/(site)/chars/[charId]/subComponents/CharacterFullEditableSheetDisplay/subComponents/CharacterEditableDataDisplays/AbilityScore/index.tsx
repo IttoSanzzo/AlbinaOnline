@@ -14,6 +14,7 @@ import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
+import { postDiceRoll } from "@/components/(SPECIAL)/components/DiceRoller/subcomponents/DiceRollerCore";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),
@@ -29,8 +30,9 @@ type FormData = z.infer<typeof schema>;
 function TableAbilityScoreEntry(
 	key: keyof FormData,
 	title: string,
-	value: number
+	value: number,
 ) {
+	const bonusValue = abilityScoreBonusValue(value);
 	return [
 		<StyledLink
 			title={title}
@@ -42,7 +44,16 @@ function TableAbilityScoreEntry(
 			max={40}
 			min={0}
 		/>,
-		bonusValueText(abilityScoreBonusValue(value)),
+		<span
+			style={{ background: "none", border: "none" }}
+			onClick={() => {
+				postDiceRoll(`1d20${bonusValue >= 0 ? "+" : ""}${bonusValue}`, {
+					showToast: true,
+					saveToHistory: true,
+				});
+			}}>
+			{bonusValueText(bonusValue)}
+		</span>,
 	];
 }
 
@@ -67,7 +78,7 @@ export function CharacterAbilityScoreDisplay() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -111,7 +122,7 @@ export function CharacterAbilityScoreDisplay() {
 										Number(watchedValues.constitution) +
 										Number(watchedValues.intelligence) +
 										Number(watchedValues.wisdom) +
-										Number(watchedValues.charisma)
+										Number(watchedValues.charisma),
 								)}
 							/>,
 							"",
@@ -120,28 +131,28 @@ export function CharacterAbilityScoreDisplay() {
 						TableAbilityScoreEntry(
 							"agility",
 							"Agilidade",
-							watchedValues.agility
+							watchedValues.agility,
 						),
 						TableAbilityScoreEntry(
 							"technique",
 							"Técnica",
-							watchedValues.technique
+							watchedValues.technique,
 						),
 						TableAbilityScoreEntry(
 							"constitution",
 							"Constituição",
-							watchedValues.constitution
+							watchedValues.constitution,
 						),
 						TableAbilityScoreEntry(
 							"intelligence",
 							"Inteligência",
-							watchedValues.intelligence
+							watchedValues.intelligence,
 						),
 						TableAbilityScoreEntry("wisdom", "Sabedoria", watchedValues.wisdom),
 						TableAbilityScoreEntry(
 							"charisma",
 							"Carisma",
-							watchedValues.charisma
+							watchedValues.charisma,
 						),
 					],
 				}}

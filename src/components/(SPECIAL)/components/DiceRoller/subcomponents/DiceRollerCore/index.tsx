@@ -27,7 +27,10 @@ const DiceToastMessage = {
 
 export async function postDiceRoll(
 	diceExpression: string,
-	showToast: boolean = false,
+	options: {
+		showToast: boolean;
+		saveToHistory: boolean;
+	} = { showToast: false, saveToHistory: false },
 ): Promise<DiceResults | null> {
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiFullAddress("/peer-out/ChariotSanzzo/peer-in/dice-roller"),
@@ -44,18 +47,30 @@ export async function postDiceRoll(
 		return null;
 	}
 	const data: { diceResults: DiceResults } = await response.json();
-	if (showToast && data.diceResults)
-		toast.success(
-			<DiceResultView
-				diceResult={data.diceResults}
-				width={300}
-			/>,
-			{
-				position: "bottom-center",
-				className: styles.diceViewToast,
-				icon: <></>,
-			},
-		);
+	if (data.diceResults) {
+		if (options.showToast)
+			toast.success(
+				<DiceResultView
+					diceResult={data.diceResults}
+					width={300}
+				/>,
+				{
+					position: "bottom-center",
+					className: styles.diceViewToast,
+					icon: <></>,
+				},
+			);
+		if (options.saveToHistory) {
+			const diceHistory: DiceResultsWithTimestamp[] = JSON.parse(
+				localStorage.getItem("DiceRollerHistory") ?? "[]",
+			);
+			const newDiceHistory: DiceResultsWithTimestamp[] = [
+				{ ...data.diceResults, timestamp: Date.now() },
+				...diceHistory.slice(0, 14),
+			];
+			localStorage.setItem("DiceRollerHistory", JSON.stringify(newDiceHistory));
+		}
+	}
 	return data.diceResults;
 }
 
