@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
 			},
 			{
 				protocol: "https",
+				hostname: "i.pinimg.com",
+				pathname: "/**",
+			},
+			{
+				protocol: "https",
 				hostname: "youtu.be",
 				pathname: "/**",
 			},
