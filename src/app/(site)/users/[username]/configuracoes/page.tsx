@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
-import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
 import UserConfigurationUserPageContent from "./pageContent";
 
 interface UserConfigurationPageServerShellProps {
@@ -14,22 +13,6 @@ export async function generateMetadata({
 }: UserConfigurationPageServerShellProps): Promise<Metadata> {
 	const { username } = await params;
 
-	const response = await fetch(
-		getAlbinaApiFullAddress(`/users/${username}/metadata`),
-		{
-			cache: "force-cache",
-			method: "GET",
-			next: {
-				tags: [`page-metadata-user-${username}`],
-			},
-		},
-	);
-	if (!response.ok) {
-		return assembleMetadata({
-			title: "User Not Found",
-		});
-	}
-	const data: MetadataData = await response.json();
 	return assembleMetadata({
 		title: `Configurações`,
 		description: `Configurações`,

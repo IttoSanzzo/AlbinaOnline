@@ -1,24 +1,14 @@
 "use client";
 
-import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
+import { GenericPageContainer } from "@/components/(Design)";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
-import { useLayoutEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import {
-	CharacterData,
-	FullUser,
-	RoleHierarchy,
-	UserFavoritesGrouped,
-} from "@/libs/stp@types";
-import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
-import Link from "next/link";
+// import { newStyledElement } from "@setsu-tp/styled-components";
+// import styles from "./styles.module.css";
 
-const UserFavoriteCarouselContainer = newStyledElement.div(
-	styles.UserFavoriteCarouselContainer,
-);
+// const UserFavoriteCarouselContainer = newStyledElement.div(
+// styles.UserFavoriteCarouselContainer,
+// );
 
 interface UserConfigurationUserPageContentProps {
 	username: string;
