@@ -5,9 +5,10 @@ import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useHookedForm } from "../../context/HookedFormContext";
+import { StandartBackgroundColor } from "@/components/(UIBasics)";
 
 const PasswordInputContainer = newStyledElement.div(
-	styles.passwordInputContainer
+	styles.passwordInputContainer,
 );
 const PasswordInputLabel = newStyledElement.label(styles.passwordInputLabel);
 const PasswordInputError = newStyledElement.div(styles.passwordInputError);
@@ -33,12 +34,14 @@ interface PasswordInputProps<TFormData>
 		| "9xl";
 	lesserPadding?: boolean;
 	textCentered?: boolean;
+	labelBackground?: keyof typeof StandartBackgroundColor;
 }
 export function PasswordInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
 	lesserPadding = false,
 	textCentered = false,
+	labelBackground,
 	fontSize,
 	style,
 	...rest
@@ -56,6 +59,9 @@ export function PasswordInput<TFormData extends FieldValues>({
 		...(fontSize && { fontSize: `var(--fs-${fontSize})` }),
 		...(lesserPadding && { padding: "var(--sp-4) var(--sp-4)" }),
 		...(textCentered && { textAlign: "center" }),
+		...(labelBackground && {
+			backgroundColor: StandartBackgroundColor[labelBackground],
+		}),
 		...style,
 	};
 

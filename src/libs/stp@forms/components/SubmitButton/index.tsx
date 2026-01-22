@@ -6,8 +6,7 @@ import { useHookedForm } from "../../context/HookedFormContext";
 
 const SubmitButtonTrigger = newStyledElement.button(styles.submitButtonTrigger);
 
-interface SubmitButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	label: string;
 	color?: "gray" | "green" | "red" | "teal" | "blue" | "violet" | "mauve";
 }
@@ -27,7 +26,9 @@ export function SubmitButton({
 		<SubmitButtonTrigger
 			type="submit"
 			className={clsx(color, className)}
-			disabled={disabled || !isValid || isSubmitting}
+			disabled={
+				disabled == false ? false : disabled || !isValid || isSubmitting
+			}
 			{...rest}>
 			<label>{label}</label>
 		</SubmitButtonTrigger>

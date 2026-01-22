@@ -1,14 +1,22 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
-import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
+import {
+	Breadcrumb,
+	SetAnchorNavigation,
+	SetBreadcrumbs,
+	useCurrentUser,
+} from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { Security } from "./subComponents/Security";
 // import { newStyledElement } from "@setsu-tp/styled-components";
 // import styles from "./styles.module.css";
 
 // const UserFavoriteCarouselContainer = newStyledElement.div(
 // styles.UserFavoriteCarouselContainer,
 // );
+
+const anchorNavigationData = [{ name: "Segurança", id: "seguranca" }];
 
 interface UserConfigurationUserPageContentProps {
 	username: string;
@@ -42,12 +50,13 @@ export default function UserConfigurationUserPageContent({
 	return (
 		<GenericPageContainer
 			title={"Configurações"}
-			banner={
-				"https://i.pinimg.com/originals/ec/ea/8a/ecea8a51e4ae263afe3268d4a15ffb6e.gif"
-			}
-			// banner={getAlbinaApiFullAddress("/banner/default/configuration")}
+			banner={getAlbinaApiFullAddress("/banner/default/configuration")}
 			icon={getAlbinaApiFullAddress("/favicon/default/configuration")}
 			subTitle={user.nickname}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+			<Security
+			// username={username}
+			/>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 		</GenericPageContainer>
 	);

@@ -37,7 +37,7 @@ const schema = z.object({
 	}),
 	password: z
 		.string()
-		.min(8, { message: "Senha deve conter ao menos 2 caracteres." })
+		.min(8, { message: "Senha deve conter ao menos 8 caracteres." })
 		.refine((val) => /[a-zA-Z]/.test(val), {
 			message: "Senha deve conter ao menos uma letra.",
 		})
@@ -55,7 +55,7 @@ type RegisterProps = {
 	password: string;
 };
 async function FetchRegister(
-	props: RegisterProps
+	props: RegisterProps,
 ): Promise<{ status: number; message?: string }> {
 	try {
 		const response = await fetch(`${getAlbinaApiFullAddress()}/auth/register`, {
@@ -87,7 +87,7 @@ const messageMap: Record<string, string> = {
 };
 
 async function PerformRegister(
-	props: RegisterProps
+	props: RegisterProps,
 ): Promise<{ status: boolean; message?: string }> {
 	const response = await FetchRegister(props);
 	if (response.status != 200) {
