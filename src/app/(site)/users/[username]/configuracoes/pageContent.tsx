@@ -55,7 +55,7 @@ export default function UserConfigurationUserPageContent({
 			subTitle={user.nickname}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<Security
-			// username={username}
+			// tusername={username}
 			/>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 		</GenericPageContainer>
