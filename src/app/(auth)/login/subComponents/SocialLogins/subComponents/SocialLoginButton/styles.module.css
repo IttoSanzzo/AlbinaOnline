@@ -1,0 +1,9 @@
+.socialLoginButtonContainer {
+	background: transparent;
+	border-radius: var(--rd-full);
+	object-fit: cover;
+	border: none;
+	cursor: pointer;
+	width: 50;
+	height: 50;
+}

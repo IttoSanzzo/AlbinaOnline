@@ -1,0 +1,21 @@
+.socialLoginsContainer {
+	display: flex;
+	flex-direction: column;
+	margin-top: calc(-1 * var(--sp-8));
+}
+.socialLoginButtonsContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sp-2);
+	padding: var(--sp-2);
+
+	border-top: 1px solid var(--cl-gray-600);
+}
+
+.socialLoginMessage {
+	color: var(--cl-gray-400);
+	font-size: var(--fs-sm);
+	font-weight: 600;
+}

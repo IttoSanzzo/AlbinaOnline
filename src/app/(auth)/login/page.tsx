@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Metadata } from "next";
 import { resolveMetadata } from "@/metadata/resolveMetadata";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { SocialLogins } from "./subComponents/SocialLogins";
 
 const LoginPageContainer = newStyledElement.div(styles.loginPageContainer);
 const LoginWindow = newStyledElement.div(styles.loginWindow);
@@ -34,8 +35,7 @@ export async function generateMetadata({
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-	const params = await searchParams;
-	const redirectTo = params.redirectTo;
+	const { redirectTo } = await searchParams;
 	const registerPageLink = `/register${
 		redirectTo ? `?redirectTo=${redirectTo}` : ""
 	}`;
@@ -45,8 +45,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 			<LoginWindow>
 				<LoginHeader children="Log In" />
 				<LoginForm redirectTo={redirectTo} />
+				<SocialLogins redirectTo={redirectTo} />
+
 				<NewcomerFooter>
-					Novo aqui? <Link href={registerPageLink}>Cadastre-se agora</Link>.
+					Novo aqui? <Link href={registerPageLink}>Cadastre-se aqui</Link>.
 				</NewcomerFooter>
 			</LoginWindow>
 		</LoginPageContainer>

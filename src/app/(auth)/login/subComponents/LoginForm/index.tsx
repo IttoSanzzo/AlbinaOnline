@@ -20,7 +20,7 @@ export type LoginProps =
 	| { password: string; username: string; email?: string }
 	| { password: string; username?: string; email: string };
 export async function FetchLogin(
-	props: LoginProps
+	props: LoginProps,
 ): Promise<{ status: number }> {
 	try {
 		const postBody =
@@ -66,11 +66,11 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 			? await PerformLogin({
 					password: data.password,
 					email: data.usernameOrEmail,
-			  })
+				})
 			: await PerformLogin({
 					password: data.password,
 					username: data.usernameOrEmail,
-			  });
+				});
 		if (status == false) setLoginCurrentMessage("Login Falhou.");
 		else {
 			setLoginCurrentMessage("Login Bem Sucedido!");
