@@ -38,7 +38,7 @@
 		"@setsu-tp/styled-components": "^1.1.0",
 		"clsx": "^2.1.1",
 		"keen-slider": "^6.8.6",
-		"next": "^15.5.9",
+		"next": "^16.1.6",
 		"notion-client": "^7.6.0",
 		"notion-types": "^7.6.0",
 		"notion-utils": "^7.6.0",
