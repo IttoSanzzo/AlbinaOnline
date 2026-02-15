@@ -63,6 +63,11 @@ const nextConfig: NextConfig = {
 				hostname: "*.*.*.*",
 				pathname: "/**",
 			},
+			{
+				protocol: "https",
+				hostname: "**",
+				pathname: "/**",
+			},
 		],
 	},
 	allowedDevOrigins: ["localhost", "*.*.*.*", "albina.setsu.party"],

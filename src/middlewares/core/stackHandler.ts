@@ -1,16 +1,16 @@
 import {
 	NextFetchEvent,
-	NextMiddleware,
+	NextProxy,
 	NextRequest,
 	NextResponse,
 } from "next/server";
 
-export type MiddlewareFactory = (middleware: NextMiddleware) => NextMiddleware;
+export type MiddlewareFactory = (middleware: NextProxy) => NextProxy;
 
 export function stackMiddlewares(
 	functions: MiddlewareFactory[] = [],
 	index = 0
-): NextMiddleware {
+): NextProxy {
 	const current = functions[index];
 	if (current) {
 		const next = stackMiddlewares(functions, index + 1);

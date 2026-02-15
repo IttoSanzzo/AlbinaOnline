@@ -9,6 +9,8 @@ import {
 } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Security } from "./subComponents/Security";
+import { redirect } from "next/navigation";
+import { Connections } from "./subComponents/Connections";
 // import { newStyledElement } from "@setsu-tp/styled-components";
 // import styles from "./styles.module.css";
 
@@ -16,7 +18,10 @@ import { Security } from "./subComponents/Security";
 // styles.UserFavoriteCarouselContainer,
 // );
 
-const anchorNavigationData = [{ name: "Segurança", id: "seguranca" }];
+const anchorNavigationData = [
+	{ name: "Conexões", id: "conexoes" },
+	{ name: "Segurança", id: "seguranca" },
+];
 
 interface UserConfigurationUserPageContentProps {
 	username: string;
@@ -28,6 +33,7 @@ export default function UserConfigurationUserPageContent({
 
 	if (currentUser.loading || currentUser.user === null) return null;
 	const { user } = currentUser;
+	if (user.username != username) redirect(`/users/${username}`);
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
@@ -54,9 +60,8 @@ export default function UserConfigurationUserPageContent({
 			icon={getAlbinaApiFullAddress("/favicon/default/configuration")}
 			subTitle={user.nickname}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
-			<Security
-			// tusername={username}
-			/>
+			<Connections />
+			<Security />
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 		</GenericPageContainer>
 	);

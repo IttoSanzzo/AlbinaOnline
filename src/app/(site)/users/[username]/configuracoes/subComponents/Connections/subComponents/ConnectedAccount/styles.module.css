@@ -1,0 +1,49 @@
+.connectedAccountContainer {
+	display: flex;
+	flex-direction: row;
+	padding: var(--sp-2);
+	border: 1px solid var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	align-items: center;
+	justify-content: space-between;
+}
+
+.providerContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+
+	& > p {
+		font-size: var(--fs-xl);
+		font-weight: 600;
+		color: var(--cl-gray-300);
+	}
+}
+
+.connectionButton {
+	width: var(--sp-30);
+	text-align: center;
+
+	border: 2px solid var(--cl-green-500);
+	background-color: var(--cl-green-900);
+	color: var(--cl-green-400);
+	padding: var(--sp-2);
+	border-radius: var(--rd-md);
+	cursor: pointer;
+	transition:
+		0.25s linear border,
+		0.25s linear background-color,
+		0.25s linear color;
+
+	&:hover {
+		border: 2px solid var(--cl-green-400);
+		background-color: var(--cl-green-800);
+		color: var(--cl-green-300);
+	}
+
+	&.connected {
+		border: 2px solid var(--cl-red-500);
+		background-color: var(--cl-red-900);
+		color: var(--cl-red-400);
+	}
+}
