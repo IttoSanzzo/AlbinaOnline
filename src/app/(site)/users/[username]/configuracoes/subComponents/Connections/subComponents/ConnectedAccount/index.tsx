@@ -90,9 +90,8 @@ export function ConnectedAccunt({
 			<ConnectionButton
 				className={connected ? styles.connected : undefined}
 				onClick={async () => {
-					connected
-						? await disconnectAccount(provider, label, reloadUser)
-						: await connectAccount(provider, label, reloadUser);
+					if (connected) await disconnectAccount(provider, label, reloadUser);
+					else await connectAccount(provider, label, reloadUser);
 				}}>
 				{connected ? "Desconectar" : "Conectar"}
 			</ConnectionButton>
