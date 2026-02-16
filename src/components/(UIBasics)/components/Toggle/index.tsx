@@ -22,7 +22,7 @@ import styles from "./styles.module.css";
 const ToggleContainer = newStyledElement.div(styles.toggleContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);
 const ToggleButtonContainer = newStyledElement.div(
-	styles.toggleButtonContainer
+	styles.toggleButtonContainer,
 );
 const ContentContainer = newStyledElement.div(styles.contentContainer);
 
@@ -30,7 +30,7 @@ function getCurrentOpenState(pathname: string, memoryName?: string) {
 	if (memoryName) {
 		const memoryState: string | null = routeStorage.getItem(
 			pathname,
-			memoryName
+			memoryName,
 		);
 		if (memoryState) {
 			return memoryState === "true";
@@ -40,12 +40,12 @@ function getCurrentOpenState(pathname: string, memoryName?: string) {
 }
 function initialGetCurrentOpenState(
 	pathname: string,
-	memoryName?: string
+	memoryName?: string,
 ): boolean | null {
 	if (memoryName) {
 		const memoryState: string | null = routeStorage.getItem(
 			pathname,
-			memoryName
+			memoryName,
 		);
 		if (!memoryState) return null;
 		return memoryState === "true";

@@ -16,11 +16,11 @@ export function QuoteList({
 	textColor,
 	withDivisor = false,
 }: QuoteListProps) {
-	const divisor = withDivisor ? <UIBasics.Divisor /> : <></>;
+	const Divisor = withDivisor ? <UIBasics.Divisor /> : null;
 
 	return (
 		<QuoteListContainer>
-			{divisor}
+			{Divisor}
 			{!quotes || quotes.length === 0 ? (
 				<UIBasics.Quote />
 			) : (
@@ -32,7 +32,7 @@ export function QuoteList({
 					/>
 				))
 			)}
-			{divisor}
+			{Divisor}
 		</QuoteListContainer>
 	);
 }

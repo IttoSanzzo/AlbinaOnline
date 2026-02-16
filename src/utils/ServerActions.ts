@@ -3,7 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function revalidateMetadata(tag: string) {
-	revalidateTag(`page-metadata-${tag}`);
+	revalidateTag(`page-metadata-${tag}`, {});
 	return true;
 }
 
@@ -12,6 +12,6 @@ export async function revalidatePathByClientSide(path: string) {
 	return true;
 }
 export async function revalidateTagByClientSide(tag: string) {
-	revalidateTag(tag);
+	revalidateTag(tag, {});
 	return true;
 }

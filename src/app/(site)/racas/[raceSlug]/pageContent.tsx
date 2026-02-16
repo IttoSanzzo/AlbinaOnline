@@ -117,7 +117,8 @@ export default async function RacePageContent({
 						/>
 						<UIBasics.List.Quote
 							textColor="default"
-							quotes={raceData.info.introduction.slice(1)}
+							// quotes={raceData.info.introduction.slice(1)}
+							quotes={["a"]}
 						/>
 						<UIBasics.Divisor />
 					</UIBasics.Toggle>
