@@ -3,6 +3,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
 import { ReactNode } from "react";
 import { DiceRoller } from "@/components/(SPECIAL)";
+import { BroadcastViewer } from "@/components/(SPECIAL)/components/BroadcastViewer";
 
 interface LayoutProps {
 	children: ReactNode;
@@ -26,6 +27,7 @@ export default async function Layout({ children }: LayoutProps) {
 				<SideBar />
 			</GlobalContainer>
 			<AnchorNavBar />
+			<BroadcastViewer />
 		</>
 	);
 }

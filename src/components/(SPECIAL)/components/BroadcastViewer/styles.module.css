@@ -1,10 +1,11 @@
-.diceRollerContainer {
+.broadcastViewerContainer {
 	position: fixed;
 	left: 20px;
-	bottom: 20px;
+	bottom: 85px;
 	width: 50px;
 	height: 50px;
 	border-radius: var(--rd-full);
+	z-index: 0;
 	transition: 0.45s ease-out left;
 
 	:root[data-active-sidebar="true"] & {
@@ -12,7 +13,7 @@
 	}
 }
 
-.diceRollerTriggerButton {
+.broadcastViewerTriggerButton {
 	width: inherit;
 	height: inherit;
 	overflow: hidden;
@@ -25,16 +26,28 @@
 }
 
 .overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.75);
+	animation: 0.25s linear fade-in;
 }
 
 .content {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	position: relative;
 	min-width: 400px;
-	width: 90vw;
-	max-width: 1000px;
-	min-height: 300px;
-	height: 80vh;
-	max-height: 800px;
+	width: 98vw;
+	max-width: 3000px;
+	max-height: 80vh;
+	padding: var(--sp-1);
+	background-color: var(--cl-gray-800);
+	border-radius: var(--fs-md);
+	border: 1px solid var(--cl-gray-600);
 }
 
 .closeButton {
@@ -56,11 +69,11 @@
 }
 
 @media (max-width: 900px) {
-	.diceRollerContainer {
+	.broadcastViewerContainer {
 		width: 40px;
 		height: 40px;
+		bottom: 65px;
 		left: 15px;
-		bottom: 15px;
 		& > button > img {
 			width: 40px;
 			height: 40px;
@@ -73,5 +86,14 @@
 			width: 40px;
 			height: 40px;
 		}
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
 	}
 }

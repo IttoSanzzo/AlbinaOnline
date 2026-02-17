@@ -50,10 +50,12 @@
 	position: fixed;
 	left: 0;
 	background-color: transparent;
-	height: 85vh;
+	height: 75vh;
 	top: 50%;
 	transform: translateY(-50%);
 	width: 7vw;
+	border-top-right-radius: var(--rd-3xl);
+	border-bottom-right-radius: var(--rd-full);
 
 	&:hover {
 		width: 25vw;
@@ -177,5 +179,11 @@
 		text-align: center;
 		font-size: var(--fs-xs);
 		color: var(--cl-gray-500);
+	}
+}
+
+@media (max-width: 900) {
+	.sideBarActivationArea {
+		display: none;
 	}
 }
