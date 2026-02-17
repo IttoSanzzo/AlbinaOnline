@@ -48,6 +48,8 @@
 	background-color: var(--cl-gray-800);
 	border-radius: var(--fs-md);
 	border: 1px solid var(--cl-gray-600);
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 .closeButton {
