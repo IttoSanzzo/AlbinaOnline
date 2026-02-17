@@ -36,14 +36,13 @@
 }
 
 .content {
+	position: relative;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	position: relative;
 	min-width: 400px;
 	width: 98vw;
 	max-width: 3000px;
-	max-height: 80vh;
 	padding: var(--sp-1);
 	background-color: var(--cl-gray-800);
 	border-radius: var(--fs-md);
@@ -88,6 +87,11 @@
 			width: 40px;
 			height: 40px;
 		}
+	}
+}
+@media (max-height: 500px) {
+	.content {
+		max-height: 95vh;
 	}
 }
 

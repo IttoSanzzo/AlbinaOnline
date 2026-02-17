@@ -9,6 +9,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { AlbinaBroadcast } from "@/app/embed/broadcast/subComponents/AlbinaBroadcast";
 import { DiceRoller } from "../DiceRoller";
 import { useState } from "react";
+import { MuteButton } from "./subComponents/MuteButton";
 
 const BroadcastViewerContainer = newStyledElement.div(
 	styles.broadcastViewerContainer,
@@ -78,6 +79,7 @@ export function BroadcastViewer() {
 								/>
 							</CloseButton>
 						</UIBasics.Box>
+						<MuteButton />
 					</BroadcastViewerContent>
 				</BroadcastViewerOverlay>
 			)}

@@ -1,0 +1,28 @@
+.muteButtonContainer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 45px;
+	height: 45px;
+	border-radius: var(--rd-full);
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-full);
+	overflow: hidden;
+	border: none;
+	cursor: pointer;
+	& > img {
+		width: 45px;
+		height: 45px;
+	}
+}
+
+@media (max-width: 900px) {
+	.muteButtonContainer {
+		width: 40px;
+		height: 40px;
+		& > img {
+			width: 40px;
+			height: 40px;
+		}
+	}
+}
