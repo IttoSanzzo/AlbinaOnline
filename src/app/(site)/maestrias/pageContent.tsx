@@ -32,11 +32,11 @@ export default function PageContent({ masteries }: PageContentProps) {
 					(masterty) =>
 						masterty.name.toLowerCase().includes(filter) ||
 						masterty.type.toLowerCase().includes(filter) ||
-						masterty.subType.toLowerCase().includes(filter)
-			  );
+						masterty.subType.toLowerCase().includes(filter),
+				);
 
 	const allProficiencyMasteries = filteredMasteries.filter(
-		(mastery) => MasteryType[mastery.type] === MasteryType.Proficiency
+		(mastery) => MasteryType[mastery.type] === MasteryType.Proficiency,
 	);
 	const allProficiencyMasteriesOrdened: MasteryData[] = [];
 	["Armed", "Armored", "Focus", "CombatStyle", "Tool"].forEach(
@@ -45,18 +45,20 @@ export default function PageContent({ masteries }: PageContentProps) {
 				if (mastery.subType == proficiencyCategory)
 					allProficiencyMasteriesOrdened.push(mastery);
 			});
-		}
+		},
 	);
 
 	const allExpertiseMasteries = filteredMasteries.filter(
-		(mastery) => MasteryType[mastery.type] === MasteryType.Expertise
+		(mastery) => MasteryType[mastery.type] === MasteryType.Expertise,
 	);
 	const allKnowledgeMasteries = filteredMasteries.filter(
-		(mastery) => MasteryType[mastery.type] === MasteryType.Knowledge
+		(mastery) => MasteryType[mastery.type] === MasteryType.Knowledge,
 	);
 	const allCraftMasteries = filteredMasteries.filter(
-		(mastery) => MasteryType[mastery.type] === MasteryType.Craft
+		(mastery) => MasteryType[mastery.type] === MasteryType.Craft,
 	);
+
+	console.log(allCraftMasteries[0].iconUrl);
 
 	return (
 		<>

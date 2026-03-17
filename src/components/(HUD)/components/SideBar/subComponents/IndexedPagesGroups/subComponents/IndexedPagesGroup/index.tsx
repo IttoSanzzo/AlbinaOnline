@@ -5,10 +5,10 @@ import styles from "./styles.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
 
 const IndexedPagesGroupContainer = newStyledElement.div(
-	styles.indexedPagesGroupContainer
+	styles.indexedPagesGroupContainer,
 );
 const IndexedPageLinksContainer = newStyledElement.div(
-	styles.indexedPageLinksContainer
+	styles.indexedPageLinksContainer,
 );
 
 export interface IndexedPage {
@@ -45,7 +45,7 @@ export default function IndexedPagesGroup({
 							icon={
 								indexedPage.image != undefined
 									? indexedPage.image
-									: `${getAlbinaApiFullAddress()}/favicon/${indexedPage.link}`
+									: getAlbinaApiFullAddress(`/favicon/${indexedPage.link}`)
 							}
 						/>
 					))}

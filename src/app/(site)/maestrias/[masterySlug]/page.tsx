@@ -22,7 +22,7 @@ export async function generateMetadata({
 			next: {
 				tags: [`page-metadata-mastery-${masterySlug}`],
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({

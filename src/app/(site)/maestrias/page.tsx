@@ -25,12 +25,12 @@ const anchorNavigationData: AnchorProps[] = [
 ];
 
 export default async function MasteriesPageServerShell() {
-	const response = await fetch(getAlbinaApiFullAddress("/maestrias"), {
+	const response = await fetch(getAlbinaApiFullAddress("/masteries"), {
 		cache: getCacheMode(),
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
 	const masteries: MasteryData[] = allRawMasteries.sort((a, b) =>
-		a.name.localeCompare(b.name)
+		a.name.localeCompare(b.name),
 	);
 
 	return (

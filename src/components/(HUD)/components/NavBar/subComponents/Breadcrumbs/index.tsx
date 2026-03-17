@@ -12,23 +12,37 @@ import styles from "./styles.module.css";
 
 const BreadcrumbContainer = newStyledElement.div(styles.breadcrumbContainer);
 
+function segmentToApiRoute(segment: string): string {
+	switch (segment) {
+		case "maestrias":
+			return "masteries";
+		case "tracos":
+			return "traits";
+		case "racas":
+			return "races";
+		default:
+			return segment;
+	}
+}
+
 export function Breadcrumbs() {
 	const pathName = usePathname();
 	const autoCrumbs: Breadcrumb[] = useMemo(() => {
 		const segments = pathName.split("/").filter(Boolean);
+		const linkSegments = [segmentToApiRoute(segments[0]), ...segments.slice(1)];
 		const allLinks: string[] = Array.from(
 			{ length: segments.length },
 			(_, i) => {
 				return `/${segments.slice(0, i + 1).join("/")}`;
-			}
+			},
 		);
 		return Array.from({ length: allLinks.length }, (_, i) => {
 			return {
 				name: capitalizeTitle(segments[i].replace(/[-]+/g, " ")),
 				href: allLinks[i],
-				icon: `${getAlbinaApiFullAddress()}/favicon/${segments
-					.slice(0, i + 1)
-					.join("/")}`,
+				icon: getAlbinaApiFullAddress(
+					`/favicon/${linkSegments.slice(0, i + 1).join("/")}`,
+				),
 			};
 		});
 	}, [pathName]);

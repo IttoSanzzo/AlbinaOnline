@@ -5,11 +5,11 @@ import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Create Mastery",
-	icon: getAlbinaApiFullAddress("/favicon/core-page/maestrias"),
+	icon: getAlbinaApiFullAddress("/favicon/core-page/masteries"),
 	ogImage: {
-		url: getAlbinaApiFullAddress("/banner/core-page/maestrias"),
+		url: getAlbinaApiFullAddress("/banner/core-page/masteries"),
 	},
-	route: "/maestrias/create",
+	route: "/masteries/create",
 });
 
 export default async function CreateMasteryPageServerShell() {

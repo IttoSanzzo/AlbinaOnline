@@ -50,19 +50,19 @@ function getCategoryBorderColor(category: string): string {
 }
 
 export async function getPageData(
-	masterySlug: string
+	masterySlug: string,
 ): Promise<MasteryPageData> {
 	if (!masterySlug) return { masteryData: undefined, borderColor: "" };
 
 	const response = await fetch(
-		getAlbinaApiFullAddress(`/maestrias/${masterySlug}`),
+		getAlbinaApiFullAddress(`/masteries/${masterySlug}`),
 		{
 			cache: getCacheMode(),
-		}
+		},
 	);
 	if (!response.ok) return { masteryData: undefined, borderColor: "" };
 	const masteryData = convertEnumsFromResponse<MasteryData>(
-		await response.json()
+		await response.json(),
 	);
 
 	return {

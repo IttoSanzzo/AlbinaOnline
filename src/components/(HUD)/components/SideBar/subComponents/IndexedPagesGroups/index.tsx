@@ -7,6 +7,7 @@ import SortableIndexedPagesGroup, {
 } from "./subComponents/SortableIndexedPagesGroup";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const IndexedPagesGroupsContainer = newStyledElement.div(
 	styles.indexedPagesGroupsContainer,
@@ -36,11 +37,23 @@ const CoreHubPageGroup = (
 		indexedPages={[
 			{ name: "Chars", link: "/chars" },
 			{ name: "Items", link: "/items" },
-			{ name: "Maestrias", link: "/maestrias" },
+			{
+				name: "Maestrias",
+				link: "/maestrias",
+				image: getAlbinaApiFullAddress(`/favicon/masteries`),
+			},
 			{ name: "Skills", link: "/skills" },
 			{ name: "Spells", link: "/spells" },
-			{ name: "Traços", link: "/tracos" },
-			{ name: "Raças", link: "/racas" },
+			{
+				name: "Traços",
+				link: "/tracos",
+				image: getAlbinaApiFullAddress(`/favicon/traits`),
+			},
+			{
+				name: "Raças",
+				link: "/racas",
+				image: getAlbinaApiFullAddress(`/favicon/races`),
+			},
 			{ name: "Codex", link: "/codex" },
 			...(process.env.NODE_ENV === "development"
 				? [{ name: "Sandbox", link: "/sandbox" }]

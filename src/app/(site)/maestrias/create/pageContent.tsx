@@ -45,21 +45,21 @@ export function CreateMasteryPageContent() {
 				method: "POST",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			setError(
 				`Error while creating - ${response.status} ${
 					response.statusText
-				} : ${await response.text()}`
+				} : ${await response.text()}`,
 			);
 			toast.error("Creation failed", { id: toastId });
 			return;
 		}
 		setError("");
 		toast.success("Created", { id: toastId });
-		revalidatePathByClientSide("/maestrias");
-		router.push(`/maestrias/${formData.slug}/edit`);
+		revalidatePathByClientSide("/masteries");
+		router.push(`/masteries/${formData.slug}/edit`);
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
