@@ -1,3 +1,5 @@
+"use client";
+
 export type { SelectOption } from "./components/Select/index";
 
 import { Form } from "./components/Form";
@@ -13,10 +15,8 @@ import { Space } from "./components/Space";
 import { SimpleMessage } from "./components/FailMessage";
 import { Separator } from "./components/Separator";
 
-export {
-	useHookedForm,
-	HookedFormContextProvider,
-} from "./context/HookedFormContext";
+export * from "./context/HookedFormContext";
+export type * from "./context/HookedFormContext";
 export * from "./types";
 
 export const HookedForm = {

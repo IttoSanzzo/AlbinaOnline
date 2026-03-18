@@ -1,23 +1,27 @@
+"use client";
+
 import { LintIgnoredAny } from "@/libs/stp@types";
 import { createContext, useCallback, useContext, useRef } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 export type AnyFormValues = LintIgnoredAny;
 
-interface FormContextValue<TFormData extends FieldValues> {
+export interface FormContextValue<TFormData extends FieldValues> {
 	form: UseFormReturn<AnyFormValues, unknown, TFormData>;
 	triggerDebounceAction: () => void;
 }
 
 const HookedFormContext = createContext<FormContextValue<AnyFormValues> | null>(
-	null
+	null,
 );
 
-export function useHookedForm<TFormData extends FieldValues>() {
+export function useHookedForm<
+	TFormData extends FieldValues,
+>(): FormContextValue<TFormData> {
 	const context = useContext(HookedFormContext);
 	if (!context)
 		throw new Error("useHookedForm must be used inside HookedForm.Form");
-	return context as FormContextValue<TFormData>;
+	return context;
 }
 
 interface HookedFormContextProviderProps<TFormData extends FieldValues> {

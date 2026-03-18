@@ -1,3 +1,5 @@
+"use client;";
+
 import React from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
@@ -7,8 +9,10 @@ import { AnyFormValues } from "../../context/HookedFormContext";
 
 const FormContainer = newStyledElement.form(styles.formContainer);
 
-interface FormProps<TFormData extends FieldValues>
-	extends Omit<React.FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
+interface FormProps<TFormData extends FieldValues> extends Omit<
+	React.FormHTMLAttributes<HTMLFormElement>,
+	"onSubmit"
+> {
 	form: UseFormReturn<AnyFormValues, unknown, TFormData>;
 	onSubmit?: (data: TFormData) => void;
 	onChangeAction?: (data: TFormData) => void;

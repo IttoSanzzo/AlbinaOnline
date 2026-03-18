@@ -1,3 +1,5 @@
+"use client";
+
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";

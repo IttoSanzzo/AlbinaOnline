@@ -58,8 +58,6 @@ export default function PageContent({ masteries }: PageContentProps) {
 		(mastery) => MasteryType[mastery.type] === MasteryType.Craft,
 	);
 
-	console.log(allCraftMasteries[0].iconUrl);
-
 	return (
 		<>
 			<HookedForm.Form form={form}>

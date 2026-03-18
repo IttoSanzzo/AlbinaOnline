@@ -40,8 +40,8 @@ export default function CharsPageContent() {
 					setCharacters(
 						data.characters
 							? data.characters.sort((a, b) => a.name.localeCompare(b.name))
-							: []
-					)
+							: [],
+					),
 				);
 		});
 	}, [setCharacters]);
@@ -70,22 +70,22 @@ export default function CharsPageContent() {
 			: characters.filter(
 					(character) =>
 						character.name.toLowerCase().includes(filter) ||
-						character.level === Number(filter)
-			  );
+						character.level === Number(filter),
+				);
 
 	const allFavoriteCharacters: CharacterData[] = isLoading
 		? []
-		: favorites?.character.flatMap((favorite) => {
+		: (favorites?.character.flatMap((favorite) => {
 				const character = filteredCharacters.find(
-					(character) => character.id == favorite.target.id
+					(character) => character.id == favorite.target.id,
 				);
 				return character ? [character] : [];
-		  }) ?? [];
+			}) ?? []);
 	const allUserCharacters: CharacterData[] = currentUser.loading
 		? []
 		: filteredCharacters.filter(
-				(character) => character.ownerId == currentUser.user?.id
-		  );
+				(character) => character.ownerId == currentUser.user?.id,
+			);
 
 	return (
 		<UIBasics.Box

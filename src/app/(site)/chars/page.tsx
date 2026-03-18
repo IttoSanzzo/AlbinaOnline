@@ -15,7 +15,7 @@ export const metadata: Metadata = assembleMetadata({
 	route: "/chars",
 });
 
-export default function CharsPageServerShell() {
+export default async function CharsPageServerShell() {
 	return (
 		<GenericPageContainer
 			title="Todos os Chars"
