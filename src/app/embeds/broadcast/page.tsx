@@ -1,6 +1,7 @@
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { Metadata } from "next";
 import { AlbinaBroadcast } from "./subComponents/AlbinaBroadcast";
+import "./styles.css";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Albina Broadcast",
