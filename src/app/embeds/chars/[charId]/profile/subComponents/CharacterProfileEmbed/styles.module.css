@@ -1,0 +1,166 @@
+.reactiveContainer {
+	position: absolute;
+	& > iframe {
+		border: none;
+		position: absolute;
+		top: 46%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 70%;
+		height: 70%;
+	}
+	width: 100%;
+	aspect-ratio: 1/1;
+}
+.frameContainer {
+	position: absolute;
+	top: 0;
+
+	width: 100%;
+	aspect-ratio: 1/1;
+}
+.verticalGaugeBarContainer {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: end;
+
+	top: 12%;
+	height: 68.5%;
+	width: 4%;
+	background-color: var(--cl-gray-800);
+	&.largeSideBar {
+		width: 6%;
+	}
+
+	&.mana {
+		left: 11%;
+		border-top-left-radius: var(--rd-xl);
+		border-top-right-radius: var(--rd-sm);
+		&.largeSideBar {
+			left: 9%;
+		}
+		& > .verticalGaugeBar {
+			border-top-left-radius: var(--rd-xl);
+			background-color: var(--cl-blue-700);
+		}
+	}
+	&.stamina {
+		right: 11%;
+		border-top-left-radius: var(--rd-sm);
+		border-top-right-radius: var(--rd-xl);
+		&.largeSideBar {
+			right: 9%;
+		}
+		& > .verticalGaugeBar {
+			border-top-right-radius: var(--rd-xl);
+			background-color: var(--cl-green-700);
+		}
+	}
+	border: 0.25vh solid var(--cl-golden-600);
+	box-shadow: 1px 0 10px black;
+	overflow: hidden;
+}
+.verticalGaugeBar {
+	position: relative;
+	display: block;
+	transition: 5s ease-in-out height;
+}
+
+.titleBarContainer {
+	position: absolute;
+
+	bottom: 2.6%;
+	left: -0.5%;
+
+	width: 100%;
+	height: 20%;
+
+	& > .profileTitle {
+		position: absolute;
+		text-align: center;
+		width: 70%;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		color: var(--cl-red-700);
+		mix-blend-mode: difference;
+		text-shadow: 0 0 50px var(--cl-red-700);
+		word-break: keep-all;
+		overflow: hidden;
+
+		font-size: 450%;
+		font-weight: 600;
+	}
+}
+
+.lifeBarContainer {
+	position: absolute;
+	display: flex;
+	flex: row;
+	justify-content: center;
+
+	top: 50.4%;
+	left: 50.4%;
+	transform: translate(-50%, -50%);
+	width: 90%;
+	height: 57%;
+	background-color: var(--cl-gray-800);
+}
+.lifeBar {
+	background-color: var(--cl-red-700);
+	transition: 5s ease-in-out width;
+	border-radius: var(--rd-xl);
+	overflow: hidden;
+}
+
+.noise {
+	content: "";
+	inset: 0;
+	width: 100%;
+	height: 100%;
+
+	background: url("/general-assets/embeds/chars/noise.png");
+
+	mix-blend-mode: overlay;
+	opacity: 0.4;
+	pointer-events: none;
+
+	&.mana {
+		animation: noiseMoveLeft 15s linear infinite;
+		background-size: 2500%;
+	}
+	&.stamina {
+		animation: noiseMoveRight 15s linear infinite;
+		background-size: 2500%;
+	}
+	&.life {
+		animation: noiseMoveDown 40s linear infinite;
+		background-size: 2500px;
+	}
+}
+
+@keyframes noiseMoveLeft {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: -50% 50%;
+	}
+}
+@keyframes noiseMoveRight {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 50% 50%;
+	}
+}
+@keyframes noiseMoveDown {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 0 25%;
+	}
+}

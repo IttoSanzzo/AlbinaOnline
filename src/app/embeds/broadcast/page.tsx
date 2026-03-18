@@ -4,7 +4,7 @@ import { AlbinaBroadcast } from "./subComponents/AlbinaBroadcast";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Albina Broadcast",
-	route: "/embed/broadcast",
+	route: "/embeds/broadcast",
 });
 
 interface BroadcastServerShellProps {

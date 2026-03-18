@@ -75,6 +75,26 @@
 	--cl-mauve-800: #6b21a8;
 	--cl-mauve-900: #581c87;
 
+	--cl-yellow-100: #fff7cc;
+	--cl-yellow-200: #ffef99;
+	--cl-yellow-300: #ffd84d;
+	--cl-yellow-400: #ffcb1f;
+	--cl-yellow-500: #e6b100;
+	--cl-yellow-600: #b58c00;
+	--cl-yellow-700: #8c6d00;
+	--cl-yellow-800: #594500;
+	--cl-yellow-900: #332600;
+
+	--cl-golden-100: #fff7cc;
+	--cl-golden-200: #ffe699;
+	--cl-golden-300: #ffd166;
+	--cl-golden-400: #ffbf33;
+	--cl-golden-500: #e6a800;
+	--cl-golden-600: #b38600;
+	--cl-golden-700: #806000;
+	--cl-golden-800: #594200;
+	--cl-golden-900: #332600;
+
 	/* Spaces */
 	--sp-1: 0.25rem;
 	--sp-2: 0.5rem;
