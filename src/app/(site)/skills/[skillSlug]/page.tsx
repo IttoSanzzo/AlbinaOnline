@@ -19,10 +19,8 @@ export async function generateMetadata({
 		{
 			cache: "force-cache",
 			method: "GET",
-			next: {
-				tags: [`page-metadata-skill-${skillSlug}`],
-			},
-		}
+			next: { tags: [`/skills`] },
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({

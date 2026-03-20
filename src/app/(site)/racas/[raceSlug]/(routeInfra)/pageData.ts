@@ -20,6 +20,7 @@ export async function getPageData(raceSlug: string): Promise<RacePageData> {
 
 	const response = await fetch(getAlbinaApiFullAddress(`/races/${raceSlug}`), {
 		cache: getCacheMode(),
+		next: { tags: [`/races`] },
 	});
 	if (!response.ok) return { raceData: undefined, borderColor: "" };
 	const raceData = convertEnumsFromResponse<RaceData>(await response.json());

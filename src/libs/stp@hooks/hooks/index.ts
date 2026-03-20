@@ -20,3 +20,6 @@ export {
 } from "./useCurentCharacterAccessLevel";
 
 export { useBreadcrumbs, useSetBreadcrumbs } from "./useBreadcrumbs";
+
+export * from "./useCharacterUpdatedPolling";
+export * from "./useCharacterUpdated";

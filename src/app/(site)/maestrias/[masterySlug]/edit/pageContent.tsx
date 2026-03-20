@@ -22,7 +22,7 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -80,7 +80,7 @@ export function EditMasteryPageContent({
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -89,8 +89,7 @@ export function EditMasteryPageContent({
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/maestrias");
-		revalidatePathByClientSide(`/maestrias/${mastery.slug}`);
+		revalidateTagByClientSide("/masteries");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
@@ -114,10 +113,10 @@ export function EditMasteryPageContent({
 			banner={mastery.bannerUrl}
 			icon={mastery.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(
-				`/favicon/masteries/${mastery.slug}`
+				`/favicon/masteries/${mastery.slug}`,
 			)}
 			bannerChangeRoute={getAlbinaApiFullAddress(
-				`/banner/masteries/${mastery.slug}`
+				`/banner/masteries/${mastery.slug}`,
 			)}
 			metadataTag={`mastery-${mastery.slug}`}>
 			<HookedForm.Form

@@ -58,6 +58,9 @@ export async function getPageData(
 		getAlbinaApiFullAddress(`/masteries/${masterySlug}`),
 		{
 			cache: getCacheMode(),
+			next: {
+				tags: [`/masteries`],
+			},
 		},
 	);
 	if (!response.ok) return { masteryData: undefined, borderColor: "" };

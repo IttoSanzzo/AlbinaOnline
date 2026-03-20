@@ -32,7 +32,7 @@ export default function CharsPageContent() {
 
 	useEffect(() => {
 		authenticatedFetchAsync(getAlbinaApiFullAddress("/chars"), {
-			cache: "no-cache",
+			next: { revalidate: 30 },
 		}).then((response) => {
 			response
 				.json()

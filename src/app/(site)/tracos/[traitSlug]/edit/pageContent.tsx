@@ -22,7 +22,7 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -78,7 +78,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -87,8 +87,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/tracos");
-		revalidatePathByClientSide(`/tracos/${trait.slug}`);
+		revalidateTagByClientSide("/tracos");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, [
@@ -111,7 +110,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			icon={trait.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/traits/${trait.slug}`)}
 			bannerChangeRoute={getAlbinaApiFullAddress(
-				`/banner/traits/${trait.slug}`
+				`/banner/traits/${trait.slug}`,
 			)}
 			metadataTag={`trait-${trait.slug}`}>
 			<HookedForm.Form

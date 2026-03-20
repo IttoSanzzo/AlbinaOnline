@@ -20,7 +20,7 @@ export async function generateMetadata({
 			cache: "force-cache",
 			method: "GET",
 			next: {
-				tags: [`page-metadata-mastery-${masterySlug}`],
+				tags: [`/masteries/${masterySlug}/metadata`],
 			},
 		},
 	);

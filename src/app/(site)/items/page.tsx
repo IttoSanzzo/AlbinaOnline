@@ -33,6 +33,7 @@ const anchorNavigationData = [
 export default async function ItemsPageServerShell() {
 	const response = await fetch(getAlbinaApiFullAddress("/items"), {
 		cache: getCacheMode(),
+		next: { tags: [`/items`] },
 	});
 	const items: ItemData[] = await response.json();
 	const ordenedItems = items.sort((a, b) => a.name.localeCompare(b.name));

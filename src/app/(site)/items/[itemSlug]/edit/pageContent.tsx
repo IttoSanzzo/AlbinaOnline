@@ -23,7 +23,7 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -100,7 +100,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -109,8 +109,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/items");
-		revalidatePathByClientSide(`/items/${item.slug}`);
+		revalidateTagByClientSide("/items");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [

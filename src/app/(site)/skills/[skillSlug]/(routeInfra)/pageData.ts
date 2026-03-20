@@ -22,7 +22,8 @@ export async function getPageData(skillSlug: string): Promise<SkillPageData> {
 		getAlbinaApiFullAddress(`/skills/${skillSlug}`),
 		{
 			cache: getCacheMode(),
-		}
+			next: { tags: [`/skills`] },
+		},
 	);
 	if (!response.ok) return { skillData: undefined, borderColor: "" };
 	const skillData = convertEnumsFromResponse<SkillData>(await response.json());

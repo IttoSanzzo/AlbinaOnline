@@ -27,6 +27,7 @@ const anchorNavigationData: AnchorProps[] = [
 export default async function MasteriesPageServerShell() {
 	const response = await fetch(getAlbinaApiFullAddress("/masteries"), {
 		cache: getCacheMode(),
+		next: { tags: [`/masteries`] },
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
 	const masteries: MasteryData[] = allRawMasteries.sort((a, b) =>

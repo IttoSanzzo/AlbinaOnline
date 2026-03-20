@@ -6,7 +6,7 @@ import { SpellSubType, SpellType } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -45,20 +45,20 @@ export function CreateSpellPageContent() {
 				method: "POST",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			setError(
 				`Error while creating - ${response.status} ${
 					response.statusText
-				} : ${await response.text()}`
+				} : ${await response.text()}`,
 			);
 			toast.error("Creation failed", { id: toastId });
 			return;
 		}
 		setError("");
 		toast.success("Created", { id: toastId });
-		revalidatePathByClientSide("/spells");
+		revalidateTagByClientSide("/spells");
 		router.push(`/spells/${formData.slug}/edit`);
 	}
 

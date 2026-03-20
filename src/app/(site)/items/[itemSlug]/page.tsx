@@ -19,10 +19,8 @@ export async function generateMetadata({
 		{
 			cache: "force-cache",
 			method: "GET",
-			next: {
-				tags: [`page-metadata-item-${itemSlug}`],
-			},
-		}
+			next: { tags: [`/items`] },
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({

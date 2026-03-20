@@ -6,7 +6,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 
 function formTable(
-	characterSkills: CharacterSkillExpanded[]
+	characterSkills: CharacterSkillExpanded[],
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -52,7 +52,8 @@ export function _CharacterSkillsDisplay({
 			getAlbinaApiFullAddress(`/chars/${characterId}/skills`),
 			{
 				method: "GET",
-			}
+				next: { tags: [`/chars/${characterId}`] },
+			},
 		).then(async (response) => {
 			if (!response.ok) return;
 			const sortedSkills: CharacterSkillExpanded[] = (
@@ -81,11 +82,11 @@ export function _CharacterSkillsDisplay({
 
 function areEqual(
 	prevProps: CharacterSkillsDisplayProps,
-	nextProps: CharacterSkillsDisplayProps
+	nextProps: CharacterSkillsDisplayProps,
 ) {
 	return prevProps.characterId === nextProps.characterId;
 }
 export const CharacterSkillsDisplay = React.memo(
 	_CharacterSkillsDisplay,
-	areEqual
+	areEqual,
 );

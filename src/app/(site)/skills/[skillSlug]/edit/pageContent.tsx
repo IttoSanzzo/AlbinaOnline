@@ -23,7 +23,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -99,7 +102,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -108,8 +111,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/skills");
-		revalidatePathByClientSide(`/skills/${skill.slug}`);
+		revalidateTagByClientSide("/skills");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(SkillType, [
@@ -134,7 +136,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			icon={skill.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/skills/${skill.slug}`)}
 			bannerChangeRoute={getAlbinaApiFullAddress(
-				`/banner/skills/${skill.slug}`
+				`/banner/skills/${skill.slug}`,
 			)}
 			metadataTag={`skill-${skill.slug}`}>
 			<HookedForm.Form

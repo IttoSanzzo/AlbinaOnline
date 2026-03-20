@@ -19,10 +19,8 @@ export async function generateMetadata({
 		{
 			cache: "force-cache",
 			method: "GET",
-			next: {
-				tags: [`page-metadata-race-${raceSlug}`],
-			},
-		}
+			next: { tags: [`/races`] },
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({

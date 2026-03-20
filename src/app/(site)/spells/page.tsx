@@ -36,10 +36,11 @@ const anchorNavigationData: AnchorProps[] = [
 export default async function SpellsPageServerShell() {
 	const response = await fetch(getAlbinaApiFullAddress("/spells"), {
 		cache: getCacheMode(),
+		next: { tags: [`/spells`] },
 	});
 	const allRawSpells: SpellData[] = await response.json();
 	const allSpells: SpellData[] = allRawSpells.sort((a, b) =>
-		a.name.localeCompare(b.name)
+		a.name.localeCompare(b.name),
 	);
 
 	return (

@@ -22,7 +22,8 @@ export async function getPageData(spellSlug: string): Promise<SpellPageData> {
 		getAlbinaApiFullAddress(`/spells/${spellSlug}`),
 		{
 			cache: getCacheMode(),
-		}
+			next: { tags: [`/spells`] },
+		},
 	);
 	if (!response.ok) return { spellData: undefined, borderColor: "" };
 	const spellData = convertEnumsFromResponse<SpellData>(await response.json());

@@ -19,7 +19,7 @@ export default async function EditMasteryPageServerShell({
 }: EditMasteryPageServerShellProps) {
 	const { masterySlug } = await params;
 	const response = await fetch(
-		getAlbinaApiFullAddress(`/masteries/${masterySlug}`)
+		getAlbinaApiFullAddress(`/masteries/${masterySlug}`),
 	);
 	if (!response.ok) return null;
 	return <EditMasteryPageContent mastery={await response.json()} />;

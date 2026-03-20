@@ -16,10 +16,11 @@ const anchorNavigationData: AnchorProps[] = [
 export default async function RacesPageContent() {
 	const response = await fetch(getAlbinaApiFullAddress("/races"), {
 		cache: getCacheMode(),
+		next: { tags: [`/races`] },
 	});
 	const allRawRaces: RaceData[] = await response.json();
 	const allRaces: RaceData[] = allRawRaces.sort((a, b) =>
-		a.name.localeCompare(b.name)
+		a.name.localeCompare(b.name),
 	);
 
 	return (

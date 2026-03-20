@@ -9,6 +9,8 @@ import {
 	SetCurrentCharacterAccessLevel,
 	SetCurrentPageData,
 	SetNavBarModules,
+	useCharacterUpdated,
+	useCharacterUpdatedPolling,
 	useCurrentCharacterAccessLevel,
 } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
@@ -28,19 +30,33 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 	const [characterData, setCharacterData] =
 		useState<CharacterExpandedData | null>(null);
 	const { accessLevel } = useCurrentCharacterAccessLevel();
+	useCharacterUpdatedPolling(characterId, characterData?.updatedAt);
 
-	useEffect(() => {
+	async function loadCharacterAsync() {
 		authenticatedFetchAsync(`/chars/${characterId}?view=expanded`, {
 			method: "GET",
-		}).then((response) => {
+			next: { tags: [`/chars/${characterId}`] },
+		}).then(async (response) => {
 			if (!response.ok) {
 				setError(response.status);
 			} else {
-				response.json().then((data) => {
-					setCharacterData(data.character);
-				});
+				const data = await response.json();
+				console.log(data);
+				setCharacterData(data.character);
 			}
 		});
+	}
+
+	useCharacterUpdated(characterId, () => {
+		return true;
+	});
+	useCharacterUpdated(characterId, async () => {
+		await loadCharacterAsync();
+		return true;
+	});
+
+	useEffect(() => {
+		loadCharacterAsync();
 	}, [characterId, setCharacterData]);
 	if (error != null) {
 		switch (error) {

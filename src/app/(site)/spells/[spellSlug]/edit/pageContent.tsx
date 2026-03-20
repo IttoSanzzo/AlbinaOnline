@@ -26,7 +26,7 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -112,7 +112,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -121,8 +121,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/spells");
-		revalidatePathByClientSide(`/spells/${spell.slug}`);
+		revalidateTagByClientSide("/spells");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
@@ -143,7 +142,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			icon={spell.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/spells/${spell.slug}`)}
 			bannerChangeRoute={getAlbinaApiFullAddress(
-				`/banner/spells/${spell.slug}`
+				`/banner/spells/${spell.slug}`,
 			)}
 			metadataTag={`spell-${spell.slug}`}>
 			<HookedForm.Form

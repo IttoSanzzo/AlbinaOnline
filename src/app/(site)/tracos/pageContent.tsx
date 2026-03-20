@@ -15,11 +15,12 @@ const anchorNavigationData: AnchorProps[] = [
 export default async function TraitsPageContent() {
 	const response = await fetch(getAlbinaApiFullAddress("/traits"), {
 		cache: getCacheMode(),
+		next: { tags: [`/traits`] },
 	});
 	const allRawTraits: TraitData[] = await response.json();
 
 	const allTraits: TraitData[] = allRawTraits.sort((a, b) =>
-		a.name.localeCompare(b.name)
+		a.name.localeCompare(b.name),
 	);
 
 	return (

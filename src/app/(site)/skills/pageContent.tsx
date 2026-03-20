@@ -15,11 +15,12 @@ const anchorNavigationData: AnchorProps[] = [
 export default async function SkillsPageContent() {
 	const response = await fetch(getAlbinaApiFullAddress("/skills"), {
 		cache: getCacheMode(),
+		next: { tags: [`/skills`] },
 	});
 	const allRawSkills: SkillData[] = await response.json();
 
 	const allSkills: SkillData[] = allRawSkills.sort((a, b) =>
-		a.name.localeCompare(b.name)
+		a.name.localeCompare(b.name),
 	);
 
 	return (

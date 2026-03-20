@@ -19,10 +19,8 @@ export async function generateMetadata({
 		{
 			cache: "force-cache",
 			method: "GET",
-			next: {
-				tags: [`page-metadata-trait-${traitSlug}`],
-			},
-		}
+			next: { tags: [`/traits`] },
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({

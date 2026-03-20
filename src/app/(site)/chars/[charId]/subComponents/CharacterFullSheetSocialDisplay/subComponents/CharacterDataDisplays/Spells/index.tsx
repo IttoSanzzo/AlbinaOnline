@@ -6,7 +6,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 
 function formTable(
-	characterSpells: CharacterSpellExpanded[]
+	characterSpells: CharacterSpellExpanded[],
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -32,7 +32,7 @@ function formTable(
 		titleRow,
 		...levelsWithSpells.flatMap((index) => {
 			const spellsFromThisLevel = characterSpells.filter(
-				(spell) => spell.spell.domainLevel === index
+				(spell) => spell.spell.domainLevel === index,
 			);
 			if (spellsFromThisLevel.length === 0) return [];
 			return [
@@ -71,7 +71,8 @@ export function _CharacterSpellsDisplay({
 			getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 			{
 				method: "GET",
-			}
+				next: { tags: [`/chars/${characterId}`] },
+			},
 		).then(async (response) => {
 			if (!response.ok) return;
 			const sortedSpells: CharacterSpellExpanded[] = (
@@ -100,11 +101,11 @@ export function _CharacterSpellsDisplay({
 
 function areEqual(
 	prevProps: CharacterSpellsDisplayProps,
-	nextProps: CharacterSpellsDisplayProps
+	nextProps: CharacterSpellsDisplayProps,
 ) {
 	return prevProps.characterId === nextProps.characterId;
 }
 export const CharacterSpellsDisplay = React.memo(
 	_CharacterSpellsDisplay,
-	areEqual
+	areEqual,
 );

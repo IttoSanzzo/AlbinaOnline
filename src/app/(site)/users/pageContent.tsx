@@ -29,7 +29,9 @@ export default function UsersPageContent() {
 
 	useEffect(() => {
 		authenticatedFetchAsync(getAlbinaApiFullAddress("/users"), {
-			cache: "no-cache",
+			next: {
+				revalidate: 60,
+			},
 		}).then((response) => {
 			response
 				.json()

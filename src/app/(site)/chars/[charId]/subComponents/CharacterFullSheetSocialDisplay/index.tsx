@@ -15,7 +15,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 const fetchCharacter = {
 	items: async (
 		characterId: Guid,
-		setCharacterItems: Dispatch<SetStateAction<CharacterItemStackExpanded[]>>
+		setCharacterItems: Dispatch<SetStateAction<CharacterItemStackExpanded[]>>,
 	) => {
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
@@ -24,7 +24,8 @@ const fetchCharacter = {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+				next: { tags: [`/chars/${characterId}`] },
+			},
 		);
 
 		if (!response.ok) throw new Error("Failed to fetch items");
@@ -39,7 +40,7 @@ const fetchCharacter = {
 	},
 	masteries: async (
 		characterId: Guid,
-		setCharacterMasteries: Dispatch<SetStateAction<CharacterMasteryExpanded[]>>
+		setCharacterMasteries: Dispatch<SetStateAction<CharacterMasteryExpanded[]>>,
 	) => {
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/masteries`),
@@ -48,7 +49,8 @@ const fetchCharacter = {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+				next: { tags: [`/chars/${characterId}`] },
+			},
 		);
 
 		if (!response.ok) throw new Error("Failed to fetch masteries");
@@ -63,7 +65,9 @@ const fetchCharacter = {
 	},
 	equipments: async (
 		characterId: Guid,
-		setCharacterEquipments: Dispatch<SetStateAction<CharacterEquipments | null>>
+		setCharacterEquipments: Dispatch<
+			SetStateAction<CharacterEquipments | null>
+		>,
 	) => {
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
@@ -72,7 +76,8 @@ const fetchCharacter = {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+				next: { tags: [`/chars/${characterId}`] },
+			},
 		);
 		if (!response.ok) throw new Error("Failed to fetch masteries");
 		setCharacterEquipments(await response.json());

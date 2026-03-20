@@ -6,7 +6,10 @@ import { MasterySubType, MasteryType } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -58,7 +61,7 @@ export function CreateMasteryPageContent() {
 		}
 		setError("");
 		toast.success("Created", { id: toastId });
-		revalidatePathByClientSide("/masteries");
+		revalidateTagByClientSide("/masteries");
 		router.push(`/masteries/${formData.slug}/edit`);
 	}
 
