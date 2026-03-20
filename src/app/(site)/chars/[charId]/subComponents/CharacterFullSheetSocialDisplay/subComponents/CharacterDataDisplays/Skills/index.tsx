@@ -80,13 +80,4 @@ export function _CharacterSkillsDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterSkillsDisplayProps,
-	nextProps: CharacterSkillsDisplayProps,
-) {
-	return prevProps.characterId === nextProps.characterId;
-}
-export const CharacterSkillsDisplay = React.memo(
-	_CharacterSkillsDisplay,
-	areEqual,
-);
+export const CharacterSkillsDisplay = React.memo(_CharacterSkillsDisplay);

@@ -1,7 +1,7 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import z from "zod";
 import { CharacterProfile } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -33,6 +33,10 @@ export function CharacterProfileDisplay({
 		resolver: zodResolver(schema),
 		defaultValues: characterProfile,
 	});
+
+	useEffect(() => {
+		form.reset(characterProfile);
+	}, [characterProfile]);
 
 	return (
 		<HookedForm.Form form={form}>

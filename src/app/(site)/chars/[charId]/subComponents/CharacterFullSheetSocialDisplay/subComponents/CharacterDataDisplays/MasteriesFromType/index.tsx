@@ -14,12 +14,12 @@ import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 
 const MasteriesDrawerContainer = newStyledElement.div(
-	styles.masteriesDrawerContainer
+	styles.masteriesDrawerContainer,
 );
 
 function tableMasteryEntry(
 	mastery: CharacterMasteryExpanded,
-	abilityScore?: number
+	abilityScore?: number,
 ) {
 	return [
 		<StyledLink
@@ -34,7 +34,7 @@ function tableMasteryEntry(
 		/>,
 		bonusValueText(
 			mastery.level +
-				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0)
+				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0),
 		),
 	];
 }
@@ -60,7 +60,7 @@ const tableHeaderRow = [
 ];
 function formTable(
 	masteries: CharacterMasteryExpanded[],
-	abilityScore: CharacterAbilityScore
+	abilityScore: CharacterAbilityScore,
 ): ReactNode[][] {
 	if (masteries.length == 0) {
 		return [
@@ -91,24 +91,24 @@ function formTable(
 						mastery,
 						abilityScore[
 							mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
-						] as number
+						] as number,
 					);
 				case "Knowledge":
 					return tableMasteryEntry(
 						mastery,
-						Math.max(abilityScore.intelligence, abilityScore.wisdom)
+						Math.max(abilityScore.intelligence, abilityScore.wisdom),
 					);
 				case "Craft":
 					switch (mastery.mastery.subType) {
 						case "Production":
 							return tableMasteryEntry(
 								mastery,
-								Math.max(abilityScore.technique, abilityScore.intelligence)
+								Math.max(abilityScore.technique, abilityScore.intelligence),
 							);
 						case "Combatant":
 							return tableMasteryEntry(
 								mastery,
-								Math.max(abilityScore.technique, abilityScore.strength)
+								Math.max(abilityScore.technique, abilityScore.strength),
 							);
 						case "General":
 							return tableMasteryEntry(
@@ -116,8 +116,8 @@ function formTable(
 								Math.max(
 									abilityScore.wisdom,
 									abilityScore.intelligence,
-									abilityScore.charisma
-								)
+									abilityScore.charisma,
+								),
 							);
 					}
 				// no-fallthrough
@@ -141,7 +141,7 @@ function _CharacterMasteriesFromTypeDisplay({
 	characterMasteries,
 }: CharacterMasteriesFromTypeDisplayProps) {
 	const masteriesFromThisType = characterMasteries.filter(
-		(mastery) => mastery.mastery.type == type
+		(mastery) => mastery.mastery.type == type,
 	);
 
 	return (
@@ -174,16 +174,6 @@ function _CharacterMasteriesFromTypeDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterMasteriesFromTypeDisplayProps,
-	nextProps: CharacterMasteriesFromTypeDisplayProps
-) {
-	return (
-		prevProps.characterId === nextProps.characterId &&
-		prevProps.type === nextProps.type
-	);
-}
 export const CharacterMasteriesFromTypeDisplay = React.memo(
 	_CharacterMasteriesFromTypeDisplay,
-	areEqual
 );

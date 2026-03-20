@@ -50,19 +50,19 @@ export function _CharacterEquipmentsDisplay({
 							tableLanes: [
 								formEquipSlotTableEntry(
 									"Frame",
-									characterEquipments.slots.Frame
+									characterEquipments.slots.Frame,
 								),
 								formEquipSlotTableEntry(
 									"Mão Hábil",
-									characterEquipments.slots.MainHand
+									characterEquipments.slots.MainHand,
 								),
 								formEquipSlotTableEntry(
 									"Outra Mão",
-									characterEquipments.slots.OffHand
+									characterEquipments.slots.OffHand,
 								),
 								formEquipSlotTableEntry(
 									"Cabeça",
-									characterEquipments.slots.Head
+									characterEquipments.slots.Head,
 								),
 								formEquipSlotTableEntry("Pés", characterEquipments.slots.Feet),
 							],
@@ -78,31 +78,31 @@ export function _CharacterEquipmentsDisplay({
 							tableLanes: [
 								formEquipSlotTableEntry(
 									"Corpo",
-									characterEquipments.slots.Torso
+									characterEquipments.slots.Torso,
 								),
 								formEquipSlotTableEntry(
 									"Braços",
-									characterEquipments.slots.Arms
+									characterEquipments.slots.Arms,
 								),
 								formEquipSlotTableEntry(
 									"Rosto",
-									characterEquipments.slots.Face
+									characterEquipments.slots.Face,
 								),
 								formEquipSlotTableEntry(
 									"Cinto",
-									characterEquipments.slots.Waist
+									characterEquipments.slots.Waist,
 								),
 								formEquipSlotTableEntry(
 									"Brinco",
-									characterEquipments.slots.Earring
+									characterEquipments.slots.Earring,
 								),
 								formEquipSlotTableEntry(
 									"Colar",
-									characterEquipments.slots.Necklace
+									characterEquipments.slots.Necklace,
 								),
 								formEquipSlotTableEntry(
 									"Pulseira",
-									characterEquipments.slots.Bracelet
+									characterEquipments.slots.Bracelet,
 								),
 								formEquipSlotTableEntry("Anel", characterEquipments.slots.Ring),
 							],
@@ -115,5 +115,5 @@ export function _CharacterEquipmentsDisplay({
 }
 
 export const CharacterEquipmentsDisplay = React.memo(
-	_CharacterEquipmentsDisplay
+	_CharacterEquipmentsDisplay,
 );

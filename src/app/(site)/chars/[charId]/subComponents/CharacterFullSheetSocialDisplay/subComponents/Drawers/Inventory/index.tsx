@@ -5,7 +5,6 @@ import {
 	CharacterItemStackExpanded,
 	Guid,
 } from "@/libs/stp@types";
-import React from "react";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import { UIBasics } from "@/components/(UIBasics)";
 

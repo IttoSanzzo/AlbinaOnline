@@ -1,7 +1,7 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import z from "zod";
 import { UIBasics } from "@/components/(UIBasics)";
 
@@ -22,6 +22,10 @@ export function CharacterBackstoryDisplay({
 			backstory: characterBackstory,
 		},
 	});
+
+	useEffect(() => {
+		form.reset({ backstory: characterBackstory });
+	}, [characterBackstory]);
 
 	return (
 		<HookedForm.Form form={form}>

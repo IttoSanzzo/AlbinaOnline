@@ -99,13 +99,4 @@ export function _CharacterSpellsDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterSpellsDisplayProps,
-	nextProps: CharacterSpellsDisplayProps,
-) {
-	return prevProps.characterId === nextProps.characterId;
-}
-export const CharacterSpellsDisplay = React.memo(
-	_CharacterSpellsDisplay,
-	areEqual,
-);
+export const CharacterSpellsDisplay = React.memo(_CharacterSpellsDisplay);

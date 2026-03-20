@@ -30,28 +30,28 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 	const [characterData, setCharacterData] =
 		useState<CharacterExpandedData | null>(null);
 	const { accessLevel } = useCurrentCharacterAccessLevel();
-	useCharacterUpdatedPolling(characterId, characterData?.updatedAt);
+	useCharacterUpdatedPolling(characterId);
 
-	async function loadCharacterAsync() {
-		authenticatedFetchAsync(`/chars/${characterId}?view=expanded`, {
-			method: "GET",
-			next: { tags: [`/chars/${characterId}`] },
-		}).then(async (response) => {
-			if (!response.ok) {
-				setError(response.status);
-			} else {
-				const data = await response.json();
-				setCharacterData(data.character);
-			}
-		});
+	async function loadCharacterAsync(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
+			`/chars/${characterId}?view=expanded`,
+			{
+				method: "GET",
+				next: { tags: [`/chars/${characterId}`] },
+			},
+		);
+		if (!response.ok) {
+			setError(response.status);
+			return false;
+		} else {
+			const data = await response.json();
+			setCharacterData(data.character);
+			return true;
+		}
 	}
 
-	useCharacterUpdated(characterId, () => {
-		return true;
-	});
 	useCharacterUpdated(characterId, async () => {
-		await loadCharacterAsync();
-		return true;
+		return await loadCharacterAsync();
 	});
 
 	useEffect(() => {
@@ -122,6 +122,9 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			<GenericPageFooter
 				version="6.5.0"
 				lastUpdate={characterData.updatedAt}
+				lastUpdateWithHour
+				lastUpdateWithMinute
+				lastUpdateWithSecond
 			/>
 		</GenericPageContainer>
 	);

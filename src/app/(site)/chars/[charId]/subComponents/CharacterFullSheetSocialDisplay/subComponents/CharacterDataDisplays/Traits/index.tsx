@@ -1,12 +1,13 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import React, { useLayoutEffect, useState } from "react";
 
 function formTable(
-	characterTraits: CharacterTraitExpanded[]
+	characterTraits: CharacterTraitExpanded[],
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -47,24 +48,32 @@ export function _CharacterTraitsDisplay({
 		CharacterTraitExpanded[]
 	>([]);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadCharacterTraits(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 			{
 				method: "GET",
-			}
-		).then(async (response) => {
-			if (!response.ok) return;
-			const sortedTraits: CharacterTraitExpanded[] = (
-				(await response.json()) as CharacterTraitExpanded[]
-			).sort((cs1, cs2) => {
-				const typeOrder = TraitType[cs1.trait.type] - TraitType[cs2.trait.type];
-				if (typeOrder !== 0) return typeOrder;
-				return cs1.trait.name.localeCompare(cs2.trait.name);
-			});
-			setCharacterTraits(sortedTraits);
+			},
+		);
+		if (!response.ok) return false;
+		const sortedTraits: CharacterTraitExpanded[] = (
+			(await response.json()) as CharacterTraitExpanded[]
+		).sort((cs1, cs2) => {
+			const typeOrder = TraitType[cs1.trait.type] - TraitType[cs2.trait.type];
+			if (typeOrder !== 0) return typeOrder;
+			return cs1.trait.name.localeCompare(cs2.trait.name);
 		});
+		setCharacterTraits(sortedTraits);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadCharacterTraits();
 	}, []);
+
+	useCharacterUpdated(characterId, async () => {
+		return await loadCharacterTraits();
+	});
 
 	return (
 		<UIBasics.ToggleHeader
@@ -86,13 +95,4 @@ export function _CharacterTraitsDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterTraitsDisplayProps,
-	nextProps: CharacterTraitsDisplayProps
-) {
-	return prevProps.characterId === nextProps.characterId;
-}
-export const CharacterTraitsDisplay = React.memo(
-	_CharacterTraitsDisplay,
-	areEqual
-);
+export const CharacterTraitsDisplay = React.memo(_CharacterTraitsDisplay);

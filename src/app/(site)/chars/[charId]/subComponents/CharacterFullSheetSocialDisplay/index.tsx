@@ -11,6 +11,7 @@ import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 const fetchCharacter = {
 	items: async (
@@ -105,6 +106,13 @@ export function CharacterFullSheetSocialDisplay({
 		fetchCharacter.items(characterId, setCharacterItemsState);
 		fetchCharacter.equipments(characterId, setCharacterEquipmentState);
 	}, [characterId]);
+
+	useCharacterUpdated(characterId, async () => {
+		fetchCharacter.masteries(characterId, setCharacterMasteriesState);
+		fetchCharacter.items(characterId, setCharacterItemsState);
+		fetchCharacter.equipments(characterId, setCharacterEquipmentState);
+		return true;
+	});
 
 	if (characterEquipmentsState === null) return null;
 
