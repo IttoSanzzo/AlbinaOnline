@@ -22,8 +22,8 @@ export function useCharacterUpdatedPolling(
 			const data = await response.json();
 			if (lastUpdatedAt.current == "") lastUpdatedAt.current = data.updatedAt;
 			else if (lastUpdatedAt.current !== data.updatedAt) {
-				var toastId = toast.loading("Sincronizando dados...");
-				var eventWasSuccess = await eventBus.emitAsync(
+				const toastId = toast.loading("Sincronizando dados...");
+				const eventWasSuccess = await eventBus.emitAsync(
 					`/chars/${characterId}/updated`,
 					{
 						updatedAt: data.updatedAt,

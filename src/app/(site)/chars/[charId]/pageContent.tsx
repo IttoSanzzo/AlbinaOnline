@@ -41,7 +41,6 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 				setError(response.status);
 			} else {
 				const data = await response.json();
-				console.log(data);
 				setCharacterData(data.character);
 			}
 		});
