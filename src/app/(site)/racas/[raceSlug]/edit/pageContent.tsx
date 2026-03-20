@@ -25,7 +25,7 @@ import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -112,7 +112,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 				method: "PUT",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Save failed", { id: toastId });
@@ -121,8 +121,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidatePathByClientSide("/racas");
-		revalidatePathByClientSide(`/racas/${race.slug}`);
+		revalidateTagByClientSide("/races");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, [

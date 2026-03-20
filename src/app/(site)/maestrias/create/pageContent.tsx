@@ -59,7 +59,7 @@ export function CreateMasteryPageContent() {
 		setError("");
 		toast.success("Created", { id: toastId });
 		revalidateTagByClientSide("/masteries");
-		router.push(`/masteries/${formData.slug}/edit`);
+		router.push(`/maestrias/${formData.slug}/edit`);
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [

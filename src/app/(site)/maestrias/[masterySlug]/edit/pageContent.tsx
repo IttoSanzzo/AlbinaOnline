@@ -169,7 +169,7 @@ export function EditMasteryPageContent({
 				genericEffects={mastery.effects}
 				targetId={mastery.id}
 				targetType="Mastery"
-				revalidatePath={`/masteries/${mastery.slug}`}
+				revalidatePath={`/maestrias/${mastery.slug}`}
 			/>
 		</GenericPageContainer>
 	);

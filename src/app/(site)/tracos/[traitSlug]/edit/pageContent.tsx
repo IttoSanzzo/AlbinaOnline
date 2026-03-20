@@ -87,7 +87,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/tracos");
+		revalidateTagByClientSide("/traits");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, [
