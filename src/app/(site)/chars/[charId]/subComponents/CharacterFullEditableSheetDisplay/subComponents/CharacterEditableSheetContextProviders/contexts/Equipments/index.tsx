@@ -25,7 +25,7 @@ export function EquipmentsContextProvider({
 			characterEquipments: equipmentsState[0],
 			setCharacterEquipments: equipmentsState[1],
 		}),
-		[equipmentsState[0]]
+		[equipmentsState[0]],
 	);
 
 	return (

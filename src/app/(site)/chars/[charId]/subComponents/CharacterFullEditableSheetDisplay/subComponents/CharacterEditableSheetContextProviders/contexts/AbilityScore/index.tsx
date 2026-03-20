@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { CharacterAbilityScore } from "@/libs/stp@types";
 
 export const AbilityScoreContext = createContext<{
@@ -20,8 +20,12 @@ export function CharacterAbilityScoreContextProvider({
 			abilityScore: abilityScoreState[0],
 			setAbilityScore: abilityScoreState[1],
 		}),
-		[abilityScoreState[0]]
+		[abilityScoreState[0]],
 	);
+
+	useEffect(() => {
+		abilityScoreState[1](abilityScore);
+	}, [abilityScore]);
 
 	return (
 		<AbilityScoreContext.Provider value={abilityScoreContextValue}>

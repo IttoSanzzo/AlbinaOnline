@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { CharacterCoreMetrics } from "@/libs/stp@types";
 
 export const CoreMetricsContext = createContext<{
@@ -20,8 +20,12 @@ export function CharacterCoreMetricsContextProvider({
 			coreMetrics: coreMetricsState[0],
 			setCoreMetrics: coreMetricsState[1],
 		}),
-		[coreMetricsState[0]]
+		[coreMetricsState[0]],
 	);
+
+	useEffect(() => {
+		coreMetricsState[1](coreMetrics);
+	}, [coreMetrics]);
 
 	return (
 		<CoreMetricsContext.Provider value={coreMetricsContextValue}>

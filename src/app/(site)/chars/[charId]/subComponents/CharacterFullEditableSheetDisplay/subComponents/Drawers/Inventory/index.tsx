@@ -37,13 +37,4 @@ function _InventoryDrawer({
 	);
 }
 
-function areEqual(
-	prevProps: InventoryDrawerProps,
-	nextProps: InventoryDrawerProps
-) {
-	return (
-		prevProps.characterId === nextProps.characterId &&
-		prevProps.characterCoinStacks === nextProps.characterCoinStacks
-	);
-}
-export const InventoryDrawer = React.memo(_InventoryDrawer, areEqual);
+export const InventoryDrawer = React.memo(_InventoryDrawer);

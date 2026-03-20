@@ -2,13 +2,17 @@ import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterAbilityScore } from "@/libs/stp@types";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 
-function TableAbilityScoreEntry(title: string, value: number) {
+function TableAbilityScoreEntry(key: string, title: string, value: number) {
 	return [
 		<StyledLink
 			title={title}
 			href={"/"}
+			icon={getAlbinaApiFullAddress(
+				`/favicon/default/misc/ability-scores/${key}`,
+			)}
 		/>,
 		<UIBasics.Text
 			display="block"
@@ -51,18 +55,38 @@ export function CharacterAbilityScoreDisplay({
 										abilityScore.constitution +
 										abilityScore.intelligence +
 										abilityScore.wisdom +
-										abilityScore.charisma
+										abilityScore.charisma,
 								)}
 							/>,
 							"",
 						],
-						TableAbilityScoreEntry("Força", abilityScore.strength),
-						TableAbilityScoreEntry("Agilidade", abilityScore.agility),
-						TableAbilityScoreEntry("Técnica", abilityScore.technique),
-						TableAbilityScoreEntry("Constituição", abilityScore.constitution),
-						TableAbilityScoreEntry("Inteligência", abilityScore.intelligence),
-						TableAbilityScoreEntry("Sabedoria", abilityScore.wisdom),
-						TableAbilityScoreEntry("Carisma", abilityScore.charisma),
+						TableAbilityScoreEntry("strength", "Força", abilityScore.strength),
+						TableAbilityScoreEntry(
+							"agility",
+							"Agilidade",
+							abilityScore.agility,
+						),
+						TableAbilityScoreEntry(
+							"technique",
+							"Técnica",
+							abilityScore.technique,
+						),
+						TableAbilityScoreEntry(
+							"constitution",
+							"Constituição",
+							abilityScore.constitution,
+						),
+						TableAbilityScoreEntry(
+							"intelligence",
+							"Inteligência",
+							abilityScore.intelligence,
+						),
+						TableAbilityScoreEntry("wisdom", "Sabedoria", abilityScore.wisdom),
+						TableAbilityScoreEntry(
+							"charisma",
+							"Carisma",
+							abilityScore.charisma,
+						),
 					],
 				}}
 			/>

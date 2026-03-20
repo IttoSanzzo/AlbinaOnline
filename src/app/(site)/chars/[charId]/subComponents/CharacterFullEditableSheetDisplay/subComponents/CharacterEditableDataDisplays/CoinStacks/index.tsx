@@ -21,19 +21,19 @@ export function _CharacterCoinStacksDisplay({
 	const { characterId } = useContext(CharacterIdContext);
 
 	const korynCoinsStackEntry = characterCoinStacks.find(
-		(coinStack) => coinStack.unit === "Koryn"
+		(coinStack) => coinStack.unit === "Koryn",
 	);
 	if (!korynCoinsStackEntry) {
 		throw new Error("Character does not have KorynCoins");
 	}
 	const lyurCoinsStackEntry = characterCoinStacks.find(
-		(coinStack) => coinStack.unit === "Lyur"
+		(coinStack) => coinStack.unit === "Lyur",
 	);
 	if (!lyurCoinsStackEntry) {
 		throw new Error("Character does not have LyurCoins");
 	}
 	const varisCoinsStackEntry = characterCoinStacks.find(
-		(coinStack) => coinStack.unit === "Varis"
+		(coinStack) => coinStack.unit === "Varis",
 	);
 	if (!varisCoinsStackEntry) {
 		throw new Error("Character does not have VarisCoins");
@@ -68,13 +68,6 @@ export function _CharacterCoinStacksDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterCoinStacksDisplayProps,
-	nextProps: CharacterCoinStacksDisplayProps
-) {
-	return prevProps.characterCoinStacks === nextProps.characterCoinStacks;
-}
 export const CharacterCoinStacksDisplay = React.memo(
 	_CharacterCoinStacksDisplay,
-	areEqual
 );

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { CharacterParameters } from "@/libs/stp@types";
 
 export const ParametersContext = createContext<{
@@ -20,8 +20,11 @@ export function CharacterParametersContextProvider({
 			parameters: parametersState[0],
 			setParameters: parametersState[1],
 		}),
-		[parametersState[0]]
+		[parametersState[0]],
 	);
+	useEffect(() => {
+		parametersState[1](parameters);
+	}, [parameters]);
 
 	return (
 		<ParametersContext.Provider value={parametersContextValue}>

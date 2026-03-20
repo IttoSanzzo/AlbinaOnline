@@ -25,7 +25,7 @@ export function MasteryLinkWithDeletion({
 		<StyledLinkWithButton
 			title={name}
 			href={`/maestrias/${slug}`}
-			icon={`${getAlbinaApiFullAddress()}/favicon/maestrias/${slug}`}
+			icon={getAlbinaApiFullAddress(`/favicon/masteries/${slug}`)}
 			buttonIcon={{ name: "Trash", color: "red" }}
 			onClick={async () => {
 				const body = { masteryId: masteryId };
@@ -38,7 +38,7 @@ export function MasteryLinkWithDeletion({
 						headers: {
 							"Content-Type": "application/json",
 						},
-					}
+					},
 				);
 				if (!response.ok) {
 					toast.error(CharToastMessage.error, { id: toastId });

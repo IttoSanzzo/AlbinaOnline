@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
 import { CharToastMessage } from "../../../../../CharacterEditableDataDisplays";
+import { useEffect } from "react";
 
 const schema = z.object({
 	level: z.coerce
@@ -27,6 +28,9 @@ export function LevelSelector({ characterId, level }: LevelSelectorProps) {
 			level: level,
 		},
 	});
+	useEffect(() => {
+		form.reset({ level: level });
+	}, [level]);
 
 	async function onLevelChange(values: FormData) {
 		const body = {
@@ -41,7 +45,7 @@ export function LevelSelector({ characterId, level }: LevelSelectorProps) {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

@@ -17,7 +17,7 @@ export function CharacterRaceContextProvider({
 		() => ({
 			race: race,
 		}),
-		[race]
+		[race],
 	);
 
 	return (

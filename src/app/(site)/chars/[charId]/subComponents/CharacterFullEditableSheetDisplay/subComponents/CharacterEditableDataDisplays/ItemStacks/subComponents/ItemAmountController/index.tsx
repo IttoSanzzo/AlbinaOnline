@@ -32,7 +32,7 @@ export function ItemAmountController({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -43,7 +43,7 @@ export function ItemAmountController({
 			return state.map((itemStack) =>
 				itemStack.itemId === itemId
 					? { ...itemStack, amount: value }
-					: itemStack
+					: itemStack,
 			);
 		});
 	}

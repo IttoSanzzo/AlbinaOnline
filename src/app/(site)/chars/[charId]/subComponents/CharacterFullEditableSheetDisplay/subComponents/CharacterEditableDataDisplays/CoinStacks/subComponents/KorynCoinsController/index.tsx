@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../../../CharacterEditableSheetContextProviders";
 import z from "zod";
@@ -52,6 +52,9 @@ export function KorynCoinsController({
 		resolver: zodResolver(schema),
 		defaultValues: korynCoins,
 	});
+	useEffect(() => {
+		form.reset(korynCoins);
+	}, [korynCoins]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		const toastId = toast.loading(CharToastMessage.loading);
@@ -63,7 +66,7 @@ export function KorynCoinsController({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

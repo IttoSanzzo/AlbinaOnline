@@ -40,17 +40,18 @@ export function useCharacterUpdatedPolling(characterId: string) {
 					updatedAt &&
 					lastUpdatedAt.current !== updatedAt
 				) {
-					const toastId = toast.loading("Sincronizando dados...");
+					// const toastId = toast.loading("Sincronizando dados...");
 					const success = await eventBus.emitAsync(
 						`/chars/${characterId}/updated`,
 						{ updatedAt },
 					);
 					if (!isMounted) return;
 					if (success) {
-						toast.success("Sincronizado", { id: toastId });
+						// toast.success("Sincronizado", { id: toastId });
 						lastUpdatedAt.current = updatedAt;
 					} else {
-						toast.error("Sincronização falhou", { id: toastId });
+						toast.error("Sincronização falhou");
+						// toast.error("Sincronização falhou", { id: toastId });
 					}
 				}
 			} finally {

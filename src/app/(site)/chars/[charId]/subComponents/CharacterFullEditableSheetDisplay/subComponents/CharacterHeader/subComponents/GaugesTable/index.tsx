@@ -27,34 +27,33 @@ export function GaugesTable() {
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
 
-	const defaultValues = {
-		currentHp: coreMetrics.healthPoints.baseCurrent,
-		temporaryHp: coreMetrics.healthPoints.temporaryCurrentModifier,
-		currentEp: coreMetrics.staminaPoints.baseCurrent,
-		temporaryEp: coreMetrics.staminaPoints.temporaryCurrentModifier,
-		currentMp: coreMetrics.manaPoints.baseCurrent,
-		temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
-	};
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		defaultValues: defaultValues,
+		defaultValues: {
+			currentHp: coreMetrics.healthPoints.baseCurrent,
+			temporaryHp: coreMetrics.healthPoints.temporaryCurrentModifier,
+			currentEp: coreMetrics.staminaPoints.baseCurrent,
+			temporaryEp: coreMetrics.staminaPoints.temporaryCurrentModifier,
+			currentMp: coreMetrics.manaPoints.baseCurrent,
+			temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
+		},
 	});
 
 	useEffect(() => {
 		form.setValue("currentHp", coreMetrics.healthPoints.baseCurrent);
 		form.setValue(
 			"temporaryHp",
-			coreMetrics.healthPoints.temporaryCurrentModifier
+			coreMetrics.healthPoints.temporaryCurrentModifier,
 		);
 		form.setValue("currentEp", coreMetrics.staminaPoints.baseCurrent);
 		form.setValue(
 			"temporaryEp",
-			coreMetrics.staminaPoints.temporaryCurrentModifier
+			coreMetrics.staminaPoints.temporaryCurrentModifier,
 		);
 		form.setValue("currentMp", coreMetrics.manaPoints.baseCurrent);
 		form.setValue(
 			"temporaryMp",
-			coreMetrics.manaPoints.temporaryCurrentModifier
+			coreMetrics.manaPoints.temporaryCurrentModifier,
 		);
 	}, [coreMetrics]);
 
@@ -99,7 +98,7 @@ export function GaugesTable() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

@@ -8,6 +8,7 @@ import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";
 import { AddEquipmentButton } from "./subComponents/AddEquipmentButton";
 import { UIBasics } from "@/components/(UIBasics)";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 function formEquipSlotTableEntry(
 	characterId: Guid,
@@ -16,7 +17,7 @@ function formEquipSlotTableEntry(
 	>,
 	slot: EquipmentSlot,
 	title: string,
-	itemIds?: Guid[]
+	itemIds?: Guid[],
 ) {
 	return [
 		<div style={{ position: "relative" }}>
@@ -54,21 +55,28 @@ export function _CharacterEquipmentsDisplay() {
 		useContext(EquipmentsContext);
 	const { characterId } = useContext(CharacterIdContext);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadEquipments(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/equipments`),
 			{
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
-		).then(async (response) => {
-			if (!response.ok) throw new Error("Failed to fetch masteries");
-			const data: CharacterEquipments = await response.json();
-			setCharacterEquipments(data);
-		});
+			},
+		);
+		if (!response.ok) return false;
+		const data: CharacterEquipments = await response.json();
+		setCharacterEquipments(data);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadEquipments();
 	}, [characterId]);
+	useCharacterUpdated(characterId, async () => {
+		return await loadEquipments();
+	});
 	if (characterEquipments == null) return null;
 
 	return (
@@ -92,35 +100,35 @@ export function _CharacterEquipmentsDisplay() {
 									setCharacterEquipments,
 									EquipmentSlot.Frame,
 									"Frame",
-									characterEquipments.slots.Frame
+									characterEquipments.slots.Frame,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.MainHand,
 									"Mão Hábil",
-									characterEquipments.slots.MainHand
+									characterEquipments.slots.MainHand,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.OffHand,
 									"Outra Mão",
-									characterEquipments.slots.OffHand
+									characterEquipments.slots.OffHand,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Head,
 									"Cabeça",
-									characterEquipments.slots.Head
+									characterEquipments.slots.Head,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Feet,
 									"Pés",
-									characterEquipments.slots.Feet
+									characterEquipments.slots.Feet,
 								),
 							],
 						}}
@@ -138,56 +146,56 @@ export function _CharacterEquipmentsDisplay() {
 									setCharacterEquipments,
 									EquipmentSlot.Torso,
 									"Corpo",
-									characterEquipments.slots.Torso
+									characterEquipments.slots.Torso,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Arms,
 									"Braços",
-									characterEquipments.slots.Arms
+									characterEquipments.slots.Arms,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Face,
 									"Rosto",
-									characterEquipments.slots.Face
+									characterEquipments.slots.Face,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Waist,
 									"Cinto",
-									characterEquipments.slots.Waist
+									characterEquipments.slots.Waist,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Earring,
 									"Brinco",
-									characterEquipments.slots.Earring
+									characterEquipments.slots.Earring,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Necklace,
 									"Colar",
-									characterEquipments.slots.Necklace
+									characterEquipments.slots.Necklace,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Bracelet,
 									"Pulseira",
-									characterEquipments.slots.Bracelet
+									characterEquipments.slots.Bracelet,
 								),
 								formEquipSlotTableEntry(
 									characterId,
 									setCharacterEquipments,
 									EquipmentSlot.Ring,
 									"Anel",
-									characterEquipments.slots.Ring
+									characterEquipments.slots.Ring,
 								),
 							],
 						}}
@@ -199,5 +207,5 @@ export function _CharacterEquipmentsDisplay() {
 }
 
 export const CharacterEquipmentsDisplay = React.memo(
-	_CharacterEquipmentsDisplay
+	_CharacterEquipmentsDisplay,
 );

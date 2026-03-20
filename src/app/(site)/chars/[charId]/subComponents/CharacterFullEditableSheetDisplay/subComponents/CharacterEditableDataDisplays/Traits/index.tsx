@@ -7,13 +7,14 @@ import { AddTraitButton } from "./subComponents/AddTraitButton";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 async function handleTraitRemoval(
 	characterId: Guid,
 	traitId: Guid,
 	setCharacterTraits: React.Dispatch<
 		React.SetStateAction<CharacterTraitExpanded[]>
-	>
+	>,
 ) {
 	const body = { traitId: traitId };
 	const toastId = toast.loading(CharToastMessage.loading);
@@ -25,7 +26,7 @@ async function handleTraitRemoval(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -33,7 +34,7 @@ async function handleTraitRemoval(
 	}
 	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterTraits((state) =>
-		state.filter((trait) => trait.trait.id != traitId)
+		state.filter((trait) => trait.trait.id != traitId),
 	);
 }
 
@@ -42,7 +43,7 @@ function formTable(
 	characterTraits: CharacterTraitExpanded[],
 	setCharacterTraits: React.Dispatch<
 		React.SetStateAction<CharacterTraitExpanded[]>
-	>
+	>,
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -73,7 +74,7 @@ function formTable(
 					handleTraitRemoval(
 						characterId,
 						characterTrait.trait.id,
-						setCharacterTraits
+						setCharacterTraits,
 					)
 				}
 			/>,
@@ -91,24 +92,32 @@ export function _CharacterTraitsDisplay({
 		CharacterTraitExpanded[]
 	>([]);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadTraitsAsync(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/traits`),
 			{
 				method: "GET",
-			}
-		).then(async (response) => {
-			if (!response.ok) return;
-			const sortedTraits: CharacterTraitExpanded[] = (
-				(await response.json()) as CharacterTraitExpanded[]
-			).sort((cs1, cs2) => {
-				const typeOrder = TraitType[cs1.trait.type] - TraitType[cs2.trait.type];
-				if (typeOrder !== 0) return typeOrder;
-				return cs1.trait.name.localeCompare(cs2.trait.name);
-			});
-			setCharacterTraits(sortedTraits);
+			},
+		);
+		if (!response.ok) return false;
+		const sortedTraits: CharacterTraitExpanded[] = (
+			(await response.json()) as CharacterTraitExpanded[]
+		).sort((cs1, cs2) => {
+			const typeOrder = TraitType[cs1.trait.type] - TraitType[cs2.trait.type];
+			if (typeOrder !== 0) return typeOrder;
+			return cs1.trait.name.localeCompare(cs2.trait.name);
 		});
+		setCharacterTraits(sortedTraits);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadTraitsAsync();
 	}, []);
+
+	useCharacterUpdated(characterId, async () => {
+		return await loadTraitsAsync();
+	});
 
 	return (
 		<UIBasics.ToggleHeader
@@ -127,7 +136,7 @@ export function _CharacterTraitsDisplay({
 						tableLanes: formTable(
 							characterId,
 							characterTraits,
-							setCharacterTraits
+							setCharacterTraits,
 						),
 					}}
 				/>
@@ -143,11 +152,11 @@ export function _CharacterTraitsDisplay({
 
 function areEqual(
 	prevProps: CharacterTraitsDisplayProps,
-	nextProps: CharacterTraitsDisplayProps
+	nextProps: CharacterTraitsDisplayProps,
 ) {
 	return prevProps.characterId === nextProps.characterId;
 }
 export const CharacterTraitsDisplay = React.memo(
 	_CharacterTraitsDisplay,
-	areEqual
+	areEqual,
 );

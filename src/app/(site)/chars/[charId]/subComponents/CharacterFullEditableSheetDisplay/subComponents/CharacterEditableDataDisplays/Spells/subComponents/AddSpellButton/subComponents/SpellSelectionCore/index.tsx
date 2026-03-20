@@ -40,6 +40,9 @@ export function SpellSelectionCore({
 		fetch(getAlbinaApiFullAddress("/spells"), {
 			method: "GET",
 			cache: getCacheMode(),
+			next: {
+				tags: ["/spells"],
+			},
 		}).then(async (response) => {
 			setAllSpells(await response.json());
 		});
@@ -51,20 +54,20 @@ export function SpellSelectionCore({
 				.filter(
 					(spell) =>
 						!characterSpells.some(
-							(characterSpell) => characterSpell.spellId == spell.id
-						)
+							(characterSpell) => characterSpell.spellId == spell.id,
+						),
 				)
 				.sort((spell1, spell2) => {
 					const levelOrder = spell1.domainLevel - spell2.domainLevel;
 					if (levelOrder !== 0) return levelOrder;
 					return spell1.name.localeCompare(spell2.name);
 				}),
-		[allSpells, characterSpells]
+		[allSpells, characterSpells],
 	);
 	if (allSpells.length == 0) return null;
 
 	const unacquiredSpellsByLevel = Array.from({ length: 13 }, (_, index) =>
-		selectionPool.filter((spell) => spell.domainLevel === index)
+		selectionPool.filter((spell) => spell.domainLevel === index),
 	);
 
 	async function handleAddSpell(spell: SpellData) {
@@ -81,7 +84,7 @@ export function SpellSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -97,7 +100,7 @@ export function SpellSelectionCore({
 			};
 			const compareFunction = (
 				cs1: CharacterSpellExpanded,
-				cs2: CharacterSpellExpanded
+				cs2: CharacterSpellExpanded,
 			) => {
 				const typeOrder = SpellType[cs1.spell.type] - SpellType[cs2.spell.type];
 				if (typeOrder !== 0) return typeOrder;

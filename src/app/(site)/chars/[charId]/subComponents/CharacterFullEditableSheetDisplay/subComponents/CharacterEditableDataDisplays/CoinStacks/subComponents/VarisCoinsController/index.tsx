@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../../../CharacterEditableSheetContextProviders";
 import z from "zod";
@@ -40,9 +40,12 @@ export function VarisCoinsController({
 
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		// defaultValues: varisCoins,
 		defaultValues: { varis: varisCoins ?? 0 },
 	});
+
+	useEffect(() => {
+		form.reset({ varis: varisCoins ?? 0 });
+	}, [varisCoins]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		const toastId = toast.loading(CharToastMessage.loading);
@@ -54,7 +57,7 @@ export function VarisCoinsController({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

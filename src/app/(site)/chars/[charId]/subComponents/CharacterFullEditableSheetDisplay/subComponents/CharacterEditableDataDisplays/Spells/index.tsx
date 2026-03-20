@@ -7,13 +7,14 @@ import { AddSpellButton } from "./subComponents/AddSpellButton";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 async function handleSpellRemoval(
 	characterId: Guid,
 	spellId: Guid,
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
-	>
+	>,
 ) {
 	const body = { spellId: spellId };
 	const toastId = toast.loading(CharToastMessage.loading);
@@ -25,7 +26,7 @@ async function handleSpellRemoval(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -33,7 +34,7 @@ async function handleSpellRemoval(
 	}
 	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterSpells((state) =>
-		state.filter((spell) => spell.spell.id != spellId)
+		state.filter((spell) => spell.spell.id != spellId),
 	);
 }
 
@@ -42,7 +43,7 @@ function formTable(
 	characterSpells: CharacterSpellExpanded[],
 	setCharacterSpells: React.Dispatch<
 		React.SetStateAction<CharacterSpellExpanded[]>
-	>
+	>,
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -68,7 +69,7 @@ function formTable(
 		titleRow,
 		...levelsWithSpells.flatMap((index) => {
 			const spellsFromThisLevel = characterSpells.filter(
-				(spell) => spell.spell.domainLevel === index
+				(spell) => spell.spell.domainLevel === index,
 			);
 			if (spellsFromThisLevel.length === 0) return [];
 			return [
@@ -90,7 +91,7 @@ function formTable(
 								handleSpellRemoval(
 									characterId,
 									characterSpell.spell.id,
-									setCharacterSpells
+									setCharacterSpells,
 								)
 							}
 						/>,
@@ -110,24 +111,31 @@ export function _CharacterSpellsDisplay({
 		CharacterSpellExpanded[]
 	>([]);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadSpellsAsync(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/spells`),
 			{
 				method: "GET",
-			}
-		).then(async (response) => {
-			if (!response.ok) return;
-			const sortedSpells: CharacterSpellExpanded[] = (
-				(await response.json()) as CharacterSpellExpanded[]
-			).sort((cs1, cs2) => {
-				const levelOrder = cs1.spell.domainLevel - cs2.spell.domainLevel;
-				if (levelOrder !== 0) return levelOrder;
-				return cs1.spell.name.localeCompare(cs2.spell.name);
-			});
-			setCharacterSpells(sortedSpells);
+			},
+		);
+		if (!response.ok) return false;
+		const sortedSpells: CharacterSpellExpanded[] = (
+			(await response.json()) as CharacterSpellExpanded[]
+		).sort((cs1, cs2) => {
+			const levelOrder = cs1.spell.domainLevel - cs2.spell.domainLevel;
+			if (levelOrder !== 0) return levelOrder;
+			return cs1.spell.name.localeCompare(cs2.spell.name);
 		});
+		setCharacterSpells(sortedSpells);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadSpellsAsync();
 	}, []);
+	useCharacterUpdated(characterId, async () => {
+		return await loadSpellsAsync();
+	});
 
 	return (
 		<div style={{ position: "relative" }}>
@@ -140,7 +148,7 @@ export function _CharacterSpellsDisplay({
 					tableLanes: formTable(
 						characterId,
 						characterSpells,
-						setCharacterSpells
+						setCharacterSpells,
 					),
 				}}
 			/>
@@ -155,11 +163,11 @@ export function _CharacterSpellsDisplay({
 
 function areEqual(
 	prevProps: CharacterSpellsDisplayProps,
-	nextProps: CharacterSpellsDisplayProps
+	nextProps: CharacterSpellsDisplayProps,
 ) {
 	return prevProps.characterId === nextProps.characterId;
 }
 export const CharacterSpellsDisplay = React.memo(
 	_CharacterSpellsDisplay,
-	areEqual
+	areEqual,
 );

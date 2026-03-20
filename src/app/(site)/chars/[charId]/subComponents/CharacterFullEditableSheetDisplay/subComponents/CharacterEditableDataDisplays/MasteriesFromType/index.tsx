@@ -236,16 +236,6 @@ function _CharacterMasteriesFromTypeDisplay({
 	);
 }
 
-function areEqual(
-	prevProps: CharacterMasteriesFromTypeDisplayProps,
-	nextProps: CharacterMasteriesFromTypeDisplayProps,
-) {
-	return (
-		prevProps.characterId === nextProps.characterId &&
-		prevProps.type === nextProps.type
-	);
-}
 export const CharacterMasteriesFromTypeDisplay = React.memo(
 	_CharacterMasteriesFromTypeDisplay,
-	areEqual,
 );

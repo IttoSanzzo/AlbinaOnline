@@ -1,6 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterParameters, RaceData } from "@/libs/stp@types";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 function getParameterGradeSymbol(grade: number) {
 	switch (grade) {
@@ -17,11 +18,17 @@ function getParameterGradeSymbol(grade: number) {
 	}
 	return "?";
 }
-function tableParameterEntry(title: string, value: number, grade: number) {
+function tableParameterEntry(
+	key: string,
+	title: string,
+	value: number,
+	grade: number,
+) {
 	return [
 		<StyledLink
 			title={title}
 			href={"/"}
+			icon={getAlbinaApiFullAddress(`/favicon/default/misc/parameters/${key}`)}
 		/>,
 		<UIBasics.Text
 			display="block"
@@ -68,35 +75,40 @@ export function CharacterParametersDisplay({
 										parameters.vigor +
 										parameters.mana +
 										parameters.physicalMight +
-										parameters.arcanePower
+										parameters.arcanePower,
 								)}
 							/>,
 							"",
 						],
 						tableParameterEntry(
+							"vitality",
 							"Vitalidade",
 							parameters.vitality,
-							race.parameters.vitality
+							race.parameters.vitality,
 						),
 						tableParameterEntry(
+							"vigor",
 							"Vigor",
 							parameters.vigor,
-							race.parameters.vigor
+							race.parameters.vigor,
 						),
 						tableParameterEntry(
+							"mana",
 							"Manapool",
 							parameters.mana,
-							race.parameters.manapool
+							race.parameters.manapool,
 						),
 						tableParameterEntry(
+							"physicalMight",
 							"P. Física",
 							parameters.physicalMight,
-							race.parameters.physicalPower
+							race.parameters.physicalPower,
 						),
 						tableParameterEntry(
+							"arcanePower",
 							"P. Mágica",
 							parameters.arcanePower,
-							race.parameters.magicalPower
+							race.parameters.magicalPower,
 						),
 					],
 				}}

@@ -39,6 +39,9 @@ export function SkillSelectionCore({
 		fetch(getAlbinaApiFullAddress("/skills"), {
 			method: "GET",
 			cache: getCacheMode(),
+			next: {
+				tags: ["/skills"],
+			},
 		}).then(async (response) => {
 			setAllSkills(await response.json());
 		});
@@ -50,19 +53,19 @@ export function SkillSelectionCore({
 				.filter(
 					(skill) =>
 						!characterSkills.some(
-							(characterSkill) => characterSkill.skillId == skill.id
-						)
+							(characterSkill) => characterSkill.skillId == skill.id,
+						),
 				)
 				.sort((skill1, skill2) => {
 					const typeOrder = SkillType[skill1.type] - SkillType[skill2.type];
 					if (typeOrder !== 0) return typeOrder;
 					return skill1.name.localeCompare(skill2.name);
 				}),
-		[allSkills, characterSkills]
+		[allSkills, characterSkills],
 	);
 	if (allSkills.length == 0) return null;
 	const unacquiredSkillsByType = Array.from({ length: 5 }, (_, index) =>
-		selectionPool.filter((skill) => SkillType[skill.type] === index)
+		selectionPool.filter((skill) => SkillType[skill.type] === index),
 	);
 
 	async function handleAddSkill(skill: SkillData) {
@@ -79,7 +82,7 @@ export function SkillSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -95,7 +98,7 @@ export function SkillSelectionCore({
 			};
 			const compareFunction = (
 				cs1: CharacterSkillExpanded,
-				cs2: CharacterSkillExpanded
+				cs2: CharacterSkillExpanded,
 			) => {
 				const typeOrder = SkillType[cs1.skill.type] - SkillType[cs2.skill.type];
 				if (typeOrder !== 0) return typeOrder;

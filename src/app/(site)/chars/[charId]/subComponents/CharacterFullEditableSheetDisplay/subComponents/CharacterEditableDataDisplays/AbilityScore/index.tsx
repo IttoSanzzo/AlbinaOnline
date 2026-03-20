@@ -1,7 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
 	AbilityScoreContext,
@@ -15,6 +15,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
 import { postDiceRoll } from "@/components/(SPECIAL)/components/DiceRoller/subcomponents/DiceRollerCore";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),
@@ -36,8 +37,12 @@ function TableAbilityScoreEntry(
 	return [
 		<StyledLink
 			title={title}
-			href={"/"}
-			// icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
+			href={
+				"https://albina.setsu.party/codex/from-id/27bb1b1c-8baa-8040-a46e-ec9674ff6e84?database=codex"
+			}
+			icon={getAlbinaApiFullAddress(
+				`/favicon/default/misc/ability-scores/${key}`,
+			)}
 		/>,
 		<HookedForm.NumberInputInline
 			fieldName={key}
@@ -60,13 +65,16 @@ function TableAbilityScoreEntry(
 
 export function CharacterAbilityScoreDisplay() {
 	const [errorMessage, setErrorMessage] = useState<string>("");
-	const { abilityScore, setAbilityScore } = useContext(AbilityScoreContext);
+	const { abilityScore } = useContext(AbilityScoreContext);
 	const { characterId } = useContext(CharacterIdContext);
 
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: abilityScore,
 	});
+	useEffect(() => {
+		form.reset(abilityScore);
+	}, [abilityScore]);
 	const watchedValues = form.watch();
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -86,10 +94,6 @@ export function CharacterAbilityScoreDisplay() {
 			setErrorMessage("Erro durante o salvamento");
 			return false;
 		}
-		setAbilityScore({
-			...currentValues,
-			characterId: abilityScore.characterId,
-		});
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
 		return true;

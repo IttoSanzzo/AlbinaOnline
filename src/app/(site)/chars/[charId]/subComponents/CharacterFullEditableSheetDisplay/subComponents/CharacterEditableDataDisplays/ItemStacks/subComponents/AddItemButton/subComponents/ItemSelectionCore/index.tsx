@@ -17,7 +17,7 @@ import { CharToastMessage } from "../../../../..";
 import { ArraySearchFilter } from "@/components/(UTILS)";
 
 const types = Object.values(ItemType).filter(
-	(v) => typeof v === "number"
+	(v) => typeof v === "number",
 ) as ItemType[];
 
 interface ItemSelectionCoreProps {
@@ -43,6 +43,9 @@ export function ItemSelectionCore({
 		fetch(getAlbinaApiFullAddress("/items"), {
 			method: "GET",
 			cache: getCacheMode(),
+			next: {
+				tags: ["/items"],
+			},
 		}).then(async (response) => {
 			setAllItems(await response.json());
 		});
@@ -54,16 +57,16 @@ export function ItemSelectionCore({
 				.filter(
 					(item) =>
 						!characterItems.some(
-							(characterItem) => characterItem.itemId == item.id
-						)
+							(characterItem) => characterItem.itemId == item.id,
+						),
 				)
 				.sort((item1, item2) => item1.name.localeCompare(item2.name)),
-		[allItems, characterItems]
+		[allItems, characterItems],
 	);
 	if (allItems.length == 0) return null;
 
 	const unacquiredItemsByType = types.map((type) =>
-		selectionPool.filter((item) => ItemType[item.type] === type)
+		selectionPool.filter((item) => ItemType[item.type] === type),
 	);
 
 	async function handleAddItem(item: ItemData) {
@@ -80,7 +83,7 @@ export function ItemSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -98,7 +101,7 @@ export function ItemSelectionCore({
 			};
 			const compareFunction = (
 				cs1: CharacterItemStackExpanded,
-				cs2: CharacterItemStackExpanded
+				cs2: CharacterItemStackExpanded,
 			) => {
 				const typeOrder = ItemType[cs1.item.type] - ItemType[cs2.item.type];
 				if (typeOrder !== 0) return typeOrder;

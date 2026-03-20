@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,6 +41,9 @@ export function CharacterProfileDisplay({
 		resolver: zodResolver(schema),
 		defaultValues: { ...characterProfile },
 	});
+	useEffect(() => {
+		form.reset({ ...characterProfile });
+	}, [characterProfile]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		const toastId = toast.loading(CharToastMessage.loading);
@@ -52,7 +55,7 @@ export function CharacterProfileDisplay({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { CharacterMiscMetrics } from "@/libs/stp@types";
 
 export const MiscMetricsContext = createContext<{
@@ -20,8 +20,11 @@ export function CharacterMiscMetricsContextProvider({
 			miscMetrics: miscMetricsState[0],
 			setMiscMetrics: miscMetricsState[1],
 		}),
-		[miscMetricsState[0]]
+		[miscMetricsState[0]],
 	);
+	useEffect(() => {
+		miscMetricsState[1](miscMetrics);
+	}, [miscMetrics]);
 
 	return (
 		<MiscMetricsContext.Provider value={miscMetricsContextValue}>

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 
 function numberWithBounds(min?: number, max?: number) {
 	let value = z.coerce.number();
@@ -61,6 +62,10 @@ export function SideActionNumberInputButtons({
 			currentValue: defaultValue,
 		},
 	});
+	useEffect(() => {
+		form.reset({ currentValue: defaultValue });
+	}, [defaultValue]);
+
 	async function handleWatchedAction(currentValues: FormData) {
 		action(currentValues.currentValue);
 		return true;

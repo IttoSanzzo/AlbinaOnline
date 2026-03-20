@@ -1,5 +1,5 @@
 import { HookedForm } from "@/libs/stp@forms";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,6 +29,9 @@ export function CharacterBackstoryDisplay({
 			backstory: characterBackstory,
 		},
 	});
+	useEffect(() => {
+		form.reset({ backstory: characterBackstory });
+	}, [characterBackstory]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		const body = {
@@ -44,7 +47,7 @@ export function CharacterBackstoryDisplay({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

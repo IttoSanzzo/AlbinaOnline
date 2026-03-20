@@ -7,13 +7,14 @@ import { AddSkillButton } from "./subComponents/AddSkillButton";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 async function handleSkillRemoval(
 	characterId: Guid,
 	skillId: Guid,
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
-	>
+	>,
 ) {
 	const body = { skillId: skillId };
 	const toastId = toast.loading(CharToastMessage.loading);
@@ -25,7 +26,7 @@ async function handleSkillRemoval(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -33,7 +34,7 @@ async function handleSkillRemoval(
 	}
 	toast.success(CharToastMessage.success, { id: toastId });
 	setCharacterSkills((state) =>
-		state.filter((skill) => skill.skill.id != skillId)
+		state.filter((skill) => skill.skill.id != skillId),
 	);
 }
 
@@ -42,7 +43,7 @@ function formTable(
 	characterSkills: CharacterSkillExpanded[],
 	setCharacterSkills: React.Dispatch<
 		React.SetStateAction<CharacterSkillExpanded[]>
-	>
+	>,
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -73,7 +74,7 @@ function formTable(
 					handleSkillRemoval(
 						characterId,
 						characterSkill.skill.id,
-						setCharacterSkills
+						setCharacterSkills,
 					)
 				}
 			/>,
@@ -91,24 +92,31 @@ export function _CharacterSkillsDisplay({
 		CharacterSkillExpanded[]
 	>([]);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadSkillsAsync(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/skills`),
 			{
 				method: "GET",
-			}
-		).then(async (response) => {
-			if (!response.ok) return;
-			const sortedSkills: CharacterSkillExpanded[] = (
-				(await response.json()) as CharacterSkillExpanded[]
-			).sort((cs1, cs2) => {
-				const typeOrder = SkillType[cs1.skill.type] - SkillType[cs2.skill.type];
-				if (typeOrder !== 0) return typeOrder;
-				return cs1.skill.name.localeCompare(cs2.skill.name);
-			});
-			setCharacterSkills(sortedSkills);
+			},
+		);
+		if (!response.ok) return false;
+		const sortedSkills: CharacterSkillExpanded[] = (
+			(await response.json()) as CharacterSkillExpanded[]
+		).sort((cs1, cs2) => {
+			const typeOrder = SkillType[cs1.skill.type] - SkillType[cs2.skill.type];
+			if (typeOrder !== 0) return typeOrder;
+			return cs1.skill.name.localeCompare(cs2.skill.name);
 		});
+		setCharacterSkills(sortedSkills);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadSkillsAsync();
 	}, []);
+	useCharacterUpdated(characterId, async () => {
+		return await loadSkillsAsync();
+	});
 
 	return (
 		<div style={{ position: "relative" }}>
@@ -121,7 +129,7 @@ export function _CharacterSkillsDisplay({
 					tableLanes: formTable(
 						characterId,
 						characterSkills,
-						setCharacterSkills
+						setCharacterSkills,
 					),
 				}}
 			/>
@@ -136,11 +144,11 @@ export function _CharacterSkillsDisplay({
 
 function areEqual(
 	prevProps: CharacterSkillsDisplayProps,
-	nextProps: CharacterSkillsDisplayProps
+	nextProps: CharacterSkillsDisplayProps,
 ) {
 	return prevProps.characterId === nextProps.characterId;
 }
 export const CharacterSkillsDisplay = React.memo(
 	_CharacterSkillsDisplay,
-	areEqual
+	areEqual,
 );

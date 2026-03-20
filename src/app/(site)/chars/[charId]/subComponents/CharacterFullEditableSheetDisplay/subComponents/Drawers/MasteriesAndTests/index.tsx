@@ -5,8 +5,8 @@ import { authenticatedFetchAsync } from "@/utils/FetchTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { CharacterMasteryExpanded, Guid } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
-import React from "react";
 import { UIBasics } from "@/components/(UIBasics)";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 interface MasteriesAndTestsDrawerProps {
 	characterId: Guid;
@@ -16,27 +16,33 @@ export function MasteriesAndTestsDrawer({
 }: MasteriesAndTestsDrawerProps) {
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadMasteries(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/masteries`),
 			{
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
-		).then((response) => {
-			if (!response.ok) throw new Error("Failed to fetch masteries");
-			response.json().then((data: CharacterMasteryExpanded[]) => {
-				const orderedData = data.sort((a, b) => {
-					const nameCompare = a.mastery.name.localeCompare(b.mastery.name);
-					if (nameCompare !== 0) return nameCompare;
-					return a.level - b.level;
-				});
-				setCharacterMasteries(orderedData);
-			});
+			},
+		);
+		if (!response.ok) return false;
+		const data: CharacterMasteryExpanded[] = await response.json();
+		const orderedData = data.sort((a, b) => {
+			const nameCompare = a.mastery.name.localeCompare(b.mastery.name);
+			if (nameCompare !== 0) return nameCompare;
+			return a.level - b.level;
 		});
+		setCharacterMasteries(orderedData);
+		return true;
+	}
+	useLayoutEffect(() => {
+		loadMasteries();
 	}, [characterId]);
+
+	useCharacterUpdated(characterId, async () => {
+		return await loadMasteries();
+	});
 
 	return (
 		<CharacterDrawerBaseHeader

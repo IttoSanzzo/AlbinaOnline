@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -28,7 +28,7 @@ type FormDataMisc = z.infer<typeof schemaMisc>;
 
 function formTableEntry(
 	title: string,
-	fieldName: keyof FormDataCore | keyof FormDataMisc
+	fieldName: keyof FormDataCore | keyof FormDataMisc,
 ) {
 	return [
 		<UIBasics.Text
@@ -59,12 +59,29 @@ export function CoreMiscAndSimpleMetrics() {
 			initiative: coreMetrics.initiative,
 		},
 	});
+	useEffect(() => {
+		formCore.reset({
+			walkSpeed: coreMetrics.speedStats.walkSpeed,
+			combatSpeed: coreMetrics.speedStats.combatSpeed,
+			swimSpeed: coreMetrics.speedStats.swimSpeed,
+			flySpeed: coreMetrics.speedStats.flySpeed,
+			armorClass: coreMetrics.armorClass,
+			initiative: coreMetrics.initiative,
+		});
+	}, [coreMetrics]);
+
 	const formMisc = useForm<FormDataMisc>({
 		resolver: zodResolver(schemaMisc),
 		defaultValues: {
 			carryCapacity: miscMetrics.carryCapacity,
 		},
 	});
+
+	useEffect(() => {
+		formMisc.reset({
+			carryCapacity: miscMetrics.carryCapacity,
+		});
+	}, [miscMetrics]);
 
 	async function onCoreFormChange(formData: FormDataCore) {
 		const body: CharacterCoreMetrics = {
@@ -88,7 +105,7 @@ export function CoreMiscAndSimpleMetrics() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -116,7 +133,7 @@ export function CoreMiscAndSimpleMetrics() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

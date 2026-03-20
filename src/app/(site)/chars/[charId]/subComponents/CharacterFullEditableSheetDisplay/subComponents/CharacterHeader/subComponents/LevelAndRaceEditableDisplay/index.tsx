@@ -1,5 +1,5 @@
 import { RaceData } from "@/libs/stp@types";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { LevelSelector } from "./subComponents/LevelSelector";
 import { RaceSelector } from "./subComponents/RaceSelector";
@@ -16,6 +16,10 @@ export function LevelAndRaceEditableDisplay({
 }: LevelAndRaceEditableDisplayProps) {
 	const [raceState, setRaceState] = useState<RaceData>(race);
 	const { characterId } = useContext(CharacterIdContext);
+
+	useEffect(() => {
+		setRaceState(race);
+	}, [race]);
 
 	return (
 		<UIBasics.Table

@@ -38,6 +38,9 @@ export function MasterySelectionCore({
 		fetch(getAlbinaApiFullAddress(`/masteries?type=${type}`), {
 			method: "GET",
 			cache: getCacheMode(),
+			next: {
+				tags: ["/masteries"],
+			},
 		}).then(async (response) => {
 			setAllMasteries(
 				((await response.json()) as MasteryData[]).sort(
@@ -47,8 +50,8 @@ export function MasterySelectionCore({
 							MasterySubType[mastery2.subType];
 						if (typeOrder !== 0) return typeOrder;
 						return mastery1.name.localeCompare(mastery2.name);
-					}
-				)
+					},
+				),
 			);
 		});
 	}, []);
@@ -58,10 +61,10 @@ export function MasterySelectionCore({
 			allMasteries.filter(
 				(mastery) =>
 					!characterMasteries.some(
-						(characterMastery) => characterMastery.masteryId == mastery.id
-					)
+						(characterMastery) => characterMastery.masteryId == mastery.id,
+					),
 			),
-		[allMasteries, characterMasteries]
+		[allMasteries, characterMasteries],
 	);
 	if (allMasteries.length == 0) return null;
 
@@ -79,7 +82,7 @@ export function MasterySelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

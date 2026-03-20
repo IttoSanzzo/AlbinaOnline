@@ -16,6 +16,7 @@ import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
+import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -25,7 +26,7 @@ async function handleItemRemoval(
 	>,
 	setCharacterEquipments: React.Dispatch<
 		React.SetStateAction<CharacterEquipments>
-	>
+	>,
 ) {
 	const body = { itemId: itemId };
 	const toastId = toast.loading(CharToastMessage.loading);
@@ -37,7 +38,7 @@ async function handleItemRemoval(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -51,7 +52,7 @@ async function handleItemRemoval(
 			Object.entries(state.slots).map(([slot, ids]) => [
 				slot,
 				ids.filter((id) => id !== itemId),
-			])
+			]),
 		),
 	}));
 }
@@ -59,7 +60,7 @@ function calcTotalWeight(characterItems: CharacterItemStackExpanded[]) {
 	return (
 		characterItems.reduce(
 			(acc, current) => acc + current.amount * current.item.properties.weight,
-			0
+			0,
 		) / 1000
 	);
 }
@@ -72,7 +73,7 @@ function formTable(
 	>,
 	setCharacterEquipments: React.Dispatch<
 		React.SetStateAction<CharacterEquipments>
-	>
+	>,
 ): React.JSX.Element[][] {
 	const titleRow = [
 		<UIBasics.Text
@@ -145,7 +146,7 @@ function formTable(
 						characterId,
 						characterItem.item.id,
 						setCharacterItems,
-						setCharacterEquipments
+						setCharacterEquipments,
 					)
 				}
 			/>,
@@ -171,27 +172,33 @@ export function _CharacterItemStacksDisplay() {
 	const { setCharacterEquipments } = useContext(EquipmentsContext);
 	const { characterId } = useContext(CharacterIdContext);
 
-	useLayoutEffect(() => {
-		authenticatedFetchAsync(
+	async function loadItems(): Promise<boolean> {
+		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
 			{
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
-		).then((response) => {
-			if (!response.ok) throw new Error("Failed to fetch masteries");
-			response.json().then((data: CharacterItemStackExpanded[]) => {
-				const orderedData = data.sort((a, b) => {
-					const nameCompare = a.item.name.localeCompare(b.item.name);
-					if (nameCompare !== 0) return nameCompare;
-					return a.amount - b.amount;
-				});
-				setCharacterItems(orderedData);
-			});
+			},
+		);
+		if (!response.ok) return false;
+		const data: CharacterItemStackExpanded[] = await response.json();
+		const orderedData = data.sort((a, b) => {
+			const nameCompare = a.item.name.localeCompare(b.item.name);
+			if (nameCompare !== 0) return nameCompare;
+			return a.amount - b.amount;
 		});
+		setCharacterItems(orderedData);
+		return true;
+	}
+
+	useLayoutEffect(() => {
+		loadItems();
 	}, [characterId]);
+	useCharacterUpdated(characterId, async () => {
+		return await loadItems();
+	});
 
 	return (
 		<UIBasics.ToggleHeader
@@ -213,7 +220,7 @@ export function _CharacterItemStacksDisplay() {
 							characterId,
 							characterItems,
 							setCharacterItems,
-							setCharacterEquipments
+							setCharacterEquipments,
 						),
 					}}
 				/>
@@ -228,5 +235,5 @@ export function _CharacterItemStacksDisplay() {
 }
 
 export const CharacterItemStacksDisplay = React.memo(
-	_CharacterItemStacksDisplay
+	_CharacterItemStacksDisplay,
 );

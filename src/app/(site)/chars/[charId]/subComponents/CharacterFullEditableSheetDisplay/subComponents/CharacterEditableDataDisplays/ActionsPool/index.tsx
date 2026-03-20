@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchTools";
@@ -48,6 +48,10 @@ export function CharacterActionsPoolDisplay({
 		resolver: zodResolver(schema),
 		defaultValues: { ...actionPoolState },
 	});
+	useEffect(() => {
+		form.reset({ ...characterActionsPool });
+		setActionsPoolState(characterActionsPool);
+	}, [characterActionsPool]);
 
 	async function onFormChange(formData: FormData) {
 		const body = {
@@ -62,7 +66,7 @@ export function CharacterActionsPoolDisplay({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });

@@ -3,7 +3,7 @@ import { HookedForm } from "@/libs/stp@forms";
 import { CharacterSpellDomains } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -49,7 +49,7 @@ function FormSpellDomainTablePair(name: string) {
 
 export function CommonSpellDomainTablePair(
 	name: string,
-	spellDomains: CharacterSpellDomains
+	spellDomains: CharacterSpellDomains,
 ) {
 	const lowercaseName = name === "General" ? "" : normalizeText(name);
 	return [
@@ -84,6 +84,9 @@ export function CharacterSpellDomainsDisplay({
 		resolver: zodResolver(schema),
 		defaultValues: spellDomains,
 	});
+	useEffect(() => {
+		form.reset(spellDomains);
+	}, [spellDomains]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		const toastId = toast.loading(CharToastMessage.loading);
@@ -95,7 +98,7 @@ export function CharacterSpellDomainsDisplay({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			setErrorMessage("Erro durante o salvamento");

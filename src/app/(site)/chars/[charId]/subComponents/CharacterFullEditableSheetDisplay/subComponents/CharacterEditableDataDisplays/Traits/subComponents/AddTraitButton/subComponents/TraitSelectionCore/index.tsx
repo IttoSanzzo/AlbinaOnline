@@ -39,6 +39,9 @@ export function TraitSelectionCore({
 		fetch(getAlbinaApiFullAddress("/traits"), {
 			method: "GET",
 			cache: getCacheMode(),
+			next: {
+				tags: ["/traits"],
+			},
 		}).then(async (response) => {
 			setAllTraits(await response.json());
 		});
@@ -50,20 +53,20 @@ export function TraitSelectionCore({
 				.filter(
 					(trait) =>
 						!characterTraits.some(
-							(characterTrait) => characterTrait.traitId == trait.id
-						)
+							(characterTrait) => characterTrait.traitId == trait.id,
+						),
 				)
 				.sort((trait1, trait2) => {
 					const typeOrder = TraitType[trait1.type] - TraitType[trait2.type];
 					if (typeOrder !== 0) return typeOrder;
 					return trait1.name.localeCompare(trait2.name);
 				}),
-		[allTraits, characterTraits]
+		[allTraits, characterTraits],
 	);
 	if (allTraits.length == 0) return null;
 
 	const unacquiredTraitsByType = Array.from({ length: 5 }, (_, index) =>
-		selectionPool.filter((trait) => TraitType[trait.type] === index)
+		selectionPool.filter((trait) => TraitType[trait.type] === index),
 	);
 
 	async function handleAddTrait(trait: TraitData) {
@@ -80,7 +83,7 @@ export function TraitSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -96,7 +99,7 @@ export function TraitSelectionCore({
 			};
 			const compareFunction = (
 				cs1: CharacterTraitExpanded,
-				cs2: CharacterTraitExpanded
+				cs2: CharacterTraitExpanded,
 			) => {
 				const typeOrder = TraitType[cs1.trait.type] - TraitType[cs2.trait.type];
 				if (typeOrder !== 0) return typeOrder;

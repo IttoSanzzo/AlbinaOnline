@@ -1,7 +1,7 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import z from "zod";
 import { CharacterProfile } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
