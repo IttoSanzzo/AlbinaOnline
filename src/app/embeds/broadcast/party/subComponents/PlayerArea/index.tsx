@@ -14,6 +14,9 @@ export function PlayersArea({ players }: PlayersAreaProps) {
 	const columns = Math.ceil(Math.sqrt(count));
 	const rows = Math.ceil(count / columns);
 
+	console.log(players.length);
+
+	players = players.slice(0, 6);
 	return (
 		<PlayersAreaContainer>
 			<PlayerGrid
@@ -25,7 +28,7 @@ export function PlayersArea({ players }: PlayersAreaProps) {
 					<CharacterProfileEmbed
 						key={index}
 						charId={player.characterId}
-						reactiveId={player.characterId}
+						reactiveId={player.discordId}
 						title={player.title}
 						fontSize="1vw"
 						useLargeSideBars

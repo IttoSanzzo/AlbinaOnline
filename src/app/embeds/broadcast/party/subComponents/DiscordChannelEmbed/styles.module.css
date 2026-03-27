@@ -5,18 +5,39 @@
 	overflow: hidden;
 	background-color: #36393f;
 
-	& > div {
-		position: absolute;
+	& > div > iframe {
+		border: 0;
+	}
+}
+
+@media (max-width: 800) {
+	.embedContainer div {
+		transform: scale(40%);
+
+		transform-origin: top left;
+		top: 0;
+		left: 0;
+		width: 250%;
+		height: 250%;
+	}
+}
+
+@media (min-width: 800) {
+	.embedContainer div {
+		transform: scale(50%);
+
+		transform-origin: top left;
+		width: 200%;
+		height: 200%;
+	}
+}
+
+@media (min-width: 1000) {
+	.embedContainer div {
 		transform: scale(75%);
 
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) scale(75%);
+		transform-origin: top left;
 		width: 135%;
 		height: 135%;
-
-		& > iframe {
-			border: 0;
-		}
 	}
 }

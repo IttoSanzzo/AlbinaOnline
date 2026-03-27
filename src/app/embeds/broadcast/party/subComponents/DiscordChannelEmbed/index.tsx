@@ -4,6 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { CSSProperties, useEffect, useRef } from "react";
 import stylesModule from "./styles.module.css";
 import { createRoot } from "react-dom/client";
+import { useCurrentUser } from "@/libs/stp@hooks";
 
 const EmbedContainer = newStyledElement.div(stylesModule.embedContainer);
 
@@ -18,9 +19,10 @@ export function DiscordChannelEmbed({
 	styles,
 }: DiscordChannelEmbedProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const { loading, user } = useCurrentUser();
 
 	useEffect(() => {
-		if (!containerRef.current) return;
+		if (!containerRef.current || loading || user == null) return;
 
 		const root = createRoot(containerRef.current);
 		root.render(
@@ -34,7 +36,7 @@ export function DiscordChannelEmbed({
 		return () => {
 			root.unmount();
 		};
-	}, [containerRef]);
+	}, [containerRef, user, loading]);
 
 	return (
 		<EmbedContainer style={styles}>

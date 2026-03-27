@@ -23,11 +23,12 @@ export function MusicBotsEmbed({ serverId }: MusicBotsEmbedProps) {
 				</BotImage>
 				<MusicInfoContainer>
 					<iframe
-						className={styles.titleEmbed}
-						src={`https://gjallarhorncontrol.setsu.party/embeds/ChariotSanzzo/${serverId}/current-track`}
+						className={styles.seekEmbed}
+						src={`https://gjallarhorncontrol.setsu.party/embeds/ChariotSanzzo/${serverId}/seekbar`}
 					/>
 					<iframe
-						src={`https://gjallarhorncontrol.setsu.party/embeds/ChariotSanzzo/${serverId}/seekbar`}
+						className={styles.titleEmbed}
+						src={`https://gjallarhorncontrol.setsu.party/embeds/ChariotSanzzo/${serverId}/current-track`}
 					/>
 				</MusicInfoContainer>
 				<TrackImage>
@@ -48,11 +49,12 @@ export function MusicBotsEmbed({ serverId }: MusicBotsEmbedProps) {
 				</BotImage>
 				<MusicInfoContainer>
 					<iframe
-						className={styles.titleEmbed}
-						src={`https://gjallarhorncontrol.setsu.party/embeds/Gjallarhorn/${serverId}/current-track`}
+						className={styles.seekEmbed}
+						src={`https://gjallarhorncontrol.setsu.party/embeds/Gjallarhorn/${serverId}/seekbar`}
 					/>
 					<iframe
-						src={`https://gjallarhorncontrol.setsu.party/embeds/Gjallarhorn/${serverId}/seekbar`}
+						className={styles.titleEmbed}
+						src={`https://gjallarhorncontrol.setsu.party/embeds/Gjallarhorn/${serverId}/current-track`}
 					/>
 				</MusicInfoContainer>
 				<TrackImage>

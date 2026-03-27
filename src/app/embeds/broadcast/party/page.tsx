@@ -56,13 +56,9 @@ const settings: BroadcastPartySettings = {
 		},
 		{
 			characterId: "" as Guid,
-			discordId: undefined,
-			title: undefined,
 		},
 		{
 			characterId: "" as Guid,
-			discordId: undefined,
-			title: undefined,
 		},
 	],
 };
