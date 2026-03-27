@@ -1,0 +1,101 @@
+.embedContainer {
+	display: flex;
+	width: 100%;
+	height: 10%;
+	justify-content: row;
+}
+
+.botSide {
+	position: relative;
+	margin: 0 10px;
+	box-shadow: 0 0 10px black;
+	border-radius: var(--rd-lg);
+	display: flex;
+	width: 50%;
+	height: 100%;
+	justify-content: space-between;
+	background-color: var(--cl-gray-600);
+	overflow: hidden;
+
+	&.leftSide {
+		flex-direction: row;
+	}
+	&.rightSide {
+		flex-direction: row-reverse;
+	}
+}
+
+.botImage {
+	display: flex;
+	margin: auto 0;
+	height: 100%;
+	aspect-ratio: 1/1;
+	background-color: var(--cl-gray-600);
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+
+	& > div {
+		border-radius: var(--rd-xl);
+		overflow: hidden;
+		background-color: var(--cl-gray-800);
+		height: 90%;
+		width: 90%;
+
+		& > iframe {
+			opacity: 0.5;
+			width: 100%;
+			height: 100%;
+			border: 0;
+		}
+	}
+}
+
+.trackImage {
+	display: flex;
+	margin: auto 0;
+	height: 95%;
+	aspect-ratio: 16/9;
+	background-color: var(--cl-gray-600);
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+
+	& > div {
+		overflow: hidden;
+		height: 100%;
+		width: 100%;
+
+		& > iframe {
+			opacity: 0.3;
+			width: 100%;
+			height: 100%;
+			border: 0;
+		}
+	}
+}
+
+.musicInfoContainer {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+
+	width: 90%;
+	height: 90%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	& > iframe {
+		opacity: 0.7;
+		&.titleEmbed {
+			opacity: 0.9;
+			height: 25%;
+			width: 80%;
+			margin: 0 auto;
+		}
+		height: 55%;
+		border: 0;
+	}
+}

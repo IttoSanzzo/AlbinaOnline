@@ -39,16 +39,18 @@ interface CharacterProfileEmbedProps {
 	fontSize?: string;
 	invertReactive?: boolean;
 	useLargeSideBars?: boolean;
+	priorizeVerticalSize?: boolean;
 }
 export function CharacterProfileEmbed({
 	charId,
-	size = "100%",
+	size = undefined,
 	title = "",
 	reactiveId,
 	withoutFrame = false,
 	fontSize,
 	invertReactive = false,
 	useLargeSideBars = false,
+	priorizeVerticalSize = false,
 }: CharacterProfileEmbedProps) {
 	const [gaugePercentages, setGaugePercentages] = useState<GaugePercentages>({
 		life: 100,
@@ -58,6 +60,11 @@ export function CharacterProfileEmbed({
 
 	useEffect(() => {
 		async function updateGaugePercentages() {
+			if (
+				charId == ("" as Guid) ||
+				charId == "00000000-0000-0000-0000-000000000000"
+			)
+				return;
 			const response = await authenticatedFetchAsync(
 				getAlbinaApiFullAddress(`/chars/${charId}/core-metrics`),
 				{
@@ -67,38 +74,45 @@ export function CharacterProfileEmbed({
 			if (response.ok == false) return;
 			const data: CharacterCoreMetrics = await response.json();
 			const newGaugePercentages = {
-				life:
+				life: Math.ceil(
 					data.healthPoints.effectiveMax > 0
 						? (data.healthPoints.effectiveCurrent /
 								data.healthPoints.effectiveMax) *
-							100
+								100
 						: 0,
-				mana:
+				),
+				mana: Math.ceil(
 					data.manaPoints.effectiveMax > 0
 						? (data.manaPoints.effectiveCurrent /
 								data.manaPoints.effectiveMax) *
-							100
+								100
 						: 0,
-				stamina:
+				),
+				stamina: Math.ceil(
 					data.staminaPoints.effectiveMax > 0
 						? (data.staminaPoints.effectiveCurrent /
 								data.staminaPoints.effectiveMax) *
-							100
+								100
 						: 0,
+				),
 			};
-			if (newGaugePercentages != gaugePercentages)
+			if (
+				newGaugePercentages.life != gaugePercentages.life ||
+				newGaugePercentages.mana != gaugePercentages.mana ||
+				newGaugePercentages.stamina != gaugePercentages.stamina
+			)
 				setGaugePercentages(newGaugePercentages);
 		}
 		const interval = setInterval(updateGaugePercentages, 5000);
 		updateGaugePercentages();
 		return () => clearInterval(interval);
-	}, [charId]);
+	}, [charId, gaugePercentages]);
 
 	return (
 		<div
 			style={{
 				position: "relative",
-				width: size,
+				...(priorizeVerticalSize ? { height: size } : { width: size }),
 				aspectRatio: "1/1",
 			}}>
 			{reactiveId && (

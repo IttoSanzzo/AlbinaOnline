@@ -1,0 +1,43 @@
+.pageContainer {
+	position: absolute;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 8px solid var(--cl-gray-700);
+	display: flex;
+	flex-direction: row;
+}
+
+.leftContainer {
+	position: relative;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding: 5px;
+	overflow: hidden;
+	width: 21%;
+}
+.middleContainer {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	background-color: var(--cl-gray-700);
+	width: 58%;
+}
+.rightContainer {
+	width: 21%;
+	padding: 5px;
+}
+
+.discordContainer {
+	width: 100%;
+	flex-grow: 1;
+}
+
+.masterContainer {
+	aspect-ratio: 1 / 1;
+	background-color: var(--cl-gray-700);
+}
