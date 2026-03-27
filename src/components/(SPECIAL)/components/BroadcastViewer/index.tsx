@@ -10,6 +10,7 @@ import { AlbinaBroadcast } from "@/app/embeds/broadcast/subComponents/AlbinaBroa
 import { DiceRoller } from "../DiceRoller";
 import { useState } from "react";
 import { MuteButton } from "./subComponents/MuteButton";
+import { useDiscordWidget } from "@/libs/stp@hooks";
 
 const BroadcastViewerContainer = newStyledElement.div(
 	styles.broadcastViewerContainer,
@@ -24,6 +25,7 @@ const CloseButton = newStyledElement.button(styles.closeButton);
 export function BroadcastViewer() {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [opened, setOpened] = useState<boolean>(false);
+	const { isSet, discordWidget } = useDiscordWidget();
 
 	return (
 		<BroadcastViewerContainer>
@@ -31,6 +33,7 @@ export function BroadcastViewer() {
 				onClick={() => {
 					setOpenState(true);
 					setOpened(true);
+					if (isSet && discordWidget != null) discordWidget.hide();
 				}}>
 				<Image
 					src={GearBroadcastCrop}
@@ -54,6 +57,7 @@ export function BroadcastViewer() {
 					className={styles.overlay}
 					onClick={() => {
 						setOpenState(false);
+						if (isSet && discordWidget != null) discordWidget.show();
 					}}>
 					<BroadcastViewerContent
 						className={styles.content}
@@ -69,6 +73,7 @@ export function BroadcastViewer() {
 							<CloseButton
 								onClick={() => {
 									setOpenState(false);
+									if (isSet && discordWidget != null) discordWidget.show();
 								}}>
 								<Image
 									src={GearGearCrop}

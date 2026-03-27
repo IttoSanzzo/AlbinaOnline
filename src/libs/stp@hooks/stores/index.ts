@@ -15,3 +15,4 @@ export { useCurrentCharacterAccessLevelStore } from "./useCurrentCharacterAccess
 
 export { useBreadcrumbsStore } from "./useBreadcrumbsStore";
 export type { Breadcrumb } from "./useBreadcrumbsStore";
+export * from "./useDiscordWidgetStore";

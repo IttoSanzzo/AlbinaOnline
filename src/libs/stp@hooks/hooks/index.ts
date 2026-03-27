@@ -23,3 +23,4 @@ export { useBreadcrumbs, useSetBreadcrumbs } from "./useBreadcrumbs";
 
 export * from "./useCharacterUpdatedPolling";
 export * from "./useCharacterUpdated";
+export * from "./useDiscordWidget";

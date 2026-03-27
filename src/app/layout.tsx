@@ -30,11 +30,12 @@ export default async function RootLayout({
 	return (
 		<html
 			lang="en"
+			data-scroll-behavior="smooth"
 			className={clsx(
 				inter.className,
 				roboto.className,
 				robotoMono.className,
-				spaceMono.className
+				spaceMono.className,
 			)}>
 			<head></head>
 			<body>

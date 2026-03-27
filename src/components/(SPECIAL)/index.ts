@@ -6,3 +6,4 @@ export { LinkPreview } from "./components/LinkPreview";
 export { DiceRoller } from "./components/DiceRoller";
 export { DiceRollerCore } from "./components/DiceRoller/subcomponents/DiceRollerCore";
 export type { StandartDiceSideValue } from "./components/DiceRoller";
+export { DiscordWidget } from "./components/DiscordWidget";

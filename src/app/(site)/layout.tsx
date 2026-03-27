@@ -2,7 +2,7 @@ import { SideBar, NavBar, AnchorNavBar } from "@/components/(HUD)";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
 import { ReactNode } from "react";
-import { DiceRoller } from "@/components/(SPECIAL)";
+import { DiceRoller, DiscordWidget } from "@/components/(SPECIAL)";
 import { BroadcastViewer } from "@/components/(SPECIAL)/components/BroadcastViewer";
 
 interface LayoutProps {
@@ -27,6 +27,7 @@ export default async function Layout({ children }: LayoutProps) {
 				<SideBar />
 			</GlobalContainer>
 			<AnchorNavBar />
+			<DiscordWidget />
 			<BroadcastViewer />
 		</>
 	);
