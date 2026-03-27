@@ -27,6 +27,11 @@ export function BroadcastViewer() {
 	const [opened, setOpened] = useState<boolean>(false);
 	const { isSet, discordWidget } = useDiscordWidget();
 
+	function closeViewer() {
+		setOpenState(false);
+		if (isSet && discordWidget != null) discordWidget.show();
+	}
+
 	return (
 		<BroadcastViewerContainer>
 			<BroadcastViewerTriggerButton
@@ -55,10 +60,7 @@ export function BroadcastViewer() {
 								}
 					}
 					className={styles.overlay}
-					onClick={() => {
-						setOpenState(false);
-						if (isSet && discordWidget != null) discordWidget.show();
-					}}>
+					onClick={() => closeViewer()}>
 					<BroadcastViewerContent
 						className={styles.content}
 						onClick={(event) => {
@@ -70,11 +72,7 @@ export function BroadcastViewer() {
 							withoutMargin>
 							<AlbinaBroadcast />
 							<DiceRoller position="top" />
-							<CloseButton
-								onClick={() => {
-									setOpenState(false);
-									if (isSet && discordWidget != null) discordWidget.show();
-								}}>
+							<CloseButton onClick={() => closeViewer()}>
 								<Image
 									src={GearGearCrop}
 									alt="Close Broadcast"
