@@ -2,7 +2,7 @@
 
 import { Guid } from "@/libs/stp@types";
 import { AccessLevel } from "@/libs/stp@types/otherTypes/AccessLevel";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { create } from "zustand";
 
 interface CurrentCharacterAccessLevelState {
@@ -27,7 +27,7 @@ export const useCurrentCharacterAccessLevelStore =
 					`/chars/${characterId}/my-access-level`,
 					{
 						cache: "no-store",
-					}
+					},
 				);
 				if (!response.ok) throw new Error("Not authenticated");
 				const data: { accessLevel: keyof typeof AccessLevel } =

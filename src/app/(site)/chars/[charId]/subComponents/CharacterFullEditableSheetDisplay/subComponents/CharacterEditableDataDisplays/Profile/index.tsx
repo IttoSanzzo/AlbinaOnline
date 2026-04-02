@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import React from "react";
 import z from "zod";
 import { CharacterProfile } from "@/libs/stp@types";

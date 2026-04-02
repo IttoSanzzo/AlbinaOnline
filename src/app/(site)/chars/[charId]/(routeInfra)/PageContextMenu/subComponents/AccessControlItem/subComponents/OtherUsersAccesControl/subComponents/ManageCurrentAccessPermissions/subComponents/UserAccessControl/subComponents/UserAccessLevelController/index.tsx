@@ -6,12 +6,12 @@ import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useCurrentCharacterAccessLevel } from "@/libs/stp@hooks";
 
 const UserAccessLevelControllerContainer = newStyledElement.div(
-	styles.userAccessLevelControllerContainer
+	styles.userAccessLevelControllerContainer,
 );
 
 const schema = z.object({
@@ -47,13 +47,13 @@ export function UserAccessLevelController({
 		};
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(
-				`/chars/${accessPermission.characterId}/access-permissions`
+				`/chars/${accessPermission.characterId}/access-permissions`,
 			),
 			{
 				method: "PATCH",
 				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
-			}
+			},
 		);
 		if (!response.ok) return false;
 		setAccessPermissionsState((state) =>
@@ -63,7 +63,7 @@ export function UserAccessLevelController({
 					accessPermissionState.userId === accessPermission.userId
 						? accessPermission.accessLevel
 						: accessPermissionState.accessLevel,
-			}))
+			})),
 		);
 		return true;
 	}
@@ -83,7 +83,7 @@ export function UserAccessLevelController({
 						name: "Co-Dono",
 						value: "CoOwner",
 					},
-			  ]
+				]
 			: [
 					{
 						name: "Apenas Ver",
@@ -93,7 +93,7 @@ export function UserAccessLevelController({
 						name: "Editar",
 						value: "Edit",
 					},
-			  ];
+				];
 
 	return (
 		<UserAccessLevelControllerContainer>

@@ -21,7 +21,7 @@ import {
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -154,7 +154,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				safetyText={trait.name}
 				deletionRoute={getAlbinaApiFullAddress(`/traits/${trait.slug}`)}
 				routerPushRoute="/tracos"
-				revalidatePath="/tracos"
+				revalidateTag="/traits"
 			/>
 
 			<UIBasics.Divisor />
@@ -163,7 +163,6 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				genericEffects={trait.effects}
 				targetId={trait.id}
 				targetType="Trait"
-				revalidatePath={`/tracos/${trait.slug}`}
 			/>
 		</GenericPageContainer>
 	);

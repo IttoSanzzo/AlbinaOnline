@@ -9,7 +9,7 @@ import { DiceResults } from "@/libs/stp@types";
 import { DiceResultHistoryView } from "../DiceResultHistoryView";
 import { DiceResultsWithTimestamp } from "@/libs/stp@types/otherTypes/DiceRoller";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import toast from "react-hot-toast";
 import { DiceResultView } from "../DiceResultView";
 

@@ -8,13 +8,13 @@ import {
 	ItemTypePluralName,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
 import { ArraySearchFilter } from "@/components/(UTILS)";
+import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
 
 const types = Object.values(ItemType).filter(
 	(v) => typeof v === "number",
@@ -40,15 +40,13 @@ export function ItemSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<ItemData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiFullAddress("/items"), {
-			method: "GET",
-			cache: getCacheMode(),
-			next: {
-				tags: ["/items"],
+		fetchWithTTLCache(
+			getAlbinaApiFullAddress("/items"),
+			{
+				method: "GET",
 			},
-		}).then(async (response) => {
-			setAllItems(await response.json());
-		});
+			5 * 60 * 1000,
+		).then(async (cache) => setAllItems(cache.data));
 	}, []);
 
 	const unacquiredItems: ItemData[] = useMemo(

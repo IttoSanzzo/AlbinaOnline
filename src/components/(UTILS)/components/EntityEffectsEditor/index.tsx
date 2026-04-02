@@ -11,7 +11,7 @@ import styles from "./styles.module.css";
 import { ReorderEffects } from "./subComponents/ReorderEffects";
 
 const EffectActionButtonsContainer = newStyledElement.div(
-	styles.effectActionButtonsContainer
+	styles.effectActionButtonsContainer,
 );
 
 export type EntityEffectEditTarget =
@@ -25,13 +25,11 @@ interface EntityEffectsEditorProps {
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
 	genericEffects: GenericEffect[];
-	revalidatePath?: string;
 }
 export function EntityEffectsEditor({
 	targetId,
 	targetType,
 	genericEffects,
-	revalidatePath,
 }: EntityEffectsEditorProps) {
 	const pathname = usePathname();
 	const effectsInOrder = genericEffects.sort((e1, e2) => e1.order - e2.order);
@@ -59,20 +57,17 @@ export function EntityEffectsEditor({
 							pathname={pathname}
 							targetId={targetId}
 							targetType={targetType}
-							revalidatePath={revalidatePath}
 						/>
 					)}
 					<LinkEffect
 						pathname={pathname}
 						targetId={targetId}
 						targetType={targetType}
-						revalidatePath={revalidatePath}
 					/>
 					<CreateEffect
 						pathname={pathname}
 						targetId={targetId}
 						targetType={targetType}
-						revalidatePath={revalidatePath}
 					/>
 				</EffectActionButtonsContainer>
 			</UIBasics.Box>
@@ -86,7 +81,6 @@ export function EntityEffectsEditor({
 						key={genericEffect.id}
 						genericEffect={genericEffect}
 						pathname={pathname}
-						revalidatePath={revalidatePath}
 					/>
 				))}
 			/>

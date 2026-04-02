@@ -1,7 +1,7 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSpellButton } from "./subComponents/AddSpellButton";
 import { UIBasics } from "@/components/(UIBasics)";

@@ -8,7 +8,7 @@ import {
 import { CharacterDrawers } from "./subComponents/Drawers";
 import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import { useCharacterUpdated } from "@/libs/stp@hooks";

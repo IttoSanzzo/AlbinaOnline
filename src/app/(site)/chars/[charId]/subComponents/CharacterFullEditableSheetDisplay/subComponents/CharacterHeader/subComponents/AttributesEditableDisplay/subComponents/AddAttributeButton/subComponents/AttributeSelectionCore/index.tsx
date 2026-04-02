@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../../../../CharacterEditableDataDisplays";
@@ -21,7 +21,7 @@ export function AttributeSelectionCore({
 	setMiscMetrics,
 }: AttributeSelectionCoreProps) {
 	const allMagicAttributeKeys = Object.keys(MagicAttribute).filter((key) =>
-		isNaN(Number(key))
+		isNaN(Number(key)),
 	) as (keyof typeof MagicAttribute)[];
 	const unacquiredAttributes: (keyof typeof MagicAttribute)[] =
 		allMagicAttributeKeys
@@ -30,7 +30,7 @@ export function AttributeSelectionCore({
 					!alreadyHasAttributes.includes(attribute) &&
 					attribute != "Unknown" &&
 					attribute != "Elemental" &&
-					attribute != "Mundane"
+					attribute != "Mundane",
 			)
 			.sort((a1, a2) => a1.localeCompare(a2));
 
@@ -48,7 +48,7 @@ export function AttributeSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

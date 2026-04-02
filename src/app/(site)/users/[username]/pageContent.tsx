@@ -5,7 +5,7 @@ import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import { useLayoutEffect, useState } from "react";
 import { UserFavoriteCarousel } from "./subComponents/UserFavoriteCarousel";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	CharacterData,
 	FullUser,

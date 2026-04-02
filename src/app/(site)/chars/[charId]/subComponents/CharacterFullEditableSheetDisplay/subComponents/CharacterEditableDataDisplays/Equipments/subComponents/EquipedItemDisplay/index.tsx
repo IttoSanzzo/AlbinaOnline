@@ -8,7 +8,7 @@ import React, { useContext, useLayoutEffect, useState } from "react";
 import { EquipmentsContext } from "../../../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../..";
 
@@ -18,7 +18,7 @@ export async function handleRemoveEquipedItem(
 	slot: EquipmentSlot,
 	setCharacterEquipments: React.Dispatch<
 		React.SetStateAction<CharacterEquipments>
-	>
+	>,
 ) {
 	const body = {
 		itemId: itemId,
@@ -33,7 +33,7 @@ export async function handleRemoveEquipedItem(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -87,7 +87,7 @@ function _EquipedItemDisplay({
 					characterId,
 					itemId,
 					slot,
-					setCharacterEquipments
+					setCharacterEquipments,
 				)
 			}
 		/>
@@ -96,7 +96,7 @@ function _EquipedItemDisplay({
 
 const areEqual = (
 	prevProps: EquipedItemDisplayProps,
-	nextProps: EquipedItemDisplayProps
+	nextProps: EquipedItemDisplayProps,
 ) =>
 	prevProps.characterId === nextProps.characterId &&
 	prevProps.itemId === nextProps.itemId;

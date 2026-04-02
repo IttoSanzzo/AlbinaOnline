@@ -24,7 +24,7 @@ import {
 import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -212,7 +212,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 				safetyText={race.name}
 				deletionRoute={getAlbinaApiFullAddress(`/races/${race.slug}`)}
 				routerPushRoute="/racas"
-				revalidatePath="/racas"
+				revalidateTag="/races"
 			/>
 
 			<UIBasics.Divisor />

@@ -1,7 +1,7 @@
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { useContext, useLayoutEffect } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { CharacterMasteryExpanded, Guid } from "@/libs/stp@types";
 import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";

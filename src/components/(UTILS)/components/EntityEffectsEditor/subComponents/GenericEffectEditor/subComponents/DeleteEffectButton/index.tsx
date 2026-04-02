@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { AlertDialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useState } from "react";
@@ -9,7 +9,10 @@ import toast from "react-hot-toast";
 import z from "zod";
 import styles from "./styles.module.css";
 import { Guid } from "@/libs/stp@types";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 
 const DeleteButton = newStyledElement.button(styles.deleteButton);
 
@@ -22,13 +25,11 @@ interface DeleteEffectButtonProps {
 	safetyText: string;
 	effectId: Guid;
 	pathname: string;
-	revalidatePath?: string;
 }
 export function DeleteEffectButton({
 	safetyText,
 	effectId,
 	pathname,
-	revalidatePath,
 }: DeleteEffectButtonProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const form = useForm<FormData>({
@@ -49,7 +50,7 @@ export function DeleteEffectButton({
 		toast.success("Deleted", { id: toastId });
 		setOpenState(false);
 		revalidatePathByClientSide(pathname);
-		if (revalidatePath) revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide("/effects");
 	}
 
 	return (

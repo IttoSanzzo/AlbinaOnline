@@ -9,16 +9,16 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { PageTitle } from "../../../PageHeader";
 import { revalidateMetadata } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
 
 const ChangeTitleButtonContainer = newStyledElement.div(
-	styles.changeTitleButtonContainer
+	styles.changeTitleButtonContainer,
 );
 const ChangeTitleButtonTrigger = newStyledElement.button(
-	styles.changeTitleButtonTrigger
+	styles.changeTitleButtonTrigger,
 );
 
 const schema = z.object({

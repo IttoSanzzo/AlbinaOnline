@@ -22,7 +22,7 @@ export default async function ItemPageContent({
 }: ItemPageContentProps) {
 	const response = await fetch(getAlbinaApiFullAddress(`/items/${itemSlug}`), {
 		cache: getCacheMode(),
-		next: { tags: [`/items`] },
+		next: { tags: [`/items`, "/effects"] },
 	});
 	if (!response.ok) return <>Error</>;
 	const itemData = convertEnumsFromResponse<ItemData>(await response.json());

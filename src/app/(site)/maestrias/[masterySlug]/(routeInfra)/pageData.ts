@@ -59,7 +59,7 @@ export async function getPageData(
 		{
 			cache: getCacheMode(),
 			next: {
-				tags: [`/masteries`],
+				tags: [`/masteries`, "/effects"],
 			},
 		},
 	);

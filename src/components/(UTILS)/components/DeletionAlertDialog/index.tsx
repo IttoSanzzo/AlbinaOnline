@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { AlertDialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
 import styles from "./styles.module.css";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 
 const DeleteButton = newStyledElement.button(styles.deleteButton);
 
@@ -22,13 +22,13 @@ interface DeletionAlertDialogProps {
 	safetyText: string;
 	deletionRoute: string;
 	routerPushRoute?: string;
-	revalidatePath: string;
+	revalidateTag: string;
 }
 export function DeletionAlertDialog({
 	deletionRoute,
 	safetyText,
 	routerPushRoute,
-	revalidatePath,
+	revalidateTag,
 }: DeletionAlertDialogProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const router = useRouter();
@@ -48,7 +48,7 @@ export function DeletionAlertDialog({
 		}
 		toast.success("Deleted", { id: toastId });
 		setOpenState(false);
-		revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide(revalidateTag);
 		router.push(routerPushRoute ? routerPushRoute : "/home");
 	}
 

@@ -27,7 +27,7 @@ export default async function Layout({ children }: LayoutProps) {
 				<SideBar />
 			</GlobalContainer>
 			<AnchorNavBar />
-			<DiscordWidget />
+			{process.env.NODE_ENV == "production" && <DiscordWidget />}
 			<BroadcastViewer />
 		</>
 	);

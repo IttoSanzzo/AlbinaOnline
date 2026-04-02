@@ -21,7 +21,7 @@ import {
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -160,7 +160,7 @@ export function EditMasteryPageContent({
 				safetyText={mastery.name}
 				deletionRoute={getAlbinaApiFullAddress(`/masteries/${mastery.slug}`)}
 				routerPushRoute="/maestrias"
-				revalidatePath="/maestrias"
+				revalidateTag="/masteries"
 			/>
 
 			<UIBasics.Divisor />
@@ -169,7 +169,6 @@ export function EditMasteryPageContent({
 				genericEffects={mastery.effects}
 				targetId={mastery.id}
 				targetType="Mastery"
-				revalidatePath={`/maestrias/${mastery.slug}`}
 			/>
 		</GenericPageContainer>
 	);

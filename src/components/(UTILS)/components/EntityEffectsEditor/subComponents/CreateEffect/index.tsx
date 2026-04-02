@@ -7,10 +7,13 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { Guid } from "@/libs/stp@types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import toast from "react-hot-toast";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
 
 const LinkEffectButton = newStyledElement.button(styles.linkEffectButton);
@@ -26,13 +29,11 @@ interface CreateEffectProps {
 	pathname: string;
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
-	revalidatePath?: string;
 }
 export function CreateEffect({
 	pathname,
 	targetId,
 	targetType,
-	revalidatePath,
 }: CreateEffectProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
@@ -53,14 +54,14 @@ export function CreateEffect({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Creation failed", { id: toastId });
 			setError(
 				`Creation Failed: ${response.status} ${
 					response.statusText
-				} : ${await response.text()}`
+				} : ${await response.text()}`,
 			);
 			return;
 		}
@@ -80,14 +81,14 @@ export function CreateEffect({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!responseLink.ok) {
 			toast.error("Link failed", { id: toastId });
 			setError(
 				`Link Failed: ${responseLink.status} ${
 					responseLink.statusText
-				} : ${await responseLink.text()}`
+				} : ${await responseLink.text()}`,
 			);
 			return;
 		}
@@ -95,7 +96,7 @@ export function CreateEffect({
 		setError("");
 		setOpenState(false);
 		revalidatePathByClientSide(pathname);
-		if (revalidatePath) revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide("/effects");
 	}
 
 	return (

@@ -3,16 +3,16 @@ import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import Image from "next/image";
 import Link from "next/link";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { UserAccessLevelController } from "./subComponents/UserAccessLevelController";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const UserAccessControlContainer = newStyledElement.div(
-	styles.userAccessControlContainer
+	styles.userAccessControlContainer,
 );
 const UserAccessControlUser = newStyledElement.div(
-	styles.userAccessControlUser
+	styles.userAccessControlUser,
 );
 const RemoveUserAccess = newStyledElement.button(styles.removeUserAccess);
 const ControllersContainer = newStyledElement.div(styles.controllersContainer);
@@ -21,26 +21,26 @@ async function handleRemoveUserAccess(
 	accessPermission: CharacterAccessPermission,
 	setAccessPermissionsState: Dispatch<
 		SetStateAction<CharacterAccessPermission[]>
-	>
+	>,
 ) {
 	const body = {
 		userId: accessPermission.userId,
 	};
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiFullAddress(
-			`/chars/${accessPermission.characterId}/access-permissions`
+			`/chars/${accessPermission.characterId}/access-permissions`,
 		),
 		{
 			method: "DELETE",
 			body: JSON.stringify(body),
 			headers: { "Content-Type": "application/json" },
-		}
+		},
 	);
 	if (!response.ok) return;
 	setAccessPermissionsState((state) => [
 		...state.filter(
 			(accessPermissionState) =>
-				accessPermissionState.userId != accessPermission.userId
+				accessPermissionState.userId != accessPermission.userId,
 		),
 	]);
 }

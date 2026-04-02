@@ -22,7 +22,7 @@ import {
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -183,7 +183,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				safetyText={skill.name}
 				deletionRoute={getAlbinaApiFullAddress(`/skills/${skill.slug}`)}
 				routerPushRoute="/skills"
-				revalidatePath="/skills"
+				revalidateTag="/skills"
 			/>
 
 			<UIBasics.Divisor />
@@ -192,7 +192,6 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				genericEffects={skill.effects}
 				targetId={skill.id}
 				targetType="Skill"
-				revalidatePath={`/skills/${skill.slug}`}
 			/>
 		</GenericPageContainer>
 	);

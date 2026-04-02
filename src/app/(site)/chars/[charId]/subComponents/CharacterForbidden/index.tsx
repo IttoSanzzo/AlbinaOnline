@@ -1,5 +1,5 @@
 import { FullUser, Guid } from "@/libs/stp@types";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.css";

@@ -7,14 +7,14 @@ import {
 } from "@/libs/stp@types";
 import { useLayoutEffect, useMemo, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { insertSorted } from "@/utils/Data";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
 import { ArraySearchFilter } from "@/components/(UTILS)";
+import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
 
 interface SkillSelectionCoreProps {
 	characterId: Guid;
@@ -36,15 +36,13 @@ export function SkillSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<SkillData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiFullAddress("/skills"), {
-			method: "GET",
-			cache: getCacheMode(),
-			next: {
-				tags: ["/skills"],
+		fetchWithTTLCache(
+			getAlbinaApiFullAddress("/skills"),
+			{
+				method: "GET",
 			},
-		}).then(async (response) => {
-			setAllSkills(await response.json());
-		});
+			5 * 60 * 1000,
+		).then(async (cache) => setAllSkills(cache.data));
 	}, []);
 
 	const unacquiredSkills: SkillData[] = useMemo(

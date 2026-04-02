@@ -7,17 +7,17 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableStyledLink } from "@/components/(SPECIAL)";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { UserFavoriteType } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
 
 const SortableIndexedPagesGroupContainer = newStyledElement.div(
-	styles.sortableIndexedPagesGroupContainer
+	styles.sortableIndexedPagesGroupContainer,
 );
 const SortableIndexedPageLinksContainer = newStyledElement.div(
-	styles.sortableIndexedPageLinksContainer
+	styles.sortableIndexedPageLinksContainer,
 );
 
 export interface SortableIndexedPage {
@@ -29,7 +29,7 @@ export interface SortableIndexedPage {
 function genReordenatedArray(
 	length: number,
 	fromIndex: number,
-	toValue: number
+	toValue: number,
 ): number[] {
 	const result: number[] = new Array(length).fill(-1);
 	result[fromIndex] = toValue;
@@ -46,7 +46,7 @@ async function postReorderAsync(
 	type: UserFavoriteType,
 	length: number,
 	oldPosition: number,
-	newPosition: number
+	newPosition: number,
 ) {
 	await authenticatedFetchAsync(
 		`${getAlbinaApiFullAddress()}/users/me/favorites/reorder`,
@@ -59,7 +59,7 @@ async function postReorderAsync(
 				type,
 				newOrder: genReordenatedArray(length, oldPosition, newPosition),
 			}),
-		}
+		},
 	);
 }
 
@@ -118,7 +118,7 @@ export default function SortableIndexedPagesGroup({
 												? indexedPage.image
 												: `${getAlbinaApiFullAddress()}/favicon/${
 														indexedPage.link
-												  }`,
+													}`,
 									}}
 								/>
 							))}

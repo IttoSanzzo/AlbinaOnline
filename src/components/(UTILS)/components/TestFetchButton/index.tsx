@@ -1,13 +1,13 @@
 "use client";
 
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useUserFavorites } from "@/libs/stp@hooks";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const TestFetchButtonContainer = newStyledElement.div(
-	styles.testFetchButtonContainer
+	styles.testFetchButtonContainer,
 );
 
 export function TestFetchButton() {
@@ -29,7 +29,7 @@ export function TestFetchButton() {
 				},
 				method: "PATCH",
 				body: JSON.stringify(body),
-			}
+			},
 		);
 		console.log(response.status);
 		if (response.status != 405) {

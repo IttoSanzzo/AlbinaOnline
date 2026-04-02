@@ -9,7 +9,7 @@ import {
 	RaceContext,
 } from "../../CharacterEditableSheetContextProviders";
 import z from "zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";

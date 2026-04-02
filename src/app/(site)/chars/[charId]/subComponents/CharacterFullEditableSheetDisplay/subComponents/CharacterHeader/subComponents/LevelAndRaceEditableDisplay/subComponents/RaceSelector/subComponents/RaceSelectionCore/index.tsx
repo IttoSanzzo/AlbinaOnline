@@ -4,7 +4,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../../../../CharacterEditableDataDisplays";
@@ -52,7 +52,7 @@ export function RaceSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

@@ -6,7 +6,7 @@ import {
 	Guid,
 } from "@/libs/stp@types";
 import React from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { ItemsContext } from "../../CharacterEditableSheetContextProviders/contexts/Items";

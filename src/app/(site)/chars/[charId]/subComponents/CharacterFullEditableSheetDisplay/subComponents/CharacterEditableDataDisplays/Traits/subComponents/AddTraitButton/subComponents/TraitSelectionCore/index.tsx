@@ -9,12 +9,12 @@ import {
 	TraitType,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
+import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
 
 interface TraitSelectionCoreProps {
 	characterId: Guid;
@@ -36,15 +36,13 @@ export function TraitSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<TraitData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiFullAddress("/traits"), {
-			method: "GET",
-			cache: getCacheMode(),
-			next: {
-				tags: ["/traits"],
+		fetchWithTTLCache(
+			getAlbinaApiFullAddress("/traits"),
+			{
+				method: "GET",
 			},
-		}).then(async (response) => {
-			setAllTraits(await response.json());
-		});
+			5 * 60 * 1000,
+		).then(async (cache) => setAllTraits(cache.data));
 	}, []);
 
 	const unacquiredTraits: TraitData[] = useMemo(

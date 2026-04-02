@@ -8,7 +8,7 @@ import {
 	CharacterIdContext,
 } from "../../CharacterEditableSheetContextProviders";
 import z from "zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { UIBasics } from "@/components/(UIBasics)";

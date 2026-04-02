@@ -11,7 +11,7 @@ import {
 	SearchEntryEntity,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import {
@@ -44,7 +44,7 @@ const emptySearchEntries: AllSearchEntriesByType = {
 };
 function getPageLinkFromSearchEntry(
 	entity: SearchEntryEntity,
-	route: string
+	route: string,
 ): string {
 	switch (entity) {
 		case "Character":
@@ -89,7 +89,7 @@ const typeTitles = {
 
 function handleAddLinkToHistory(
 	searchEntry: SearchEntry,
-	setLinkHistoryState: Dispatch<SetStateAction<SearchEntry[]>>
+	setLinkHistoryState: Dispatch<SetStateAction<SearchEntry[]>>,
 ): void {
 	const currentSavedHistoryInMemory = localStorage.getItem("SearchLinkHistory");
 	if (currentSavedHistoryInMemory === null) {
@@ -104,7 +104,7 @@ function handleAddLinkToHistory(
 			searchEntry,
 			...savedParsed.filter(
 				(entry) =>
-					entry.id !== searchEntry.id || entry.entity !== searchEntry.entity
+					entry.id !== searchEntry.id || entry.entity !== searchEntry.entity,
 			),
 		].slice(0, 20);
 		localStorage.setItem("SearchLinkHistory", JSON.stringify(newLinkHistory));
@@ -118,7 +118,7 @@ function handleAddLinkToHistory(
 function searchEntryToStyledLink(
 	searchEntry: SearchEntry,
 	setLinkHistoryState: Dispatch<SetStateAction<SearchEntry[]>>,
-	setOpenState: Dispatch<SetStateAction<boolean>>
+	setOpenState: Dispatch<SetStateAction<boolean>>,
 ): ReactNode {
 	return (
 		<StyledLink
@@ -162,7 +162,7 @@ export function PageSearchButton() {
 		if (currentSavedHistoryInMemory === null) return;
 		try {
 			const savedParsed: SearchEntry[] = JSON.parse(
-				currentSavedHistoryInMemory
+				currentSavedHistoryInMemory,
 			);
 			setUsedLinkHistory(savedParsed);
 		} catch {
@@ -182,9 +182,9 @@ export function PageSearchButton() {
 		if (formData.query.length === 0) return;
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(
-				`/search?query=${encodeURIComponent(formData.query)}`
+				`/search?query=${encodeURIComponent(formData.query)}`,
 			),
-			{ method: "GET", next: { revalidate: 120 } }
+			{ method: "GET", next: { revalidate: 120 } },
 		);
 		if (!response.ok) {
 			setSearchEntries(emptySearchEntries);
@@ -207,46 +207,46 @@ export function PageSearchButton() {
 
 	const allLinks: ReactNode[] = [
 		typeTitles.Character(
-			globalTitleTitleDisable || searchEntries.character.length === 0
+			globalTitleTitleDisable || searchEntries.character.length === 0,
 		),
 		searchEntries.character.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Item(globalTitleTitleDisable || searchEntries.item.length === 0),
 		searchEntries.item.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Mastery(
-			globalTitleTitleDisable || searchEntries.mastery.length === 0
+			globalTitleTitleDisable || searchEntries.mastery.length === 0,
 		),
 		searchEntries.mastery.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Race(globalTitleTitleDisable || searchEntries.race.length === 0),
 		searchEntries.race.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Skill(
-			globalTitleTitleDisable || searchEntries.skill.length === 0
+			globalTitleTitleDisable || searchEntries.skill.length === 0,
 		),
 		searchEntries.skill.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Spell(
-			globalTitleTitleDisable || searchEntries.spell.length === 0
+			globalTitleTitleDisable || searchEntries.spell.length === 0,
 		),
 		searchEntries.spell.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.Trait(
-			globalTitleTitleDisable || searchEntries.trait.length === 0
+			globalTitleTitleDisable || searchEntries.trait.length === 0,
 		),
 		searchEntries.trait.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 		typeTitles.User(globalTitleTitleDisable || searchEntries.user.length === 0),
 		searchEntries.user.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState)
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
 		),
 	];
 
@@ -296,8 +296,8 @@ export function PageSearchButton() {
 										searchEntryToStyledLink(
 											entry,
 											setUsedLinkHistory,
-											setOpenState
-										)
+											setOpenState,
+										),
 									)}
 								/>
 							</UIBasics.Box>

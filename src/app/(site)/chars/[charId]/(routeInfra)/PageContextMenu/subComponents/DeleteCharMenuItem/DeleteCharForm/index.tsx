@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { HookedForm } from "@/libs/stp@forms";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { AlertDialog } from "@/libs/stp@radix";
 import { Guid } from "@/libs/stp@types";
 
@@ -39,7 +39,7 @@ export function DeleteCharForm({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.status != 200) setResponseMessage("A exclusão falhou");
 		else router.push(`/chars`);

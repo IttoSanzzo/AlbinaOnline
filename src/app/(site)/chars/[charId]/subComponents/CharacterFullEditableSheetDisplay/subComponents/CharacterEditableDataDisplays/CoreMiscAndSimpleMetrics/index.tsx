@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { CharacterCoreMetrics, CharacterMiscMetrics } from "@/libs/stp@types";
 import { MiscMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/MiscMetrics";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";

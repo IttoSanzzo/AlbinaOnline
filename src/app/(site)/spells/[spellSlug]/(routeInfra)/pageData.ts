@@ -22,7 +22,7 @@ export async function getPageData(spellSlug: string): Promise<SpellPageData> {
 		getAlbinaApiFullAddress(`/spells/${spellSlug}`),
 		{
 			cache: getCacheMode(),
-			next: { tags: [`/spells`] },
+			next: { tags: [`/spells`, "/effects"] },
 		},
 	);
 	if (!response.ok) return { spellData: undefined, borderColor: "" };

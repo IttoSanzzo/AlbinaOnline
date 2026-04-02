@@ -16,7 +16,7 @@ import {
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { routeInfra } from "./(routeInfra)";
 import { useEffect, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFullEditableSheetDisplay";
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 import { UserPageLink } from "@/components/(UTILS)";

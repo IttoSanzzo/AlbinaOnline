@@ -2,7 +2,7 @@ import { useContext, useLayoutEffect } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { CharacterEquipments, EquipmentSlot, Guid } from "@/libs/stp@types";
 import React from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/contexts/Equipments";
 import { EquipedItemDisplay } from "./subComponents/EquipedItemDisplay";

@@ -1,6 +1,6 @@
 import { StyledLinkWithButton } from "@/components/(Design)/components/StyledLinkWithButton";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
 import { Guid } from "@/libs/stp@types";

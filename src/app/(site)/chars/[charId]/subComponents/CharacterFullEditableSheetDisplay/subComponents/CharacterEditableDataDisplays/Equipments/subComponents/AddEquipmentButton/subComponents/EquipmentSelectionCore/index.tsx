@@ -11,7 +11,7 @@ import { useContext, useMemo } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLinklikeButton } from "@/components/(Design)";
 import { Dialog } from "@/libs/stp@radix";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { ItemsContext } from "../../../../../../CharacterEditableSheetContextProviders/contexts/Items";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
@@ -37,16 +37,16 @@ export function EquipmentSelectionCore({
 		() =>
 			characterItems.filter((itemStack) =>
 				itemStack.item.properties.compatibleSlots.some((slotType) =>
-					isSlotCompatibleWithType(slot, EquipmentSlotType[slotType])
-				)
+					isSlotCompatibleWithType(slot, EquipmentSlotType[slotType]),
+				),
 			),
-		[characterItems]
+		[characterItems],
 	);
 
 	const unequippedItemIds: CharacterItemStackExpanded[] =
 		ownedItemsForThisSlot.filter(
 			(itemStacks) =>
-				!alreadyHasItemIds.some((itemId) => itemStacks.itemId === itemId)
+				!alreadyHasItemIds.some((itemId) => itemStacks.itemId === itemId),
 		);
 
 	async function handleAddEquipment(item: ItemData) {
@@ -63,7 +63,7 @@ export function EquipmentSelectionCore({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });

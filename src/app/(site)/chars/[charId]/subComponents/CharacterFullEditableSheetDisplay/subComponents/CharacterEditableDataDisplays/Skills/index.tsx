@@ -1,7 +1,7 @@
 import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterSkillExpanded, Guid, SkillType } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import React, { useLayoutEffect, useState } from "react";
 import { AddSkillButton } from "./subComponents/AddSkillButton";
 import { UIBasics } from "@/components/(UIBasics)";

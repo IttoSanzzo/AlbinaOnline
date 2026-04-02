@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { CharacterCoreMetrics } from "@/libs/stp@types";
 import z from "zod";
 import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders/contexts/CoreMetrics";
@@ -38,7 +38,7 @@ function formTableEntry(
 	fieldName: keyof FormData,
 	color: keyof typeof StandartTextColor,
 	min?: number,
-	max?: number
+	max?: number,
 ) {
 	return [
 		<UIBasics.Text
@@ -87,11 +87,11 @@ export function CharacterGaugeEditableDisplay({
 		form.setValue("baseMax", coreMetrics[gauge].baseMax);
 		form.setValue(
 			"temporaryCurrentModifier",
-			coreMetrics[gauge].temporaryCurrentModifier
+			coreMetrics[gauge].temporaryCurrentModifier,
 		);
 		form.setValue(
 			"temporaryMaxModifier",
-			coreMetrics[gauge].temporaryMaxModifier
+			coreMetrics[gauge].temporaryMaxModifier,
 		);
 	}, [coreMetrics]);
 
@@ -119,7 +119,7 @@ export function CharacterGaugeEditableDisplay({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (response.ok == false) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -158,19 +158,19 @@ export function CharacterGaugeEditableDisplay({
 									color,
 									undefined,
 									Number(
-										watchedValues.baseMax + watchedValues.temporaryMaxModifier
-									)
+										watchedValues.baseMax + watchedValues.temporaryMaxModifier,
+									),
 								),
 								formTableEntry(
 									`${acronym} Temp.`,
 									"temporaryCurrentModifier",
-									color
+									color,
 								),
 								formTableEntry(`${acronym} Max`, "baseMax", color),
 								formTableEntry(
 									`${acronym} Max Temp.`,
 									"temporaryMaxModifier",
-									color
+									color,
 								),
 							],
 						}}

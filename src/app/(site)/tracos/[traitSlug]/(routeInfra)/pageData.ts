@@ -22,7 +22,7 @@ export async function getPageData(traitSlug: string): Promise<TraitPageData> {
 		getAlbinaApiFullAddress(`/traits/${traitSlug}`),
 		{
 			cache: getCacheMode(),
-			next: { tags: [`/traits`] },
+			next: { tags: [`/traits`, "/effects"] },
 		},
 	);
 	if (!response.ok) return { traitData: undefined, borderColor: "" };

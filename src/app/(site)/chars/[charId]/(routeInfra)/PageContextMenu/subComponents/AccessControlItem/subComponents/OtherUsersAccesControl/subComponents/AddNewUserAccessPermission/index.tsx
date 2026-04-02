@@ -7,14 +7,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { Dispatch, SetStateAction, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const AddNewUserAccessPermissionContainer = newStyledElement.div(
-	styles.addNewUserAccessPermissionContainer
+	styles.addNewUserAccessPermissionContainer,
 );
 const AddNewUserAccessPermissionButton = newStyledElement.button(
-	styles.addNewUserAccessPermissionButton
+	styles.addNewUserAccessPermissionButton,
 );
 
 const schema = z.object({
@@ -54,7 +54,7 @@ export function AddNewUserAccessPermission({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			setError("Falha ao adicionar permissão");

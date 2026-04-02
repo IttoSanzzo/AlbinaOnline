@@ -1,7 +1,7 @@
 "use client";
 
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useEffect, useRef } from "react";
 import { eventBus } from "../classes";
 import toast from "react-hot-toast";

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { HookedForm, SelectOption } from "@/libs/stp@forms";
 import { RaceData } from "@/libs/stp@types";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),
@@ -38,8 +38,8 @@ export function CreateCharForm() {
 							value: race.id,
 							icon: race.iconUrl,
 						}))
-						.sort((a, b) => a.name.localeCompare(b.name))
-				)
+						.sort((a, b) => a.name.localeCompare(b.name)),
+				),
 			)
 			.catch((error) => console.error("Error fetching races", error));
 	}, []);
@@ -54,7 +54,7 @@ export function CreateCharForm() {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(formData),
-			}
+			},
 		);
 		if (response.status != 200) {
 			setResponseMessage("A criação falhou");

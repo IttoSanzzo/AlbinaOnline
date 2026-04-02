@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../../../CharacterEditableSheetContextProviders";
 import z from "zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { KorynCoins } from "@/libs/stp@types";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { UIBasics } from "@/components/(UIBasics)";

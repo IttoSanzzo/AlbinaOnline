@@ -1,7 +1,7 @@
 import { SideActionNumberInputButtons } from "@/components/(UTILS)";
 import { Guid } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../..";
@@ -32,7 +32,7 @@ export function MasteryLevelController({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error(CharToastMessage.error, { id: toastId });
@@ -41,7 +41,9 @@ export function MasteryLevelController({
 		toast.success(CharToastMessage.success, { id: toastId });
 		setCharacterMasteries((state) => {
 			return state.map((mastery) =>
-				mastery.masteryId === masteryId ? { ...mastery, level: value } : mastery
+				mastery.masteryId === masteryId
+					? { ...mastery, level: value }
+					: mastery,
 			);
 		});
 	}

@@ -8,7 +8,7 @@ import HeadFrame from "@/../public/general-assets/embeds/chars/HeadFrame.png";
 import NameBarClear from "@/../public/general-assets/embeds/chars/NameBarClear.png";
 import NameBarBlackFill from "@/../public/general-assets/embeds/chars/NameBarBlackFill.png";
 import { useEffect, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import clsx from "clsx";
 

@@ -2,13 +2,13 @@
 
 import { Star } from "@phosphor-icons/react/Star";
 import { useCurrentPageData, useUserFavorites } from "@/libs/stp@hooks";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartTextColor } from "@/components/(UIBasics)";
 
 const FavoriteButtonContainer = newStyledElement.div(
-	styles.favoriteButtonContainer
+	styles.favoriteButtonContainer,
 );
 
 export function FavoriteButton() {
@@ -31,7 +31,7 @@ export function FavoriteButton() {
 	}
 
 	const isAlreadyFavorite = favorites?.[type].some(
-		(favorite) => favorite.target.id == data?.id
+		(favorite) => favorite.target.id == data?.id,
 	);
 
 	async function handleAddFavorite() {

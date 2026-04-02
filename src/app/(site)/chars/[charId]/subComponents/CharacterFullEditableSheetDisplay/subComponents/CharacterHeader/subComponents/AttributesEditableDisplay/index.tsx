@@ -4,7 +4,7 @@ import { StyledLinkWithButton } from "@/components/(Design)";
 import { CharacterMiscMetrics, Guid, MagicAttribute } from "@/libs/stp@types";
 import { CharacterIdContext } from "../../../CharacterEditableSheetContextProviders";
 import { AddAttributeButton } from "./subComponents/AddAttributeButton";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
@@ -14,12 +14,12 @@ async function handleRemoveAttribute(
 	characterId: Guid,
 	magicAttribute: keyof typeof MagicAttribute,
 	miscMetrics: CharacterMiscMetrics,
-	setMiscMetrics: Dispatch<SetStateAction<CharacterMiscMetrics>>
+	setMiscMetrics: Dispatch<SetStateAction<CharacterMiscMetrics>>,
 ) {
 	const body = {
 		...miscMetrics,
 		magicAttributes: miscMetrics.magicAttributes.filter(
-			(characterMagicAttribute) => characterMagicAttribute != magicAttribute
+			(characterMagicAttribute) => characterMagicAttribute != magicAttribute,
 		),
 	};
 	const toastId = toast.loading(CharToastMessage.loading);
@@ -31,7 +31,7 @@ async function handleRemoveAttribute(
 			headers: {
 				"Content-Type": "application/json",
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		toast.error(CharToastMessage.error, { id: toastId });
@@ -84,7 +84,7 @@ export function AttributesEditableDisplay() {
 												characterId,
 												magicAttribute,
 												miscMetrics,
-												setMiscMetrics
+												setMiscMetrics,
 											)
 										}
 									/>

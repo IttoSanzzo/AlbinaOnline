@@ -8,14 +8,12 @@ import {
 	SpellType,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { getCacheMode } from "@/utils/Cache";
 import { insertSorted } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
-
-// const ButtonContainer = newStyledElement.div(styles.buttonContainer);
+import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
 
 interface SpellSelectionCoreProps {
 	characterId: Guid;
@@ -37,15 +35,13 @@ export function SpellSelectionCore({
 	const [selectionPool, setSelectionPool] = useState<SpellData[]>([]);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiFullAddress("/spells"), {
-			method: "GET",
-			cache: getCacheMode(),
-			next: {
-				tags: ["/spells"],
+		fetchWithTTLCache(
+			getAlbinaApiFullAddress("/spells"),
+			{
+				method: "GET",
 			},
-		}).then(async (response) => {
-			setAllSpells(await response.json());
-		});
+			5 * 60 * 1000,
+		).then(async (cache) => setAllSpells(cache.data));
 	}, []);
 
 	const unacquiredSpells: SpellData[] = useMemo(

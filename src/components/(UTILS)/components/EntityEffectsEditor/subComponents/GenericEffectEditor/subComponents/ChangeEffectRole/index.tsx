@@ -1,8 +1,11 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { GenericEffect } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,12 +20,10 @@ type FormData = z.infer<typeof schema>;
 interface ChangeEffectRoleProps {
 	genericEffect: GenericEffect;
 	pathname: string;
-	revalidatePath?: string;
 }
 export function ChangeEffectRole({
 	genericEffect,
 	pathname,
-	revalidatePath,
 }: ChangeEffectRoleProps) {
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormData>({
@@ -36,7 +37,7 @@ export function ChangeEffectRole({
 		const toastId = toast.loading("Saving new role...");
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(
-				`/effect-links/${genericEffect.effectLinkId}/role`
+				`/effect-links/${genericEffect.effectLinkId}/role`,
 			),
 			{
 				method: "PUT",
@@ -44,7 +45,7 @@ export function ChangeEffectRole({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Saving failed", { id: toastId });
@@ -53,7 +54,7 @@ export function ChangeEffectRole({
 		}
 		toast.success("New role saved", { id: toastId });
 		revalidatePathByClientSide(pathname);
-		if (revalidatePath) revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide("/effects");
 	}
 
 	return (

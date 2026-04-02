@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 import Image from "next/image";
 import GearMicCrop from "@/../public/general-assets/GearMicCrop.png";
 import { useCurrentUser } from "@/libs/stp@hooks";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const MuteButtonContainer = newStyledElement.button(styles.muteButtonContainer);

@@ -22,7 +22,7 @@ export async function getPageData(skillSlug: string): Promise<SkillPageData> {
 		getAlbinaApiFullAddress(`/skills/${skillSlug}`),
 		{
 			cache: getCacheMode(),
-			next: { tags: [`/skills`] },
+			next: { tags: [`/skills`, "/effects"] },
 		},
 	);
 	if (!response.ok) return { skillData: undefined, borderColor: "" };

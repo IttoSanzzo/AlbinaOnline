@@ -3,7 +3,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
 import { CharacterTraitExpanded, Guid, TraitType } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import React, { useLayoutEffect, useState } from "react";
 
 function formTable(

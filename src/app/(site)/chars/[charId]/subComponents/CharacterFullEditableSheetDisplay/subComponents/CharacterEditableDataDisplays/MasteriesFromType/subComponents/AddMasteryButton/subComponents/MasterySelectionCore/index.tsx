@@ -7,14 +7,14 @@ import {
 } from "@/libs/stp@types";
 import { useContext, useLayoutEffect, useMemo, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { getCacheMode } from "@/utils/Cache";
 import { StyledLinklikeButton } from "@/components/(Design)";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { MasteriesContext } from "../../../../../../CharacterEditableSheetContextProviders";
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../../../..";
 import { ArraySearchFilter } from "@/components/(UTILS)";
+import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
 
 interface MasterySelectionCoreProps {
 	type: keyof typeof MasteryType;
@@ -35,25 +35,25 @@ export function MasterySelectionCore({
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	useLayoutEffect(() => {
-		fetch(getAlbinaApiFullAddress(`/masteries?type=${type}`), {
-			method: "GET",
-			cache: getCacheMode(),
-			next: {
-				tags: ["/masteries"],
-			},
-		}).then(async (response) => {
-			setAllMasteries(
-				((await response.json()) as MasteryData[]).sort(
-					(mastery1, mastery2) => {
+		useLayoutEffect(() => {
+			fetchWithTTLCache(
+				getAlbinaApiFullAddress(`/masteries?type=${type}`),
+				{
+					method: "GET",
+				},
+				5 * 60 * 1000,
+			).then(async (cache) =>
+				setAllMasteries(
+					(cache.data as MasteryData[]).sort((mastery1, mastery2) => {
 						const typeOrder =
 							MasterySubType[mastery1.subType] -
 							MasterySubType[mastery2.subType];
 						if (typeOrder !== 0) return typeOrder;
 						return mastery1.name.localeCompare(mastery2.name);
-					},
+					}),
 				),
 			);
-		});
+		}, []);
 	}, []);
 
 	const unacquiredMasteries: MasteryData[] = useMemo(

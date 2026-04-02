@@ -3,7 +3,7 @@
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
 import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
 import { CharacterData } from "@/libs/stp@types";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";

@@ -7,14 +7,17 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { GenericEffect, Guid } from "@/libs/stp@types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import toast from "react-hot-toast";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
 
 const ReorderEffectsButton = newStyledElement.button(
-	styles.reorderEffectsButton
+	styles.reorderEffectsButton,
 );
 
 interface ReorderEffectsProps {
@@ -22,14 +25,12 @@ interface ReorderEffectsProps {
 	pathname: string;
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
-	revalidatePath?: string;
 }
 export function ReorderEffects({
 	effects,
 	pathname,
 	targetId,
 	targetType,
-	revalidatePath,
 }: ReorderEffectsProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
@@ -41,12 +42,12 @@ export function ReorderEffects({
 					.number()
 					.int()
 					.min(0)
-					.max(effects.length - 1)
+					.max(effects.length - 1),
 			)
 			.length(effects.length)
 			.refine(
 				(arr) => new Set(arr).size === arr.length,
-				"Order numbers must be unique"
+				"Order numbers must be unique",
 			),
 	});
 	type FormData = z.infer<typeof schema>;
@@ -71,14 +72,14 @@ export function ReorderEffects({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Reorder failed", { id: toastId });
 			setError(
 				`Reorder Failed: ${response.status} ${
 					response.statusText
-				} : ${await response.text()}`
+				} : ${await response.text()}`,
 			);
 			return;
 		}
@@ -86,7 +87,7 @@ export function ReorderEffects({
 		setError("");
 		setOpenState(false);
 		revalidatePathByClientSide(pathname);
-		if (revalidatePath) revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide("/effects");
 	}
 
 	return (

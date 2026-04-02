@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 import Image from "next/image";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import toast from "react-hot-toast";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { redirect } from "next/navigation";
 
 const SocialLoginButtonContainer = newStyledElement.button(

@@ -5,14 +5,17 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm, SelectOption, zJsonStringTyped } from "@/libs/stp@forms";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { UIBasics } from "@/components/(UIBasics)";
 import { UnlinkEffectButton } from "./subComponents/UnlinkEffectButton";
 import { DeleteEffectButton } from "./subComponents/DeleteEffectButton";
-import { revalidatePathByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { capitalize } from "@/utils/StringUtils";
 import { ChangeEffectRole } from "./subComponents/ChangeEffectRole";
 
@@ -22,32 +25,30 @@ const GenericEffectContentArraySchema = z.array(
 		value: z.string(),
 		color: z.string(),
 		tableData: z.any().nullable(),
-	})
+	}),
 );
 
 const schema = z.object({
 	name: z.string().min(1, "Must be at leat 1 character long"),
 	color: z.string(),
 	contents: zJsonStringTyped<GenericEffectContent[]>(
-		GenericEffectContentArraySchema
+		GenericEffectContentArraySchema,
 	),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
 const GenericEffectEditorContainer = newStyledElement.div(
-	styles.genericEffectEditorContainer
+	styles.genericEffectEditorContainer,
 );
 
 interface GenericEffectEditorProps {
 	genericEffect: GenericEffect;
 	pathname: string;
-	revalidatePath?: string;
 }
 export function GenericEffectEditor({
 	genericEffect,
 	pathname,
-	revalidatePath,
 }: GenericEffectEditorProps) {
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, unknown, FormData>({
@@ -69,7 +70,7 @@ export function GenericEffectEditor({
 				headers: {
 					"Content-Type": "application/json",
 				},
-			}
+			},
 		);
 		if (!response.ok) {
 			toast.error("Saving failed", { id: toastId });
@@ -78,7 +79,7 @@ export function GenericEffectEditor({
 		}
 		toast.success("Saved", { id: toastId });
 		revalidatePathByClientSide(pathname);
-		if (revalidatePath) revalidatePathByClientSide(revalidatePath);
+		revalidateTagByClientSide("/effects");
 	}
 
 	const colorOptions: SelectOption[] = [
@@ -123,20 +124,17 @@ export function GenericEffectEditor({
 						safetyText={genericEffect.name ?? "IM SURE"}
 						linkId={genericEffect.effectLinkId}
 						pathname={pathname}
-						revalidatePath={revalidatePath}
 					/>
 					<DeleteEffectButton
 						safetyText={genericEffect.name ?? "IM SURE"}
 						effectId={genericEffect.id}
 						pathname={pathname}
-						revalidatePath={revalidatePath}
 					/>
 				</div>
 			</UIBasics.Box>
 			<ChangeEffectRole
 				genericEffect={genericEffect}
 				pathname={pathname}
-				revalidatePath={revalidatePath}
 			/>
 			<HookedForm.Space height={5} />
 			<HookedForm.Form

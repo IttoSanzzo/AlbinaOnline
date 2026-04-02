@@ -25,7 +25,7 @@ import {
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -209,7 +209,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				safetyText={spell.name}
 				deletionRoute={getAlbinaApiFullAddress(`/spells/${spell.slug}`)}
 				routerPushRoute="/spells"
-				revalidatePath="/spells"
+				revalidateTag="/spells"
 			/>
 
 			<UIBasics.Divisor />
@@ -218,7 +218,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				genericEffects={spell.effects}
 				targetId={spell.id}
 				targetType="Spell"
-				revalidatePath={`/spells/${spell.slug}`}
 			/>
 		</GenericPageContainer>
 	);

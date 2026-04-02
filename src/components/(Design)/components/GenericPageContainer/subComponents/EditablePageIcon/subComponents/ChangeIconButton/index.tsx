@@ -10,15 +10,15 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateMetadata } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
 
 const ChangeIconButtonContainer = newStyledElement.div(
-	styles.changeIconButtonContainer
+	styles.changeIconButtonContainer,
 );
 const ChangeIconButtonTrigger = newStyledElement.button(
-	styles.changeIconButtonTrigger
+	styles.changeIconButtonTrigger,
 );
 
 const schema = z.object({

@@ -2,7 +2,7 @@ import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import React, { useLayoutEffect, useState } from "react";
 
 function formTable(

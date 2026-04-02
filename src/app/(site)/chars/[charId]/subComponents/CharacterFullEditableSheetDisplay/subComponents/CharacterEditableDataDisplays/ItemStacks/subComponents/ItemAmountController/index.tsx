@@ -1,6 +1,6 @@
 import { SideActionNumberInputButtons } from "@/components/(UTILS)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { authenticatedFetchAsync } from "@/utils/FetchTools";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useContext } from "react";
 import { ItemsContext } from "../../../../CharacterEditableSheetContextProviders/contexts/Items";
 import { Guid } from "@/libs/stp@types";
