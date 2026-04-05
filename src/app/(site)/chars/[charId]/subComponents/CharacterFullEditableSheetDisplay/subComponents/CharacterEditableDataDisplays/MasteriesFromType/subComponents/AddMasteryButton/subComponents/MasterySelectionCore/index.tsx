@@ -35,25 +35,22 @@ export function MasterySelectionCore({
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	useLayoutEffect(() => {
-		useLayoutEffect(() => {
-			fetchWithTTLCache(
-				getAlbinaApiFullAddress(`/masteries?type=${type}`),
-				{
-					method: "GET",
-				},
-				5 * 60 * 1000,
-			).then(async (cache) =>
-				setAllMasteries(
-					(cache.data as MasteryData[]).sort((mastery1, mastery2) => {
-						const typeOrder =
-							MasterySubType[mastery1.subType] -
-							MasterySubType[mastery2.subType];
-						if (typeOrder !== 0) return typeOrder;
-						return mastery1.name.localeCompare(mastery2.name);
-					}),
-				),
-			);
-		}, []);
+		fetchWithTTLCache(
+			getAlbinaApiFullAddress(`/masteries?type=${type}`),
+			{
+				method: "GET",
+			},
+			5 * 60 * 1000,
+		).then(async (cache) =>
+			setAllMasteries(
+				(cache.data as MasteryData[]).sort((mastery1, mastery2) => {
+					const typeOrder =
+						MasterySubType[mastery1.subType] - MasterySubType[mastery2.subType];
+					if (typeOrder !== 0) return typeOrder;
+					return mastery1.name.localeCompare(mastery2.name);
+				}),
+			),
+		);
 	}, []);
 
 	const unacquiredMasteries: MasteryData[] = useMemo(
