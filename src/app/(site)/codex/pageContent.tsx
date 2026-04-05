@@ -1,4 +1,4 @@
-import { getNotionImage } from "@/libs/stp@notion";
+import { getNotionImage, NotionXRenderer } from "@/libs/stp@notion";
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { GetPageResponse } from "@notionhq/client";
 import { ExtendedRecordMap } from "notion-types";
@@ -15,7 +15,10 @@ interface PageContentProps {
 	recordMap: ExtendedRecordMap;
 	page: GetPageResponse;
 }
-export default async function PageContent({ page }: PageContentProps) {
+export default async function PageContent({
+	page,
+	recordMap,
+}: PageContentProps) {
 	const title = getPageTitle(page);
 
 	return (
@@ -25,14 +28,14 @@ export default async function PageContent({ page }: PageContentProps) {
 			banner={getNotionImage.Cover.PageResponse(page)}>
 			<SetNotionPageAnchorNavigation />
 
-			{/* TODO: Reactivate <NotionXRenderer.Default
+			<NotionXRenderer.Default
 				recordMap={recordMap}
 				targetDatabase="codex"
 				targetRoot="/codex/from-id"
 				plugins={{
 					Collection: false,
 				}}
-			/> */}
+			/>
 			<GenericPageFooter version={"7.0.0"} />
 		</GenericPageContainer>
 	);
