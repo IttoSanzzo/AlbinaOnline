@@ -86,7 +86,7 @@ export function StatisticsDrawer({
 							color="green"
 						/>
 					}
-					colum2={<CharacterDataDisplays.Traits characterId={characterId} />}
+					colum2={<></>}
 				/>
 			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>

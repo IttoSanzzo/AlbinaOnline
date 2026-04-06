@@ -50,3 +50,10 @@ export const masteryNames: Record<keyof typeof MasteryType, string> = {
 	Knowledge: "Conhecimento",
 	Unknown: "?",
 };
+export const masteryPluralNames: Record<keyof typeof MasteryType, string> = {
+	Proficiency: "Proficiências",
+	Craft: "Ofícios",
+	Expertise: "Perícias",
+	Knowledge: "Conhecimentos",
+	Unknown: "?",
+};

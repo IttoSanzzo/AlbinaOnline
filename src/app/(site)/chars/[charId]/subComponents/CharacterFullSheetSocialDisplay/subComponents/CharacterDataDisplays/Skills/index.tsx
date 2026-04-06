@@ -11,7 +11,7 @@ function formTable(
 	const titleRow = [
 		<UIBasics.Text
 			textColor="gray"
-			children="Nome"
+			children="Skills"
 		/>,
 	];
 	if (characterSkills.length == 0) {

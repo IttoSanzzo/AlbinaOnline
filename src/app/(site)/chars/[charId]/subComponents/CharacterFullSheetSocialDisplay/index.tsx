@@ -140,13 +140,7 @@ export function CharacterFullSheetSocialDisplay({
 					coreMetrics={characterData.coreMetrics}
 					miscMetrics={characterData.miscMetrics}
 				/>
-				<UIBasics.MultiColumn.Two
-					withoutPadding
-					withoutGap
-					withoutBorderRadius
-					colum1={<CharacterDrawers.Skills characterId={characterData.id} />}
-					colum2={<CharacterDrawers.Spells characterId={characterData.id} />}
-				/>
+				<CharacterDrawers.TraitsSkillsSpells characterId={characterData.id} />
 				<CharacterDrawers.ParametersAndAtributeScores
 					characterId={characterData.id}
 					parameters={characterData.parameters}

@@ -12,7 +12,7 @@ function formTable(
 	const titleRow = [
 		<UIBasics.Text
 			textColor="gray"
-			children="Nome"
+			children="Traços"
 		/>,
 	];
 	if (characterTraits.length == 0) {
@@ -76,22 +76,19 @@ export function _CharacterTraitsDisplay({
 	});
 
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
-			backgroundColor="darkGray"
-			titleColor="yellow"
-			title="Traços"
-			memoryId={`${characterId}-Traits`}>
-			<UIBasics.Table
-				style={{ margin: 0 }}
-				withHeaderColumn={false}
-				columnBackgroundColors={["gray"]}
-				withHeaderRow
-				tableData={{
-					tableLanes: formTable(characterTraits),
-				}}
-			/>
-		</UIBasics.ToggleHeader>
+		<UIBasics.Table
+			style={{
+				marginLeft: "5px",
+				marginBottom: 0,
+				width: "calc(100% - 10px)",
+			}}
+			withHeaderColumn={false}
+			columnBackgroundColors={["gray"]}
+			withHeaderRow
+			tableData={{
+				tableLanes: formTable(characterTraits),
+			}}
+		/>
 	);
 }
 

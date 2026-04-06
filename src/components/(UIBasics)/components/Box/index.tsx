@@ -19,6 +19,7 @@ interface BoxProps {
 	flexDirection?: React.CSSProperties["flexDirection"];
 	justifyContent?: React.CSSProperties["justifyContent"];
 	classname?: string;
+	style?: CSSProperties;
 }
 
 export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
@@ -36,10 +37,11 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		flexDirection,
 		justifyContent,
 		classname,
+		style,
 	}: BoxProps,
 	ref,
 ) {
-	const style: CSSProperties = {
+	const defaultStyle: CSSProperties = {
 		...(backgroundColor && {
 			backgroundColor: StandartBackgroundColor[backgroundColor],
 			borderColor: `${StandartTextColor[backgroundColor]}15`,
@@ -56,12 +58,13 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		minHeight,
 		flexDirection,
 		justifyContent,
+		...style,
 	};
 
 	return (
 		<BoxContainer
 			ref={ref}
-			style={style}
+			style={defaultStyle}
 			className={classname}>
 			{children}
 		</BoxContainer>

@@ -141,8 +141,6 @@ export function CharacterProfileDisplay({
 						</TextAreasContainer>
 					}
 				/>
-				<HookedForm.Space height={5} />
-				<HookedForm.Separator />
 			</UIBasics.Box>
 		</HookedForm.Form>
 	);

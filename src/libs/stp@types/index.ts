@@ -11,7 +11,12 @@ export type {
 	SearchEntryEntity,
 } from "./core";
 export type { MasteryData } from "./dataTypes/mastery";
-export { MasteryType, MasterySubType, masteryNames } from "./dataTypes/mastery";
+export {
+	MasteryType,
+	MasterySubType,
+	masteryNames,
+	masteryPluralNames,
+} from "./dataTypes/mastery";
 export type { ItemData, ItemProperties, ItemStats } from "./dataTypes/item";
 export {
 	ItemType,

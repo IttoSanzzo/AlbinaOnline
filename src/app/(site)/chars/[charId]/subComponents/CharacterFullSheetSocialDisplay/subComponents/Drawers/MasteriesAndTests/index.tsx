@@ -6,7 +6,6 @@ import {
 	CharacterMasteryExpanded,
 	Guid,
 } from "@/libs/stp@types";
-import React from "react";
 
 interface MasteriesAndTestsDrawerProps {
 	characterId: Guid;
