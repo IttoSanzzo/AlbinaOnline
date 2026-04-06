@@ -11,32 +11,33 @@ import styles from "./styles.module.css";
 import clsx from "clsx";
 import { defaultMapNotionPageUrl } from "../functions/MapPageUrl";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { ExtendedRecordMap } from "notion-types";
 import Link, { LinkProps } from "next/link";
 import { LinkPreviewInjector } from "./LinkPreviewInjector";
+import { ExtendedRecordMap } from "notion-types";
+import { LintIgnoredAny } from "@/libs/stp@types";
 
 const Code = dynamic(() =>
-	import("react-notion-x/build/third-party/code").then((m) => m.Code)
+	import("react-notion-x/build/third-party/code").then((m) => m.Code),
 );
 const Collection = dynamic(() =>
 	import("react-notion-x/build/third-party/collection").then(
-		(m) => m.Collection
-	)
+		(m) => m.Collection,
+	),
 );
 const Equation = dynamic(() =>
-	import("react-notion-x/build/third-party/equation").then((m) => m.Equation)
+	import("react-notion-x/build/third-party/equation").then((m) => m.Equation),
 );
 const Pdf = dynamic(
 	() => import("react-notion-x/build/third-party/pdf").then((m) => m.Pdf),
 	{
 		ssr: false,
-	}
+	},
 );
 const Modal = dynamic(
 	() => import("react-notion-x/build/third-party/modal").then((m) => m.Modal),
 	{
 		ssr: false,
-	}
+	},
 );
 
 export function NoBlankLink({ ...props }: LinkProps) {
@@ -83,8 +84,8 @@ export function DefaultRenderer({
 			plugins?.Collection == true
 				? Collection
 				: plugins?.Collection != undefined
-				? EmptyCollectionComponent
-				: undefined,
+					? EmptyCollectionComponent
+					: undefined,
 		Equation: plugins?.Equation ? Equation : null,
 		Modal: plugins?.Modal ? Modal : null,
 		Pdf: plugins?.Pdf ? Pdf : null,
@@ -97,15 +98,12 @@ export function DefaultRenderer({
 				recordMap={recordMap}
 				darkMode={darkMode}
 				fullPage={fullPage}
-				mapPageUrl={(
-					pageId: string,
-					recordMap?: ExtendedRecordMap | undefined
-				) => {
+				mapPageUrl={(pageId: string, recordMap?: LintIgnoredAny) => {
 					return defaultMapNotionPageUrl(
 						pageId,
 						recordMap,
 						targetDatabase,
-						targetRoot
+						targetRoot,
 					);
 				}}
 				mapImageUrl={
