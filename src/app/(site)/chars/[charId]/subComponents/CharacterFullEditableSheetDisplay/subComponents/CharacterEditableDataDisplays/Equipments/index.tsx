@@ -80,13 +80,10 @@ export function _CharacterEquipmentsDisplay() {
 	if (characterEquipments == null) return null;
 
 	return (
-		<UIBasics.ToggleHeader
-			defaultOpenState={true}
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="green"
-			title="Equipamentos"
-			memoryId={`${characterId}-Equipments`}>
+			withoutBorder
+			style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
 			<UIBasics.MultiColumn.Two
 				colum1={
 					<UIBasics.Table
@@ -202,7 +199,7 @@ export function _CharacterEquipmentsDisplay() {
 					/>
 				}
 			/>
-		</UIBasics.ToggleHeader>
+		</UIBasics.Box>
 	);
 }
 

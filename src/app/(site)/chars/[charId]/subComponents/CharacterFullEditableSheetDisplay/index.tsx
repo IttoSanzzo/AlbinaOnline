@@ -27,13 +27,7 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					characterActionsPool={characterData.actionsPool}
 				/>
-				<UIBasics.MultiColumn.Two
-					withoutPadding
-					withoutGap
-					withoutBorderRadius
-					colum1={<CharacterDrawers.Skills characterId={characterData.id} />}
-					colum2={<CharacterDrawers.Spells characterId={characterData.id} />}
-				/>
+				<CharacterDrawers.TraitsSkillsSpells characterId={characterData.id} />
 				<CharacterDrawers.ParametersAndAtributeScores
 					characterId={characterData.id}
 				/>

@@ -9,7 +9,7 @@ import {
 	CharacterAbilityScore,
 	CharacterMasteryExpanded,
 	Guid,
-	masteryNames,
+	masteryPluralNames,
 	MasteryType,
 } from "@/libs/stp@types";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
@@ -62,13 +62,13 @@ function tableMasteryEntry(
 		</span>,
 	];
 }
-function tableHeaderRow() {
+function tableHeaderRow(title: string) {
 	return [
 		<UIBasics.Text
 			textAlign="center"
 			display="block"
 			textColor="gray"
-			children="Nome"
+			children={title}
 		/>,
 		<UIBasics.Text
 			textAlign="center"
@@ -85,12 +85,13 @@ function tableHeaderRow() {
 	];
 }
 function formTable(
+	title: string,
 	masteries: CharacterMasteryExpanded[],
 	abilityScore: CharacterAbilityScore,
 ): ReactNode[][] {
 	if (masteries.length == 0) {
 		return [
-			tableHeaderRow(),
+			tableHeaderRow(title),
 			[
 				"-",
 				<UIBasics.Text
@@ -107,7 +108,7 @@ function formTable(
 		];
 	}
 	return [
-		tableHeaderRow(),
+		tableHeaderRow(title),
 		...masteries.map((mastery) => {
 			switch (mastery.mastery.type) {
 				case "Proficiency":
@@ -204,28 +205,23 @@ function _CharacterMasteriesFromTypeDisplay({
 	return (
 		<UIBasics.Box
 			backgroundColor="darkGray"
-			withoutBorder
 			withoutMargin={type == "Proficiency" || type == "Craft"}
 			withoutPadding>
 			<MasteriesDrawerContainer>
-				<UIBasics.ToggleHeader
-					defaultOpenState={true}
-					memoryId={`${characterId}-${type}s`}
-					contentMargin="none"
-					textColor="yellow"
-					headerType="h2"
-					titleColor="orange"
-					title={`${masteryNames[type]}s`}>
-					<UIBasics.Table
-						fixedLinePositions={[1, 3]}
-						fixedLineWidths={[50, 19]}
-						direction="row"
-						withHeaderRow
-						tableData={{
-							tableLanes: formTable(masteriesFromThisType, abilityScore),
-						}}
-					/>
-				</UIBasics.ToggleHeader>
+				<UIBasics.Table
+					fixedLinePositions={[1, 3]}
+					fixedLineWidths={[50, 19]}
+					direction="row"
+					withHeaderRow
+					withoutMargin
+					tableData={{
+						tableLanes: formTable(
+							masteryPluralNames[type],
+							masteriesFromThisType,
+							abilityScore,
+						),
+					}}
+				/>
 				<AddMasteryButton
 					masteries={masteriesFromThisType}
 					characterId={characterId}

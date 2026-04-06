@@ -25,7 +25,7 @@ export function InventoryDrawer({
 			title="Inventário"
 			memoryId={`${characterId}-Inventory`}>
 			<UIBasics.Box
-				backgroundColor="blue"
+				backgroundColor="green"
 				withoutMargin
 				withoutBorder>
 				<UIBasics.MultiColumn.Two

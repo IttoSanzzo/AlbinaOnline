@@ -64,9 +64,7 @@ export function _StatisticsDrawer({
 							color="green"
 						/>
 					}
-					colum2={
-						<CharacterEditableDataDisplays.Traits characterId={characterId} />
-					}
+					colum2={<></>}
 				/>
 			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
@@ -75,7 +73,7 @@ export function _StatisticsDrawer({
 
 function areEqual(
 	prevProps: StatisticsDrawerProps,
-	nextProps: StatisticsDrawerProps
+	nextProps: StatisticsDrawerProps,
 ) {
 	return (
 		prevProps.characterId === nextProps.characterId &&

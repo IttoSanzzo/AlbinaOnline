@@ -12,6 +12,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const MasteriesDrawerContainer = newStyledElement.div(
 	styles.masteriesDrawerContainer,
@@ -25,7 +26,9 @@ function tableMasteryEntry(
 		<StyledLink
 			title={mastery.mastery.name}
 			href={`/maestrias/${mastery.mastery.slug}`}
-			icon={mastery.mastery.iconUrl}
+			icon={getAlbinaApiFullAddress(
+				`/favicon/masteries/${mastery.mastery.slug}`,
+			)}
 		/>,
 		<UIBasics.Text
 			display="block"
