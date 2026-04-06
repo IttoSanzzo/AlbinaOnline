@@ -50,7 +50,7 @@ function tableMasteryEntry(
 			masteryId={masteryId}
 		/>,
 		<span
-			style={{ background: "none", border: "none", cursor: "pointer" }}
+			className={styles.diceBonusRollerContainer}
 			title="Clique para rolar"
 			onClick={() => {
 				postDiceRoll(`1d20${bonusValue >= 0 ? "+" : ""}${bonusValue}`, {

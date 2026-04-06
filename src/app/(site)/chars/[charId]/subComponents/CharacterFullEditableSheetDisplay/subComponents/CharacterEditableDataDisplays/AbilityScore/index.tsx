@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
 import { postDiceRoll } from "@/components/(SPECIAL)/components/DiceRoller/subcomponents/DiceRollerCore";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import styles from "./styles.module.css";
 
 const schema = z.object({
 	strength: z.coerce.number().min(0, "Mínimo de 0").max(40, "Máximo de 40"),
@@ -50,7 +51,7 @@ function TableAbilityScoreEntry(
 			min={0}
 		/>,
 		<span
-			style={{ background: "none", border: "none", cursor: "pointer" }}
+			className={styles.diceBonusRollerContainer}
 			title="Clique para rolar"
 			onClick={() => {
 				postDiceRoll(`1d20${bonusValue >= 0 ? "+" : ""}${bonusValue}`, {
