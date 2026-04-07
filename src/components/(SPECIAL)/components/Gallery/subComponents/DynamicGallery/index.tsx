@@ -7,14 +7,18 @@ import GalleryCarousel from "../GalleryCarousel";
 import AddImageButton from "../AddImageButton";
 import { useEffect, useState } from "react";
 
-interface EditableGalleryProps {
+interface DynamicGalleryProps {
 	url: string;
 	withoutMargin?: boolean;
+	useAuth?: boolean;
+	isEditable?: boolean;
 }
-export default function EditableGallery({
+export default function DynamicGallery({
 	url,
 	withoutMargin = false,
-}: EditableGalleryProps) {
+	useAuth = false,
+	isEditable = true,
+}: DynamicGalleryProps) {
 	const [galleryData, setGalleryData] = useState<GalleryData>({
 		images: [],
 		updatedAt: "",
@@ -46,13 +50,16 @@ export default function EditableGallery({
 				<GalleryCarousel
 					galleryData={galleryData}
 					url={url}
-					reloadGalleryData={reloadGalleryData}
+					reloadGalleryData={isEditable ? reloadGalleryData : undefined}
+					useAuth={useAuth}
 				/>
 			</UIBasics.Box>
-			<AddImageButton
-				url={url}
-				reloadGalleryData={reloadGalleryData}
-			/>
+			{isEditable && (
+				<AddImageButton
+					url={url}
+					reloadGalleryData={reloadGalleryData}
+				/>
+			)}
 		</UIBasics.Box>
 	);
 }

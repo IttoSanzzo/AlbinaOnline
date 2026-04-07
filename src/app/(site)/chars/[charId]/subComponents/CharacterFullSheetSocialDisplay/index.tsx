@@ -12,6 +12,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/DynamicGallery";
 
 const fetchCharacter = {
 	items: async (
@@ -160,6 +161,12 @@ export function CharacterFullSheetSocialDisplay({
 					characterId={characterData.id}
 					characterProfile={characterData.profile}
 					characterBackstory={characterData.backstory.history}
+				/>
+				<DynamicGallery
+					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
+					withoutMargin
+					useAuth
+					isEditable={false}
 				/>
 			</UIBasics.Box>
 		</>

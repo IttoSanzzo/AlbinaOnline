@@ -1,4 +1,4 @@
-import EditableGallery from "./subComponents/EditableGallery";
+import DynamicGallery from "./subComponents/DynamicGallery";
 import StaticGallery from "./subComponents/StaticGallery";
 
 interface GalleryProps {
@@ -6,18 +6,21 @@ interface GalleryProps {
 	isEditable?: boolean;
 	hideIfEmpty?: boolean;
 	withoutMargin?: boolean;
+	useAuth?: boolean;
 }
 export default async function Gallery({
 	url,
 	isEditable = false,
 	hideIfEmpty = false,
 	withoutMargin = false,
+	useAuth = false,
 }: GalleryProps) {
 	if (isEditable)
 		return (
-			<EditableGallery
+			<DynamicGallery
 				url={url}
 				withoutMargin={withoutMargin}
+				useAuth={useAuth}
 			/>
 		);
 	return (
@@ -25,6 +28,7 @@ export default async function Gallery({
 			url={url}
 			hideIfEmpty={hideIfEmpty}
 			withoutMargin={withoutMargin}
+			useAuth={useAuth}
 		/>
 	);
 }

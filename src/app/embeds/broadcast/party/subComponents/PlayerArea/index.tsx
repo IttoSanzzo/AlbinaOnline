@@ -14,8 +14,6 @@ export function PlayersArea({ players }: PlayersAreaProps) {
 	const columns = Math.ceil(Math.sqrt(count));
 	const rows = Math.ceil(count / columns);
 
-	console.log(players.length);
-
 	players = players.slice(0, 6);
 	return (
 		<PlayersAreaContainer>

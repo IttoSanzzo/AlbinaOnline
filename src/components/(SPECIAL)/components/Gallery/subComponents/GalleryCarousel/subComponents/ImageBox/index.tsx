@@ -10,6 +10,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import AuthImage from "@/components/(SPECIAL)/components/AuthImage";
 
 const LateralButtonsContainer = newStyledElement.div(
 	styles.lateralButtonsContainer,
@@ -19,12 +20,14 @@ const LateralButton = newStyledElement.button(styles.lateralButton);
 interface ImageBoxProps {
 	url: string;
 	imageData: GalleryImageData;
+	useAuth?: boolean;
 	reloadGalleryData?: () => Promise<void>;
 }
 export default function ImageBox({
 	url,
 	imageData,
 	reloadGalleryData,
+	useAuth = false,
 }: ImageBoxProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 
@@ -34,15 +37,27 @@ export default function ImageBox({
 			classname={styles.galleryImageBox}
 			withoutBorder
 			withoutPadding>
-			<Image
-				onClick={() => {
-					setOpenState(true);
-				}}
-				src={`${url}/${imageData.id}`}
-				alt={imageData.fileName}
-				fill
-				loading="eager"
-			/>
+			{useAuth == true ? (
+				<AuthImage
+					onClick={() => {
+						setOpenState(true);
+					}}
+					src={`${url}/${imageData.id}`}
+					alt={imageData.fileName}
+					fill
+					loading="eager"
+				/>
+			) : (
+				<Image
+					onClick={() => {
+						setOpenState(true);
+					}}
+					src={`${url}/${imageData.id}`}
+					alt={imageData.fileName}
+					fill
+					loading="eager"
+				/>
+			)}
 			<Dialog.Root
 				open={openState}
 				onOpenChange={setOpenState}>
@@ -51,18 +66,27 @@ export default function ImageBox({
 						<Dialog.Content className={styles.modalContent}>
 							<Dialog.Title />
 							<Dialog.Description />
-							<Image
-								src={`${url}/${imageData.id}`}
-								alt={imageData.fileName}
-								fill
-								loading="eager"
-							/>
+							{useAuth == true ? (
+								<AuthImage
+									src={`${url}/${imageData.id}`}
+									alt={imageData.fileName}
+									fill
+									loading="eager"
+								/>
+							) : (
+								<Image
+									src={`${url}/${imageData.id}`}
+									alt={imageData.fileName}
+									fill
+									loading="eager"
+								/>
+							)}
 							<LateralButtonsContainer>
 								<LateralButton
 									onClick={async () => {
 										const response = await authenticatedFetchAsync(
 											`${url}/${imageData.id}`,
-											{ method: "DELETE" },
+											{ method: "GET" },
 										);
 										const blob = await response.blob();
 

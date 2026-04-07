@@ -7,11 +7,13 @@ interface StaticGalleryProps {
 	url: string;
 	hideIfEmpty?: boolean;
 	withoutMargin?: boolean;
+	useAuth?: boolean;
 }
 export default async function StaticGallery({
 	url,
 	hideIfEmpty,
 	withoutMargin = false,
+	useAuth = false,
 }: StaticGalleryProps) {
 	const response = await fetch(url, {
 		method: "GET",
@@ -37,6 +39,7 @@ export default async function StaticGallery({
 				<GalleryCarousel
 					galleryData={galleryData}
 					url={url}
+					useAuth={useAuth}
 				/>
 			</UIBasics.Box>
 		</UIBasics.Box>

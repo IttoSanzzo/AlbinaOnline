@@ -3,6 +3,8 @@ import { CharacterEditableSheetContextProviders } from "./subComponents/Characte
 import { CharacterDrawers } from "./subComponents/Drawers";
 import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/DynamicGallery";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;
@@ -40,6 +42,11 @@ export function CharacterFullSheetEditableDisplay({
 					characterId={characterData.id}
 					characterProfile={characterData.profile}
 					characterBackstory={characterData.backstory.history}
+				/>
+				<DynamicGallery
+					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
+					withoutMargin
+					useAuth
 				/>
 			</UIBasics.Box>
 		</CharacterEditableSheetContextProviders>
