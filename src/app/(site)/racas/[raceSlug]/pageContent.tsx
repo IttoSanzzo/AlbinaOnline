@@ -5,6 +5,8 @@ import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { RacialSkillsGridDisplay } from "./subComponents/RacialSkillsGridDisplay";
 import { RacialTraitsGridDisplay } from "./subComponents/RacialTraitsGridDisplay";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/StaticGallery";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -223,22 +225,10 @@ export default async function RacePageContent({
 							quotes={raceData.info.description}
 						/>
 					</UIBasics.Toggle>
-					<UIBasics.Toggle
-						memoryId="images"
-						textColor="orange"
-						title={
-							<UIBasics.Text
-								withUnderline
-								withItalic>
-								》Imagens
-							</UIBasics.Text>
-						}>
-						<UIBasics.List.Quote
-							textColor="default"
-							withDivisor
-							quotes={raceData.info.images}
-						/>
-					</UIBasics.Toggle>
+					<StaticGallery
+						url={getAlbinaApiFullAddress(`/images/races/${raceData.slug}`)}
+						hideIfEmpty
+					/>
 				</UIBasics.Callout>
 			</UIBasics.Callout>
 

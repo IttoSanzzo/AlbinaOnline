@@ -1,6 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import {
@@ -215,6 +216,10 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 				revalidateTag="/races"
 			/>
 
+			<UIBasics.Divisor />
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/races/${race.slug}`)}
+			/>
 			<UIBasics.Divisor />
 		</GenericPageContainer>
 	);

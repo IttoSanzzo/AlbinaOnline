@@ -13,7 +13,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import { ItemData } from "@/libs/stp@types";
-import Gallery from "@/components/(SPECIAL)/components/Gallery";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/StaticGallery";
 
 interface ItemPageContentProps {
 	itemSlug: string;
@@ -55,7 +55,7 @@ export default async function ItemPageContent({
 				colum2={<GenericInfoCallout info={itemData.info} />}
 			/>
 			<ItemPropertiesDisplay itemProperties={itemData.properties} />
-			<Gallery
+			<StaticGallery
 				url={getAlbinaApiFullAddress(`/images/items/${itemData.slug}`)}
 				hideIfEmpty
 			/>
