@@ -12,6 +12,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { Dialog } from "@/libs/stp@radix";
 import { HookedForm } from "@/libs/stp@forms";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import { StateSwitch } from "@/components/(UTILS)";
 
 const AddImageButtonContainer = newStyledElement.div(
 	styles.addImageButtonContainer,
@@ -19,7 +20,15 @@ const AddImageButtonContainer = newStyledElement.div(
 const ButtonTrigger = newStyledElement.button(styles.buttonTrigger);
 
 const schema = z.object({
-	image: z.instanceof(File),
+	images: z
+		.any()
+		.transform((val): File[] => {
+			if (val instanceof FileList) return Array.from(val);
+			if (val instanceof File) return [val];
+			if (Array.isArray(val)) return val;
+			return [];
+		})
+		.refine((files) => files.length > 0, "Selecione ao menos uma imagem"),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -33,24 +42,32 @@ export default function AddImageButton({
 	reloadGalleryData,
 }: AddImageButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
+	const [inBulkMode, setInBulkMode] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
-	const form = useForm<FormData>({
+	const form = useForm<
+		z.input<typeof schema>,
+		unknown,
+		z.output<typeof schema>
+	>({
 		resolver: zodResolver(schema),
 	});
 
 	async function onSubmit(data: FormData) {
-		const bodyData = new FormData();
-		bodyData.append("file", data.image);
-
 		const toastId = toast.loading("Salvando...");
-		const response = await authenticatedFetchAsync(url, {
-			method: "POST",
-			body: bodyData,
-		});
-		if (!response.ok) {
-			toast.error("Salvamento falhou", { id: toastId });
-			setError("Salvamento falhou");
-			return;
+
+		for (const image of data.images) {
+			const bodyData = new FormData();
+			bodyData.append("file", image);
+
+			const response = await authenticatedFetchAsync(url, {
+				method: "POST",
+				body: bodyData,
+			});
+			if (!response.ok) {
+				toast.error("Salvamento falhou", { id: toastId });
+				setError("Salvamento falhou");
+				return;
+			}
 		}
 		setOpen(false);
 		await revalidateTagByClientSide(url);
@@ -80,9 +97,21 @@ export default function AddImageButton({
 							<HookedForm.Form
 								form={form}
 								onSubmit={onSubmit}>
-								<HookedForm.ImageInput
+								<StateSwitch
+									label={"Bulk"}
+									state={[inBulkMode, setInBulkMode]}
+									style={{
+										position: "absolute",
+										top: 0,
+										right: 0,
+										borderTop: "none",
+										borderRight: "none",
+									}}
+								/>
+								<HookedForm.ImageInput<FormData>
 									label="Insira nova imagem"
-									fieldName="image"
+									fieldName="images"
+									multiple={inBulkMode}
 									minWidth={50}
 									minHeight={50}
 									maxSize={4_194_304}

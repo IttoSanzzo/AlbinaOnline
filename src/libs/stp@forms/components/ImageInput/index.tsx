@@ -11,7 +11,7 @@ const ImageInputField = newStyledElement.input(styles.imageInputField);
 const ImageInputLabel = newStyledElement.label(styles.imageInputLabel);
 const ImageInputError = newStyledElement.div(styles.imageInputError);
 const ImagePreviewContainer = newStyledElement.div(
-	styles.imagePreviewContainer
+	styles.imagePreviewContainer,
 );
 
 type ImageInputProps<TFormData> = {
@@ -27,6 +27,9 @@ type ImageInputProps<TFormData> = {
 	minHeight?: number;
 	proportion?: number;
 	maxSize?: number;
+	multiple?: boolean;
+	maxFiles?: number;
+	displayPreview?: boolean;
 };
 
 export function ImageInput<TFormData extends FieldValues>({
@@ -42,6 +45,9 @@ export function ImageInput<TFormData extends FieldValues>({
 	minHeight,
 	proportion,
 	maxSize = 1_048_576,
+	multiple = false,
+	maxFiles,
+	displayPreview = true,
 }: ImageInputProps<TFormData>) {
 	const {
 		form: { control },
@@ -57,31 +63,35 @@ export function ImageInput<TFormData extends FieldValues>({
 		}),
 	};
 
-	async function validateImage(file: File): Promise<string | null> {
-		if (!file.type.startsWith("image/")) return "Arquivo não é imagem";
-		if (maxSize && file.size > maxSize)
-			return `Imagem excede o tamanho máximo de ${(
-				maxSize /
-				1024 /
-				1024
-			).toFixed(2)}MB`;
-		const img = await fileToImage(file);
-		if (minWidth && img.width < minWidth)
-			return `Menor que largura mínima de ${minWidth}px`;
-		if (maxWidth && img.width > maxWidth)
-			return `Excede largura máxima de ${maxWidth}px`;
-		if (minHeight && img.height < minHeight)
-			return `Menor que altura mínima de ${maxHeight}px`;
-		if (maxHeight && img.height > maxHeight)
-			return `Excede altura máxima de ${maxHeight}px`;
+	async function validateInput(data: File[]): Promise<string | null> {
+		if (maxFiles != undefined && data.length > maxFiles)
+			return `Limite de ${maxFiles} arquivos excedido.`;
+		for (const file of data) {
+			if (!file.type.startsWith("image/")) return "Arquivo não é imagem";
+			if (maxSize && file.size > maxSize)
+				return `Imagem excede o tamanho máximo de ${(
+					maxSize /
+					1024 /
+					1024
+				).toFixed(2)}MB`;
+			const img = await fileToImage(file);
+			if (minWidth && img.width < minWidth)
+				return `Menor que largura mínima de ${minWidth}px`;
+			if (maxWidth && img.width > maxWidth)
+				return `Excede largura máxima de ${maxWidth}px`;
+			if (minHeight && img.height < minHeight)
+				return `Menor que altura mínima de ${maxHeight}px`;
+			if (maxHeight && img.height > maxHeight)
+				return `Excede altura máxima de ${maxHeight}px`;
 
-		if (proportion) {
-			const actualRatio = img.width / img.height;
-			const diff = Math.abs(actualRatio - proportion);
-			if (diff > 0.01)
-				return `Proporção esperada: ${proportion}, mas a imagem tem ${actualRatio.toFixed(
-					2
-				)}`;
+			if (proportion) {
+				const actualRatio = img.width / img.height;
+				const diff = Math.abs(actualRatio - proportion);
+				if (diff > 0.01)
+					return `Proporção esperada: ${proportion}, mas a imagem tem ${actualRatio.toFixed(
+						2,
+					)}`;
+			}
 		}
 		return null;
 	}
@@ -120,12 +130,14 @@ export function ImageInput<TFormData extends FieldValues>({
 				render={({ field }) => (
 					<ImageInputField
 						type="file"
+						multiple={multiple}
 						accept={accept}
 						style={inputStyle}
 						onChange={async (event) => {
-							const file = event.target.files?.[0];
-							if (!file) return;
-							const err = await validateImage(file);
+							const data: File[] = Array.from(event.target.files ?? []);
+							if (data == null) return;
+
+							const err = await validateInput(data);
 							if (err) {
 								setError(err);
 								field.onChange(null);
@@ -133,8 +145,14 @@ export function ImageInput<TFormData extends FieldValues>({
 								return;
 							}
 							setError(null);
-							setPreview(URL.createObjectURL(file));
-							field.onChange(file);
+
+							if (displayPreview && data.length == 1)
+								setPreview(URL.createObjectURL(data[0]));
+							else setPreview(null);
+
+							if (multiple) field.onChange(data);
+							else field.onChange(data[0]);
+
 							triggerDebounceAction();
 						}}
 					/>
