@@ -5,8 +5,14 @@ import GalleryCarousel from "../GalleryCarousel";
 
 interface StaticGalleryProps {
 	url: string;
+	hideIfEmpty?: boolean;
+	withoutMargin?: boolean;
 }
-export default async function StaticGallery({ url }: StaticGalleryProps) {
+export default async function StaticGallery({
+	url,
+	hideIfEmpty,
+	withoutMargin = false,
+}: StaticGalleryProps) {
 	const response = await fetch(url, {
 		method: "GET",
 		next: {
@@ -17,11 +23,12 @@ export default async function StaticGallery({ url }: StaticGalleryProps) {
 		? await response.json()
 		: { images: [], updatedAt: "" };
 
+	if (hideIfEmpty && galleryData.images.length == 0) return null;
 	return (
 		<UIBasics.Box
 			backgroundColor="darkGray"
 			withoutBorder
-			withoutMargin
+			withoutMargin={withoutMargin}
 			classname={styles.galleryContainer}>
 			<UIBasics.Box
 				withoutMargin

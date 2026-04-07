@@ -1,6 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
+import EditableGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/EditableGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
@@ -191,6 +192,9 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				genericEffects={item.effects}
 				targetId={item.id}
 				targetType="Item"
+			/>
+			<EditableGallery
+				url={getAlbinaApiFullAddress(`/images/items/${item.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

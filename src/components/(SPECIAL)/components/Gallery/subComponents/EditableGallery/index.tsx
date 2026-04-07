@@ -9,8 +9,12 @@ import { useEffect, useState } from "react";
 
 interface EditableGalleryProps {
 	url: string;
+	withoutMargin?: boolean;
 }
-export default function EditableGallery({ url }: EditableGalleryProps) {
+export default function EditableGallery({
+	url,
+	withoutMargin = false,
+}: EditableGalleryProps) {
 	const [galleryData, setGalleryData] = useState<GalleryData>({
 		images: [],
 		updatedAt: "",
@@ -33,7 +37,7 @@ export default function EditableGallery({ url }: EditableGalleryProps) {
 		<UIBasics.Box
 			backgroundColor="darkGray"
 			withoutBorder
-			withoutMargin
+			withoutMargin={withoutMargin}
 			classname={styles.galleryContainer}>
 			<UIBasics.Box
 				withoutMargin
