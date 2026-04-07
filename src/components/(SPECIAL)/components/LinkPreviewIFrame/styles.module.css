@@ -19,6 +19,12 @@
 	}
 }
 
+@media (max-width: 500px) {
+	.linkPreviewContainer {
+		display: none;
+	}
+}
+
 .linkPreviewLoadingScreenContainer {
 	position: relative;
 	width: 260px;
