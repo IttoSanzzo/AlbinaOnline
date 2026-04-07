@@ -1,0 +1,19 @@
+.galleryContainer {
+	position: relative;
+	display: flex;
+	width: 100%;
+	min-height: 200px;
+	max-height: 600px;
+	height: 300px;
+	resize: vertical;
+	overflow: auto;
+}
+
+.galleryInternalContainer {
+	flex: 1;
+	height: 100% !important;
+
+	& > div {
+		height: 100% !important;
+	}
+}

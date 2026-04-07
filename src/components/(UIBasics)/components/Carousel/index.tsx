@@ -27,7 +27,7 @@ function getCurrentPositionState(pathname: string, memoryName?: string) {
 	if (memoryName) {
 		const memoryState: string | null = routeStorage.getItem(
 			pathname,
-			memoryName
+			memoryName,
 		);
 		if (memoryState) return Number(memoryState);
 	}
@@ -36,15 +36,16 @@ function getCurrentPositionState(pathname: string, memoryName?: string) {
 function setMemoryPositionState(
 	value: number,
 	pathname: string,
-	name?: string
+	name?: string,
 ) {
 	if (name) routeStorage.setItem(pathname, name, value);
 }
 
 interface CarouselProps extends KeenSliderOptions {
 	slideChilds: ReactNode[];
-	minWidth?: number;
-	maxWidth?: number;
+	minWidth?: CSSProperties["minWidth"];
+	slideWidth?: CSSProperties["width"];
+	maxWidth?: CSSProperties["maxWidth"];
 	loop?: boolean;
 	mode?: "free" | "free-snap" | "snap";
 	slidesPerView?: number | "auto";
@@ -57,6 +58,7 @@ export function Carousel({
 	slideChilds,
 	minWidth,
 	maxWidth,
+	slideWidth,
 	loop = true,
 	mode = "free-snap",
 	slidesPerView = "auto",
@@ -68,13 +70,13 @@ export function Carousel({
 }: CarouselProps) {
 	const pathname = routeSensitiveMemory ? usePathname() : "";
 	const memoryName = useMemo(() => {
-		return memoryId && memoryId !== "" ? `Caroulsel/${memoryId}` : undefined;
+		return memoryId && memoryId !== "" ? `Carousel/${memoryId}` : undefined;
 	}, [memoryId]);
 
 	const defaultChangeHandler = memoryId
 		? (event: KeenSliderInstance<object, object, KeenSliderHooks>) => {
 				setMemoryPositionState(event.track.details.rel, pathname, memoryName);
-		  }
+			}
 		: undefined;
 
 	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
@@ -86,30 +88,39 @@ export function Carousel({
 			origin: slidesOrigin,
 			number: slideChilds.length,
 		},
-		initial: getCurrentPositionState(pathname, memoryName),
 		slideChanged: defaultChangeHandler,
 		...rest,
 	});
 
 	const slideStyle: CSSProperties = {
-		...(minWidth && { minWidth: `${minWidth}px` }),
-		...(maxWidth && { maxWidth: `${maxWidth}px` }),
+		...(minWidth && { minWidth: minWidth }),
+		...(maxWidth && { maxWidth: maxWidth }),
+		...(slideWidth && { width: slideWidth }),
 	};
 
-	const CaroulselRef = useRef<HTMLDivElement>(null);
+	const caroulselRef = useRef<HTMLDivElement>(null);
 
 	useLayoutEffect(() => {
-		if (!CaroulselRef.current || !CaroulselRef.current.parentElement) return;
+		if (!caroulselRef.current || !caroulselRef.current.parentElement) return;
 		const ro = new ResizeObserver(() => {
 			instanceRef.current?.update();
 		});
-		ro.observe(CaroulselRef.current.parentElement);
+		ro.observe(caroulselRef.current.parentElement);
 		return () => ro.disconnect();
 	}, [instanceRef]);
 
+	useLayoutEffect(() => {
+		if (!instanceRef.current) return;
+		const position = getCurrentPositionState(pathname, memoryName);
+		if (position == 0) return;
+		setTimeout(() => {
+			instanceRef.current?.moveToIdx(position);
+		}, 500);
+	}, [instanceRef, pathname, memoryName]);
+
 	return (
 		<CarouselContainer
-			ref={mergeRefs(CaroulselRef, sliderRef)}
+			ref={mergeRefs(caroulselRef, sliderRef)}
 			className="keen-slider">
 			{slideChilds.map((slide, index) => (
 				<SlideContainer

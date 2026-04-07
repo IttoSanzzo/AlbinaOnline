@@ -1,5 +1,19 @@
-"use client";
+import { GenericPageContainer } from "@/components/(Design)";
+import Gallery from "@/components/(SPECIAL)/components/Gallery";
+import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
-export default function SandboxPageContent() {
-	return <div style={{ width: "100%", height: "100%" }}></div>;
+export default async function SandboxPageContent() {
+	return (
+		<GenericPageContainer title="">
+			<UIBasics.Box
+				backgroundColor="red"
+				style={{}}>
+				<Gallery
+					url={getAlbinaApiFullAddress(`/images/items/kurehime`)}
+					// isEditable
+				/>
+			</UIBasics.Box>
+		</GenericPageContainer>
+	);
 }
