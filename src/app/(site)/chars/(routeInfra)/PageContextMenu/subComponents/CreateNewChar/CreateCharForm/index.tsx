@@ -47,7 +47,7 @@ export function CreateCharForm() {
 
 	async function onSubmit(formData: FormData) {
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiFullAddress()}/characters`,
+			`${getAlbinaApiFullAddress()}/chars`,
 			{
 				method: "POST",
 				headers: {
