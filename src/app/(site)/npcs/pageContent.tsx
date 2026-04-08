@@ -2,7 +2,7 @@
 
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
 import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
-import { CharacterData } from "@/libs/stp@types";
+import { NpcData } from "@/libs/stp@types";
 import { useEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
@@ -17,8 +17,8 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-export default function CharsPageContent() {
-	const [characters, setCharacters] = useState<CharacterData[] | null>(null);
+export default function NpcsPageContent() {
+	const [npcs, setNpcs] = useState<NpcData[] | null>(null);
 	const { favorites, isLoading } = useUserFavorites();
 	const currentUser = useCurrentUser();
 
@@ -31,64 +31,58 @@ export default function CharsPageContent() {
 	const filter = form.watch().filter.toLowerCase();
 
 	useEffect(() => {
-		authenticatedFetchWithTTLCache<{ characters: CharacterData[] | null }>(
-			getAlbinaApiFullAddress("/chars"),
+		authenticatedFetchWithTTLCache<{ npcs: NpcData[] | null }>(
+			getAlbinaApiFullAddress("/npcs"),
 			{
 				next: { revalidate: 60 },
 			},
 			60 * 1000,
 		).then(async (response) => {
 			if (response.ok == false) return;
-			setCharacters(
-				response.data.characters
-					? response.data.characters.sort((a, b) =>
-							a.name.localeCompare(b.name),
-						)
+			setNpcs(
+				response.data.npcs
+					? response.data.npcs.sort((a, b) => a.name.localeCompare(b.name))
 					: [],
 			);
 		});
-	}, [setCharacters]);
-	if (characters === null) return null;
-	if (characters.length === 0) {
+	}, [setNpcs]);
+	if (npcs === null) return null;
+	if (npcs.length === 0) {
 		return (
 			<>
 				<UIBasics.Header
 					textAlign="center"
 					textColor="gray"
-					children="Você não possui personagens"
+					children="Você não possui npcs"
 				/>
 				<UIBasics.Header
 					textAlign="center"
 					textColor="gray"
 					headerType="h3"
-					children="...e nem acesso a algum personagem de outro jogador."
+					children="...e nem acesso a algum npc de outro usuário."
 				/>
 			</>
 		);
 	}
 
-	const filteredCharacters: CharacterData[] =
+	const filteredNpcs: NpcData[] =
 		filter.length === 0
-			? characters
-			: characters.filter(
-					(character) =>
-						character.name.toLowerCase().includes(filter) ||
-						character.level === Number(filter),
+			? npcs
+			: npcs.filter(
+					(npc) =>
+						npc.name.toLowerCase().includes(filter) ||
+						npc.level === Number(filter),
 				);
 
-	const allFavoriteCharacters: CharacterData[] = isLoading
+	const allFavoriteNpcs: NpcData[] = isLoading
 		? []
 		: (favorites?.character.flatMap((favorite) => {
-				const character = filteredCharacters.find(
-					(character) => character.id == favorite.target.id,
-				);
-				return character ? [character] : [];
+				const npc = filteredNpcs.find((npc) => npc.id == favorite.target.id);
+				return npc ? [npc] : [];
 			}) ?? []);
-	const allUserCharacters: CharacterData[] = currentUser.loading
+	const allUserNpcs: NpcData[] = currentUser.loading
 		? []
-		: filteredCharacters.filter(
-				(character) => character.ownerId == currentUser.user?.id,
-			);
+		: filteredNpcs.filter((npc) => npc.ownerId == currentUser.user?.id);
 
 	return (
 		<UIBasics.Box
@@ -99,7 +93,7 @@ export default function CharsPageContent() {
 					fieldName="filter"
 					label="Filtro"
 				/>
-				{filteredCharacters.length === 0 && (
+				{filteredNpcs.length === 0 && (
 					<UIBasics.Header
 						textAlign="center"
 						textColor="gray"
@@ -108,7 +102,7 @@ export default function CharsPageContent() {
 				)}
 			</HookedForm.Form>
 
-			{allFavoriteCharacters.length !== 0 && (
+			{allFavoriteNpcs.length !== 0 && (
 				<>
 					<UIBasics.Header
 						textAlign="center"
@@ -121,25 +115,25 @@ export default function CharsPageContent() {
 							slidesSpacing={10}
 							minWidth={150}
 							memoryId={"Favorites"}
-							slideChilds={allFavoriteCharacters.map((character) => (
+							slideChilds={allFavoriteNpcs.map((npc) => (
 								<StyledOwnedLinkCard
-									key={character.id}
-									ownerId={character.ownerId}
-									href={`/chars/${character.id}`}
-									title={character.name}
-									artworkUrl={character.iconUrl}
+									key={npc.id}
+									ownerId={npc.ownerId}
+									href={`/npcs/${npc.id}`}
+									title={npc.name}
+									artworkUrl={npc.iconUrl}
 								/>
 							))}
 						/>
 					</UIBasics.Box>
 				</>
 			)}
-			{allUserCharacters.length !== 0 && (
+			{allUserNpcs.length !== 0 && (
 				<>
 					<UIBasics.Header
 						textAlign="center"
 						textColor="purple"
-						children={"Seus Personagens"}
+						children={"Seus Npcs"}
 					/>
 					<UIBasics.Box backgroundColor="purple">
 						<UIBasics.Carousel
@@ -147,20 +141,20 @@ export default function CharsPageContent() {
 							slidesSpacing={10}
 							minWidth={150}
 							memoryId={"Owned"}
-							slideChilds={allUserCharacters.map((character) => (
+							slideChilds={allUserNpcs.map((npc) => (
 								<StyledOwnedLinkCard
-									key={character.id}
-									ownerId={character.ownerId}
-									href={`/chars/${character.id}`}
-									title={character.name}
-									artworkUrl={character.iconUrl}
+									key={npc.id}
+									ownerId={npc.ownerId}
+									href={`/npcs/${npc.id}`}
+									title={npc.name}
+									artworkUrl={npc.iconUrl}
 								/>
 							))}
 						/>
 					</UIBasics.Box>
 				</>
 			)}
-			{filteredCharacters.length !== 0 && (
+			{filteredNpcs.length !== 0 && (
 				<>
 					<UIBasics.Header
 						textAlign="center"
@@ -172,14 +166,14 @@ export default function CharsPageContent() {
 						direction="row"
 						backgroundColor="blue"
 						columnWidth={150}>
-						{filteredCharacters.map((character) => (
+						{filteredNpcs.map((npc) => (
 							<StyledOwnedLinkCard
-								key={character.id}
+								key={npc.id}
 								size={150}
-								ownerId={character.ownerId}
-								href={`/chars/${character.id}`}
-								title={character.name}
-								artworkUrl={character.iconUrl}
+								ownerId={npc.ownerId}
+								href={`/npcs/${npc.id}`}
+								title={npc.name}
+								artworkUrl={npc.iconUrl}
 								layout="rectangle"
 							/>
 						))}

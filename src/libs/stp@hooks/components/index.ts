@@ -1,5 +1,6 @@
-export { SetCurrentPageData } from "./SetCurrentPageData";
-export { SetAnchorNavigation } from "./SetAnchorNavigation";
-export { SetNavBarModules } from "./SetNavBarModules";
-export { SetCurrentCharacterAccessLevel } from "./SetCurrentCharacterAccessLevel";
-export { SetBreadcrumbs } from "./SetBreadcrumbs";
+export * from "./SetCurrentPageData";
+export * from "./SetAnchorNavigation";
+export * from "./SetNavBarModules";
+export * from "./SetCurrentCharacterAccessLevel";
+export * from "./SetCurrentNpcAccessLevel";
+export * from "./SetBreadcrumbs";

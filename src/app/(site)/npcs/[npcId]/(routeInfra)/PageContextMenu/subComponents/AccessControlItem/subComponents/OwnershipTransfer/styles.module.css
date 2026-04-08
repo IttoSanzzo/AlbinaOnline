@@ -1,0 +1,25 @@
+.ownershipTransferContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	padding: 8px 10px;
+}
+.ownershipTransferUser {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	width: max-content;
+
+	& img {
+		border-radius: inherit;
+	}
+	& h3 {
+		margin-bottom: -1px;
+	}
+}
