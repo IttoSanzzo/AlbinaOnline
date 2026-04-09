@@ -1,4 +1,4 @@
-.galleryContainer {
+.galleryCarouselContainer {
 	position: relative;
 	display: flex;
 	width: 100%;
@@ -9,7 +9,7 @@
 	overflow: auto;
 }
 
-.galleryInternalContainer {
+.galleryCarouselInternalContainer {
 	flex: 1;
 	height: 100% !important;
 

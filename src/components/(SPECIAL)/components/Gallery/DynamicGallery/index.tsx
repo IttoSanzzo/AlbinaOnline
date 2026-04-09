@@ -1,12 +1,9 @@
 "use client";
 
-import styles from "../../styles.module.css";
-import { UIBasics } from "@/components/(UIBasics)";
 import { GalleryData } from "@/libs/stp@types";
-import GalleryCarousel from "../GalleryCarousel";
-import AddImageButton from "../AddImageButton";
 import { useEffect, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import { GalleryCore } from "../subComponents/GalleryCore";
 
 interface DynamicGalleryProps {
 	url: string;
@@ -37,27 +34,12 @@ export default function DynamicGallery({
 	}, []);
 
 	return (
-		<UIBasics.Box
-			backgroundColor="darkGray"
-			withoutBorder
+		<GalleryCore
+			url={url}
+			isEditable={isEditable}
 			withoutMargin={withoutMargin}
-			classname={styles.galleryContainer}>
-			<UIBasics.Box
-				withoutMargin
-				withoutPadding
-				classname={styles.galleryInternalContainer}>
-				<GalleryCarousel
-					galleryData={galleryData}
-					url={url}
-					reloadGalleryData={isEditable ? reloadGalleryData : undefined}
-				/>
-			</UIBasics.Box>
-			{isEditable && (
-				<AddImageButton
-					url={url}
-					reloadGalleryData={reloadGalleryData}
-				/>
-			)}
-		</UIBasics.Box>
+			galleryData={galleryData}
+			reloadGalleryData={reloadGalleryData}
+		/>
 	);
 }

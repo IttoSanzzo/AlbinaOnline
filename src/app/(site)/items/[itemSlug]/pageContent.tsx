@@ -13,7 +13,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import { ItemData } from "@/libs/stp@types";
-import StaticGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/StaticGallery";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 
 interface ItemPageContentProps {
 	itemSlug: string;

@@ -4,7 +4,7 @@ import { CharacterDrawers } from "./subComponents/Drawers";
 import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { UIBasics } from "@/components/(UIBasics)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/DynamicGallery";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;

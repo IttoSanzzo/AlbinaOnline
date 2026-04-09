@@ -1,7 +1,5 @@
-import styles from "../../styles.module.css";
-import { UIBasics } from "@/components/(UIBasics)";
 import { GalleryData } from "@/libs/stp@types";
-import GalleryCarousel from "../GalleryCarousel";
+import { GalleryCore } from "../subComponents/GalleryCore";
 
 interface StaticGalleryProps {
 	url: string;
@@ -25,20 +23,12 @@ export default async function StaticGallery({
 
 	if (hideIfEmpty && galleryData.images.length == 0) return null;
 	return (
-		<UIBasics.Box
-			backgroundColor="darkGray"
-			withoutBorder
+		<GalleryCore
+			url={url}
+			isEditable={false}
 			withoutMargin={withoutMargin}
-			classname={styles.galleryContainer}>
-			<UIBasics.Box
-				withoutMargin
-				withoutPadding
-				classname={styles.galleryInternalContainer}>
-				<GalleryCarousel
-					galleryData={galleryData}
-					url={url}
-				/>
-			</UIBasics.Box>
-		</UIBasics.Box>
+			galleryData={galleryData}
+			reloadGalleryData={undefined}
+		/>
 	);
 }

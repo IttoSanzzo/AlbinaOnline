@@ -5,7 +5,7 @@ import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { RacialSkillsGridDisplay } from "./subComponents/RacialSkillsGridDisplay";
 import { RacialTraitsGridDisplay } from "./subComponents/RacialTraitsGridDisplay";
-import StaticGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/StaticGallery";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";

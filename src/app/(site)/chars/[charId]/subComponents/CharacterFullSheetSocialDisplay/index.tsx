@@ -12,7 +12,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
-import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/subComponents/DynamicGallery";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 
 const fetchCharacter = {
 	items: async (
