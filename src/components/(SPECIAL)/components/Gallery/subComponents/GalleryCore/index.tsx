@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 import { GalleryCarousel } from "./subComponents/GalleryCarousel";
 import { GalleryData } from "@/libs/stp@types";

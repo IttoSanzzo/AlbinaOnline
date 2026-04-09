@@ -1,5 +1,5 @@
 import { GenericPageContainer } from "@/components/(Design)";
-import Gallery from "@/components/(SPECIAL)/components/Gallery";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
@@ -9,7 +9,7 @@ export default async function SandboxPageContent() {
 			<UIBasics.Box
 				backgroundColor="red"
 				style={{}}>
-				<Gallery
+				<StaticGallery
 					url={getAlbinaApiFullAddress(`/images/items/kurehime`)}
 					// isEditable
 				/>
