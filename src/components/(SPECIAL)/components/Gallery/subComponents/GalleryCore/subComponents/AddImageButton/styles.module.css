@@ -1,9 +1,14 @@
 .addImageButtonContainer {
 	position: absolute;
 	bottom: 20px;
-	right: 25px;
+	left: 25px;
 	width: 40;
 	height: 40;
+
+	&.withoutMargin {
+		bottom: 0px;
+		left: 0px;
+	}
 }
 
 .buttonTrigger {

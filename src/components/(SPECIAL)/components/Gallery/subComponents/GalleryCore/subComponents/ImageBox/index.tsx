@@ -19,11 +19,13 @@ interface ImageBoxProps {
 	url: string;
 	imageData: GalleryImageData;
 	clickAction?: GalleryImageActionFunction;
+	withoutMargin?: boolean;
 }
 export default function ImageBox({
 	url,
 	imageData,
 	clickAction,
+	withoutMargin = false,
 }: ImageBoxProps) {
 	const src = `${url}/${imageData.id}`;
 	return (
@@ -32,7 +34,8 @@ export default function ImageBox({
 				key={imageData.id}
 				classname={styles.galleryImageBox}
 				withoutBorder
-				withoutPadding>
+				withoutPadding
+				withoutMargin={withoutMargin}>
 				<Image
 					onClick={
 						clickAction

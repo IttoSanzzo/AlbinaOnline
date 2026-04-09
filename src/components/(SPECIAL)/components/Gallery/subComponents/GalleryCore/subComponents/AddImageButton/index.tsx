@@ -36,10 +36,12 @@ type FormData = z.infer<typeof schema>;
 interface AddImageButtonProps {
 	url: string;
 	reloadGalleryData?: () => Promise<void>;
+	withoutMargin?: boolean;
 }
 export default function AddImageButton({
 	url,
 	reloadGalleryData,
+	withoutMargin,
 }: AddImageButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [inBulkMode, setInBulkMode] = useState<boolean>(false);
@@ -76,7 +78,8 @@ export default function AddImageButton({
 	}
 
 	return (
-		<AddImageButtonContainer>
+		<AddImageButtonContainer
+			className={withoutMargin ? styles.withoutMargin : undefined}>
 			<Dialog.Root
 				open={open}
 				onOpenChange={setOpen}>

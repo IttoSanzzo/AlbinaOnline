@@ -17,3 +17,29 @@
 		height: 100% !important;
 	}
 }
+
+.openFullViewButton {
+	position: absolute;
+	bottom: 20px;
+	right: 25px;
+	width: 40;
+	height: 40;
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	border: 1px solid var(--cl-gray-500);
+
+	&:hover {
+		background-color: var(--cl-gray-600);
+	}
+
+	& > svg {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		position: absolute;
+		width: 80%;
+		height: 80%;
+	}
+}

@@ -1,7 +1,8 @@
 .galleryImageBox {
 	position: relative;
-	margin: 5px !important;
+	margin: 5px;
 	border: 1px solid var(--cl-gray-700) !important;
+	height: 100%;
 
 	& > img {
 		padding: 5px;

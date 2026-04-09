@@ -5,8 +5,12 @@ import { GalleryData } from "@/libs/stp@types";
 import ImageBox, { GalleryImageActionFunction } from "../ImageBox";
 import AddImageButton from "../AddImageButton";
 import styles from "./styles.module.css";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import { StpIcon } from "@/libs/stp@icons";
+
+const OpenFullViewButton = newStyledElement.button(styles.openFullViewButton);
 
 interface GalleryCarouselProps {
 	url: string;
@@ -16,6 +20,7 @@ interface GalleryCarouselProps {
 	reloadGalleryData?: () => Promise<void>;
 	imageAction?: GalleryImageActionFunction;
 	carouselRef?: React.RefObject<CarouselHandle | null>;
+	setFullViewOpenState?: Dispatch<SetStateAction<boolean>>;
 }
 export const GalleryCarousel = React.memo(
 	function GalleryCarousel({
@@ -26,6 +31,7 @@ export const GalleryCarousel = React.memo(
 		reloadGalleryData,
 		withoutMargin,
 		carouselRef,
+		setFullViewOpenState,
 	}: GalleryCarouselProps) {
 		return (
 			<UIBasics.Box
@@ -57,6 +63,16 @@ export const GalleryCarousel = React.memo(
 						reloadGalleryData={reloadGalleryData}
 					/>
 				)}
+				<OpenFullViewButton
+					onClick={() => {
+						if (setFullViewOpenState) setFullViewOpenState(true);
+					}}>
+					<StpIcon
+						name="ArrowsOut"
+						color="purple"
+						style="regular"
+					/>
+				</OpenFullViewButton>
 			</UIBasics.Box>
 		);
 	},

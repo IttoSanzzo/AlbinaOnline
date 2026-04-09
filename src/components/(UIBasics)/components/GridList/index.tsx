@@ -5,7 +5,7 @@ import { StandartBackgroundColor } from "../../core";
 import { UIBasics } from "../..";
 
 const ContentContainerColumn = newStyledElement.div(
-	styles.contentContainerColumn
+	styles.contentContainerColumn,
 );
 const ContentContainerRow = newStyledElement.div(styles.contentContainerRow);
 
@@ -13,11 +13,12 @@ interface GridListProps {
 	children: ReactNode;
 	columns?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 	backgroundColor?: keyof typeof StandartBackgroundColor;
-	columnWidth?: number;
+	columnWidth?: CSSProperties["columnWidth"];
 	direction?: "row" | "column";
 	withoutPadding?: boolean;
 	withoutBorder?: boolean;
 	withoutMargin?: boolean;
+	style?: CSSProperties;
 }
 export function GridList({
 	children,
@@ -28,11 +29,13 @@ export function GridList({
 	withoutBorder = false,
 	withoutMargin = false,
 	withoutPadding = false,
+	style,
 }: GridListProps) {
+	if (Number.isInteger(columnWidth)) columnWidth = `${columnWidth}px`;
 	if (direction === "column") {
 		const columnsStyle: CSSProperties = {
 			...(columns && { columnCount: columns }),
-			...(columnWidth && { columnWidth: `${columnWidth}px` }),
+			...(columnWidth && { columnWidth: columnWidth }),
 		};
 
 		return (
@@ -49,8 +52,8 @@ export function GridList({
 		);
 	}
 	const columnsStyle: CSSProperties = {
-		...(columnWidth && {
-			gridTemplateColumns: `repeat(auto-fit, minmax(${columnWidth}px, 1fr))`,
+		...(columnWidth != undefined && {
+			gridTemplateColumns: `repeat(auto-fit, minmax(${columnWidth}, 1fr))`,
 		}),
 	};
 
@@ -59,7 +62,8 @@ export function GridList({
 			withoutBorder={withoutBorder}
 			withoutMargin={withoutMargin}
 			withoutPadding={withoutPadding}
-			backgroundColor={backgroundColor}>
+			backgroundColor={backgroundColor}
+			style={style}>
 			<ContentContainerRow
 				style={columnsStyle}
 				children={children}

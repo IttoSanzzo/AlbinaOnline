@@ -51,32 +51,36 @@ export function GalleryImageModal({
 							sizes="100%"
 							loading="lazy"
 						/>
-						<ChangeImageButton
-							className={styles.previousImage}
-							onClick={() => {
-								let newIndex = imageIndexState[0] - 1;
-								if (newIndex < 0) newIndex = galleryData.images.length - 1;
-								imageIndexState[1](newIndex);
-								if (moveImageCarousel) moveImageCarousel(newIndex);
-							}}>
-							<StpIcon
-								name="ArrowLeft"
-								style="regular"
-							/>
-						</ChangeImageButton>
-						<ChangeImageButton
-							className={styles.nextImage}
-							onClick={() => {
-								let newIndex = imageIndexState[0] + 1;
-								if (newIndex > galleryData.images.length - 1) newIndex = 0;
-								imageIndexState[1](newIndex);
-								if (moveImageCarousel) moveImageCarousel(newIndex);
-							}}>
-							<StpIcon
-								name="ArrowRight"
-								style="regular"
-							/>
-						</ChangeImageButton>
+						{galleryData.images.length > 1 && (
+							<>
+								<ChangeImageButton
+									className={styles.previousImage}
+									onClick={() => {
+										let newIndex = imageIndexState[0] - 1;
+										if (newIndex < 0) newIndex = galleryData.images.length - 1;
+										imageIndexState[1](newIndex);
+										if (moveImageCarousel) moveImageCarousel(newIndex);
+									}}>
+									<StpIcon
+										name="ArrowLeft"
+										style="regular"
+									/>
+								</ChangeImageButton>
+								<ChangeImageButton
+									className={styles.nextImage}
+									onClick={() => {
+										let newIndex = imageIndexState[0] + 1;
+										if (newIndex > galleryData.images.length - 1) newIndex = 0;
+										imageIndexState[1](newIndex);
+										if (moveImageCarousel) moveImageCarousel(newIndex);
+									}}>
+									<StpIcon
+										name="ArrowRight"
+										style="regular"
+									/>
+								</ChangeImageButton>
+							</>
+						)}
 
 						<LateralButtonsContainer>
 							<LateralButton

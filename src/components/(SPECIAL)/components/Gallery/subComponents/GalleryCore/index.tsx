@@ -6,6 +6,7 @@ import { GalleryData } from "@/libs/stp@types";
 import { GalleryImageModal } from "./subComponents/GalleryImageModal";
 import { GalleryImageActionFunctionProps } from "./subComponents/ImageBox";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
+import { GalleryFullViewModal } from "./subComponents/GalleryFullViewModal";
 
 interface GalleryCoreProps {
 	url: string;
@@ -25,6 +26,7 @@ export function GalleryCore({
 	const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 	const [imageModalOpenState, setImageModalOpenState] =
 		useState<boolean>(false);
+	const [fullViewOpenState, setFullViewOpenState] = useState<boolean>(false);
 
 	function moveImageCarousel(index: number) {
 		if (carouselRef.current) carouselRef.current.moveTo(index);
@@ -51,6 +53,15 @@ export function GalleryCore({
 				reloadGalleryData={reloadGalleryData}
 				withoutMargin={withoutMargin}
 				carouselRef={carouselRef}
+				setFullViewOpenState={setFullViewOpenState}
+			/>
+			<GalleryFullViewModal
+				url={url}
+				galleryData={galleryData}
+				openState={[fullViewOpenState, setFullViewOpenState]}
+				imageAction={handleImageClickEvent}
+				reloadGalleryData={reloadGalleryData}
+				isEditable={isEditable}
 			/>
 			<GalleryImageModal
 				url={url}
