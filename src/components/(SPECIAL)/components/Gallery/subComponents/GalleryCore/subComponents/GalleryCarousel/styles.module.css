@@ -2,10 +2,7 @@
 	position: relative;
 	display: flex;
 	width: 100%;
-	min-height: 200px;
-	max-height: 600px;
-	height: 300px;
-	resize: vertical;
+	height: 200px;
 	overflow: auto;
 }
 
