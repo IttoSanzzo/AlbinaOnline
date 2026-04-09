@@ -18,6 +18,7 @@ import { UIBasics } from "../..";
 import { StandartColorProps, StandartTextColor } from "../../core";
 import { StandartColorKeysToProperties } from "../../utils";
 import styles from "./styles.module.css";
+import { LazyLoadWrapper } from "@/components/(UTILS)/components/LazyLoadWrapper";
 
 const ToggleContainer = newStyledElement.div(styles.toggleContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);
@@ -82,6 +83,7 @@ export function Toggle({
 }: ToggleProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
+	const closingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
 	const pathname = routeSensitiveMemory ? usePathname() : "";
@@ -97,10 +99,32 @@ export function Toggle({
 	}, [contentMaxHeight]);
 	const debouncedUpdateHeight = useDebouncedCallback(updateHeight, 10);
 
+	function openContent() {
+		if (contentRef.current) {
+			if (closingTimeoutRef.current) {
+				clearTimeout(closingTimeoutRef.current);
+				closingTimeoutRef.current = null;
+			}
+			contentRef.current.classList.add(styles.isOpen);
+		}
+		setIsOpen(true);
+	}
+	function closeContent() {
+		if (contentRef.current) {
+			if (closingTimeoutRef.current) clearTimeout(closingTimeoutRef.current);
+			closingTimeoutRef.current = setTimeout(() => {
+				if (contentRef.current)
+					contentRef.current.classList.remove(styles.isOpen);
+			}, 600);
+		}
+		setIsOpen(false);
+	}
+
 	useLayoutEffect(() => {
 		const initialState = initialGetCurrentOpenState(pathname, memoryName);
 		if (initialState != null) {
-			setIsOpen(getCurrentOpenState(pathname, memoryName));
+			if (getCurrentOpenState(pathname, memoryName)) openContent();
+			else closeContent();
 		}
 		if (contentRef.current)
 			setContentMaxHeight(contentRef.current.scrollHeight);
@@ -122,7 +146,8 @@ export function Toggle({
 
 	function handleOpenButton() {
 		setMemoryOpenState(!isOpen, pathname, memoryName);
-		setIsOpen(!isOpen);
+		if (isOpen) closeContent();
+		else openContent();
 	}
 
 	const colorStyle = StandartColorKeysToProperties(textColor, backgroundColor);
@@ -164,10 +189,11 @@ export function Toggle({
 				</button>
 			</HeaderContainer>
 			<ContentContainer
+				className={defaultOpenState == true ? styles.isOpen : undefined}
 				id={`UIBasics-toggle-${memoryId ?? "content"}`}
 				ref={contentRef}
 				style={contentStyle}>
-				{children}
+				<LazyLoadWrapper children={children} />
 			</ContentContainer>
 		</ToggleContainer>
 	);

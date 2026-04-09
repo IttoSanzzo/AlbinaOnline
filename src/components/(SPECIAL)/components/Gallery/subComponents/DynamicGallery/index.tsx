@@ -6,17 +6,16 @@ import { GalleryData } from "@/libs/stp@types";
 import GalleryCarousel from "../GalleryCarousel";
 import AddImageButton from "../AddImageButton";
 import { useEffect, useState } from "react";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 
 interface DynamicGalleryProps {
 	url: string;
 	withoutMargin?: boolean;
-	useAuth?: boolean;
 	isEditable?: boolean;
 }
 export default function DynamicGallery({
 	url,
 	withoutMargin = false,
-	useAuth = false,
 	isEditable = true,
 }: DynamicGalleryProps) {
 	const [galleryData, setGalleryData] = useState<GalleryData>({
@@ -25,7 +24,7 @@ export default function DynamicGallery({
 	});
 
 	async function reloadGalleryData() {
-		const response = await fetch(url, {
+		const response = await authenticatedFetchAsync(url, {
 			method: "GET",
 			next: {
 				tags: [url],
@@ -51,7 +50,6 @@ export default function DynamicGallery({
 					galleryData={galleryData}
 					url={url}
 					reloadGalleryData={isEditable ? reloadGalleryData : undefined}
-					useAuth={useAuth}
 				/>
 			</UIBasics.Box>
 			{isEditable && (

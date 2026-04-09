@@ -46,7 +46,6 @@ export function CharacterFullSheetEditableDisplay({
 				<DynamicGallery
 					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
 					withoutMargin
-					useAuth
 				/>
 			</UIBasics.Box>
 		</CharacterEditableSheetContextProviders>

@@ -165,7 +165,6 @@ export function CharacterFullSheetSocialDisplay({
 				<DynamicGallery
 					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
 					withoutMargin
-					useAuth
 					isEditable={false}
 				/>
 			</UIBasics.Box>

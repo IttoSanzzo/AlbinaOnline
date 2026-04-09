@@ -4,7 +4,16 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import Image, { ImageProps } from "next/image";
 import { useEffect, useState } from "react";
 
-const imageCache = new Map<string, { url: string; expiresAt: number }>();
+interface ImageCacheData {
+	url: string;
+	expiresAt: number;
+}
+const imageCache: Map<string, ImageCacheData> =
+	(globalThis as unknown as { __imageCache: Map<string, ImageCacheData> })
+		.__imageCache ??
+	((
+		globalThis as unknown as { __imageCache: Map<string, ImageCacheData> }
+	).__imageCache = new Map<string, ImageCacheData>());
 
 const TTL = 5 * 60 * 1000;
 
@@ -15,15 +24,14 @@ export default function AuthImage({ src, ...rest }: AuthImageProps) {
 	const [url, setUrl] = useState<string | null>(null);
 
 	useEffect(() => {
-		let cancelled = false;
 		async function load() {
 			const now = Date.now();
 			const cached = imageCache.get(src);
 			if (cached && cached.expiresAt > now) {
+				console.log("CACHED");
 				setUrl(cached.url);
 				return;
 			}
-
 			const response = await authenticatedFetchAsync(src);
 			const blob = await response.blob();
 			const objectUrl = URL.createObjectURL(blob);
@@ -32,18 +40,9 @@ export default function AuthImage({ src, ...rest }: AuthImageProps) {
 				url: objectUrl,
 				expiresAt: now + TTL,
 			});
-
-			if (!cancelled) setUrl(objectUrl);
-			return () => {
-				const old = imageCache.get(src);
-				if (old) URL.revokeObjectURL(old.url);
-				URL.revokeObjectURL(objectUrl);
-			};
+			setUrl(objectUrl);
 		}
 		load();
-		return () => {
-			cancelled = true;
-		};
 	}, [src]);
 
 	if (!url) return null;

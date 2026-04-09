@@ -8,13 +8,11 @@ interface GalleryCarouselProps {
 	url: string;
 	galleryData: GalleryData;
 	reloadGalleryData?: () => Promise<void>;
-	useAuth?: boolean;
 }
 export default function GalleryCarousel({
 	url,
 	galleryData,
 	reloadGalleryData,
-	useAuth = false,
 }: GalleryCarouselProps) {
 	return (
 		<UIBasics.Carousel
@@ -26,7 +24,6 @@ export default function GalleryCarousel({
 					url={url}
 					imageData={imageData}
 					reloadGalleryData={reloadGalleryData}
-					useAuth={useAuth}
 				/>
 			))}
 		/>

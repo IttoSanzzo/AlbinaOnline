@@ -15,12 +15,11 @@ export default async function Gallery({
 	withoutMargin = false,
 	useAuth = false,
 }: GalleryProps) {
-	if (isEditable)
+	if (isEditable || useAuth)
 		return (
 			<DynamicGallery
 				url={url}
 				withoutMargin={withoutMargin}
-				useAuth={useAuth}
 			/>
 		);
 	return (
@@ -28,7 +27,6 @@ export default async function Gallery({
 			url={url}
 			hideIfEmpty={hideIfEmpty}
 			withoutMargin={withoutMargin}
-			useAuth={useAuth}
 		/>
 	);
 }
