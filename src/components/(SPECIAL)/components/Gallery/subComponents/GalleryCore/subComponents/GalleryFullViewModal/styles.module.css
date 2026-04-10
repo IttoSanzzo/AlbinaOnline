@@ -2,9 +2,5 @@
 	width: 90vw;
 	height: 90vh;
 	max-width: unset;
-	overflow: visible !important;
-
-	& > img {
-		object-fit: contain;
-	}
+	overflow: hidden !important;
 }
