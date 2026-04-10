@@ -15,7 +15,7 @@ export type GalleryImageActionFunction = (
 	data: GalleryImageActionFunctionProps,
 ) => void;
 
-interface ImageBoxProps {
+export interface ImageBoxProps {
 	url: string;
 	imageData: GalleryImageData;
 	clickAction?: GalleryImageActionFunction;

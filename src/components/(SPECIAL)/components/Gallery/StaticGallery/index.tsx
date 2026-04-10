@@ -28,7 +28,6 @@ export default async function StaticGallery({
 			isEditable={false}
 			withoutMargin={withoutMargin}
 			galleryData={galleryData}
-			reloadGalleryData={undefined}
 		/>
 	);
 }

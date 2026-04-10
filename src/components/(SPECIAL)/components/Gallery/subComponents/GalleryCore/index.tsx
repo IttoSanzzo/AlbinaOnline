@@ -1,36 +1,56 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { GalleryCarousel } from "./subComponents/GalleryCarousel";
 import { GalleryData } from "@/libs/stp@types";
 import { GalleryImageModal } from "./subComponents/GalleryImageModal";
 import { GalleryImageActionFunctionProps } from "./subComponents/ImageBox";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
 import { GalleryFullViewModal } from "./subComponents/GalleryFullViewModal";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 
 interface GalleryCoreProps {
 	url: string;
 	withoutMargin?: boolean;
 	isEditable?: boolean;
-	galleryData: GalleryData;
-	reloadGalleryData?: () => Promise<void>;
+	galleryData?: GalleryData;
 }
 export function GalleryCore({
 	url,
 	withoutMargin = false,
 	isEditable = true,
-	galleryData,
-	reloadGalleryData,
+	...rest
 }: GalleryCoreProps) {
-	const carouselRef = useRef<CarouselHandle>(null);
+	const [galleryData, setGalleryData] = useState<GalleryData>(
+		rest.galleryData ?? {
+			images: [],
+			updatedAt: "",
+		},
+	);
 	const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 	const [imageModalOpenState, setImageModalOpenState] =
 		useState<boolean>(false);
 	const [fullViewOpenState, setFullViewOpenState] = useState<boolean>(false);
+	const carouselRef = useRef<CarouselHandle>(null);
+
+	async function reloadGalleryData() {
+		const response = await authenticatedFetchAsync(url, {
+			method: "GET",
+			next: {
+				tags: [url],
+			},
+		});
+		if (response.ok) setGalleryData(await response.json());
+	}
+	useLayoutEffect(() => {
+		if (galleryData.updatedAt != "") return;
+		reloadGalleryData();
+	}, []);
 
 	function moveImageCarousel(index: number) {
 		if (carouselRef.current) carouselRef.current.moveTo(index);
 	}
+
 	function handleImageClickEvent({
 		imageData,
 	}: GalleryImageActionFunctionProps) {
@@ -58,6 +78,7 @@ export function GalleryCore({
 			<GalleryFullViewModal
 				url={url}
 				galleryData={galleryData}
+				setGalleryData={setGalleryData}
 				openState={[fullViewOpenState, setFullViewOpenState]}
 				imageAction={handleImageClickEvent}
 				reloadGalleryData={reloadGalleryData}

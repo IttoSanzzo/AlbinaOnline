@@ -1,0 +1,35 @@
+.sortableGalleryImageBoxContainer {
+	position: relative;
+
+	&:hover {
+		z-index: 9999;
+		& .dragButton {
+			opacity: 1;
+		}
+	}
+}
+
+.dragButton {
+	opacity: 0;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background-color: var(--cl-gray-500);
+	color: var(--cl-gray-700);
+	width: 20px;
+	height: 20px;
+	border: 0;
+	border-top-left-radius: var(--rd-xs);
+	border-bottom-right-radius: var(--rd-xs);
+	transition:
+		0.15s ease-in background-color,
+		0.25s ease-in color,
+		0.25s ease-in opacity;
+}
+
+@media (max-width: 480px) {
+	.dragButton {
+		width: 35px;
+		margin-left: -35px;
+	}
+}

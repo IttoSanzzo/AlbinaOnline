@@ -1,19 +1,17 @@
 "use client";
 
 import { Dialog } from "@/libs/stp@radix";
-import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { Dispatch, SetStateAction } from "react";
 import { GalleryData } from "@/libs/stp@types";
-import ImageBox, { GalleryImageActionFunction } from "../ImageBox";
-import { UIBasics } from "@/components/(UIBasics)";
+import { GalleryImageActionFunction } from "../ImageBox";
 import AddImageButton from "../AddImageButton";
-
-const ImageContainer = newStyledElement.div(styles.imageContainer);
+import { SortableGalleryImageGrid } from "./subComponents/SortableGalleryImageGrid";
 
 interface GalleryFullViewModalProps {
 	url: string;
 	galleryData: GalleryData;
+	setGalleryData: Dispatch<SetStateAction<GalleryData>>;
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
 	imageAction?: GalleryImageActionFunction;
 	reloadGalleryData?: () => Promise<void>;
@@ -22,13 +20,13 @@ interface GalleryFullViewModalProps {
 export function GalleryFullViewModal({
 	url,
 	galleryData,
+	setGalleryData,
 	openState,
 	imageAction,
 	reloadGalleryData,
 	isEditable,
 }: GalleryFullViewModalProps) {
 	if (galleryData.images.length == 0 || openState[0] == false) return null;
-
 	return (
 		<Dialog.Root
 			open={openState[0]}
@@ -38,19 +36,12 @@ export function GalleryFullViewModal({
 					<Dialog.Content className={styles.modalContent}>
 						<Dialog.Title />
 						<Dialog.Description />
-						<UIBasics.List.Grid
-							style={{ height: "100%", overflowY: "scroll" }}
-							direction="row"
-							children={galleryData.images.map((imageData) => (
-								<ImageContainer key={imageData.id}>
-									<ImageBox
-										url={url}
-										imageData={imageData}
-										clickAction={imageAction}
-										withoutMargin
-									/>
-								</ImageContainer>
-							))}
+						<SortableGalleryImageGrid
+							galleryData={galleryData}
+							setGalleryData={setGalleryData}
+							url={url}
+							imageAction={imageAction}
+							isEditable={isEditable}
 						/>
 						{isEditable && (
 							<AddImageButton

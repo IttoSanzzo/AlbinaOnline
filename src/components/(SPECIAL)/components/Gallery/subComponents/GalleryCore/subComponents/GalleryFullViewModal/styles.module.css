@@ -8,21 +8,3 @@
 		object-fit: contain;
 	}
 }
-
-.imageContainer {
-	position: relative;
-	width: 200px;
-	aspect-ratio: 1/1;
-	background-color: var(--cl-gray-900);
-}
-
-@media (max-width: 500px) {
-	.modalContent {
-		& > div > div {
-			grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)) !important;
-		}
-	}
-	.imageContainer {
-		width: 90px;
-	}
-}
