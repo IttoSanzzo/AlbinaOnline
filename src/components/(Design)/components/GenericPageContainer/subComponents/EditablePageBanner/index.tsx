@@ -6,7 +6,7 @@ import { ChangeBannerButton } from "./subComponents/ChangeBannerButton";
 import { useState } from "react";
 
 const EditablePageBannerContainer = newStyledElement.div(
-	styles.pageBannerContainer
+	styles.pageBannerContainer,
 );
 
 export interface EditablePageBannerProps {
@@ -25,9 +25,9 @@ export function EditablePageBanner({
 				src={banner}
 				alt="Page's banner"
 				priority={true}
-				sizes="(max-width: 100%)"
+				sizes="100vw"
 				fill={true}
-				quality={100}
+				quality={90}
 			/>
 			{route && route !== "" && (
 				<ChangeBannerButton
