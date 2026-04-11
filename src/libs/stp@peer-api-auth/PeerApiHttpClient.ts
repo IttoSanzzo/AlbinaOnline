@@ -28,13 +28,6 @@ export class PeerApiHttpClient {
 			bodyHash,
 		);
 
-		console.log(method);
-		console.log(path);
-		console.log(timestamp);
-		console.log(bodyHash);
-		console.log(bodyString);
-		console.log(signature);
-
 		return fetch(url, {
 			method,
 			body: requestBody,

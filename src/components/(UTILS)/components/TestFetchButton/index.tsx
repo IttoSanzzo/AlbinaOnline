@@ -14,8 +14,6 @@ export function TestFetchButton() {
 	const { reloadFavorites } = useUserFavorites();
 
 	async function testFetch() {
-		console.log("Testing Fetch!");
-
 		const body = {
 			type: "Item",
 			newOrder: [1, 0],
@@ -31,15 +29,6 @@ export function TestFetchButton() {
 				body: JSON.stringify(body),
 			},
 		);
-		console.log(response.status);
-		if (response.status != 405) {
-			const contentLength = response.headers.get("content-length");
-			const hasBody = contentLength && parseInt(contentLength) > 0;
-			if (hasBody) {
-				const data = await response.json();
-				if (data) console.log(data);
-			}
-		}
 		if (response.ok) await reloadFavorites();
 	}
 

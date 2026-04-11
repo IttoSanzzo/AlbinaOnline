@@ -24,6 +24,7 @@ export interface StyledLinkCardProps {
 	titleColor?: keyof typeof StandartTextColor;
 	borderColor?: keyof typeof StandartTextColor;
 	backgroundColor?: keyof typeof StandartBackgroundColor;
+	titleBackgroundColor?: keyof typeof StandartBackgroundColor;
 	title: string;
 	titleWrap?: boolean;
 	size?: number;
@@ -40,6 +41,7 @@ export function StyledLinkCard({
 	titleColor,
 	borderColor,
 	backgroundColor,
+	titleBackgroundColor,
 	usePreview = true,
 }: StyledLinkCardProps) {
 	const tiltOptions: TiltOptions = {
@@ -74,6 +76,9 @@ export function StyledLinkCard({
 				...(titleColor && {
 					color: StandartTextColor[titleColor],
 				}),
+			}),
+			...(titleBackgroundColor && {
+				backgroundColor: StandartBackgroundColor[titleBackgroundColor],
 			}),
 			...(titleWrap && {
 				textWrap: "balance",
@@ -136,6 +141,9 @@ export function StyledLinkCard({
 							...(titleWrap && {
 								textWrap: "balance",
 								textAlign: "center",
+							}),
+							...(titleBackgroundColor && {
+								backgroundColor: StandartBackgroundColor[titleBackgroundColor],
 							}),
 						}}>
 						{title}

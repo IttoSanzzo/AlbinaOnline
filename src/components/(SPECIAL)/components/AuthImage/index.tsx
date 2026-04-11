@@ -28,7 +28,6 @@ export default function AuthImage({ src, ...rest }: AuthImageProps) {
 			const now = Date.now();
 			const cached = imageCache.get(src);
 			if (cached && cached.expiresAt > now) {
-				console.log("CACHED");
 				setUrl(cached.url);
 				return;
 			}

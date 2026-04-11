@@ -34,11 +34,10 @@ const lines = [
 	"",
 	"export const metadataMap: Record<string, () => Promise<LintIgnoredAny>> = {",
 	...Object.entries(routeMap).map(
-		([route, filePath]) => `  '${route}': () => import('${filePath}'),`
+		([route, filePath]) => `  '${route}': () => import('${filePath}'),`,
 	),
 	"};",
 	"",
 ];
 
 fs.writeFileSync(outputFile, lines.join("\n"), "utf-8");
-console.log(`metadata.ts successfully generated in ${outputFile}`);

@@ -78,12 +78,12 @@ export default function CharsPageContent() {
 
 	const allFavoriteCharacters: CharacterData[] = isLoading
 		? []
-		: (favorites?.character.flatMap((favorite) => {
-				const character = filteredCharacters.find(
-					(character) => character.id == favorite.target.id,
-				);
-				return character ? [character] : [];
-			}) ?? []);
+		: filteredCharacters.filter(
+				(character) =>
+					(favorites?.character ?? []).findIndex(
+						(favorite) => favorite.target.id == character.id,
+					) != -1,
+			);
 	const allUserCharacters: CharacterData[] = currentUser.loading
 		? []
 		: filteredCharacters.filter(
@@ -121,6 +121,7 @@ export default function CharsPageContent() {
 							slidesSpacing={10}
 							minWidth={150}
 							memoryId={"Favorites"}
+							key={`favorites-${allFavoriteCharacters.length}-${JSON.stringify(allFavoriteCharacters.map((e) => e.id))}`}
 							slideChilds={allFavoriteCharacters.map((character) => (
 								<StyledOwnedLinkCard
 									key={character.id}
@@ -128,6 +129,21 @@ export default function CharsPageContent() {
 									href={`/chars/${character.id}`}
 									title={character.name}
 									artworkUrl={character.iconUrl}
+									borderColor={character.isPublic ? undefined : "purple"}
+									titleBackgroundColor={
+										!character.isAlive
+											? "darkGray"
+											: character.isNpc
+												? "darkGray"
+												: "red"
+									}
+									titleColor={
+										!character.isAlive
+											? "darkGray"
+											: character.isNpc
+												? "gray"
+												: "red"
+									}
 								/>
 							))}
 						/>
@@ -147,6 +163,7 @@ export default function CharsPageContent() {
 							slidesSpacing={10}
 							minWidth={150}
 							memoryId={"Owned"}
+							key={`owned-${allUserCharacters.length}-${JSON.stringify(allUserCharacters.map((e) => e.id))}`}
 							slideChilds={allUserCharacters.map((character) => (
 								<StyledOwnedLinkCard
 									key={character.id}
@@ -154,6 +171,21 @@ export default function CharsPageContent() {
 									href={`/chars/${character.id}`}
 									title={character.name}
 									artworkUrl={character.iconUrl}
+									borderColor={character.isPublic ? undefined : "purple"}
+									titleBackgroundColor={
+										!character.isAlive
+											? "darkGray"
+											: character.isNpc
+												? "darkGray"
+												: "red"
+									}
+									titleColor={
+										!character.isAlive
+											? "darkGray"
+											: character.isNpc
+												? "gray"
+												: "red"
+									}
 								/>
 							))}
 						/>
@@ -170,7 +202,7 @@ export default function CharsPageContent() {
 					/>
 					<UIBasics.List.Grid
 						direction="row"
-						backgroundColor="blue"
+						backgroundColor="darkGray"
 						columnWidth={150}>
 						{filteredCharacters.map((character) => (
 							<StyledOwnedLinkCard
@@ -181,6 +213,21 @@ export default function CharsPageContent() {
 								title={character.name}
 								artworkUrl={character.iconUrl}
 								layout="rectangle"
+								borderColor={character.isPublic ? undefined : "purple"}
+								titleBackgroundColor={
+									!character.isAlive
+										? "darkGray"
+										: character.isNpc
+											? "darkGray"
+											: "red"
+								}
+								titleColor={
+									!character.isAlive
+										? "darkGray"
+										: character.isNpc
+											? "gray"
+											: "red"
+								}
 							/>
 						))}
 					</UIBasics.List.Grid>

@@ -62,7 +62,6 @@ export function ChangePassword() {
 			<HookedForm.Form
 				form={form}
 				onSubmit={async (data) => {
-					console.log("AAA");
 					if (
 						formState.errors.oldPassword ||
 						formState.errors.newPassword1 ||

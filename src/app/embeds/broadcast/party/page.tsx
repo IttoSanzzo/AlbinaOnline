@@ -70,14 +70,13 @@ const RightContainer = newStyledElement.div(styles.rightContainer);
 const DiscordContainer = newStyledElement.div(styles.discordContainer);
 const MasterContainer = newStyledElement.div(styles.masterContainer);
 
-interface PageProps {
-	searchParams: Promise<{
-		id?: string;
-	}>;
-}
-export default async function ({ searchParams }: PageProps) {
-	const { id = "main" } = await searchParams;
-	console.log(id);
+// interface PageProps {
+// 	searchParams: Promise<{
+// 		id?: string;
+// 	}>;
+// }
+export default async function () {
+	// const { id = "main" } = await searchParams;
 
 	return (
 		<PageContainer>
