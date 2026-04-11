@@ -38,7 +38,6 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 					skill: data.favorites.Skill,
 					spell: data.favorites.Spell,
 					trait: data.favorites.Trait,
-					npc: data.favorites.Npc,
 				},
 			});
 		} catch {

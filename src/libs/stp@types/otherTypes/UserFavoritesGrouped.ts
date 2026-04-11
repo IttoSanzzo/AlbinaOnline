@@ -1,7 +1,6 @@
 import { CharacterData } from "../dataTypes/Character";
 import { ItemData } from "../dataTypes/item";
 import { MasteryData } from "../dataTypes/mastery";
-import { NpcData } from "../dataTypes/Npc";
 import { RaceData } from "../dataTypes/race";
 import { SkillData } from "../dataTypes/skill";
 import { SpellData } from "../dataTypes/spell";
@@ -15,8 +14,7 @@ export type UserFavoriteType =
 	| "Skill"
 	| "Spell"
 	| "Trait"
-	| "Race"
-	| "Npc";
+	| "Race";
 
 type FavoriteCharacter = {
 	id: Guid;
@@ -60,12 +58,6 @@ type FavoriteRace = {
 	type: string;
 	target: RaceData;
 };
-type FavoriteNpc = {
-	id: Guid;
-	order: number;
-	type: string;
-	target: NpcData;
-};
 
 export type UserFavoritesGrouped = {
 	character: FavoriteCharacter[];
@@ -75,5 +67,4 @@ export type UserFavoritesGrouped = {
 	spell: FavoriteSpell[];
 	trait: FavoriteTrait[];
 	race: FavoriteRace[];
-	npc: FavoriteNpc[];
 };

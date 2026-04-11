@@ -57,7 +57,6 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 					skill: data.favorites.Skill,
 					spell: data.favorites.Spell,
 					trait: data.favorites.Trait,
-					npc: data.favorites.Npc,
 				});
 			});
 			authenticatedFetchAsync(

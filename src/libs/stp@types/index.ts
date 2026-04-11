@@ -45,4 +45,3 @@ export * from "./dataTypes/Character";
 export * from "./otherTypes";
 export * from "./misc";
 export * from "./dataTypes/galleryData";
-export * from "./dataTypes/Npc";

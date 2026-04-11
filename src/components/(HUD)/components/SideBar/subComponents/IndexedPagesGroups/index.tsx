@@ -54,11 +54,6 @@ const CoreHubPageGroup = (
 				link: "/racas",
 				image: getAlbinaApiFullAddress(`/favicon/races`),
 			},
-			{
-				name: "Npcs",
-				link: "/npcs",
-				image: getAlbinaApiFullAddress(`/favicon/npcs`),
-			},
 			{ name: "Codex", link: "/codex" },
 			...(process.env.NODE_ENV === "development"
 				? [{ name: "Sandbox", link: "/sandbox" }]
@@ -115,16 +110,6 @@ export default function IndexedPagesGroups() {
 					)}
 				/>
 			)}
-			{/* {favorites?.npc.length > 0 && (
-				<SortableIndexedPagesGroup
-					groupName="Npcs Fav."
-					groupType="Npc"
-					indexedPages={getNonSluggedFavoriteSortableIndexedPage(
-						"/npcs",
-						favorites.npc,
-					)}
-				/>
-			)} */}
 			{favorites?.item.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Items Fav."
