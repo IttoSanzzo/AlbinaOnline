@@ -20,19 +20,24 @@
 	}
 }
 .artworkContainer {
+	position: relative;
 	margin: -1px 0 0 -1px;
 	border: 1px solid var(--cl-gray-600);
 	border-radius: var(--rd-xs);
 	overflow: hidden;
 
 	& img {
+		position: absolute;
 		border-radius: var(--rd-xs);
 		overflow: hidden;
 		transition: 0.2s ease-in-out transform;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%) scale(0.5);
 	}
 }
 .styledLinkCardContainer:hover .artworkContainer img {
-	transform: scale(1.25);
+	transform: translate(-50%, -50%) scale(0.7);
 }
 
 .titleContainer {

@@ -102,8 +102,8 @@ export function StyledLinkCard({
 							<Image
 								src={artworkUrl}
 								alt=""
-								width={size - 1}
-								height={size - 1}
+								width={size * 2 - 2}
+								height={size * 2 - 2}
 							/>
 						</ArtworkContainer>
 						<HoverTitleContainer style={hoverTitleStyle}>
@@ -129,8 +129,8 @@ export function StyledLinkCard({
 						<Image
 							src={artworkUrl}
 							alt=""
-							width={size - 1}
-							height={size - 1}
+							width={size * 2 - 2}
+							height={size * 2 - 2}
 						/>
 					</ArtworkContainer>
 					<TitleContainer
