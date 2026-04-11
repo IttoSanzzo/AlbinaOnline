@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: none;
+	background-color: var(--cl-black-3);
 	border: none;
 	line-height: 0;
 	border-radius: var(--rd-full);

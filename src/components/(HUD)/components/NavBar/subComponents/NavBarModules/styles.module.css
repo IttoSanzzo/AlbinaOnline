@@ -3,6 +3,8 @@
 	flex-direction: row;
 	align-items: center;
 	gap: var(--sp-2);
+	background-color: var(--cl-black-3);
+
 	& > * {
 		all: unset;
 		display: inline-flex;

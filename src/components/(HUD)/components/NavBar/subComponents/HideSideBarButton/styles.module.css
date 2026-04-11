@@ -10,7 +10,7 @@
 .hideSideBarButtonContainer {
 	position: fixed;
 	top: 7px;
-	background-color: transparent;
+	background-color: var(--cl-black-3);
 	border: 0;
 	font-size: 0;
 	padding: var(--sp-2);
