@@ -15,13 +15,8 @@ const ProfileButtonContainer = newStyledElement.div(
 export function NavBar() {
 	return (
 		<NavBarContainer
-			style={
-				env.NODE_ENV == "development"
-					? {
-							background:
-								"repeating-linear-gradient(45deg, var(--cl-yellow-600) 0px, var(--cl-yellow-600) 20px, var(--cl-gray-700) 20px, var(--cl-gray-700) 40px)",
-						}
-					: undefined
+			className={
+				env.NODE_ENV == "development" ? styles.inDevelopment : undefined
 			}>
 			<NavSideContainer>
 				<HideSideBarButton />
