@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import styles from "./styles.module.css";
 
 const SwitchInternalContainer = newStyledElement.div(
-	styles.switchInternalContainer
+	styles.switchInternalContainer,
 );
 const SwitchButton = newStyledElement.button(styles.switchButton);
 
@@ -14,18 +14,23 @@ interface StateSwitchProps {
 	state: [boolean, Dispatch<SetStateAction<boolean>>];
 	disabled?: boolean;
 	style?: React.CSSProperties;
+	onClickCheck?: () => Promise<boolean>;
+	className?: string;
 }
 export function StateSwitch({
 	label,
 	state,
 	disabled,
 	style,
+	onClickCheck,
+	className,
 }: StateSwitchProps) {
-	function handleClick() {
-		state[1](!state[0]);
+	async function handleClick() {
+		if (!onClickCheck || (await onClickCheck())) state[1](!state[0]);
 	}
 	return (
 		<SwitchButton
+			className={className}
 			onClick={handleClick}
 			disabled={disabled}
 			style={style}>

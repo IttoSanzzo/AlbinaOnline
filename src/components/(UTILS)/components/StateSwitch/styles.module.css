@@ -6,6 +6,7 @@
 	padding: 3px 5px;
 	color: var(--cl-gray-200);
 	width: fit-content;
+	outline: none;
 
 	&:hover {
 		cursor: pointer !important;
@@ -46,7 +47,8 @@
 			border-radius: var(--rd-full);
 			background-color: var(--cl-white);
 
-			transition: 0.25s ease-in-out background-color,
+			transition:
+				0.25s ease-in-out background-color,
 				0.25s ease-in-out transform;
 		}
 

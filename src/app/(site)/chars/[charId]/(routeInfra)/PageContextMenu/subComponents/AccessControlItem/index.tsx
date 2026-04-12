@@ -7,6 +7,7 @@ import { AccessLevel } from "@/libs/stp@types/otherTypes/AccessLevel";
 import { OwnershipTransfer } from "./subComponents/OwnershipTransfer";
 import { CharacterData } from "@/libs/stp@types";
 import { OtherUsersAccessControl } from "./subComponents/OtherUsersAccesControl";
+import { IsPublicSwitch } from "./subComponents/IsPublicSwitch";
 
 export function AccessControlItem() {
 	const currentCharacterAccessLevel = useCurrentCharacterAccessLevel();
@@ -30,8 +31,14 @@ export function AccessControlItem() {
 			<Dialog.Portal>
 				<Dialog.Overlay />
 				<Dialog.Content maxWidth={"75vw"}>
-					<Dialog.Title style={{ marginBottom: 20 }}>
+					<Dialog.Title style={{ position: "relative", marginBottom: 20 }}>
 						Controle de Acesso
+						<IsPublicSwitch
+							characterId={data.id}
+							characterAccessLevel={
+								currentCharacterAccessLevel.accessLevel ?? AccessLevel.Unknown
+							}
+						/>
 					</Dialog.Title>
 					<Dialog.Description />
 					<div
