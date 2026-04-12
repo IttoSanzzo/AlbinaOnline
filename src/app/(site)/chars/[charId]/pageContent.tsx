@@ -21,7 +21,6 @@ import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFull
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 import { UserPageLink } from "@/components/(UTILS)";
 import { CharacterForbidden } from "./subComponents/CharacterForbidden";
-import { StandartBackgroundColor } from "@/components/(UIBasics)";
 
 interface CharPageContentProps {
 	characterId: Guid;
