@@ -14,6 +14,7 @@ interface GenericPageContainerProps {
 	banner?: string;
 	icon?: string;
 	borderColor?: string;
+	borderOpacity?: number;
 	title: string;
 	isEditable?: boolean;
 	bannerChangeRoute?: string;
@@ -30,6 +31,7 @@ export function GenericPageContainer({
 	banner,
 	icon,
 	borderColor,
+	borderOpacity = 40,
 	isEditable = false,
 	bannerChangeRoute,
 	iconChangeRoute,
@@ -58,6 +60,7 @@ export function GenericPageContainer({
 					title={title}
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}
+					borderOpacity={borderOpacity}
 					subTitle={subTitle}
 					metadataTag={metadataTag}
 				/>

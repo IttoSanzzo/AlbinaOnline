@@ -15,6 +15,7 @@ interface PageHeaderProps {
 	title: string;
 	icon: string;
 	borderColor?: string;
+	borderOpacity: number;
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
@@ -26,6 +27,7 @@ export function PageHeader({
 	title,
 	icon,
 	borderColor,
+	borderOpacity,
 	iconChangeRoute,
 	titleChangeRoute,
 	titleChangeBodyPropName,
@@ -38,6 +40,8 @@ export function PageHeader({
 				<EditablePageIcon
 					iconSrc={icon}
 					route={iconChangeRoute}
+					borderColor={borderColor}
+					borderOpacity={borderOpacity}
 				/>
 			) : (
 				<Image
@@ -47,7 +51,11 @@ export function PageHeader({
 					height={512}
 					quality={100}
 					style={
-						borderColor ? { backgroundColor: `${borderColor}40` } : undefined
+						borderColor
+							? {
+									backgroundColor: `${borderColor}${borderOpacity}`,
+								}
+							: undefined
 					}
 				/>
 			)}

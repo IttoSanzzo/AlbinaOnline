@@ -21,6 +21,7 @@ import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFull
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 import { UserPageLink } from "@/components/(UTILS)";
 import { CharacterForbidden } from "./subComponents/CharacterForbidden";
+import { StandartBackgroundColor } from "@/components/(UIBasics)";
 
 interface CharPageContentProps {
 	characterId: Guid;
@@ -89,7 +90,8 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			title={characterData.name}
 			banner={characterData.bannerUrl}
 			icon={characterData.iconUrl}
-			borderColor={"#505059"}
+			borderColor={characterData.isPublic ? "#505059" : "#35007c"}
+			borderOpacity={characterData.isPublic ? 40 : 90}
 			isEditable={accessLevel >= AccessLevel.Edit}
 			subTitle={<UserPageLink userId={characterData.ownerId} />}
 			bannerChangeRoute={getAlbinaApiFullAddress(

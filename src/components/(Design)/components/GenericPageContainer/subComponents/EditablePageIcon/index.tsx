@@ -6,18 +6,22 @@ import { ChangeIconButton } from "./subComponents/ChangeIconButton";
 import { useState } from "react";
 
 const EditablePageIconContainer = newStyledElement.div(
-	styles.pageIconContainer
+	styles.pageIconContainer,
 );
 
 interface EditablePageIconProps {
 	iconSrc: string;
 	route?: string;
 	metadataTag?: string;
+	borderColor?: string;
+	borderOpacity: number;
 }
 export function EditablePageIcon({
 	iconSrc,
 	route,
 	metadataTag,
+	borderColor,
+	borderOpacity,
 }: EditablePageIconProps) {
 	const [icon, setIcon] = useState<string>(`${iconSrc}?t=${Date.now()}`);
 
@@ -30,6 +34,13 @@ export function EditablePageIcon({
 				height={512}
 				priority={true}
 				quality={100}
+				style={
+					borderColor
+						? {
+								backgroundColor: `${borderColor}${borderOpacity}`,
+							}
+						: undefined
+				}
 			/>
 			{route && route !== "" && (
 				<ChangeIconButton
