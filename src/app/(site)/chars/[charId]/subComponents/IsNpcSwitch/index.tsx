@@ -47,12 +47,18 @@ export function IsNpcSwitch({
 	return isEditable ? (
 		<StateSwitch
 			label={isPlayerState[0] ? "Jogador" : "NPC"}
-			style={{ width: "110px" }}
+			style={{
+				width: "110px",
+				color: isPlayerState[0] ? "var(--cl-red-500)" : "var(--cl-gray-400)",
+			}}
 			state={isPlayerState}
 			onClickCheck={handleClick}
 		/>
 	) : (
-		<IsNpcSwitchNonEditable>
+		<IsNpcSwitchNonEditable
+			style={{
+				color: isPlayerState[0] ? "var(--cl-red-500)" : "var(--cl-gray-400)",
+			}}>
 			{isPlayerState[0] ? "Jogador" : "NPC"}
 		</IsNpcSwitchNonEditable>
 	);

@@ -9,7 +9,6 @@ const PageHeaderContainer = newStyledElement.div(styles.pageHeaderContainer);
 const TitlesContainer = newStyledElement.div(styles.titlesContainer);
 const SubTitlesContainer = newStyledElement.div(styles.subTitlesContainer);
 const SubTitleContainer = newStyledElement.div(styles.subTitleContainer);
-const SubSubTitleContainer = newStyledElement.div(styles.subSubTitleContainer);
 export const PageTitle = newStyledElement.h1(styles.pageTitle);
 
 interface PageHeaderProps {
