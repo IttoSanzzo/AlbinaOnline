@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from "react";
+import { useContext } from "react";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import {
 	CharacterEquipments,
@@ -16,7 +16,6 @@ import { EquipmentsContext } from "../../CharacterEditableSheetContextProviders/
 import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
-import { useCharacterUpdated } from "@/libs/stp@hooks";
 
 async function handleItemRemoval(
 	characterId: Guid,
@@ -171,34 +170,6 @@ export function _CharacterItemStacksDisplay() {
 	const { characterItems, setCharacterItems } = useContext(ItemsContext);
 	const { setCharacterEquipments } = useContext(EquipmentsContext);
 	const { characterId } = useContext(CharacterIdContext);
-
-	async function loadItems(): Promise<boolean> {
-		const response = await authenticatedFetchAsync(
-			getAlbinaApiFullAddress(`/chars/${characterId}/items`),
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			},
-		);
-		if (!response.ok) return false;
-		const data: CharacterItemStackExpanded[] = await response.json();
-		const orderedData = data.sort((a, b) => {
-			const nameCompare = a.item.name.localeCompare(b.item.name);
-			if (nameCompare !== 0) return nameCompare;
-			return a.amount - b.amount;
-		});
-		setCharacterItems(orderedData);
-		return true;
-	}
-
-	useLayoutEffect(() => {
-		loadItems();
-	}, [characterId]);
-	useCharacterUpdated(characterId, async () => {
-		return await loadItems();
-	});
 
 	return (
 		<UIBasics.ToggleHeader

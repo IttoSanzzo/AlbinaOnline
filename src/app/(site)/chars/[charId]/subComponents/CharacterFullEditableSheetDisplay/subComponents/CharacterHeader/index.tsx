@@ -2,14 +2,19 @@ import { GaugesTable } from "./subComponents/GaugesTable";
 import { MiscsTable } from "./subComponents/MiscsTable";
 import { AttributesEditableDisplay } from "./subComponents/AttributesEditableDisplay";
 import { LevelAndRaceEditableDisplay } from "./subComponents/LevelAndRaceEditableDisplay";
-import { RaceData } from "@/libs/stp@types";
+import { Guid, RaceData } from "@/libs/stp@types";
 import { UIBasics } from "@/components/(UIBasics)";
 
 interface CharacterHeaderProps {
+	characterId: Guid;
 	level: number;
 	race: RaceData;
 }
-export function CharacterHeader({ level, race }: CharacterHeaderProps) {
+export function CharacterHeader({
+	characterId,
+	level,
+	race,
+}: CharacterHeaderProps) {
 	return (
 		<UIBasics.Box
 			backgroundColor="blue"
@@ -33,7 +38,7 @@ export function CharacterHeader({ level, race }: CharacterHeaderProps) {
 			<UIBasics.MultiColumn.Two
 				withoutPadding
 				colum1={<GaugesTable />}
-				colum2={<MiscsTable />}
+				colum2={<MiscsTable characterId={characterId} />}
 			/>
 		</UIBasics.Box>
 	);

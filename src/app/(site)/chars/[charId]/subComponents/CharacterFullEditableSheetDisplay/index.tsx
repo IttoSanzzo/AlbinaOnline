@@ -15,6 +15,7 @@ export function CharacterFullSheetEditableDisplay({
 	return (
 		<CharacterEditableSheetContextProviders data={characterData}>
 			<CharacterHeader
+				characterId={characterData.id}
 				level={characterData.level}
 				race={characterData.race}
 			/>
