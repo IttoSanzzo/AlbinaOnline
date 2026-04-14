@@ -24,13 +24,14 @@ export function DiceResultHistoryView({
 			behavior: "smooth",
 		});
 	}, [ref.current]);
+
 	useEffect(() => {
 		setTimeout(() => {
 			if (ref.current == null) return;
 			ref.current.scrollIntoView({
-				behavior: "smooth",
+				behavior: "instant",
 			});
-		}, 500);
+		}, 0);
 	}, []);
 
 	return (
