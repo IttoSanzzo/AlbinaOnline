@@ -26,9 +26,10 @@
 
 .switchInternalContainer {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	gap: 5px;
+	width: 100%;
 
 	& > div {
 		position: relative;

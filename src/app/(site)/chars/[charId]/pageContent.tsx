@@ -21,6 +21,7 @@ import { CharacterFullSheetEditableDisplay } from "./subComponents/CharacterFull
 import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSheetSocialDisplay";
 import { UserPageLink } from "@/components/(UTILS)";
 import { CharacterForbidden } from "./subComponents/CharacterForbidden";
+import { IsNpcSwitch } from "./subComponents/IsNpcSwitch";
 
 interface CharPageContentProps {
 	characterId: Guid;
@@ -93,6 +94,13 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			borderOpacity={characterData.isPublic ? 40 : 90}
 			isEditable={accessLevel >= AccessLevel.Edit}
 			subTitle={<UserPageLink userId={characterData.ownerId} />}
+			subTitle2={
+				<IsNpcSwitch
+					characterId={characterData.id}
+					isNpc={characterData.isNpc}
+					isEditable={accessLevel >= AccessLevel.Edit}
+				/>
+			}
 			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/chars/${characterData.id}/banner`,
 			)}
