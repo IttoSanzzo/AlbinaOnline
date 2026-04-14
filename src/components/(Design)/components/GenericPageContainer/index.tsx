@@ -22,6 +22,7 @@ interface GenericPageContainerProps {
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
+	subTitle2?: ReactNode;
 	metadataTag?: string;
 }
 
@@ -38,6 +39,7 @@ export function GenericPageContainer({
 	titleChangeRoute,
 	titleChangeBodyPropName,
 	subTitle,
+	subTitle2,
 	metadataTag,
 }: GenericPageContainerProps) {
 	return (
@@ -62,6 +64,7 @@ export function GenericPageContainer({
 					borderColor={borderColor}
 					borderOpacity={borderOpacity}
 					subTitle={subTitle}
+					subTitle2={subTitle2}
 					metadataTag={metadataTag}
 				/>
 				{children}

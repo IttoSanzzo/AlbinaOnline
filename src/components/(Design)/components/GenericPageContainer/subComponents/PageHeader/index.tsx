@@ -7,7 +7,9 @@ import { ReactNode } from "react";
 
 const PageHeaderContainer = newStyledElement.div(styles.pageHeaderContainer);
 const TitlesContainer = newStyledElement.div(styles.titlesContainer);
+const SubTitlesContainer = newStyledElement.div(styles.subTitlesContainer);
 const SubTitleContainer = newStyledElement.div(styles.subTitleContainer);
+const SubSubTitleContainer = newStyledElement.div(styles.subSubTitleContainer);
 export const PageTitle = newStyledElement.h1(styles.pageTitle);
 
 interface PageHeaderProps {
@@ -20,6 +22,7 @@ interface PageHeaderProps {
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
 	subTitle?: ReactNode;
+	subTitle2?: ReactNode;
 	metadataTag?: string;
 }
 export function PageHeader({
@@ -32,6 +35,7 @@ export function PageHeader({
 	titleChangeRoute,
 	titleChangeBodyPropName,
 	subTitle,
+	subTitle2,
 	metadataTag,
 }: PageHeaderProps) {
 	return (
@@ -70,7 +74,12 @@ export function PageHeader({
 				) : (
 					<PageTitle>{title}</PageTitle>
 				)}
-				{subTitle && <SubTitleContainer>{subTitle}</SubTitleContainer>}
+				{(subTitle || subTitle2) && (
+					<SubTitlesContainer>
+						{subTitle && <SubTitleContainer>{subTitle}</SubTitleContainer>}
+						{subTitle2 && <SubTitleContainer>{subTitle2}</SubTitleContainer>}
+					</SubTitlesContainer>
+				)}
 			</TitlesContainer>
 		</PageHeaderContainer>
 	);
