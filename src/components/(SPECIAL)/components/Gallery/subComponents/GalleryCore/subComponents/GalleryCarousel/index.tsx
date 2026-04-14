@@ -47,8 +47,6 @@ export const GalleryCarousel = React.memo(
 						ref={carouselRef}
 						slidesOrigin={galleryData.images.length > 1 ? "center" : "auto"}
 						minWidth={"200px"}
-						maxWidth={"200px"}
-						slideWidth={"200px"}
 						memoryId={galleryData.images.length > 1 ? url : undefined}
 						slideChilds={galleryData.images.map((imageData) => (
 							<ImageBox
