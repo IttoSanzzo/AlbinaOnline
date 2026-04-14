@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
 import { authenticatedFetchWithTTLCache } from "@/utils/FetchCommonTools";
+import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 
 const schema = z.object({
 	filter: z.string().transform((filter) => filter.toLowerCase()),
@@ -48,7 +49,8 @@ export default function CharsPageContent() {
 			);
 		});
 	}, [setCharacters]);
-	if (characters === null) return null;
+	if (characters === null) return <LoadingCircle />;
+
 	if (characters.length === 0) {
 		return (
 			<>

@@ -1,18 +1,12 @@
 import { GenericPageContainer } from "@/components/(Design)";
-import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 import { UIBasics } from "@/components/(UIBasics)";
-import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export default async function SandboxPageContent() {
 	return (
 		<GenericPageContainer title="">
-			<UIBasics.Box
-				backgroundColor="red"
-				style={{}}>
-				<StaticGallery
-					url={getAlbinaApiFullAddress(`/images/items/kurehime`)}
-					// isEditable
-				/>
+			<UIBasics.Box backgroundColor="red">
+				<LoadingCircle size={200} />
 			</UIBasics.Box>
 		</GenericPageContainer>
 	);

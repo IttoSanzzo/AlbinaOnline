@@ -22,6 +22,7 @@ import { CharacterFullSheetSocialDisplay } from "./subComponents/CharacterFullSh
 import { UserPageLink } from "@/components/(UTILS)";
 import { CharacterForbidden } from "./subComponents/CharacterForbidden";
 import { IsNpcSwitch } from "./subComponents/IsNpcSwitch";
+import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 
 interface CharPageContentProps {
 	characterId: Guid;
@@ -70,7 +71,7 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 				return <>Unknown</>;
 		}
 	}
-	if (characterData == null) return null;
+	if (characterData == null) return <LoadingCircle />;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
