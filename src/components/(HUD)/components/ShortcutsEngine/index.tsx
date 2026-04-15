@@ -6,14 +6,6 @@ import { useEffect } from "react";
 export function ShortcutsEngine() {
 	const router = useRouter();
 
-	async function preventDefaultAndRun(
-		event: KeyboardEvent,
-		action: (event: KeyboardEvent) => Promise<void>,
-	) {
-		event.preventDefault();
-		await action(event);
-	}
-
 	async function pushRoute(event: KeyboardEvent, route: string) {
 		event.preventDefault();
 		router.push(route);

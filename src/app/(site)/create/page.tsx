@@ -13,8 +13,7 @@ export const metadata: Metadata = assembleMetadata({
 	route: "/create",
 });
 
-interface CreatePageServerShellProps {}
-export default function CreatePageServerShell({}: CreatePageServerShellProps) {
+export default function CreatePageServerShell() {
 	return (
 		<GenericPageContainer
 			title="Create"

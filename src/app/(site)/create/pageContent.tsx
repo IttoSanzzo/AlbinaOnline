@@ -11,6 +11,7 @@ import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 import { RoleHierarchy } from "@/libs/stp@types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const createTypeProps = [
 	{ name: "Item", url: "items", value: "items" },
@@ -32,6 +33,7 @@ export default function PageContent() {
 	const { user, loading } = useCurrentUser();
 	const types = createTypeProps.map((type) => type.value);
 	const form = useForm<FormData>({
+		resolver: zodResolver(schema),
 		defaultValues: {
 			createType: types[0],
 		},
