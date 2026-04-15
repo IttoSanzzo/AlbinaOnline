@@ -65,7 +65,9 @@ export function Breadcrumbs() {
 				icon: lastCrumb.icon ?? getAlbinaApiFullAddress("/favicon/home"),
 				url: url,
 			});
-		} catch {}
+		} catch {
+			return;
+		}
 	}, [pathName, crumbs, addHistoryEntry, isSet, loadHistory]);
 
 	return (

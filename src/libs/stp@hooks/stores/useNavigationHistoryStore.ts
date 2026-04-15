@@ -26,7 +26,9 @@ export const useNavigationHistoryStore = create<NavigationHistoryState>(
 			try {
 				localStorage.setItem("PageNavigationHistory", JSON.stringify(history));
 				set({ history });
-			} catch {}
+			} catch {
+				return;
+			}
 		},
 		addHistoryEntry: (entry) => {
 			try {
@@ -45,7 +47,9 @@ export const useNavigationHistoryStore = create<NavigationHistoryState>(
 						history: newHistory,
 					};
 				});
-			} catch {}
+			} catch {
+				return;
+			}
 		},
 		setIsSet: (isSet) => set({ isSet }),
 		loadHistory: () => {
@@ -61,7 +65,9 @@ export const useNavigationHistoryStore = create<NavigationHistoryState>(
 			try {
 				localStorage.setItem("PageNavigationHistory", JSON.stringify([]));
 				set({ history: [], isSet: true });
-			} catch {}
+			} catch {
+				return;
+			}
 		},
 	}),
 );
