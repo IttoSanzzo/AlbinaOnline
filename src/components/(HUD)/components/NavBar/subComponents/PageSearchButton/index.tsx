@@ -21,7 +21,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import z from "zod";
 import styles from "./styles.module.css";
 import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
@@ -120,6 +120,15 @@ function searchEntryToStyledLink(
 	searchEntry: SearchEntry,
 	setLinkHistoryState: Dispatch<SetStateAction<SearchEntry[]>>,
 	setOpenState: Dispatch<SetStateAction<boolean>>,
+	form: UseFormReturn<
+		{
+			query: string;
+		},
+		any,
+		{
+			query: string;
+		}
+	>,
 ): ReactNode {
 	return (
 		<StyledLink
@@ -128,6 +137,7 @@ function searchEntryToStyledLink(
 			href={getPageLinkFromSearchEntry(searchEntry.entity, searchEntry.slug)}
 			icon={searchEntry.iconUrl}
 			onClick={() => {
+				form.setValue("query", "");
 				setOpenState(false);
 				handleAddLinkToHistory(searchEntry, setLinkHistoryState);
 			}}
@@ -212,43 +222,43 @@ export function PageSearchButton() {
 			globalTitleTitleDisable || searchEntries.character.length === 0,
 		),
 		searchEntries.character.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Item(globalTitleTitleDisable || searchEntries.item.length === 0),
 		searchEntries.item.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Mastery(
 			globalTitleTitleDisable || searchEntries.mastery.length === 0,
 		),
 		searchEntries.mastery.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Race(globalTitleTitleDisable || searchEntries.race.length === 0),
 		searchEntries.race.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Skill(
 			globalTitleTitleDisable || searchEntries.skill.length === 0,
 		),
 		searchEntries.skill.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Spell(
 			globalTitleTitleDisable || searchEntries.spell.length === 0,
 		),
 		searchEntries.spell.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.Trait(
 			globalTitleTitleDisable || searchEntries.trait.length === 0,
 		),
 		searchEntries.trait.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 		typeTitles.User(globalTitleTitleDisable || searchEntries.user.length === 0),
 		searchEntries.user.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState),
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
 		),
 	];
 
@@ -295,6 +305,7 @@ export function PageSearchButton() {
 												href={entry.url}
 												icon={entry.icon}
 												onClick={() => {
+													form.setValue("query", "");
 													setOpenState(false);
 												}}
 											/>
@@ -326,6 +337,7 @@ export function PageSearchButton() {
 												entry,
 												setUsedLinkHistory,
 												setOpenState,
+												form,
 											),
 										)}
 									/>
