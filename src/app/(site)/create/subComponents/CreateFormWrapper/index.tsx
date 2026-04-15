@@ -63,7 +63,7 @@ function getFormMiscs(type: string): {
 			};
 		default:
 			return {
-				schema: undefined,
+				schema: CreateItemForm.schema,
 				apiRoute: "",
 				siteRoute: "",
 			};

@@ -30,11 +30,22 @@ type FormData = z.infer<typeof schema>;
 export default function PageContent() {
 	const router = useRouter();
 	const { user, loading } = useCurrentUser();
+	const types = createTypeProps.map((type) => type.value);
 	const form = useForm<FormData>({
 		defaultValues: {
-			createType: "items",
+			createType: types[0],
 		},
+		mode: "onChange",
 	});
+	const watchedCreateType = form.watch().createType;
+
+	useEffect(() => {
+		setTimeout(() => {
+			const lastType = localStorage.getItem("CreateCatalogEntryLastType");
+			if (lastType && lastType != watchedCreateType && types.includes(lastType))
+				form.setValue("createType", lastType);
+		}, 0);
+	}, []);
 
 	useEffect(() => {
 		if (!loading && user && RoleHierarchy[user.role] <= RoleHierarchy.Admin)
@@ -44,11 +55,15 @@ export default function PageContent() {
 	if (loading || !user || RoleHierarchy[user.role] <= RoleHierarchy.Admin)
 		return <LoadingCircle />;
 
-	const watchedCreateType = form.watch().createType;
-
 	return (
 		<UIBasics.Box backgroundColor="darkGray">
-			<HookedForm.Form form={form}>
+			<HookedForm.Form
+				form={form}
+				actionDebounceMs={0}
+				onChangeAction={(data: FormData) => {
+					if (data.createType && types.includes(data.createType))
+						localStorage.setItem("CreateCatalogEntryLastType", data.createType);
+				}}>
 				<HookedForm.Select<FormData>
 					fieldName="createType"
 					label="Type"
