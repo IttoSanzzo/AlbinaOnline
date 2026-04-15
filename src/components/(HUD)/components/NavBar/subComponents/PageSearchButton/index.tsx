@@ -7,6 +7,7 @@ import { StpIcon } from "@/libs/stp@icons";
 import { Dialog } from "@/libs/stp@radix";
 import {
 	AllSearchEntriesByType,
+	LintIgnoredAny,
 	SearchEntry,
 	SearchEntryEntity,
 } from "@/libs/stp@types";
@@ -124,7 +125,7 @@ function searchEntryToStyledLink(
 		{
 			query: string;
 		},
-		any,
+		LintIgnoredAny,
 		{
 			query: string;
 		}
