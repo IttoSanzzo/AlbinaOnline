@@ -24,6 +24,7 @@ import {
 import { useForm } from "react-hook-form";
 import z from "zod";
 import styles from "./styles.module.css";
+import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
 
 const SearchButton = newStyledElement.button(styles.searchButton);
 
@@ -139,6 +140,7 @@ export function PageSearchButton() {
 	const [usedLinkHistory, setUsedLinkHistory] = useState<SearchEntry[]>([]);
 	const [searchEntries, setSearchEntries] =
 		useState<AllSearchEntriesByType>(emptySearchEntries);
+	const navigationHistoryState = useNavigationHistory();
 
 	useEffect(() => {
 		function handleKeyDown(e: KeyboardEvent) {
@@ -273,35 +275,63 @@ export function PageSearchButton() {
 						/>
 					</HookedForm.Form>
 					{watchedValues.query.length === 0 ? (
-						usedLinkHistory.length === 0 ? (
-							<UIBasics.Text
-								display="block"
-								textAlign="center"
-								textColor="gray"
-								children="Nenhum resultado encontrado"
-							/>
-						) : (
-							<UIBasics.Box
-								withoutPadding
-								withoutMargin>
-								<UIBasics.Header
+						<>
+							{navigationHistoryState.history.length > 0 && (
+								<UIBasics.Box
+									withoutPadding
+									withoutMargin>
+									<UIBasics.Header
+										textAlign="center"
+										textColor="gray"
+										children="Histórico de Navegação"
+										headerType="h2"
+									/>
+									<UIBasics.List.Grid
+										withoutBorder
+										children={navigationHistoryState.history.map((entry) => (
+											<StyledLink
+												key={entry.url}
+												title={entry.name}
+												href={entry.url}
+												icon={entry.icon}
+												onClick={() => {
+													setOpenState(false);
+												}}
+											/>
+										))}
+									/>
+								</UIBasics.Box>
+							)}
+							{usedLinkHistory.length === 0 ? (
+								<UIBasics.Text
+									display="block"
 									textAlign="center"
 									textColor="gray"
-									children="Histórico"
-									headerType="h2"
+									children="Nenhum resultado encontrado"
 								/>
-								<UIBasics.List.Grid
-									withoutBorder
-									children={usedLinkHistory.map((entry) =>
-										searchEntryToStyledLink(
-											entry,
-											setUsedLinkHistory,
-											setOpenState,
-										),
-									)}
-								/>
-							</UIBasics.Box>
-						)
+							) : (
+								<UIBasics.Box
+									withoutPadding
+									withoutMargin>
+									<UIBasics.Header
+										textAlign="center"
+										textColor="gray"
+										children="Histórico de Pesquisa"
+										headerType="h2"
+									/>
+									<UIBasics.List.Grid
+										withoutBorder
+										children={usedLinkHistory.map((entry) =>
+											searchEntryToStyledLink(
+												entry,
+												setUsedLinkHistory,
+												setOpenState,
+											),
+										)}
+									/>
+								</UIBasics.Box>
+							)}
+						</>
 					) : totalEntriesLength === 0 ? (
 						<UIBasics.Text
 							display="block"

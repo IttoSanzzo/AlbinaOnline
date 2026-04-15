@@ -39,6 +39,9 @@ export function ShortcutsEngine() {
 				case "f8":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/racas");
 					break;
+				case "f11":
+					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/codex");
+					break;
 				case "f12":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/sandbox");
 					break;
