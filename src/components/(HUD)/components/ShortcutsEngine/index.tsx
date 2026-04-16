@@ -11,6 +11,10 @@ export function ShortcutsEngine() {
 		event.preventDefault();
 		router.push(route);
 	}
+	async function pushEditRoute(event: KeyboardEvent, pathName: string) {
+		event.preventDefault();
+		if (pathName.split("/").length == 3) router.push(`${pathName}/edit`);
+	}
 
 	useEffect(() => {
 		async function handleKeyDown(event: KeyboardEvent) {
@@ -21,7 +25,7 @@ export function ShortcutsEngine() {
 					break;
 				case "f2":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/chars");
-					else if (event.altKey) pushRoute(event, `${pathName}/edit`);
+					else if (event.altKey) pushEditRoute(event, pathName);
 					break;
 				case "f3":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/items");
