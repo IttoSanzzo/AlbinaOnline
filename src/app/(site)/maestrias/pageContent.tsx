@@ -221,19 +221,19 @@ export default function PageContent({ masteries }: PageContentProps) {
 											/>
 											{", "}
 											<UIBasics.Text
-												textColor="green"
+												textColor="gray"
 												children="Técnica"
 												withBold
 											/>
 											{", "}
 											<UIBasics.Text
-												textColor="orange"
+												textColor="green"
 												children="Constituição"
 												withBold
 											/>
 											{", "}
 											<UIBasics.Text
-												textColor="pink"
+												textColor="yellow"
 												children="Inteligência"
 												withBold
 											/>
@@ -245,7 +245,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 											/>
 											{", e "}
 											<UIBasics.Text
-												textColor="yellow"
+												textColor="pink"
 												children="Carisma"
 												withBold
 											/>

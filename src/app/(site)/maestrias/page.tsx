@@ -5,7 +5,7 @@ import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getCacheMode } from "@/utils/Cache";
-import { MasteryData } from "@/libs/stp@types";
+import { MasteryData, MasterySubType } from "@/libs/stp@types";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 export const metadata: Metadata = assembleMetadata({
@@ -30,8 +30,13 @@ export default async function MasteriesPageServerShell() {
 		next: { tags: [`/masteries`] },
 	});
 	const allRawMasteries: MasteryData[] = await response.json();
-	const masteries: MasteryData[] = allRawMasteries.sort((a, b) =>
-		a.name.localeCompare(b.name),
+	const masteries: MasteryData[] = allRawMasteries.sort(
+		(mastery1, mastery2) => {
+			const typeOrder =
+				MasterySubType[mastery1.subType] - MasterySubType[mastery2.subType];
+			if (typeOrder !== 0) return typeOrder;
+			return mastery1.name.localeCompare(mastery2.name);
+		},
 	);
 
 	return (
