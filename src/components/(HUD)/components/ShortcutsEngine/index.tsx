@@ -53,6 +53,6 @@ export function ShortcutsEngine() {
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, []);
+	}, [pathName]);
 	return null;
 }
