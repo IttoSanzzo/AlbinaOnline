@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export function ShortcutsEngine() {
 	const router = useRouter();
+	const pathName = usePathname();
 
 	async function pushRoute(event: KeyboardEvent, route: string) {
 		event.preventDefault();
@@ -20,6 +21,7 @@ export function ShortcutsEngine() {
 					break;
 				case "f2":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/chars");
+					else if (event.altKey) pushRoute(event, `${pathName}/edit`);
 					break;
 				case "f3":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/items");

@@ -119,7 +119,7 @@ export default function AddImageButton({
 									minHeight={50}
 									maxSize={4_194_304}
 									maxWidth={4000}
-									maxHeight={2000}
+									maxHeight={4000}
 								/>
 								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
