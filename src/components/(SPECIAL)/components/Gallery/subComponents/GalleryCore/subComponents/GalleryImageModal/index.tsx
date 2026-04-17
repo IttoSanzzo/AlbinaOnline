@@ -116,7 +116,6 @@ export function GalleryImageModal({
 										);
 										if (!response.ok) return;
 										await revalidateTagByClientSide(url);
-										openState[1](false);
 										await reloadGalleryData();
 									}}>
 									<StpIcon

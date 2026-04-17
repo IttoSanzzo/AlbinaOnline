@@ -14,7 +14,9 @@ interface StateSwitchProps {
 	state: [boolean, Dispatch<SetStateAction<boolean>>];
 	disabled?: boolean;
 	style?: React.CSSProperties;
-	onClickCheck?: () => Promise<boolean>;
+	onClickCheck?: (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	) => Promise<boolean>;
 	className?: string;
 }
 export function StateSwitch({
@@ -25,8 +27,10 @@ export function StateSwitch({
 	onClickCheck,
 	className,
 }: StateSwitchProps) {
-	async function handleClick() {
-		if (!onClickCheck || (await onClickCheck())) state[1](!state[0]);
+	async function handleClick(
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+	) {
+		if (!onClickCheck || (await onClickCheck(event))) state[1](!state[0]);
 	}
 	return (
 		<SwitchButton

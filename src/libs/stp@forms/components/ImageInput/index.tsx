@@ -114,26 +114,38 @@ export function ImageInput<TFormData extends FieldValues>({
 	) => {
 		if (cropTimeoutRef.current) clearTimeout(cropTimeoutRef.current);
 		onChangeRef.current?.(null!);
-		cropTimeoutRef.current = setTimeout(async () => {
-			if (originalFile == null) {
-				setError("missing originalFile...");
-				onChangeRef.current?.(null!);
-				return;
-			}
-			const file = await getCroppedFile(
-				originalFile,
-				preview!,
-				croppedAreaPixels,
-			);
-			const err = await validateInput([file]);
-			if (err) {
-				setError(err);
-				onChangeRef.current?.(null!);
-			} else {
-				setError(null);
-				onChangeRef.current?.(file);
-			}
-		}, 500);
+		if (originalFile == null) {
+			setError("missing originalFile...");
+			onChangeRef.current?.(null!);
+			return;
+		}
+		const mimeType = originalFile!.type || "image/png";
+		const extension = mimeType.split("/")[1] ?? "png";
+		cropTimeoutRef.current = setTimeout(
+			async () => {
+				if (originalFile == null) {
+					setError("missing originalFile...");
+					onChangeRef.current?.(null!);
+					return;
+				}
+				const file = await getCroppedFile(
+					originalFile,
+					preview!,
+					croppedAreaPixels,
+					mimeType,
+					extension,
+				);
+				const err = await validateInput([file]);
+				if (err) {
+					setError(err);
+					onChangeRef.current?.(null!);
+				} else {
+					setError(null);
+					onChangeRef.current?.(file);
+				}
+			},
+			mimeType === "image/gif" ? 1000 : 500,
+		);
 	};
 
 	return (
@@ -211,7 +223,7 @@ export function ImageInput<TFormData extends FieldValues>({
 									setError(null);
 								}
 
-								if (displayPreview || (croppingProportions && data.length == 1))
+								if ((displayPreview || croppingProportions) && data.length == 1)
 									setPreview(URL.createObjectURL(data[0]));
 								else setPreview(null);
 
@@ -261,10 +273,9 @@ async function getCroppedFile(
 	file: File,
 	imageSrc: string,
 	crop: LintIgnoredAny,
+	mimeType: string,
+	extension: string,
 ): Promise<File> {
-	const mimeType = file.type || "image/png";
-	const extension = mimeType.split("/")[1] ?? "png";
-
 	if (mimeType === "image/gif") return getCroppedGifFile(file, crop);
 	return getCroppedStaticFile(imageSrc, crop, mimeType, extension);
 }

@@ -110,6 +110,10 @@ export default function AddImageButton({
 										borderTop: "none",
 										borderRight: "none",
 									}}
+									onClickCheck={async (event) => {
+										event.preventDefault();
+										return true;
+									}}
 								/>
 								<HookedForm.ImageInput<FormData>
 									label="Insira nova imagem"
@@ -118,8 +122,8 @@ export default function AddImageButton({
 									minWidth={50}
 									minHeight={50}
 									maxSize={4_194_304}
-									maxWidth={4000}
-									maxHeight={4000}
+									// maxWidth={5000}
+									// maxHeight={5000}
 								/>
 								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
