@@ -72,7 +72,6 @@ export function EntityEffectsEditor({
 				</EffectActionButtonsContainer>
 			</UIBasics.Box>
 			<UIBasics.Carousel
-				// memoryId={`edit-${targetType}-${targetId}`}
 				slidesOrigin={"center"}
 				slides={effectsInOrder.length}
 				slidesPerView={1}

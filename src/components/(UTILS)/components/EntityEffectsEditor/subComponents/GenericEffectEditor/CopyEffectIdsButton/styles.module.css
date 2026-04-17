@@ -1,0 +1,24 @@
+.copyEffectIdsButtonContainer {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	left: 5px;
+	top: 23px;
+	z-index: 1;
+}
+
+.copyEffectIdButtonElement {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--rd-md);
+	width: 20px;
+	height: 20px;
+	background-color: var(--cl-gray-700);
+	border: 1px solid var(--cl-gray-500);
+	outline: none;
+
+	&:hover {
+		cursor: pointer;
+	}
+}

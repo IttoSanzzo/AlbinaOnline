@@ -18,6 +18,7 @@ import {
 } from "@/utils/ServerActions";
 import { capitalize } from "@/utils/StringUtils";
 import { ChangeEffectRole } from "./subComponents/ChangeEffectRole";
+import { CopyEffectIdsButton } from "./CopyEffectIdsButton";
 
 const GenericEffectContentArraySchema = z.array(
 	z.object({
@@ -106,6 +107,10 @@ export function GenericEffectEditor({
 				flexDirection="row"
 				justifyContent="space-between">
 				<div style={{ display: "flex", flexDirection: "column" }}>
+					<CopyEffectIdsButton
+						effectId={genericEffect.id}
+						effectLinkId={genericEffect.effectLinkId}
+					/>
 					<UIBasics.Text
 						textColor="blue"
 						children={`EffectId: ${genericEffect.id}`}
