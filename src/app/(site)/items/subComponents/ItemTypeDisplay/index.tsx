@@ -19,38 +19,30 @@ export default function ItemTypeDisplay({
 	return (
 		<UIBasics.Box
 			backgroundColor="gray"
+			withoutBorder
 			withoutPadding>
-			<UIBasics.ToggleHeader
-				defaultOpenState={true}
-				title={title}
-				contentMargin="none"
-				titleColor="gray"
-				memoryId={type}>
-				<UIBasics.List.Grid
-					backgroundColor="purple"
-					columnWidth={100}
-					direction="row"
-					children={allItemsFromThisType.map((item) => {
-						return (
-							<StyledLinkCard
-								key={item.id}
-								title={item.name}
-								href={`items/${item.slug}`}
-								artworkUrl={item.iconUrl}
-								size={100}
-								layout="rectangle"
-								titleWrap
-							/>
-							// <StyledLink
-							// 	key={item.id}
-							// 	title={item.name}
-							// 	href={`items/${item.slug}`}
-							// 	icon={item.iconUrl}
-							// />
-						);
-					})}
-				/>
-			</UIBasics.ToggleHeader>
+			<UIBasics.Header
+				children={title}
+				textAlign="center"
+				textColor="gray"></UIBasics.Header>
+			<UIBasics.List.Grid
+				backgroundColor="purple"
+				columnWidth={100}
+				direction="row"
+				children={allItemsFromThisType.map((item) => {
+					return (
+						<StyledLinkCard
+							key={item.id}
+							title={item.name}
+							href={`items/${item.slug}`}
+							artworkUrl={item.iconUrl}
+							size={100}
+							layout="rectangle"
+							titleWrap
+						/>
+					);
+				})}
+			/>
 		</UIBasics.Box>
 	);
 }
