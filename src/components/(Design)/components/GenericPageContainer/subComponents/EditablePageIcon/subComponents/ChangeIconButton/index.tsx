@@ -88,7 +88,7 @@ export function ChangeIconButton({
 									fieldName="image"
 									minWidth={256}
 									minHeight={256}
-									proportion={1}
+									croppingProportions={[1, 1]}
 									maxSize={4_194_304}
 									maxWidth={1440}
 									maxHeight={1440}

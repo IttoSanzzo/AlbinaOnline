@@ -1,10 +1,14 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import { Controller, FieldValues, Path } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import * as NextImage from "next/image";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { useHookedForm } from "../../context/HookedFormContext";
+import Cropper from "react-easy-crop";
+import { LintIgnoredAny } from "@/libs/stp@types";
+import { parseGIF, decompressFrames } from "gifuct-js";
+import { encode, UnencodedFrame } from "modern-gif";
 
 const ImageInputContainer = newStyledElement.div(styles.imageInputContainer);
 const ImageInputField = newStyledElement.input(styles.imageInputField);
@@ -30,8 +34,8 @@ type ImageInputProps<TFormData> = {
 	multiple?: boolean;
 	maxFiles?: number;
 	displayPreview?: boolean;
+	croppingProportions?: [number, number];
 };
-
 export function ImageInput<TFormData extends FieldValues>({
 	fieldName,
 	label,
@@ -48,13 +52,19 @@ export function ImageInput<TFormData extends FieldValues>({
 	multiple = false,
 	maxFiles,
 	displayPreview = true,
+	croppingProportions,
 }: ImageInputProps<TFormData>) {
+	const onChangeRef = useRef<(file: File) => void>(null);
+	const cropTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const {
 		form: { control },
 		triggerDebounceAction,
 	} = useHookedForm<TFormData>();
+	const [originalFile, setOriginalFile] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
+	const [crop, setCrop] = useState({ x: 0, y: 0 });
+	const [zoom, setZoom] = useState(1);
 
 	const inputStyle: CSSProperties = {};
 	const labelStyle: CSSProperties = {
@@ -62,6 +72,8 @@ export function ImageInput<TFormData extends FieldValues>({
 			backgroundColor: StandartBackgroundColor[labelBackground],
 		}),
 	};
+
+	if (multiple) croppingProportions = undefined;
 
 	async function validateInput(data: File[]): Promise<string | null> {
 		if (maxFiles != undefined && data.length > maxFiles)
@@ -96,6 +108,34 @@ export function ImageInput<TFormData extends FieldValues>({
 		return null;
 	}
 
+	const handleCrop = async (
+		_: LintIgnoredAny,
+		croppedAreaPixels: LintIgnoredAny,
+	) => {
+		if (cropTimeoutRef.current) clearTimeout(cropTimeoutRef.current);
+		onChangeRef.current?.(null!);
+		cropTimeoutRef.current = setTimeout(async () => {
+			if (originalFile == null) {
+				setError("missing originalFile...");
+				onChangeRef.current?.(null!);
+				return;
+			}
+			const file = await getCroppedFile(
+				originalFile,
+				preview!,
+				croppedAreaPixels,
+			);
+			const err = await validateInput([file]);
+			if (err) {
+				setError(err);
+				onChangeRef.current?.(null!);
+			} else {
+				setError(null);
+				onChangeRef.current?.(file);
+			}
+		}, 500);
+	};
+
 	return (
 		<ImageInputContainer>
 			<ImageInputLabel
@@ -103,7 +143,7 @@ export function ImageInput<TFormData extends FieldValues>({
 				style={labelStyle}
 			/>
 			{error && <ImageInputError>{error}</ImageInputError>}
-			{preview && (
+			{preview == null ? null : !croppingProportions ? (
 				<ImagePreviewContainer>
 					<NextImage.default
 						style={{
@@ -122,41 +162,70 @@ export function ImageInput<TFormData extends FieldValues>({
 						quality={100}
 					/>
 				</ImagePreviewContainer>
+			) : (
+				<ImagePreviewContainer
+					style={{
+						aspectRatio: "1/1",
+					}}>
+					<Cropper
+						style={{
+							containerStyle: {
+								maxWidth: previewMaxWidth ?? "100%",
+								maxHeight: previewMaxHeight ?? "100%",
+							},
+						}}
+						image={preview!}
+						crop={crop}
+						zoom={zoom}
+						aspect={croppingProportions![0] / croppingProportions![1]}
+						onCropChange={setCrop}
+						onZoomChange={setZoom}
+						onCropComplete={handleCrop}
+					/>
+				</ImagePreviewContainer>
 			)}
 			<Controller
 				name={fieldName}
 				control={control}
 				defaultValue={null!}
-				render={({ field }) => (
-					<ImageInputField
-						type="file"
-						multiple={multiple}
-						accept={accept}
-						style={inputStyle}
-						onChange={async (event) => {
-							const data: File[] = Array.from(event.target.files ?? []);
-							if (data == null) return;
+				render={({ field }) => {
+					onChangeRef.current = field.onChange;
+					return (
+						<ImageInputField
+							type="file"
+							multiple={multiple}
+							accept={accept}
+							style={inputStyle}
+							onChange={async (event) => {
+								const data: File[] = Array.from(event.target.files ?? []);
+								if (data == null) return;
 
-							const err = await validateInput(data);
-							if (err) {
-								setError(err);
-								field.onChange(null);
-								setPreview(null);
-								return;
-							}
-							setError(null);
+								if (!croppingProportions) {
+									const err = await validateInput(data);
+									if (err) {
+										setError(err);
+										field.onChange(null);
+										setPreview(null);
+										return;
+									}
+									setError(null);
+								}
 
-							if (displayPreview && data.length == 1)
-								setPreview(URL.createObjectURL(data[0]));
-							else setPreview(null);
+								if (displayPreview || (croppingProportions && data.length == 1))
+									setPreview(URL.createObjectURL(data[0]));
+								else setPreview(null);
 
-							if (multiple) field.onChange(data);
-							else field.onChange(data[0]);
+								if (multiple) field.onChange(data);
+								else if (croppingProportions) {
+									field.onChange(null!);
+									setOriginalFile(data[0]);
+								} else field.onChange(data[0]);
 
-							triggerDebounceAction();
-						}}
-					/>
-				)}
+								triggerDebounceAction();
+							}}
+						/>
+					);
+				}}
 			/>
 		</ImageInputContainer>
 	);
@@ -176,4 +245,164 @@ async function fileToImage(file: File): Promise<HTMLImageElement> {
 		reader.onerror = reject;
 		reader.readAsDataURL(file);
 	});
+}
+
+function createImage(url: string): Promise<HTMLImageElement> {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.crossOrigin = "anonymous";
+		img.onload = () => resolve(img);
+		img.onerror = reject;
+		img.src = url;
+	});
+}
+
+async function getCroppedFile(
+	file: File,
+	imageSrc: string,
+	crop: LintIgnoredAny,
+): Promise<File> {
+	const mimeType = file.type || "image/png";
+	const extension = mimeType.split("/")[1] ?? "png";
+
+	if (mimeType === "image/gif") return getCroppedGifFile(file, crop);
+	return getCroppedStaticFile(imageSrc, crop, mimeType, extension);
+}
+
+async function getCroppedStaticFile(
+	imageSrc: string,
+	crop: LintIgnoredAny,
+	mimeType: string,
+	extension: string,
+): Promise<File> {
+	const canvas = document.createElement("canvas");
+	const ctx = canvas.getContext("2d");
+	if (!ctx) throw new Error("Canvas context not available");
+
+	const quality = mimeType === "image/jpeg" ? 0.92 : 1;
+	const image = await createImage(imageSrc);
+
+	canvas.width = crop.width;
+	canvas.height = crop.height;
+
+	ctx.drawImage(
+		image,
+		crop.x,
+		crop.y,
+		crop.width,
+		crop.height,
+		0,
+		0,
+		crop.width,
+		crop.height,
+	);
+
+	return new Promise((resolve, reject) => {
+		canvas.toBlob(
+			(blob) => {
+				if (!blob) return reject(new Error("Canvas toBlob failed"));
+
+				resolve(new File([blob], `cropped.${extension}`, { type: mimeType }));
+			},
+			mimeType,
+			quality,
+		);
+	});
+}
+
+async function getCroppedGifFile(
+	file: File,
+	crop: LintIgnoredAny,
+): Promise<File> {
+	const gif = parseGIF(await file.arrayBuffer());
+	const frames = decompressFrames(gif, true);
+
+	const width = gif.lsd.width;
+	const height = gif.lsd.height;
+
+	const baseCanvas = document.createElement("canvas");
+	baseCanvas.width = width;
+	baseCanvas.height = height;
+
+	const baseCtx = baseCanvas.getContext("2d");
+	if (!baseCtx) throw new Error("Canvas context not available");
+
+	baseCtx.clearRect(0, 0, width, height);
+
+	const outputFrames: UnencodedFrame[] = [];
+
+	for (let index = 0; index < frames.length; ++index) {
+		const frame = frames[index];
+		const { dims, patch, delay, disposalType } = frame;
+
+		if (index % 2 === 0) await nextFrame();
+
+		let prev: ImageData | null = null;
+
+		if (disposalType === 3) prev = baseCtx.getImageData(0, 0, width, height);
+
+		if (disposalType === 2)
+			baseCtx.clearRect(dims.left, dims.top, dims.width, dims.height);
+
+		const frameCanvas = document.createElement("canvas");
+		frameCanvas.width = dims.width;
+		frameCanvas.height = dims.height;
+
+		const frameCtx = frameCanvas.getContext("2d");
+		if (!frameCtx) throw new Error("Frame ctx not available");
+
+		const imageData = new ImageData(
+			new Uint8ClampedArray(patch),
+			dims.width,
+			dims.height,
+		);
+
+		frameCtx.putImageData(imageData, 0, 0);
+
+		baseCtx.drawImage(frameCanvas, dims.left, dims.top);
+
+		const cropCanvas = document.createElement("canvas");
+		cropCanvas.width = crop.width;
+		cropCanvas.height = crop.height;
+
+		const cropCtx = cropCanvas.getContext("2d");
+		if (!cropCtx) throw new Error("Crop ctx not available");
+
+		cropCtx.drawImage(
+			baseCanvas,
+			crop.x,
+			crop.y,
+			crop.width,
+			crop.height,
+			0,
+			0,
+			crop.width,
+			crop.height,
+		);
+
+		outputFrames.push({
+			data: cropCanvas,
+			width: crop.width,
+			height: crop.height,
+			delay: delay,
+			disposal: disposalType as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | undefined,
+		});
+
+		if (disposalType === 3 && prev) baseCtx.putImageData(prev, 0, 0);
+	}
+
+	const gifBuffer = await encode({
+		frames: outputFrames,
+		width: crop.width,
+		height: crop.height,
+		format: "arrayBuffer",
+	});
+
+	return new File([gifBuffer], "cropped.gif", {
+		type: "image/gif",
+	});
+}
+
+function nextFrame(): Promise<void> {
+	return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
