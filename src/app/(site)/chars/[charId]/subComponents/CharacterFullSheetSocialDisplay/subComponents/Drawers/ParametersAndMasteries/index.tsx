@@ -4,24 +4,41 @@ import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import {
 	CharacterAbilityScore,
 	CharacterMasteryExpanded,
+	CharacterParameters,
 	Guid,
+	RaceData,
 } from "@/libs/stp@types";
 
-interface MasteriesAndTestsDrawerProps {
+interface ParametersAndMasteriesDrawerProps {
 	characterId: Guid;
 	characterMasteries: CharacterMasteryExpanded[];
 	abilityScore: CharacterAbilityScore;
+	parameters: CharacterParameters;
+	race: RaceData;
 }
-export function MasteriesAndTestsDrawer({
+export function ParametersAndMasteriesDrawer({
 	characterId,
 	characterMasteries,
 	abilityScore,
-}: MasteriesAndTestsDrawerProps) {
+	parameters,
+	race,
+}: ParametersAndMasteriesDrawerProps) {
 	return (
 		<CharacterDrawerBaseHeader
-			title="Maestrias & Testes"
-			memoryId={`${characterId}-MasteriesAndTests`}
+			title="Parâmetros & Maestrias"
+			memoryId={`${characterId}-ParametersAndMasteries`}
 			backgroundColor="blue">
+			<UIBasics.MultiColumn.Two
+				colum1={
+					<CharacterDataDisplays.Parameters
+						parameters={parameters}
+						race={race}
+					/>
+				}
+				colum2={
+					<CharacterDataDisplays.AbilityScore abilityScore={abilityScore} />
+				}
+			/>
 			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterDataDisplays.MasteriesFromType

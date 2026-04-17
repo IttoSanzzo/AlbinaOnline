@@ -31,10 +31,9 @@ export function CharacterFullSheetEditableDisplay({
 					characterActionsPool={characterData.actionsPool}
 				/>
 				<CharacterDrawers.TraitsSkillsSpells characterId={characterData.id} />
-				<CharacterDrawers.ParametersAndAtributeScores
+				<CharacterDrawers.ParametersAndMasteries
 					characterId={characterData.id}
 				/>
-				<CharacterDrawers.MasteriesAndTests characterId={characterData.id} />
 				<CharacterDrawers.SpellDomains
 					characterId={characterData.id}
 					spellDomains={characterData.spellDomains}

@@ -142,16 +142,12 @@ export function CharacterFullSheetSocialDisplay({
 					miscMetrics={characterData.miscMetrics}
 				/>
 				<CharacterDrawers.TraitsSkillsSpells characterId={characterData.id} />
-				<CharacterDrawers.ParametersAndAtributeScores
-					characterId={characterData.id}
-					parameters={characterData.parameters}
-					abilityScore={characterData.abilityScore}
-					race={characterData.race}
-				/>
-				<CharacterDrawers.MasteriesAndTests
+				<CharacterDrawers.ParametersAndMasteries
 					characterId={characterData.id}
 					characterMasteries={characterMasteriesState}
 					abilityScore={characterData.abilityScore}
+					parameters={characterData.parameters}
+					race={characterData.race}
 				/>
 				<CharacterDrawers.SpellDomains
 					characterId={characterData.id}

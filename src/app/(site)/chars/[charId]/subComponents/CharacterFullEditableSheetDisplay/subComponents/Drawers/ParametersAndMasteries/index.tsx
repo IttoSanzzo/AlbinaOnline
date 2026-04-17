@@ -8,12 +8,12 @@ import { MasteriesContext } from "../../CharacterEditableSheetContextProviders";
 import { UIBasics } from "@/components/(UIBasics)";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
 
-interface MasteriesAndTestsDrawerProps {
+interface ParametersAndMasteriesDrawerProps {
 	characterId: Guid;
 }
-export function MasteriesAndTestsDrawer({
+export function ParametersAndMasteriesDrawer({
 	characterId,
-}: MasteriesAndTestsDrawerProps) {
+}: ParametersAndMasteriesDrawerProps) {
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	async function loadMasteries(): Promise<boolean> {
@@ -46,9 +46,13 @@ export function MasteriesAndTestsDrawer({
 
 	return (
 		<CharacterDrawerBaseHeader
-			title="Maestrias & Testes"
-			memoryId={`${characterId}-MasteriesAndTests`}
+			title="Parâmetros & Maestrias"
+			memoryId={`${characterId}-ParametersAndMasteries`}
 			backgroundColor="blue">
+			<UIBasics.MultiColumn.Two
+				colum1={<CharacterEditableDataDisplays.Parameters />}
+				colum2={<CharacterEditableDataDisplays.AbilityScore />}
+			/>
 			<UIBasics.MultiColumn.Two
 				colum1={
 					<CharacterEditableDataDisplays.MasteriesFromType
