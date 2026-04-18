@@ -54,6 +54,7 @@ export function ImageInput<TFormData extends FieldValues>({
 	displayPreview = true,
 	croppingProportions,
 }: ImageInputProps<TFormData>) {
+	const imageInputRef = useRef<HTMLInputElement | null>(null);
 	const onChangeRef = useRef<(file: File) => void>(null);
 	const cropTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const {
@@ -62,6 +63,7 @@ export function ImageInput<TFormData extends FieldValues>({
 	} = useHookedForm<TFormData>();
 	const [originalFile, setOriginalFile] = useState<File | null>(null);
 	const [preview, setPreview] = useState<string | null>(null);
+	const [isDragging, setIsDragging] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
@@ -148,8 +150,68 @@ export function ImageInput<TFormData extends FieldValues>({
 		);
 	};
 
+	async function handleFiles(data: File[]) {
+		if (!onChangeRef.current || data == null) return;
+		if (!croppingProportions) {
+			const err = await validateInput(data);
+			if (err) {
+				setError(err);
+				onChangeRef.current(null!);
+				setPreview(null);
+				return;
+			}
+			setError(null);
+		}
+
+		if ((displayPreview || croppingProportions) && data.length == 1)
+			setPreview(URL.createObjectURL(data[0]));
+		else setPreview(null);
+
+		if (multiple) {
+			const dt = new DataTransfer();
+			data.forEach((f) => dt.items.add(f));
+			if (imageInputRef.current) imageInputRef.current.files = dt.files;
+
+			onChangeRef.current(data as LintIgnoredAny);
+		} else if (croppingProportions) {
+			onChangeRef.current(null!);
+			setOriginalFile(data[0]);
+		} else {
+			onChangeRef.current(data[0]);
+		}
+
+		triggerDebounceAction();
+	}
+
 	return (
-		<ImageInputContainer>
+		<ImageInputContainer
+			style={
+				isDragging
+					? {
+							border: "1px solid var(--cl-blue-500)",
+						}
+					: undefined
+			}
+			onDragEnter={(e) => {
+				e.preventDefault();
+				setIsDragging(true);
+			}}
+			onDragLeave={(e) => {
+				e.preventDefault();
+				const toElement = e.relatedTarget as Node | null;
+				if (toElement && e.currentTarget.contains(toElement)) return;
+				setIsDragging(false);
+			}}
+			onDragOver={(e) => {
+				e.preventDefault();
+			}}
+			onDrop={async (e) => {
+				e.preventDefault();
+				setIsDragging(false);
+				const files = await extractFilesFromDrop(e);
+				if (!files.length) return;
+				await handleFiles(files);
+			}}>
 			<ImageInputLabel
 				children={label}
 				style={labelStyle}
@@ -202,38 +264,17 @@ export function ImageInput<TFormData extends FieldValues>({
 				defaultValue={null!}
 				render={({ field }) => {
 					onChangeRef.current = field.onChange;
+
 					return (
 						<ImageInputField
+							ref={imageInputRef}
 							type="file"
 							multiple={multiple}
 							accept={accept}
 							style={inputStyle}
 							onChange={async (event) => {
 								const data: File[] = Array.from(event.target.files ?? []);
-								if (data == null) return;
-
-								if (!croppingProportions) {
-									const err = await validateInput(data);
-									if (err) {
-										setError(err);
-										field.onChange(null);
-										setPreview(null);
-										return;
-									}
-									setError(null);
-								}
-
-								if ((displayPreview || croppingProportions) && data.length == 1)
-									setPreview(URL.createObjectURL(data[0]));
-								else setPreview(null);
-
-								if (multiple) field.onChange(data);
-								else if (croppingProportions) {
-									field.onChange(null!);
-									setOriginalFile(data[0]);
-								} else field.onChange(data[0]);
-
-								triggerDebounceAction();
+								await handleFiles(data);
 							}}
 						/>
 					);
@@ -416,4 +457,39 @@ async function getCroppedGifFile(
 
 function nextFrame(): Promise<void> {
 	return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+}
+
+async function extractFilesFromDrop(e: React.DragEvent): Promise<File[]> {
+	const dt = e.dataTransfer;
+	if (dt.files && dt.files.length > 0) return Array.from(dt.files ?? []);
+
+	if (dt.items) {
+		const files: File[] = [];
+		for (const item of Array.from(dt.items)) {
+			if (item.kind === "file") {
+				const file = item.getAsFile();
+				if (file) files.push(file);
+			}
+			if (item.kind === "string" && item.type === "text/uri-list") {
+				const url = await new Promise<string>((resolve) =>
+					item.getAsString(resolve),
+				);
+				const file = await urlToFile(url);
+				if (file) files.push(file);
+			}
+		}
+		return files;
+	}
+	return [];
+}
+
+async function urlToFile(url: string): Promise<File | null> {
+	try {
+		const res = await fetch(url);
+		const blob = await res.blob();
+		if (!blob.type.startsWith("image/")) return null;
+		return new File([blob], "dropped-image", { type: blob.type });
+	} catch {
+		return null;
+	}
 }

@@ -6,6 +6,7 @@
 	border: 1px solid var(--cl-gray-500);
 	margin: var(--sp-2) 0;
 	position: relative;
+	transition: 0.25s linear border-color;
 
 	&:focus-within {
 		border: 1px solid var(--cl-gray-200);
