@@ -49,5 +49,5 @@ export const resolveMetadata = cache(
 		} catch {
 			return undefined;
 		}
-	}
+	},
 );
