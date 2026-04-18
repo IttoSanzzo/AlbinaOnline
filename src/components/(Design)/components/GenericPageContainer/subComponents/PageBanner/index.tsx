@@ -1,7 +1,6 @@
-import Image from "next/image";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
-import { imageSrcTTL } from "@/utils/Cache";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const PageBannerContainer = newStyledElement.div(styles.pageBannerContainer);
 
@@ -11,8 +10,8 @@ interface PageBannerProps {
 export function PageBanner({ bannerSrc }: PageBannerProps) {
 	return (
 		<PageBannerContainer>
-			<Image
-				src={imageSrcTTL(bannerSrc)}
+			<ImageWithTTL
+				src={bannerSrc}
 				alt="Page's banner"
 				priority={true}
 				sizes="100vw"

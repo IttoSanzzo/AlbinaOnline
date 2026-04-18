@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
+
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ChangeIconButton } from "./subComponents/ChangeIconButton";
 import { useState } from "react";
-import { imageSrcTTL } from "@/utils/Cache";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const EditablePageIconContainer = newStyledElement.div(
 	styles.pageIconContainer,
@@ -32,8 +32,8 @@ export function EditablePageIcon({
 
 	return (
 		<EditablePageIconContainer>
-			<Image
-				src={imageSrcTTL(icon)}
+			<ImageWithTTL
+				src={icon}
 				alt="Page's icon"
 				width={512}
 				height={512}

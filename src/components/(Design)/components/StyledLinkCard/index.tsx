@@ -1,6 +1,5 @@
 import { CSSProperties } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
 	StandartBackgroundColor,
 	StandartTextColor,
@@ -10,6 +9,7 @@ import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
 import { Tilt } from "../Tilt";
 import { TiltOptions } from "vanilla-tilt";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const StyledLinkCardContainer = newStyledElement.div(
 	styles.styledLinkCardContainer,
@@ -99,7 +99,7 @@ export function StyledLinkCard({
 					)}
 					<Link href={href}>
 						<ArtworkContainer style={artworkContainerStyle}>
-							<Image
+							<ImageWithTTL
 								src={artworkUrl}
 								alt=""
 								width={size * 2 - 2}
@@ -126,7 +126,7 @@ export function StyledLinkCard({
 				)}
 				<Link href={href}>
 					<ArtworkContainer style={artworkContainerStyle}>
-						<Image
+						<ImageWithTTL
 							src={artworkUrl}
 							alt=""
 							width={size * 2 - 2}

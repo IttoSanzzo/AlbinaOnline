@@ -1,10 +1,9 @@
-import Image from "next/image";
 import { EditablePageIcon } from "../EditablePageIcon";
 import { EditablePageTitle } from "../EditablePageTitle";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ReactNode } from "react";
-import { imageSrcTTL } from "@/utils/Cache";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const PageHeaderContainer = newStyledElement.div(styles.pageHeaderContainer);
 const TitlesContainer = newStyledElement.div(styles.titlesContainer);
@@ -54,8 +53,8 @@ export function PageHeader({
 					cacheTags={cacheTags}
 				/>
 			) : (
-				<Image
-					src={imageSrcTTL(icon)}
+				<ImageWithTTL
+					src={icon}
 					alt="Page's favicon"
 					width={512}
 					height={512}
