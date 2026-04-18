@@ -470,6 +470,7 @@ async function extractFilesFromDrop(e: React.DragEvent): Promise<File[]> {
 			if (item.kind === "file") {
 				const file = item.getAsFile();
 				if (file) files.push(file);
+				continue;
 			}
 			if (item.kind === "string" && item.type === "text/uri-list") {
 				const url = await new Promise<string>((resolve) =>
@@ -477,6 +478,7 @@ async function extractFilesFromDrop(e: React.DragEvent): Promise<File[]> {
 				);
 				const file = await urlToFile(url);
 				if (file) files.push(file);
+				continue;
 			}
 		}
 		return files;
@@ -486,9 +488,13 @@ async function extractFilesFromDrop(e: React.DragEvent): Promise<File[]> {
 
 async function urlToFile(url: string): Promise<File | null> {
 	try {
-		const res = await fetch(url);
+		const res = await fetch(
+			`/api/proxy/images/external?url=${encodeURIComponent(url)}`,
+		);
+
 		const blob = await res.blob();
 		if (!blob.type.startsWith("image/")) return null;
+
 		return new File([blob], "dropped-image", { type: blob.type });
 	} catch {
 		return null;
