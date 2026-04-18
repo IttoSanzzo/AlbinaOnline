@@ -152,6 +152,11 @@ export function ImageInput<TFormData extends FieldValues>({
 
 	async function handleFiles(data: File[]) {
 		if (!onChangeRef.current || data == null) return;
+
+		const dt = new DataTransfer();
+		data.forEach((f) => dt.items.add(f));
+		if (imageInputRef.current) imageInputRef.current.files = dt.files;
+
 		if (!croppingProportions) {
 			const err = await validateInput(data);
 			if (err) {
@@ -168,10 +173,6 @@ export function ImageInput<TFormData extends FieldValues>({
 		else setPreview(null);
 
 		if (multiple) {
-			const dt = new DataTransfer();
-			data.forEach((f) => dt.items.add(f));
-			if (imageInputRef.current) imageInputRef.current.files = dt.files;
-
 			onChangeRef.current(data as LintIgnoredAny);
 		} else if (croppingProportions) {
 			onChangeRef.current(null!);
