@@ -9,11 +9,23 @@ interface ImageWithTTLProps extends ImageProps {
 export function ImageWithTTL({
 	ttlMs = 5 * 60 * 1000,
 	src,
+	key,
 	...rest
 }: ImageWithTTLProps) {
+	if (typeof src == "string") {
+		const finalSrc = imageSrcTTL(src, ttlMs);
+		return (
+			<Image
+				key={`${key}-${finalSrc}`}
+				src={finalSrc}
+				{...rest}
+			/>
+		);
+	}
 	return (
 		<Image
-			src={typeof src === "string" ? imageSrcTTL(src, ttlMs) : src}
+			src={src}
+			key={key}
 			{...rest}
 		/>
 	);
