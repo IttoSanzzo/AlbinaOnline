@@ -1,12 +1,12 @@
 import Link, { LinkProps } from "next/link";
 import styles from "./styles.module.css";
-import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon, StpIconProps } from "@/libs/stp@icons";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const StyledLinkWithButtonContainer = newStyledElement.div(
-	styles.styledLinkContainer
+	styles.styledLinkContainer,
 );
 const ActionButton = newStyledElement.button(styles.actionButton);
 
@@ -35,8 +35,8 @@ export function StyledLinkWithButton({
 			? icon
 			: `${icon}`
 		: tryAutomaticIcon
-		? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
-		: AlbinaLogo;
+			? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
+			: AlbinaLogo;
 
 	return (
 		<StyledLinkWithButtonContainer
@@ -44,7 +44,7 @@ export function StyledLinkWithButton({
 			<Link
 				href={href}
 				{...rest}>
-				<Image
+				<ImageWithTTL
 					src={finalIcon}
 					width={21}
 					height={21}

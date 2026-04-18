@@ -1,7 +1,6 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { PageBanner } from "./subComponents/PageBanner";
 import { PageHeader } from "./subComponents/PageHeader";
-import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { EditablePageBanner } from "./subComponents/EditablePageBanner";

@@ -1,3 +1,5 @@
+"use client";
+
 import { imageSrcTTL } from "@/utils/Cache";
 import Image, { ImageProps } from "next/image";
 

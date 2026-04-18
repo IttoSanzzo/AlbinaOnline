@@ -1,15 +1,14 @@
 import styles from "./styles.module.css";
-import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import React from "react";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const StyledLinklikeButtonContainer = newStyledElement.div(
-	styles.styledLinklikeButtonContainer
+	styles.styledLinklikeButtonContainer,
 );
 
-export interface StyledLinklikeButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface StyledLinklikeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	title: string;
 	icon?: string;
 	textMode?: boolean;
@@ -27,7 +26,7 @@ export function StyledLinklikeButton({
 		<StyledLinklikeButtonContainer
 			className={textMode ? styles.styledLinklikeButtonInTextMode : undefined}>
 			<button {...rest}>
-				<Image
+				<ImageWithTTL
 					src={finalIcon}
 					width={21}
 					height={21}

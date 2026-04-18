@@ -1,12 +1,12 @@
 import Link, { LinkProps } from "next/link";
-import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 export const StyledLinkContainer = newStyledElement.div(
-	styles.styledLinkContainer
+	styles.styledLinkContainer,
 );
 
 export interface StyledLinkProps extends LinkProps {
@@ -32,8 +32,8 @@ export function StyledLink({
 			? icon
 			: icon
 		: tryAutomaticIcon
-		? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
-		: AlbinaLogo;
+			? `https://www.google.com/s2/favicons?domain=${href}&sz=${21}`
+			: AlbinaLogo;
 
 	return (
 		<StyledLinkContainer
@@ -47,7 +47,7 @@ export function StyledLink({
 			<Link
 				href={href}
 				{...rest}>
-				<Image
+				<ImageWithTTL
 					src={finalIcon}
 					width={21}
 					height={21}

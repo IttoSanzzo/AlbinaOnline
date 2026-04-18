@@ -1,7 +1,7 @@
 "use client";
 
 import { newStyledElement } from "@setsu-tp/styled-components";
-import React, { HTMLAttributes, ReactNode, useEffect, useRef } from "react";
+import { HTMLAttributes, ReactNode, useEffect, useRef } from "react";
 import VanillaTilt, { TiltOptions } from "vanilla-tilt";
 
 const TiltContainer = newStyledElement.div("tiltContainer");

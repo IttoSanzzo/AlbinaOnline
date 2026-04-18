@@ -1,15 +1,14 @@
-import Image from "next/image";
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import React from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const StyledFalseLinkContainer = newStyledElement.div(
-	styles.styledFalseLinkContainer
+	styles.styledFalseLinkContainer,
 );
 
-export interface StyledFalseLinkProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface StyledFalseLinkProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	title: string;
 	icon?: string;
 	textMode?: boolean;
@@ -31,7 +30,7 @@ export function StyledFalseLink({
 					event.preventDefault();
 				}}
 				{...rest}>
-				<Image
+				<ImageWithTTL
 					src={finalIcon}
 					width={21}
 					height={21}
