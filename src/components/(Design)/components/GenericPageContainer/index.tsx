@@ -56,7 +56,7 @@ export function GenericPageContainer({
 					cacheTags={cacheTags}
 				/>
 			) : (
-				<PageBanner bannerSrc={banner ? banner : AlbinaLogo} />
+				<PageBanner bannerSrc={banner ?? ""} />
 			)}
 
 			<ContentsContainer>
