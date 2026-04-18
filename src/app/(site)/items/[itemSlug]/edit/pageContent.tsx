@@ -24,7 +24,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -110,7 +113,8 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/items");
+		await revalidateTagByClientSide("/items");
+		await revalidatePathByClientSide("/items");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
@@ -135,7 +139,9 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			icon={item.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/items/${item.slug}`)}
 			bannerChangeRoute={getAlbinaApiFullAddress(`/banner/items/${item.slug}`)}
-			metadataTag={`item-${item.slug}`}>
+			metadataTag={`item-${item.slug}`}
+			cacheTags={["/items"]}
+			cachePaths={["/items"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

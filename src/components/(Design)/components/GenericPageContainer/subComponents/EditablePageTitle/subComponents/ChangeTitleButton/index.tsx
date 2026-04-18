@@ -11,7 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { PageTitle } from "../../../PageHeader";
-import { revalidateMetadata } from "@/utils/ServerActions";
+import {
+	revalidateMetadata,
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import toast from "react-hot-toast";
 
 const ChangeTitleButtonContainer = newStyledElement.div(
@@ -32,6 +36,8 @@ interface ChangeTitleButtonProps {
 	route: string;
 	titleChangeBodyPropName?: string;
 	metadataTag?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function ChangeTitleButton({
 	setTitle,
@@ -39,6 +45,8 @@ export function ChangeTitleButton({
 	route,
 	titleChangeBodyPropName,
 	metadataTag,
+	cachePaths,
+	cacheTags,
 }: ChangeTitleButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -74,6 +82,10 @@ export function ChangeTitleButton({
 		setOpen(false);
 		setTitle(data.newName);
 		if (metadataTag) revalidateMetadata(metadataTag);
+		if (cacheTags)
+			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
+		if (cachePaths)
+			for (const path of cachePaths) await revalidatePathByClientSide(path);
 	}
 
 	return (

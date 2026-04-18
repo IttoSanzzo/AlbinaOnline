@@ -15,6 +15,8 @@ interface EditablePageIconProps {
 	metadataTag?: string;
 	borderColor?: string;
 	borderOpacity: number;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function EditablePageIcon({
 	iconSrc,
@@ -22,6 +24,8 @@ export function EditablePageIcon({
 	metadataTag,
 	borderColor,
 	borderOpacity,
+	cachePaths,
+	cacheTags,
 }: EditablePageIconProps) {
 	const [icon, setIcon] = useState<string>(`${iconSrc}?t=${Date.now()}`);
 
@@ -48,6 +52,8 @@ export function EditablePageIcon({
 					iconSrc={iconSrc}
 					route={route}
 					metadataTag={metadataTag}
+					cachePaths={cachePaths}
+					cacheTags={cacheTags}
 				/>
 			)}
 		</EditablePageIconContainer>

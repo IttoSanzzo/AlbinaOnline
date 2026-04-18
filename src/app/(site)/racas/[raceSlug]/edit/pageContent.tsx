@@ -26,7 +26,10 @@ import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -122,7 +125,8 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/races");
+		await revalidateTagByClientSide("/races");
+		await revalidatePathByClientSide("/racas");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, [
@@ -147,7 +151,9 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			icon={race.iconUrl}
 			iconChangeRoute={getAlbinaApiFullAddress(`/favicon/races/${race.slug}`)}
 			bannerChangeRoute={getAlbinaApiFullAddress(`/banner/races/${race.slug}`)}
-			metadataTag={`race-${race.slug}`}>
+			metadataTag={`race-${race.slug}`}
+			cacheTags={["/races"]}
+			cachePaths={["/racas"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

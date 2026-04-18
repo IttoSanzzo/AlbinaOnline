@@ -23,6 +23,8 @@ interface PageHeaderProps {
 	subTitle?: ReactNode;
 	subTitle2?: ReactNode;
 	metadataTag?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function PageHeader({
 	isEditable,
@@ -36,6 +38,8 @@ export function PageHeader({
 	subTitle,
 	subTitle2,
 	metadataTag,
+	cachePaths,
+	cacheTags,
 }: PageHeaderProps) {
 	return (
 		<PageHeaderContainer>
@@ -45,6 +49,8 @@ export function PageHeader({
 					route={iconChangeRoute}
 					borderColor={borderColor}
 					borderOpacity={borderOpacity}
+					cachePaths={cachePaths}
+					cacheTags={cacheTags}
 				/>
 			) : (
 				<Image
@@ -69,6 +75,8 @@ export function PageHeader({
 						route={titleChangeRoute}
 						titleChangeBodyPropName={titleChangeBodyPropName}
 						metadataTag={metadataTag}
+						cachePaths={cachePaths}
+						cacheTags={cacheTags}
 					/>
 				) : (
 					<PageTitle>{title}</PageTitle>

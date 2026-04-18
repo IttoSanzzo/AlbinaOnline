@@ -24,6 +24,8 @@ interface GenericPageContainerProps {
 	subTitle?: ReactNode;
 	subTitle2?: ReactNode;
 	metadataTag?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 
 export function GenericPageContainer({
@@ -41,6 +43,8 @@ export function GenericPageContainer({
 	subTitle,
 	subTitle2,
 	metadataTag,
+	cachePaths,
+	cacheTags,
 }: GenericPageContainerProps) {
 	return (
 		<MainContainer>
@@ -48,6 +52,8 @@ export function GenericPageContainer({
 				<EditablePageBanner
 					route={bannerChangeRoute}
 					bannerSrc={banner ?? ""}
+					cachePaths={cachePaths}
+					cacheTags={cacheTags}
 				/>
 			) : (
 				<PageBanner bannerSrc={banner ? banner : AlbinaLogo} />
@@ -66,6 +72,8 @@ export function GenericPageContainer({
 					subTitle={subTitle}
 					subTitle2={subTitle2}
 					metadataTag={metadataTag}
+					cachePaths={cachePaths}
+					cacheTags={cacheTags}
 				/>
 				{children}
 			</ContentsContainer>

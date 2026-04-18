@@ -12,10 +12,14 @@ const EditablePageBannerContainer = newStyledElement.div(
 export interface EditablePageBannerProps {
 	bannerSrc: string;
 	route?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function EditablePageBanner({
 	bannerSrc,
 	route,
+	cachePaths,
+	cacheTags,
 }: EditablePageBannerProps) {
 	const [banner, setBanner] = useState<string>(`${bannerSrc}?t=${Date.now()}`);
 
@@ -34,6 +38,8 @@ export function EditablePageBanner({
 					setBanner={setBanner}
 					bannerSrc={bannerSrc}
 					route={route}
+					cachePaths={cachePaths}
+					cacheTags={cacheTags}
 				/>
 			)}
 		</EditablePageBannerContainer>

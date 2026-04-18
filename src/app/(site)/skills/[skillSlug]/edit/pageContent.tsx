@@ -23,7 +23,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -108,7 +111,8 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/skills");
+		await revalidateTagByClientSide("/skills");
+		await revalidatePathByClientSide("/skills");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(SkillType, [
@@ -135,7 +139,9 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/banner/skills/${skill.slug}`,
 			)}
-			metadataTag={`skill-${skill.slug}`}>
+			metadataTag={`skill-${skill.slug}`}
+			cacheTags={["/skills"]}
+			cachePaths={["/skills"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

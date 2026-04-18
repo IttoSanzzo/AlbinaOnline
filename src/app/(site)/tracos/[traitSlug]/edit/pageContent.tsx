@@ -22,7 +22,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -87,7 +90,8 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/traits");
+		await revalidateTagByClientSide("/traits");
+		await revalidatePathByClientSide("/tracos");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, [
@@ -112,7 +116,9 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/banner/traits/${trait.slug}`,
 			)}
-			metadataTag={`trait-${trait.slug}`}>
+			metadataTag={`trait-${trait.slug}`}
+			cacheTags={["/traits"]}
+			cachePaths={["/tracos"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

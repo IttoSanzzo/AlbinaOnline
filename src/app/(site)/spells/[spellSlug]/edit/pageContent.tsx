@@ -26,7 +26,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -121,7 +124,8 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/spells");
+		await revalidateTagByClientSide("/spells");
+		await revalidatePathByClientSide("/spells");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
@@ -144,7 +148,9 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/banner/spells/${spell.slug}`,
 			)}
-			metadataTag={`spell-${spell.slug}`}>
+			metadataTag={`spell-${spell.slug}`}
+			cacheTags={["/spells"]}
+			cachePaths={["/spells"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

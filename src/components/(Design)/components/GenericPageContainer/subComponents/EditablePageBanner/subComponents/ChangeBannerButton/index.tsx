@@ -12,6 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import toast from "react-hot-toast";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer,
@@ -30,11 +34,15 @@ interface ChangeBannerButtonProps {
 	bannerSrc: string;
 	setBanner: Dispatch<SetStateAction<string>>;
 	route: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function ChangeBannerButton({
 	bannerSrc,
 	setBanner,
 	route,
+	cachePaths,
+	cacheTags,
 }: ChangeBannerButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -59,6 +67,10 @@ export function ChangeBannerButton({
 		setOpen(false);
 		setBanner(`${bannerSrc}?t=${Date.now()}`);
 		toast.success("Salvo", { id: toastId });
+		if (cacheTags)
+			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
+		if (cachePaths)
+			for (const path of cachePaths) await revalidatePathByClientSide(path);
 	}
 
 	return (

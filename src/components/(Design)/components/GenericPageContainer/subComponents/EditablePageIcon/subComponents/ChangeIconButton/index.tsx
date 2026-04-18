@@ -11,7 +11,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useState } from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateMetadata } from "@/utils/ServerActions";
+import {
+	revalidateMetadata,
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import toast from "react-hot-toast";
 
 const ChangeIconButtonContainer = newStyledElement.div(
@@ -32,12 +36,16 @@ interface ChangeIconButtonProps {
 	setIcon: Dispatch<SetStateAction<string>>;
 	route: string;
 	metadataTag?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function ChangeIconButton({
 	iconSrc,
 	setIcon,
 	route,
 	metadataTag,
+	cachePaths,
+	cacheTags,
 }: ChangeIconButtonProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -63,6 +71,10 @@ export function ChangeIconButton({
 		setIcon(`${iconSrc}?t=${Date.now()}`);
 		toast.success("Salvo", { id: toastId });
 		if (metadataTag) revalidateMetadata(metadataTag);
+		if (cacheTags)
+			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
+		if (cachePaths)
+			for (const path of cachePaths) await revalidatePathByClientSide(path);
 	}
 
 	return (

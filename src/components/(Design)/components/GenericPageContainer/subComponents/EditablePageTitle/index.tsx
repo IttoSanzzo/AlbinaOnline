@@ -7,12 +7,16 @@ interface EditablePageTitleProps {
 	route: string;
 	titleChangeBodyPropName?: string;
 	metadataTag?: string;
+	cacheTags?: string[];
+	cachePaths?: string[];
 }
 export function EditablePageTitle({
 	originalTitle,
 	route,
 	titleChangeBodyPropName,
 	metadataTag,
+	cachePaths,
+	cacheTags,
 }: EditablePageTitleProps) {
 	const [title, setTitle] = useState<string>(originalTitle);
 
@@ -23,6 +27,8 @@ export function EditablePageTitle({
 			route={route}
 			titleChangeBodyPropName={titleChangeBodyPropName}
 			metadataTag={metadataTag}
+			cachePaths={cachePaths}
+			cacheTags={cacheTags}
 		/>
 	);
 }

@@ -22,7 +22,10 @@ import {
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -89,7 +92,8 @@ export function EditMasteryPageContent({
 		}
 		setError("");
 		toast.success("Saved", { id: toastId });
-		revalidateTagByClientSide("/masteries");
+		await revalidateTagByClientSide("/masteries");
+		await revalidatePathByClientSide("/maestrias");
 	}
 
 	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
@@ -118,7 +122,9 @@ export function EditMasteryPageContent({
 			bannerChangeRoute={getAlbinaApiFullAddress(
 				`/banner/masteries/${mastery.slug}`,
 			)}
-			metadataTag={`mastery-${mastery.slug}`}>
+			metadataTag={`mastery-${mastery.slug}`}
+			cacheTags={["/masteries"]}
+			cachePaths={["/maestrias"]}>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
