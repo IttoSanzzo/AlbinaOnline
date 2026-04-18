@@ -4,6 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ChangeIconButton } from "./subComponents/ChangeIconButton";
 import { useState } from "react";
+import { imageSrcTTL } from "@/utils/Cache";
 
 const EditablePageIconContainer = newStyledElement.div(
 	styles.pageIconContainer,
@@ -32,12 +33,13 @@ export function EditablePageIcon({
 	return (
 		<EditablePageIconContainer>
 			<Image
-				src={icon}
+				src={imageSrcTTL(icon)}
 				alt="Page's icon"
 				width={512}
 				height={512}
 				priority={true}
 				quality={100}
+				preload
 				style={
 					borderColor
 						? {

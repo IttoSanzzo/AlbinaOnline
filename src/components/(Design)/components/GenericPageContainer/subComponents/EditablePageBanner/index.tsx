@@ -4,6 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ChangeBannerButton } from "./subComponents/ChangeBannerButton";
 import { useState } from "react";
+import { imageSrcTTL } from "@/utils/Cache";
 
 const EditablePageBannerContainer = newStyledElement.div(
 	styles.pageBannerContainer,
@@ -26,12 +27,13 @@ export function EditablePageBanner({
 	return (
 		<EditablePageBannerContainer>
 			<Image
-				src={banner}
+				src={imageSrcTTL(banner)}
 				alt="Page's banner"
 				priority={true}
 				sizes="100vw"
 				fill={true}
 				quality={90}
+				preload
 			/>
 			{route && route !== "" && (
 				<ChangeBannerButton
