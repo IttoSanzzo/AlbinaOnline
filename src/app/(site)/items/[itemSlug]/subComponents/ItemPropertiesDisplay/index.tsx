@@ -1,22 +1,5 @@
 import { UIBasics } from "@/components/(UIBasics)";
-import { ItemProperties } from "@/libs/stp@types";
-
-const ItemSlotTypeName = {
-	Unknown: "Unknown",
-	Frame: "Frame",
-	OneHand: "Uma-Mão",
-	TwoHanded: "Duas-Mãos",
-	Head: "Cabeça",
-	Feet: "Pés",
-	Torso: "Torso",
-	Arms: "Braços",
-	Face: "Rosto",
-	Waist: "Cintura",
-	Earring: "Orelhas",
-	Necklace: "Pescoço",
-	Bracelet: "Pulsos",
-	Ring: "Anel",
-};
+import { ItemProperties, ItemSlotTypeName } from "@/libs/stp@types";
 
 interface ItemPropertiesDisplayProps {
 	itemProperties?: ItemProperties;

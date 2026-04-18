@@ -86,8 +86,8 @@ export function ChangeIconButton({
 								<HookedForm.ImageInput
 									label="Insira nova imagem"
 									fieldName="image"
-									minWidth={256}
-									minHeight={256}
+									minWidth={150}
+									minHeight={150}
 									croppingProportions={[1, 1]}
 									maxSize={4_194_304}
 									maxWidth={1440}

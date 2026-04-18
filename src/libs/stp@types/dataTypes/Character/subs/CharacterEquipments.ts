@@ -18,6 +18,24 @@ export enum EquipmentSlotType {
 	Bracelet,
 	Ring,
 }
+
+export const ItemSlotTypeName = {
+	Unknown: "Unknown",
+	Frame: "Frame",
+	OneHand: "Uma-Mão",
+	TwoHanded: "Duas-Mãos",
+	Head: "Cabeça",
+	Feet: "Pés",
+	Torso: "Torso",
+	Arms: "Braços",
+	Face: "Rosto",
+	Waist: "Cintura",
+	Earring: "Orelhas",
+	Necklace: "Pescoço",
+	Bracelet: "Pulsos",
+	Ring: "Anel",
+};
+
 export enum EquipmentSlot {
 	Unknown,
 	// Main
@@ -44,7 +62,7 @@ export type CharacterEquipments = {
 
 export function isSlotCompatibleWithType(
 	slot: EquipmentSlot,
-	type: EquipmentSlotType
+	type: EquipmentSlotType,
 ): boolean {
 	switch (type) {
 		case EquipmentSlotType.OneHand:
