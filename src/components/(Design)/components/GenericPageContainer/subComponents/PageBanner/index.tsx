@@ -13,7 +13,7 @@ export function PageBanner({ bannerSrc }: PageBannerProps) {
 			<ImageWithTTL
 				src={bannerSrc}
 				alt="Page's banner"
-				priority={true}
+				// priority={true}
 				sizes="100vw"
 				fill={true}
 				quality={90}

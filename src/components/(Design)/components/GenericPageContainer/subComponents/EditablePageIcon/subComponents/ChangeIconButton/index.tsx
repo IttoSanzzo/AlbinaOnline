@@ -9,7 +9,15 @@ import { HookedForm } from "@/libs/stp@forms";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+	Dispatch,
+	forwardRef,
+	SetStateAction,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidateMetadata,
@@ -17,6 +25,10 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
+import {
+	extractImageFromDrop,
+	ImageInputHandle,
+} from "@/libs/stp@forms/components/ImageInput";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer,
@@ -24,6 +36,10 @@ const ChangeIconButtonContainer = newStyledElement.div(
 const ChangeIconButtonTrigger = newStyledElement.button(
 	styles.changeIconButtonTrigger,
 );
+
+export interface ChangeIconButtonHandle {
+	openByDragEvent: (event: React.DragEvent) => Promise<void>;
+}
 
 const schema = z.object({
 	image: z.instanceof(File),
@@ -39,19 +55,35 @@ interface ChangeIconButtonProps {
 	cacheTags?: string[];
 	cachePaths?: string[];
 }
-export function ChangeIconButton({
-	iconSrc,
-	setIcon,
-	route,
-	metadataTag,
-	cachePaths,
-	cacheTags,
-}: ChangeIconButtonProps) {
+export const ChangeIconButton = forwardRef<
+	ChangeIconButtonHandle,
+	ChangeIconButtonProps
+>(function ChangeIconButton(
+	{
+		iconSrc,
+		setIcon,
+		route,
+		metadataTag,
+		cachePaths,
+		cacheTags,
+	}: ChangeIconButtonProps,
+	ref,
+) {
+	const [pendingImage, setPendingImage] = useState<File | null>(null);
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
+
+	const imageInputRef = useRef<ImageInputHandle | null>(null);
+	const handleImageInputRef = (node: ImageInputHandle | null) => {
+		imageInputRef.current = node;
+		if (node && pendingImage)
+			node.setImage(pendingImage).then(() => {
+				setPendingImage(null);
+			});
+	};
 
 	async function onSubmit(data: FormData) {
 		const bodyData = new FormData();
@@ -77,6 +109,27 @@ export function ChangeIconButton({
 			for (const path of cachePaths) await revalidatePathByClientSide(path);
 	}
 
+	useEffect(() => {
+		if (!open || !imageInputRef.current || !pendingImage) return;
+		const current = pendingImage;
+		imageInputRef.current.setImage(current).then(() => {
+			setPendingImage(null);
+		});
+	}, [pendingImage, open]);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			openByDragEvent: async (event: React.DragEvent): Promise<void> => {
+				const image = await extractImageFromDrop(event);
+				if (!image) return;
+				setPendingImage(image);
+				setOpen(true);
+			},
+		}),
+		[],
+	);
+
 	return (
 		<ChangeIconButtonContainer>
 			<Dialog.Root
@@ -96,6 +149,7 @@ export function ChangeIconButton({
 								form={form}
 								onSubmit={onSubmit}>
 								<HookedForm.ImageInput
+									ref={handleImageInputRef}
 									label="Insira nova imagem"
 									fieldName="image"
 									minWidth={150}
@@ -119,4 +173,4 @@ export function ChangeIconButton({
 			</Dialog.Root>
 		</ChangeIconButtonContainer>
 	);
-}
+});

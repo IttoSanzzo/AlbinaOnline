@@ -9,13 +9,25 @@ import { HookedForm } from "@/libs/stp@forms";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+	Dispatch,
+	forwardRef,
+	SetStateAction,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import toast from "react-hot-toast";
 import {
 	revalidatePathByClientSide,
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
+import {
+	extractImageFromDrop,
+	ImageInputHandle,
+} from "@/libs/stp@forms/components/ImageInput";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer,
@@ -30,6 +42,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+export interface ChangeBannerButtonHandle {
+	openByDragEvent: (event: React.DragEvent) => Promise<void>;
+}
+
 interface ChangeBannerButtonProps {
 	bannerSrc: string;
 	setBanner: Dispatch<SetStateAction<string>>;
@@ -37,18 +53,34 @@ interface ChangeBannerButtonProps {
 	cacheTags?: string[];
 	cachePaths?: string[];
 }
-export function ChangeBannerButton({
-	bannerSrc,
-	setBanner,
-	route,
-	cachePaths,
-	cacheTags,
-}: ChangeBannerButtonProps) {
+export const ChangeBannerButton = forwardRef<
+	ChangeBannerButtonHandle,
+	ChangeBannerButtonProps
+>(function ChangeBannerButton(
+	{
+		bannerSrc,
+		setBanner,
+		route,
+		cachePaths,
+		cacheTags,
+	}: ChangeBannerButtonProps,
+	ref,
+) {
+	const [pendingImage, setPendingImage] = useState<File | null>(null);
 	const [open, setOpen] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 	});
+
+	const imageInputRef = useRef<ImageInputHandle | null>(null);
+	const handleImageInputRef = (node: ImageInputHandle | null) => {
+		imageInputRef.current = node;
+		if (node && pendingImage)
+			node.setImage(pendingImage).then(() => {
+				setPendingImage(null);
+			});
+	};
 
 	async function onSubmit(data: FormData) {
 		const bodyData = new FormData();
@@ -73,6 +105,27 @@ export function ChangeBannerButton({
 			for (const path of cachePaths) await revalidatePathByClientSide(path);
 	}
 
+	useEffect(() => {
+		if (!open || !imageInputRef.current || !pendingImage) return;
+		const current = pendingImage;
+		imageInputRef.current.setImage(current).then(() => {
+			setPendingImage(null);
+		});
+	}, [pendingImage, open]);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			openByDragEvent: async (event: React.DragEvent): Promise<void> => {
+				const image = await extractImageFromDrop(event);
+				if (!image) return;
+				setPendingImage(image);
+				setOpen(true);
+			},
+		}),
+		[],
+	);
+
 	return (
 		<ChangeBannerButtonContainer>
 			<Dialog.Root
@@ -92,6 +145,7 @@ export function ChangeBannerButton({
 								form={form}
 								onSubmit={onSubmit}>
 								<HookedForm.ImageInput
+									ref={handleImageInputRef}
 									label="Insira nova imagem"
 									fieldName="image"
 									minWidth={735}
@@ -114,4 +168,4 @@ export function ChangeBannerButton({
 			</Dialog.Root>
 		</ChangeBannerButtonContainer>
 	);
-}
+});

@@ -5,6 +5,8 @@
 	height: 20vh;
 	max-height: 280px;
 	overflow: hidden;
+	outline: 5px solid transparent;
+	transition: 0.5s linear outline;
 
 	& img {
 		width: 100%;

@@ -1,4 +1,12 @@
-import { CSSProperties, useRef, useState } from "react";
+import React, {
+	CSSProperties,
+	forwardRef,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import { Controller, FieldValues, Path } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
@@ -18,6 +26,10 @@ const ImagePreviewContainer = newStyledElement.div(
 	styles.imagePreviewContainer,
 );
 
+export interface ImageInputHandle {
+	setImage: (image: File | null) => Promise<boolean>;
+}
+
 type ImageInputProps<TFormData> = {
 	fieldName: Path<TFormData>;
 	label: string;
@@ -36,26 +48,38 @@ type ImageInputProps<TFormData> = {
 	displayPreview?: boolean;
 	croppingProportions?: [number, number];
 };
-export function ImageInput<TFormData extends FieldValues>({
-	fieldName,
-	label,
-	labelBackground,
-	accept = "image/*",
-	previewMaxWidth,
-	previewMaxHeight,
-	maxWidth,
-	maxHeight,
-	minWidth,
-	minHeight,
-	proportion,
-	maxSize = 1_048_576,
-	multiple = false,
-	maxFiles,
-	displayPreview = true,
-	croppingProportions,
-}: ImageInputProps<TFormData>) {
+
+type ImageInputComponent = <TFormData extends FieldValues>(
+	props: ImageInputProps<TFormData> & {
+		ref?: React.Ref<ImageInputHandle>;
+	},
+) => React.ReactElement;
+
+const ImageInputInner = <TFormData extends FieldValues>(
+	props: ImageInputProps<TFormData>,
+	ref: React.Ref<ImageInputHandle>,
+) => {
+	const {
+		fieldName,
+		label,
+		labelBackground,
+		accept = "image/*",
+		previewMaxWidth,
+		previewMaxHeight,
+		maxWidth,
+		maxHeight,
+		minWidth,
+		minHeight,
+		proportion,
+		maxSize = 1_048_576,
+		multiple = false,
+		maxFiles,
+		displayPreview = true,
+	} = props;
+	const croppingProportions = multiple ? undefined : props.croppingProportions;
+
 	const imageInputRef = useRef<HTMLInputElement | null>(null);
-	const onChangeRef = useRef<(file: File) => void>(null);
+	const onChangeRef = useRef<(file: File | File[] | null) => void | null>(null);
 	const cropTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const {
 		form: { control },
@@ -75,50 +99,57 @@ export function ImageInput<TFormData extends FieldValues>({
 		}),
 	};
 
-	if (multiple) croppingProportions = undefined;
+	useEffect(() => {
+		return () => {
+			if (preview) URL.revokeObjectURL(preview);
+		};
+	}, [preview]);
 
-	async function validateInput(data: File[]): Promise<string | null> {
-		if (maxFiles != undefined && data.length > maxFiles)
-			return `Limite de ${maxFiles} arquivos excedido.`;
-		for (const file of data) {
-			if (!file.type.startsWith("image/")) return "Arquivo não é imagem";
-			if (maxSize && file.size > maxSize)
-				return `Imagem excede o tamanho máximo de ${(
-					maxSize /
-					1024 /
-					1024
-				).toFixed(2)}MB`;
-			const img = await fileToImage(file);
-			if (minWidth && img.width < minWidth)
-				return `Menor que largura mínima de ${minWidth}px`;
-			if (maxWidth && img.width > maxWidth)
-				return `Excede largura máxima de ${maxWidth}px`;
-			if (minHeight && img.height < minHeight)
-				return `Menor que altura mínima de ${maxHeight}px`;
-			if (maxHeight && img.height > maxHeight)
-				return `Excede altura máxima de ${maxHeight}px`;
+	const validateInput = useCallback(
+		async (data: File[]): Promise<string | null> => {
+			if (maxFiles != undefined && data.length > maxFiles)
+				return `Limite de ${maxFiles} arquivos excedido.`;
+			for (const file of data) {
+				if (!file.type.startsWith("image/")) return "Arquivo não é imagem";
+				if (maxSize && file.size > maxSize)
+					return `Imagem excede o tamanho máximo de ${(
+						maxSize /
+						1024 /
+						1024
+					).toFixed(2)}MB`;
+				const img = await fileToImage(file);
+				if (minWidth && img.width < minWidth)
+					return `Menor que largura mínima de ${minWidth}px`;
+				if (maxWidth && img.width > maxWidth)
+					return `Excede largura máxima de ${maxWidth}px`;
+				if (minHeight && img.height < minHeight)
+					return `Menor que altura mínima de ${minHeight}px`;
+				if (maxHeight && img.height > maxHeight)
+					return `Excede altura máxima de ${maxHeight}px`;
 
-			if (proportion) {
-				const actualRatio = img.width / img.height;
-				const diff = Math.abs(actualRatio - proportion);
-				if (diff > 0.01)
-					return `Proporção esperada: ${proportion}, mas a imagem tem ${actualRatio.toFixed(
-						2,
-					)}`;
+				if (proportion) {
+					const actualRatio = img.width / img.height;
+					const diff = Math.abs(actualRatio - proportion);
+					if (diff > 0.01)
+						return `Proporção esperada: ${proportion}, mas a imagem tem ${actualRatio.toFixed(
+							2,
+						)}`;
+				}
 			}
-		}
-		return null;
-	}
+			return null;
+		},
+		[maxFiles, maxSize, minWidth, maxWidth, minHeight, maxHeight, proportion],
+	);
 
 	const handleCrop = async (
 		_: LintIgnoredAny,
 		croppedAreaPixels: LintIgnoredAny,
 	) => {
 		if (cropTimeoutRef.current) clearTimeout(cropTimeoutRef.current);
-		onChangeRef.current?.(null!);
+		onChangeRef.current?.(null);
 		if (originalFile == null) {
 			setError("missing originalFile...");
-			onChangeRef.current?.(null!);
+			onChangeRef.current?.(null);
 			return;
 		}
 		const mimeType = originalFile!.type || "image/png";
@@ -127,7 +158,7 @@ export function ImageInput<TFormData extends FieldValues>({
 			async () => {
 				if (originalFile == null) {
 					setError("missing originalFile...");
-					onChangeRef.current?.(null!);
+					onChangeRef.current?.(null);
 					return;
 				}
 				const file = await getCroppedFile(
@@ -140,7 +171,7 @@ export function ImageInput<TFormData extends FieldValues>({
 				const err = await validateInput([file]);
 				if (err) {
 					setError(err);
-					onChangeRef.current?.(null!);
+					onChangeRef.current?.(null);
 				} else {
 					setError(null);
 					onChangeRef.current?.(file);
@@ -150,39 +181,60 @@ export function ImageInput<TFormData extends FieldValues>({
 		);
 	};
 
-	async function handleFiles(data: File[]) {
-		if (!onChangeRef.current || data == null) return;
+	const handleFiles = useCallback(
+		async (data: File[]): Promise<boolean> => {
+			if (!onChangeRef.current || data == null) return false;
 
-		const dt = new DataTransfer();
-		data.forEach((f) => dt.items.add(f));
-		if (imageInputRef.current) imageInputRef.current.files = dt.files;
+			const dt = new DataTransfer();
+			data.forEach((f) => dt.items.add(f));
+			if (imageInputRef.current) imageInputRef.current.files = dt.files;
 
-		if (!croppingProportions) {
-			const err = await validateInput(data);
-			if (err) {
-				setError(err);
-				onChangeRef.current(null!);
-				setPreview(null);
-				return;
+			if (!croppingProportions) {
+				const err = await validateInput(data);
+				if (err) {
+					setError(err);
+					onChangeRef.current(null);
+					setPreview(null);
+					return false;
+				}
+				setError(null);
 			}
-			setError(null);
-		}
 
-		if ((displayPreview || croppingProportions) && data.length == 1)
-			setPreview(URL.createObjectURL(data[0]));
-		else setPreview(null);
+			if ((displayPreview || croppingProportions) && data.length == 1)
+				setPreview(URL.createObjectURL(data[0]));
+			else setPreview(null);
 
-		if (multiple) {
-			onChangeRef.current(data as LintIgnoredAny);
-		} else if (croppingProportions) {
-			onChangeRef.current(null!);
-			setOriginalFile(data[0]);
-		} else {
-			onChangeRef.current(data[0]);
-		}
+			if (multiple) {
+				onChangeRef.current(data);
+			} else if (croppingProportions) {
+				onChangeRef.current(null);
+				setOriginalFile(data[0]);
+			} else {
+				onChangeRef.current(data[0]);
+			}
 
-		triggerDebounceAction();
-	}
+			triggerDebounceAction();
+			return true;
+		},
+		[
+			croppingProportions,
+			validateInput,
+			displayPreview,
+			triggerDebounceAction,
+			multiple,
+		],
+	);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			setImage: async (image: File | null): Promise<boolean> => {
+				if (image == null) return false;
+				return await handleFiles([image]);
+			},
+		}),
+		[handleFiles],
+	);
 
 	return (
 		<ImageInputContainer
@@ -209,7 +261,7 @@ export function ImageInput<TFormData extends FieldValues>({
 			onDrop={async (e) => {
 				e.preventDefault();
 				setIsDragging(false);
-				const files = await extractFilesFromDrop(e);
+				const files = await extractImagesFromDrop(e);
 				if (!files.length) return;
 				await handleFiles(files);
 			}}>
@@ -283,7 +335,7 @@ export function ImageInput<TFormData extends FieldValues>({
 			/>
 		</ImageInputContainer>
 	);
-}
+};
 
 async function fileToImage(file: File): Promise<HTMLImageElement> {
 	return new Promise((resolve, reject) => {
@@ -460,7 +512,26 @@ function nextFrame(): Promise<void> {
 	return new Promise((resolve) => requestAnimationFrame(() => resolve()));
 }
 
-async function extractFilesFromDrop(e: React.DragEvent): Promise<File[]> {
+export async function extractImageFromDrop(
+	e: React.DragEvent,
+): Promise<File | null> {
+	const dt = e.dataTransfer;
+	if (dt.files && dt.files.length > 0) return dt.files[0];
+
+	if (dt.items && dt.items.length > 0) {
+		const item = dt.items[0];
+		if (item.kind === "file") return item.getAsFile();
+		if (item.kind === "string" && item.type === "text/uri-list") {
+			const url = await new Promise<string>((resolve) =>
+				item.getAsString(resolve),
+			);
+			return await urlToFile(url);
+		}
+	}
+	return null;
+}
+
+async function extractImagesFromDrop(e: React.DragEvent): Promise<File[]> {
 	const dt = e.dataTransfer;
 	if (dt.files && dt.files.length > 0) return Array.from(dt.files ?? []);
 
@@ -500,3 +571,5 @@ async function urlToFile(url: string): Promise<File | null> {
 		return null;
 	}
 }
+
+export const ImageInput = forwardRef(ImageInputInner) as ImageInputComponent;
