@@ -521,11 +521,15 @@ export async function extractImageFromDrop(
 	if (dt.items && dt.items.length > 0) {
 		const item = dt.items[0];
 		if (item.kind === "file") return item.getAsFile();
-		if (item.kind === "string" && item.type === "text/uri-list") {
-			const url = await new Promise<string>((resolve) =>
+		if (item.kind === "string") {
+			const raw = await new Promise<string>((resolve) =>
 				item.getAsString(resolve),
 			);
-			return await urlToFile(url);
+			if (item.type === "text/uri-list") return await urlToFile(raw);
+			if (item.type === "text/x-moz-url") {
+				const url = raw.split("\n")[0];
+				return await urlToFile(url);
+			}
 		}
 	}
 	return null;
@@ -550,6 +554,22 @@ async function extractImagesFromDrop(e: React.DragEvent): Promise<File[]> {
 				const file = await urlToFile(url);
 				if (file) files.push(file);
 				continue;
+			}
+			if (item.kind === "string") {
+				const raw = await new Promise<string>((resolve) =>
+					item.getAsString(resolve),
+				);
+				if (item.type === "text/uri-list") {
+					const file = await urlToFile(raw);
+					if (file) files.push(file);
+					continue;
+				}
+				if (item.type === "text/x-moz-url") {
+					const url = raw.split("\n")[0];
+					const file = await urlToFile(url);
+					if (file) files.push(file);
+					continue;
+				}
 			}
 		}
 		return files;
