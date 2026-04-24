@@ -49,7 +49,7 @@ export interface AddImageButtonHandle {
 
 interface AddImageButtonProps {
 	url: string;
-	reloadGalleryData?: () => Promise<void>;
+	reloadGalleryData?: () => Promise<boolean>;
 	withoutMargin?: boolean;
 }
 export const AddImageButton = forwardRef<

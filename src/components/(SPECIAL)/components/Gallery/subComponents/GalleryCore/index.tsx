@@ -8,6 +8,7 @@ import { GalleryImageActionFunctionProps } from "./subComponents/ImageBox";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
 import { GalleryFullViewModal } from "./subComponents/GalleryFullViewModal";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import { useEventBusUpdated } from "@/libs/stp@hooks/hooks/useEventBusUpdated";
 
 interface GalleryCoreProps {
 	url: string;
@@ -33,7 +34,7 @@ export function GalleryCore({
 	const [fullViewOpenState, setFullViewOpenState] = useState<boolean>(false);
 	const carouselRef = useRef<CarouselHandle>(null);
 
-	async function reloadGalleryData() {
+	async function reloadGalleryData(): Promise<boolean> {
 		const response = await authenticatedFetchAsync(url, {
 			method: "GET",
 			next: {
@@ -41,7 +42,10 @@ export function GalleryCore({
 			},
 		});
 		if (response.ok) setGalleryData(await response.json());
+		return response.ok;
 	}
+	useEventBusUpdated(url, reloadGalleryData);
+
 	useLayoutEffect(() => {
 		if (galleryData.updatedAt != "") return;
 		reloadGalleryData();

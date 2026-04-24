@@ -17,7 +17,7 @@ interface GalleryCarouselProps {
 	withoutMargin?: boolean;
 	galleryData: GalleryData;
 	isEditable?: boolean;
-	reloadGalleryData?: () => Promise<void>;
+	reloadGalleryData?: () => Promise<boolean>;
 	imageAction?: GalleryImageActionFunction;
 	carouselRef?: React.RefObject<CarouselHandle | null>;
 	setFullViewOpenState?: Dispatch<SetStateAction<boolean>>;

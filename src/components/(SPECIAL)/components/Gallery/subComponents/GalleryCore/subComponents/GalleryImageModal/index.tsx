@@ -21,7 +21,7 @@ interface GalleryImageModalProps {
 	galleryData: GalleryData;
 	imageIndexState: [number, Dispatch<SetStateAction<number>>];
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
-	reloadGalleryData?: () => Promise<void>;
+	reloadGalleryData?: () => Promise<boolean>;
 	moveImageCarousel?: (index: number) => void;
 }
 export function GalleryImageModal({

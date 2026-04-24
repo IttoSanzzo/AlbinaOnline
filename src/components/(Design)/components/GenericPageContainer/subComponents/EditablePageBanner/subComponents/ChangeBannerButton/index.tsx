@@ -28,6 +28,8 @@ import {
 	extractImageFromDrop,
 	ImageInputHandle,
 } from "@/libs/stp@forms/components/ImageInput";
+import { eventBus } from "@/libs/stp@hooks";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer,
@@ -99,6 +101,10 @@ export const ChangeBannerButton = forwardRef<
 		setOpen(false);
 		setBanner(`${bannerSrc}?t=${Date.now()}`);
 		toast.success("Salvo", { id: toastId });
+		const galleryEventKey = getAlbinaApiFullAddress(
+			`/images/${route.substring(getAlbinaApiFullAddress("/banner/").length)}`,
+		);
+		eventBus.emitAsync(galleryEventKey, undefined);
 		if (cacheTags)
 			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
 		if (cachePaths)

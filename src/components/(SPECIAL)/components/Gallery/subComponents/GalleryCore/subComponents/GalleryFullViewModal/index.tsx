@@ -14,7 +14,7 @@ interface GalleryFullViewModalProps {
 	setGalleryData: Dispatch<SetStateAction<GalleryData>>;
 	openState: [boolean, Dispatch<SetStateAction<boolean>>];
 	imageAction?: GalleryImageActionFunction;
-	reloadGalleryData?: () => Promise<void>;
+	reloadGalleryData?: () => Promise<boolean>;
 	isEditable?: boolean;
 }
 export function GalleryFullViewModal({

@@ -29,6 +29,8 @@ import {
 	extractImageFromDrop,
 	ImageInputHandle,
 } from "@/libs/stp@forms/components/ImageInput";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { eventBus } from "@/libs/stp@hooks";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer,
@@ -102,6 +104,10 @@ export const ChangeIconButton = forwardRef<
 		setOpen(false);
 		setIcon(`${iconSrc}?t=${Date.now()}`);
 		toast.success("Salvo", { id: toastId });
+		const galleryEventKey = getAlbinaApiFullAddress(
+			`/images/${route.substring(getAlbinaApiFullAddress("/favicon/").length)}`,
+		);
+		eventBus.emitAsync(galleryEventKey, undefined);
 		if (metadataTag) revalidateMetadata(metadataTag);
 		if (cacheTags)
 			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
