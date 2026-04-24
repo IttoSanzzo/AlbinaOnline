@@ -9,6 +9,8 @@
 .galleryCarouselInternalContainer {
 	flex: 1;
 	height: 100% !important;
+	outline: 5px solid transparent;
+	transition: 0.25s linear outline;
 
 	& > div {
 		height: 100% !important;

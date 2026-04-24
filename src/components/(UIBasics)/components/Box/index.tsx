@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, ReactNode } from "react";
+import { CSSProperties, DragEventHandler, forwardRef, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor, StandartTextColor } from "../../core";
@@ -18,8 +18,12 @@ interface BoxProps {
 	minHeight?: React.CSSProperties["minHeight"];
 	flexDirection?: React.CSSProperties["flexDirection"];
 	justifyContent?: React.CSSProperties["justifyContent"];
-	classname?: string;
+	className?: string;
 	style?: CSSProperties;
+	onDragEnter?: DragEventHandler<HTMLDivElement>;
+	onDragLeave?: DragEventHandler<HTMLDivElement>;
+	onDragOver?: DragEventHandler<HTMLDivElement>;
+	onDrop?: DragEventHandler<HTMLDivElement>;
 }
 
 export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
@@ -36,8 +40,12 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		minWidth,
 		flexDirection,
 		justifyContent,
-		classname,
+		className,
 		style,
+		onDragEnter,
+		onDragLeave,
+		onDragOver,
+		onDrop,
 	}: BoxProps,
 	ref,
 ) {
@@ -63,9 +71,13 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 
 	return (
 		<BoxContainer
+			onDragEnter={onDragEnter}
+			onDragLeave={onDragLeave}
+			onDragOver={onDragOver}
+			onDrop={onDrop}
 			ref={ref}
 			style={defaultStyle}
-			className={classname}>
+			className={className}>
 			{children}
 		</BoxContainer>
 	);

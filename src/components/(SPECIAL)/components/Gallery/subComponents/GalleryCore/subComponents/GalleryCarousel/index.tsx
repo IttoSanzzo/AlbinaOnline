@@ -3,12 +3,12 @@
 import { UIBasics } from "@/components/(UIBasics)";
 import { GalleryData } from "@/libs/stp@types";
 import ImageBox, { GalleryImageActionFunction } from "../ImageBox";
-import AddImageButton from "../AddImageButton";
 import styles from "./styles.module.css";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";
+import { AddImageButton, AddImageButtonHandle } from "../AddImageButton";
 
 const OpenFullViewButton = newStyledElement.button(styles.openFullViewButton);
 
@@ -33,16 +33,45 @@ export const GalleryCarousel = React.memo(
 		carouselRef,
 		setFullViewOpenState,
 	}: GalleryCarouselProps) {
+		const [isDragging, setIsDragging] = useState<boolean>(false);
+		const addButtonRef = useRef<AddImageButtonHandle | null>(null);
+
 		return (
 			<UIBasics.Box
 				backgroundColor="darkGray"
 				withoutBorder
 				withoutMargin={withoutMargin}
-				classname={styles.galleryCarouselContainer}>
+				className={styles.galleryCarouselContainer}
+				onDragEnter={(e) => {
+					e.preventDefault();
+					setIsDragging(true);
+				}}
+				onDragLeave={(e) => {
+					e.preventDefault();
+					const toElement = e.relatedTarget as Node | null;
+					if (toElement && e.currentTarget.contains(toElement)) return;
+					setIsDragging(false);
+				}}
+				onDragOver={(e) => {
+					e.preventDefault();
+				}}
+				onDrop={async (e) => {
+					e.preventDefault();
+					setIsDragging(false);
+					if (addButtonRef.current) addButtonRef.current.openByDragEvent(e);
+				}}>
 				<UIBasics.Box
+					style={
+						isDragging
+							? {
+									outline:
+										"5px solid color-mix(in srgb, var(--cl-blue-500) 50%, transparent)",
+								}
+							: undefined
+					}
 					withoutMargin
 					withoutPadding
-					classname={styles.galleryCarouselInternalContainer}>
+					className={styles.galleryCarouselInternalContainer}>
 					<UIBasics.Carousel
 						ref={carouselRef}
 						slidesOrigin={galleryData.images.length > 1 ? "center" : "auto"}
@@ -59,6 +88,7 @@ export const GalleryCarousel = React.memo(
 				</UIBasics.Box>
 				{isEditable && (
 					<AddImageButton
+						ref={addButtonRef}
 						url={url}
 						reloadGalleryData={reloadGalleryData}
 					/>

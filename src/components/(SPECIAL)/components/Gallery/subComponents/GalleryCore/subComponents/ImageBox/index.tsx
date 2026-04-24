@@ -32,7 +32,7 @@ export default function ImageBox({
 		<LazyLoadWrapper>
 			<UIBasics.Box
 				key={imageData.id}
-				classname={styles.galleryImageBox}
+				className={styles.galleryImageBox}
 				withoutBorder
 				withoutPadding
 				withoutMargin={withoutMargin}>

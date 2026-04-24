@@ -2,10 +2,10 @@
 
 import { Dialog } from "@/libs/stp@radix";
 import styles from "./styles.module.css";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GalleryData } from "@/libs/stp@types";
 import { GalleryImageActionFunction } from "../ImageBox";
-import AddImageButton from "../AddImageButton";
+import { AddImageButton, AddImageButtonHandle } from "../AddImageButton";
 import { SortableGalleryImageGrid } from "./subComponents/SortableGalleryImageGrid";
 
 interface GalleryFullViewModalProps {
@@ -26,6 +26,14 @@ export function GalleryFullViewModal({
 	reloadGalleryData,
 	isEditable,
 }: GalleryFullViewModalProps) {
+	const [isDragging, setIsDragging] = useState<boolean>(false);
+	const addButtonRef = useRef<AddImageButtonHandle | null>(null);
+
+	useEffect(() => {
+		if (openState[0] == true && galleryData.images.length == 0)
+			openState[1](false);
+	}, [galleryData, openState[1]]);
+
 	if (galleryData.images.length == 0 || openState[0] == false) return null;
 	return (
 		<Dialog.Root
@@ -33,7 +41,34 @@ export function GalleryFullViewModal({
 			onOpenChange={openState[1]}>
 			<Dialog.Portal>
 				<Dialog.Overlay>
-					<Dialog.Content className={styles.modalContent}>
+					<Dialog.Content
+						className={styles.modalContent}
+						onDragEnter={(e) => {
+							e.preventDefault();
+							setIsDragging(true);
+						}}
+						onDragLeave={(e) => {
+							e.preventDefault();
+							const toElement = e.relatedTarget as Node | null;
+							if (toElement && e.currentTarget.contains(toElement)) return;
+							setIsDragging(false);
+						}}
+						onDragOver={(e) => {
+							e.preventDefault();
+						}}
+						onDrop={async (e) => {
+							e.preventDefault();
+							setIsDragging(false);
+							if (addButtonRef.current) addButtonRef.current.openByDragEvent(e);
+						}}
+						style={
+							isDragging
+								? {
+										outline:
+											"5px solid color-mix(in srgb, var(--cl-blue-500) 50%, transparent)",
+									}
+								: undefined
+						}>
 						<Dialog.Title />
 						<Dialog.Description />
 						<SortableGalleryImageGrid
@@ -45,6 +80,7 @@ export function GalleryFullViewModal({
 						/>
 						{isEditable && (
 							<AddImageButton
+								ref={addButtonRef}
 								url={url}
 								reloadGalleryData={reloadGalleryData}
 								withoutMargin

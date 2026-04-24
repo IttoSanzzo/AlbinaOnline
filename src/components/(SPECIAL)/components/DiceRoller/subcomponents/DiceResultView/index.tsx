@@ -128,7 +128,7 @@ export const DiceResultView = forwardRef<HTMLDivElement, DiceResultViewProps>(
 			return (
 				<UIBasics.Box
 					ref={ref}
-					classname={styles.diceResultViewContainer}
+					className={styles.diceResultViewContainer}
 					width={width}>
 					<DiceExpression children={diceResult.formattedExpression} />
 					<UniqueCenteredNumberResult style={{ color: diceColor }}>
@@ -148,7 +148,7 @@ export const DiceResultView = forwardRef<HTMLDivElement, DiceResultViewProps>(
 		return (
 			<UIBasics.Box
 				ref={ref}
-				classname={styles.diceResultViewContainer}>
+				className={styles.diceResultViewContainer}>
 				<DiceExpression children={diceResult.formattedExpression} />
 				<UIBasics.Table
 					fixedLineWidths={[4 + diceResult.maxResultWidth * 3]}

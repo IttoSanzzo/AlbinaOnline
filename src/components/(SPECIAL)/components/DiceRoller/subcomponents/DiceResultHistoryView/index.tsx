@@ -38,7 +38,7 @@ export function DiceResultHistoryView({
 		<UIBasics.Box
 			backgroundColor="gray"
 			withoutBorder
-			classname={styles.diceResultHistoryViewContainer}>
+			className={styles.diceResultHistoryViewContainer}>
 			{diceHistory.length > 0 ? (
 				<>
 					<div>

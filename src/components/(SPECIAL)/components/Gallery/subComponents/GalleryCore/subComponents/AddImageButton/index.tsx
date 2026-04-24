@@ -3,7 +3,13 @@
 import { StpIcon } from "@/libs/stp@icons";
 import styles from "./styles.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useState } from "react";
+import {
+	forwardRef,
+	useEffect,
+	useImperativeHandle,
+	useRef,
+	useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -13,6 +19,10 @@ import { Dialog } from "@/libs/stp@radix";
 import { HookedForm } from "@/libs/stp@forms";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { StateSwitch } from "@/components/(UTILS)";
+import {
+	extractImageFromDrop,
+	ImageInputHandle,
+} from "@/libs/stp@forms/components/ImageInput";
 
 const AddImageButtonContainer = newStyledElement.div(
 	styles.addImageButtonContainer,
@@ -33,16 +43,23 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+export interface AddImageButtonHandle {
+	openByDragEvent: (event: React.DragEvent) => Promise<void>;
+}
+
 interface AddImageButtonProps {
 	url: string;
 	reloadGalleryData?: () => Promise<void>;
 	withoutMargin?: boolean;
 }
-export default function AddImageButton({
-	url,
-	reloadGalleryData,
-	withoutMargin,
-}: AddImageButtonProps) {
+export const AddImageButton = forwardRef<
+	AddImageButtonHandle,
+	AddImageButtonProps
+>(function AddImageButton(
+	{ url, reloadGalleryData, withoutMargin }: AddImageButtonProps,
+	ref,
+) {
+	const [pendingImage, setPendingImage] = useState<File | null>(null);
 	const [open, setOpen] = useState<boolean>(false);
 	const [inBulkMode, setInBulkMode] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
@@ -53,6 +70,35 @@ export default function AddImageButton({
 	>({
 		resolver: zodResolver(schema),
 	});
+
+	const imageInputRef = useRef<ImageInputHandle | null>(null);
+	const handleImageInputRef = (node: ImageInputHandle | null) => {
+		imageInputRef.current = node;
+		if (node && pendingImage)
+			node.setImage(pendingImage).then(() => {
+				setPendingImage(null);
+			});
+	};
+	useEffect(() => {
+		if (!open || !imageInputRef.current || !pendingImage) return;
+		const current = pendingImage;
+		imageInputRef.current.setImage(current).then(() => {
+			setPendingImage(null);
+		});
+	}, [pendingImage, open]);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			openByDragEvent: async (event: React.DragEvent): Promise<void> => {
+				const image = await extractImageFromDrop(event);
+				if (!image) return;
+				setPendingImage(image);
+				setOpen(true);
+			},
+		}),
+		[],
+	);
 
 	async function onSubmit(data: FormData) {
 		const toastId = toast.loading("Salvando...");
@@ -116,14 +162,13 @@ export default function AddImageButton({
 									}}
 								/>
 								<HookedForm.ImageInput<FormData>
+									ref={handleImageInputRef}
 									label="Insira nova imagem"
 									fieldName="images"
 									multiple={inBulkMode}
 									minWidth={50}
 									minHeight={50}
 									maxSize={4_194_304}
-									// maxWidth={5000}
-									// maxHeight={5000}
 								/>
 								<HookedForm.SubmitButton label="Salvar" />
 								{error && (
@@ -139,4 +184,4 @@ export default function AddImageButton({
 			</Dialog.Root>
 		</AddImageButtonContainer>
 	);
-}
+});
