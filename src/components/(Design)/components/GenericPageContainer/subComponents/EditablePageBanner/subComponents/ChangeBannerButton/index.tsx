@@ -104,6 +104,7 @@ export const ChangeBannerButton = forwardRef<
 		const galleryEventKey = getAlbinaApiFullAddress(
 			`/images/${route.substring(getAlbinaApiFullAddress("/banner/").length)}`,
 		);
+		await revalidateTagByClientSide(galleryEventKey);
 		eventBus.emitAsync(galleryEventKey, undefined);
 		if (cacheTags)
 			for (const tag of cacheTags) await revalidateTagByClientSide(tag);

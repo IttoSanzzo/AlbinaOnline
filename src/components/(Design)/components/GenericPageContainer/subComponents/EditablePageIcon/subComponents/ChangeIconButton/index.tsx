@@ -107,6 +107,7 @@ export const ChangeIconButton = forwardRef<
 		const galleryEventKey = getAlbinaApiFullAddress(
 			`/images/${route.substring(getAlbinaApiFullAddress("/favicon/").length)}`,
 		);
+		await revalidateTagByClientSide(galleryEventKey);
 		eventBus.emitAsync(galleryEventKey, undefined);
 		if (metadataTag) revalidateMetadata(metadataTag);
 		if (cacheTags)
