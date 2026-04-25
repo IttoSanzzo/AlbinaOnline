@@ -39,6 +39,7 @@
 		"@setsu-tp/styled-components": "^1.1.0",
 		"@widgetbot/crate": "^3.7.0",
 		"@widgetbot/react-embed": "^1.10.0",
+		"cheerio": "^1.2.0",
 		"clsx": "^2.1.1",
 		"gifuct-js": "^2.1.2",
 		"keen-slider": "^6.8.6",

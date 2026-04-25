@@ -24,12 +24,10 @@ import {
 	revalidatePathByClientSide,
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
-import {
-	extractImageFromDrop,
-	ImageInputHandle,
-} from "@/libs/stp@forms/components/ImageInput";
+import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
 import { eventBus } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer,

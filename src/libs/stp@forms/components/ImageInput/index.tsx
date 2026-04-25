@@ -17,6 +17,7 @@ import Cropper from "react-easy-crop";
 import { LintIgnoredAny } from "@/libs/stp@types";
 import { parseGIF, decompressFrames } from "gifuct-js";
 import { encode, UnencodedFrame } from "modern-gif";
+import { extractImagesFromDrop } from "./utils";
 
 const ImageInputContainer = newStyledElement.div(styles.imageInputContainer);
 const ImageInputField = newStyledElement.input(styles.imageInputField);
@@ -510,86 +511,6 @@ async function getCroppedGifFile(
 
 function nextFrame(): Promise<void> {
 	return new Promise((resolve) => requestAnimationFrame(() => resolve()));
-}
-
-export async function extractImageFromDrop(
-	e: React.DragEvent,
-): Promise<File | null> {
-	const dt = e.dataTransfer;
-	if (dt.files && dt.files.length > 0) return dt.files[0];
-
-	if (dt.items && dt.items.length > 0) {
-		const item = dt.items[0];
-		if (item.kind === "file") return item.getAsFile();
-		if (item.kind === "string") {
-			const raw = await new Promise<string>((resolve) =>
-				item.getAsString(resolve),
-			);
-			if (item.type === "text/uri-list") return await urlToFile(raw);
-			if (item.type === "text/x-moz-url") {
-				const url = raw.split("\n")[0];
-				return await urlToFile(url);
-			}
-		}
-	}
-	return null;
-}
-
-async function extractImagesFromDrop(e: React.DragEvent): Promise<File[]> {
-	const dt = e.dataTransfer;
-	if (dt.files && dt.files.length > 0) return Array.from(dt.files ?? []);
-
-	if (dt.items) {
-		const files: File[] = [];
-		for (const item of Array.from(dt.items)) {
-			if (item.kind === "file") {
-				const file = item.getAsFile();
-				if (file) files.push(file);
-				continue;
-			}
-			if (item.kind === "string" && item.type === "text/uri-list") {
-				const url = await new Promise<string>((resolve) =>
-					item.getAsString(resolve),
-				);
-				const file = await urlToFile(url);
-				if (file) files.push(file);
-				continue;
-			}
-			if (item.kind === "string") {
-				const raw = await new Promise<string>((resolve) =>
-					item.getAsString(resolve),
-				);
-				if (item.type === "text/uri-list") {
-					const file = await urlToFile(raw);
-					if (file) files.push(file);
-					continue;
-				}
-				if (item.type === "text/x-moz-url") {
-					const url = raw.split("\n")[0];
-					const file = await urlToFile(url);
-					if (file) files.push(file);
-					continue;
-				}
-			}
-		}
-		return files;
-	}
-	return [];
-}
-
-async function urlToFile(url: string): Promise<File | null> {
-	try {
-		const res = await fetch(
-			`/api/proxy/images/external?url=${encodeURIComponent(url)}`,
-		);
-
-		const blob = await res.blob();
-		if (!blob.type.startsWith("image/")) return null;
-
-		return new File([blob], "dropped-image", { type: blob.type });
-	} catch {
-		return null;
-	}
 }
 
 export const ImageInput = forwardRef(ImageInputInner) as ImageInputComponent;

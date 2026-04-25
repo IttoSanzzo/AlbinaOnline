@@ -19,10 +19,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { HookedForm } from "@/libs/stp@forms";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { StateSwitch } from "@/components/(UTILS)";
-import {
-	extractImageFromDrop,
-	ImageInputHandle,
-} from "@/libs/stp@forms/components/ImageInput";
+import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
 
 const AddImageButtonContainer = newStyledElement.div(
 	styles.addImageButtonContainer,

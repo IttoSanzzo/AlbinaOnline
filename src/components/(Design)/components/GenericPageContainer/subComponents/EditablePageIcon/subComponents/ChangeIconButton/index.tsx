@@ -25,12 +25,10 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
-import {
-	extractImageFromDrop,
-	ImageInputHandle,
-} from "@/libs/stp@forms/components/ImageInput";
+import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { eventBus } from "@/libs/stp@hooks";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer,
