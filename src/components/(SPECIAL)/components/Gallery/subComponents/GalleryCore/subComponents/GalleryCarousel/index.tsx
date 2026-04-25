@@ -56,13 +56,14 @@ export const GalleryCarousel = React.memo(
 					e.preventDefault();
 				}}
 				onDrop={async (e) => {
+					if (!isEditable) return;
 					e.preventDefault();
 					setIsDragging(false);
 					if (addButtonRef.current) addButtonRef.current.openByDragEvent(e);
 				}}>
 				<UIBasics.Box
 					style={
-						isDragging
+						isEditable && isDragging
 							? {
 									outline:
 										"5px solid color-mix(in srgb, var(--cl-blue-500) 50%, transparent)",
