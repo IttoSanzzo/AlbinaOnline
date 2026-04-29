@@ -35,7 +35,7 @@ export default function ItemPropertiesDisplay({
 									textAlign="flex-center"
 									children={itemProperties.compatibleSlots
 										.map((slot) => ItemSlotTypeName[slot])
-										.join(" ")}
+										.join(", ")}
 								/>,
 							],
 							[
@@ -46,7 +46,7 @@ export default function ItemPropertiesDisplay({
 								<UIBasics.Text
 									textColor="gray"
 									textAlign="flex-center"
-									children={itemProperties.attribute}
+									children={itemProperties.magicAttributes.join(", ")}
 								/>,
 							],
 							[

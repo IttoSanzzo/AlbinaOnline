@@ -30,7 +30,7 @@ const SlugKeyMap = {
 type SlugMap = typeof SlugKeyMap;
 
 export async function fetchStaticParamSlugs<K extends keyof SlugMap>(
-	endpoint: K
+	endpoint: K,
 ): Promise<{ [P in SlugMap[K]]: string }[]> {
 	const response = await fetch(getAlbinaApiFullAddress(`/${endpoint}`), {
 		cache: getCacheMode(),
@@ -88,7 +88,7 @@ export function deepCompare(a: LintIgnoredAny, b: LintIgnoredAny): boolean {
 export function insertSorted<T>(
 	array: T[],
 	item: T,
-	compareFn: (a: T, b: T) => number
+	compareFn: (a: T, b: T) => number,
 ): T[] {
 	let left = 0;
 	let right = array.length;
@@ -121,7 +121,7 @@ export function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
 
 export function enumToSelectOptions<T extends Record<string, string | number>>(
 	targetEnum: T,
-	ignoredKeys?: (keyof T)[]
+	ignoredKeys?: (keyof T)[],
 ): SelectOption[] {
 	if (ignoredKeys) {
 		return Object.entries(targetEnum)
@@ -138,5 +138,26 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 		.map(([key, value]) => ({
 			name: key,
 			value: value as number,
+		}));
+}
+
+export function enumToSelectStringOptions<
+	T extends Record<string, string | number>,
+>(targetEnum: T, ignoredKeys?: (keyof T)[]): SelectOption[] {
+	if (ignoredKeys) {
+		return Object.entries(targetEnum)
+			.filter(([key]) => isNaN(Number(key)) && !ignoredKeys.includes(key))
+			.sort(([key1], [key2]) => key1.localeCompare(key2))
+			.map(([key]) => ({
+				name: key,
+				value: key as string,
+			}));
+	}
+	return Object.entries(targetEnum)
+		.filter(([key]) => isNaN(Number(key)))
+		.sort(([key1], [key2]) => key1.localeCompare(key2))
+		.map(([key]) => ({
+			name: key,
+			value: key as string,
 		}));
 }

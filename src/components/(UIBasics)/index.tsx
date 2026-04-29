@@ -20,6 +20,7 @@ export const UIBasics = {
 	},
 	MultiColumn: {
 		Two: BasicComponents.TwoColumns,
+		Three: BasicComponents.ThreeColumns,
 	},
 };
 

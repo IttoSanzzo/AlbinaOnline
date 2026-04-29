@@ -4,6 +4,7 @@ import {
 	GenericExtraProperty,
 	GenericInfo,
 	Guid,
+	MagicAttribute,
 } from "../index";
 
 export enum ItemType {
@@ -77,7 +78,7 @@ export type ItemStats = {
 export type ItemProperties = {
 	compatibleSlots: [keyof typeof EquipmentSlotType];
 	weight: number;
-	attribute: string;
+	magicAttributes: [keyof typeof MagicAttribute];
 	stats?: ItemStats;
 	extras: GenericExtraProperty[];
 };

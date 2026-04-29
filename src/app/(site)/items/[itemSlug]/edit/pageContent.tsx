@@ -15,15 +15,19 @@ import {
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
+	EquipmentSlotType,
 	GenericInfo,
 	ItemData,
 	ItemProperties,
+	ItemSlotTypeName,
 	ItemSubType,
 	ItemType,
+	LintIgnoredAny,
+	MagicAttribute,
 	RoleHierarchy,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions } from "@/utils/Data";
+import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -52,9 +56,9 @@ const ItemStatsSchema = z.object({
 	range: z.string(),
 });
 const ItemPropertiesSchema = z.object({
-	compatibleSlots: z.array(z.string()),
-	weight: z.number(),
-	magicAttributes: z.array(z.string()),
+	// compatibleSlots: z.array(z.string()),
+	// weight: z.number(),
+	// magicAttributes: z.array(z.string()),
 	stats: ItemStatsSchema.nullable(),
 	extras: z.array(GenericExtraPropertySchema),
 });
@@ -66,9 +70,29 @@ const schema = z.object({
 	subType: zEnumKey(ItemSubType, ["Unknown"]),
 	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
 	properties: zJsonStringTyped<ItemProperties>(ItemPropertiesSchema),
+
+	weight: z.number(),
+	compatibleSlots: z.array(z.string()),
+	MagicAttributes: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
+
+const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, ["Unknown"]);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType, [
+	"Unknown",
+]);
+const compatibleSlotOptions: SelectOption[] = enumToSelectStringOptions(
+	EquipmentSlotType,
+	["Unknown"],
+).map((option) => ({
+	...option,
+	name: ItemSlotTypeName[option.name as keyof typeof EquipmentSlotType],
+}));
+const magicAttributeOptions: SelectOption[] = enumToSelectStringOptions(
+	MagicAttribute,
+	["Unknown"],
+);
 
 interface EditItemPageContentProps {
 	item: ItemData;
@@ -85,7 +109,17 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			type: ItemType[item.type].toString(),
 			subType: ItemSubType[item.subType].toString(),
 			info: JSON.stringify(item.info, null, 2),
-			properties: JSON.stringify(item.properties, null, 2),
+			properties: JSON.stringify(
+				{
+					stats: item.properties.stats,
+					extras: item.properties.extras,
+				},
+				null,
+				2,
+			),
+			weight: item.properties.weight,
+			compatibleSlots: item.properties.compatibleSlots,
+			MagicAttributes: item.properties.magicAttributes,
 		},
 	});
 
@@ -98,6 +132,14 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			info: formData.info,
 			properties: formData.properties,
 		};
+		body.properties.weight = formData.weight;
+		body.properties.compatibleSlots = formData.compatibleSlots.map(
+			(value: LintIgnoredAny) => EquipmentSlotType[value],
+		) as [keyof typeof EquipmentSlotType];
+		body.properties.magicAttributes = formData.MagicAttributes.map(
+			(value: LintIgnoredAny) => MagicAttribute[value],
+		) as [keyof typeof MagicAttribute];
+
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/items/${item.slug}`),
@@ -117,13 +159,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		await revalidateTagByClientSide("/items");
 		await revalidatePathByClientSide("/items");
 	}
-
-	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType, [
-		"Unknown",
-	]);
 
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
@@ -167,6 +202,35 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					label="Info"
 					height={200}
 					style={{ fontFamily: "monospace" }}
+				/>
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.MultiSelect<FormInput>
+							fieldName="compatibleSlots"
+							label="Compatible Slots"
+							options={compatibleSlotOptions}
+							width={"100%"}
+						/>
+					}
+					colum2={
+						<HookedForm.MultiSelect<FormInput>
+							fieldName="MagicAttributes"
+							label="Magic Attributes"
+							options={magicAttributeOptions}
+							width={"100%"}
+						/>
+					}
+					colum3={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="weight"
+							label="Weight (Grams)"
+							style={{ fontFamily: "monospace" }}
+							min={0}
+							max={2147483647}
+							width={"100%"}
+						/>
+					}
 				/>
 				<HookedForm.TextAreaInput<FormInput>
 					fieldName="properties"

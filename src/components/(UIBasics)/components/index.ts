@@ -1,6 +1,7 @@
 export { Box } from "./Box";
 export { Text } from "./Text";
 export { TwoColumns } from "./2Columns";
+export { ThreeColumns } from "./3Columns";
 export { Bullet } from "./Bullet";
 export { Callout } from "./Callout";
 export { Quote } from "./Quote";

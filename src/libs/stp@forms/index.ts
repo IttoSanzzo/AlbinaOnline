@@ -4,6 +4,7 @@ export type { SelectOption } from "./components/Select/index";
 
 import { Form } from "./components/Form";
 import { SelectComponent } from "./components/Select";
+import { MultiSelectComponent } from "./components/MultiSelect";
 import { TextInput } from "./components/TextInput";
 import { TextAreaInput } from "./components/TextAreaInput";
 import { NumberInput } from "./components/NumberInput";
@@ -29,6 +30,7 @@ export const HookedForm = {
 	PasswordInput: PasswordInput,
 	ImageInput: ImageInput,
 	Select: SelectComponent,
+	MultiSelect: MultiSelectComponent,
 	Space: Space,
 	Separator: Separator,
 	SimpleMessage: SimpleMessage,

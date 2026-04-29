@@ -32,6 +32,7 @@ type NumberInputProps<TFormData> = {
 	max?: number;
 	step?: number;
 	color?: keyof typeof StandartTextColor;
+	width?: CSSProperties["width"];
 } & InputHTMLAttributes<HTMLInputElement>;
 
 type NewType<TFormData> = NumberInputProps<TFormData>;
@@ -44,6 +45,7 @@ export function NumberInput<TFormData>({
 	style,
 	className,
 	color,
+	width,
 	...rest
 }: NewType<TFormData>) {
 	const inputStyle: CSSProperties = {
@@ -54,7 +56,7 @@ export function NumberInput<TFormData>({
 	};
 
 	return (
-		<NumberInputContainer>
+		<NumberInputContainer style={{ width }}>
 			<NumberInputLabel children={label} />
 			<NumberInputInline
 				className={clsx(className, "withButtonPadding")}
