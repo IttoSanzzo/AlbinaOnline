@@ -22,6 +22,7 @@ import {
 	RoleHierarchy,
 	SpellDomain,
 	MagicAttribute,
+	canEditCatalogEntry,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
@@ -131,11 +132,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 	const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
 	const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType, []);
 
-	if (
-		loading ||
-		user == null ||
-		RoleHierarchy[user.role] <= RoleHierarchy.Admin
-	)
+	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
 	return (

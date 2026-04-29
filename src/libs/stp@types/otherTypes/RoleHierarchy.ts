@@ -7,3 +7,9 @@ export enum RoleHierarchy {
 	Bot,
 	God,
 }
+
+export const canCreateCatalogEntry = (role: RoleHierarchy) =>
+	role >= RoleHierarchy.Admin;
+
+export const canEditCatalogEntry = (role: RoleHierarchy) =>
+	role >= RoleHierarchy.Admin;

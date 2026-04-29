@@ -13,6 +13,7 @@ import {
 } from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
+	canEditCatalogEntry,
 	GenericInfo,
 	MasteryData,
 	MasterySubType,
@@ -103,11 +104,7 @@ export function EditMasteryPageContent({
 		"Unknown",
 	]);
 
-	if (
-		loading ||
-		user == null ||
-		RoleHierarchy[user.role] <= RoleHierarchy.Admin
-	)
+	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
 	return (

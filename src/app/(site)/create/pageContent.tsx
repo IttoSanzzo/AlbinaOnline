@@ -8,7 +8,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { CreateFormWrapper } from "./subComponents/CreateFormWrapper";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
-import { RoleHierarchy } from "@/libs/stp@types";
+import { canCreateCatalogEntry, RoleHierarchy } from "@/libs/stp@types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,11 +50,11 @@ export default function PageContent() {
 	}, []);
 
 	useEffect(() => {
-		if (!loading && user && RoleHierarchy[user.role] <= RoleHierarchy.Admin)
+		if (!loading && user && !canCreateCatalogEntry(RoleHierarchy[user.role]))
 			router.push("/home");
 	}, [loading, user]);
 
-	if (loading || !user || RoleHierarchy[user.role] <= RoleHierarchy.Admin)
+	if (loading || !user || !canCreateCatalogEntry(RoleHierarchy[user.role]))
 		return <LoadingCircle />;
 
 	return (

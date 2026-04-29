@@ -7,7 +7,7 @@ export type {
 	UserFavoriteType,
 } from "./UserFavoritesGrouped";
 export { LanguageType } from "./LanguageType";
-export { RoleHierarchy } from "./RoleHierarchy";
+export * from "./RoleHierarchy";
 export type {
 	DiceIterationResult,
 	DiceNode,

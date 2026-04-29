@@ -18,6 +18,7 @@ import {
 	TraitSubType,
 	TraitType,
 	RoleHierarchy,
+	canEditCatalogEntry,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions } from "@/utils/Data";
@@ -99,11 +100,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 	]);
 	const subTypeOptions: SelectOption[] = enumToSelectOptions(TraitSubType, []);
 
-	if (
-		loading ||
-		user == null ||
-		RoleHierarchy[user.role] <= RoleHierarchy.Admin
-	)
+	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
 	return (

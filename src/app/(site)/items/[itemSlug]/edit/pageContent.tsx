@@ -14,6 +14,7 @@ import {
 } from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
+	canEditCatalogEntry,
 	GenericInfo,
 	ItemData,
 	ItemProperties,
@@ -124,11 +125,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		"Unknown",
 	]);
 
-	if (
-		loading ||
-		user == null ||
-		RoleHierarchy[user.role] <= RoleHierarchy.Admin
-	)
+	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
 	return (

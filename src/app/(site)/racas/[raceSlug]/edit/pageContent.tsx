@@ -14,6 +14,7 @@ import {
 } from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import {
+	canEditCatalogEntry,
 	LanguageType,
 	RaceData,
 	RaceGenerals,
@@ -136,11 +137,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		"Unknown",
 	]);
 
-	if (
-		loading ||
-		user == null ||
-		RoleHierarchy[user.role] <= RoleHierarchy.Admin
-	)
+	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
 	return (
