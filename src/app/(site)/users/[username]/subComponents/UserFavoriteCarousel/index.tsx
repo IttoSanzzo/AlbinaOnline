@@ -73,7 +73,6 @@ export function UserFavoriteCarousel({
 								favorite.target[indentifier as keyof typeof favorite.target],
 							)}`}
 							title={favorite.target.name}
-							titleWrap
 							artworkUrl={favorite.target.iconUrl}
 						/>
 					))}

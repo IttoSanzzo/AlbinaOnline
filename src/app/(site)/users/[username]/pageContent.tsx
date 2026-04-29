@@ -136,7 +136,6 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 								key={char.id}
 								href={`/chars/${char.id}`}
 								title={char.name}
-								titleWrap
 								artworkUrl={getAlbinaApiFullAddress(
 									`/favicon/chars/${char.id}`,
 								)}

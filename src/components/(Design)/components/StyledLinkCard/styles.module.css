@@ -47,7 +47,8 @@
 	text-decoration: none;
 	justify-content: center;
 	align-items: center;
-	word-break: break-all;
+	text-wrap: balance;
+	text-align: center;
 	width: 100%;
 }
 .hoverTitleContainer {
@@ -66,6 +67,8 @@
 	border-top-left-radius: var(--rd-md);
 	width: 100%;
 	opacity: 0.8;
+	text-wrap: balance;
+	text-align: center;
 
 	transition: 0.15s ease-in-out margin;
 }

@@ -26,7 +26,6 @@ export interface StyledLinkCardProps {
 	backgroundColor?: keyof typeof StandartBackgroundColor;
 	titleBackgroundColor?: keyof typeof StandartBackgroundColor;
 	title: string;
-	titleWrap?: boolean;
 	size?: number;
 	layout?: "square" | "rectangle";
 	usePreview?: boolean;
@@ -37,7 +36,6 @@ export function StyledLinkCard({
 	artworkUrl,
 	size = 150,
 	layout = "square",
-	titleWrap = false,
 	titleColor,
 	borderColor,
 	backgroundColor,
@@ -80,14 +78,11 @@ export function StyledLinkCard({
 			...(titleBackgroundColor && {
 				backgroundColor: StandartBackgroundColor[titleBackgroundColor],
 			}),
-			...(titleWrap && {
-				textWrap: "balance",
-				textAlign: "center",
-			}),
 		};
 		return (
 			<Tilt options={tiltOptions}>
 				<StyledLinkCardContainer
+					title={title}
 					style={containerStyle}
 					data-tilt>
 					{usePreview && (
@@ -101,7 +96,7 @@ export function StyledLinkCard({
 						<ArtworkContainer style={artworkContainerStyle}>
 							<ImageWithTTL
 								src={artworkUrl}
-								alt=""
+								alt="Card Image"
 								width={size * 2 - 2}
 								height={size * 2 - 2}
 							/>
@@ -116,7 +111,9 @@ export function StyledLinkCard({
 	}
 	return (
 		<Tilt options={tiltOptions}>
-			<StyledLinkCardContainer style={containerStyle}>
+			<StyledLinkCardContainer
+				title={title}
+				style={containerStyle}>
 				{usePreview && (
 					<LinkPreview
 						href={href}
@@ -128,7 +125,7 @@ export function StyledLinkCard({
 					<ArtworkContainer style={artworkContainerStyle}>
 						<ImageWithTTL
 							src={artworkUrl}
-							alt=""
+							alt="Card Image"
 							width={size * 2 - 2}
 							height={size * 2 - 2}
 						/>
@@ -137,10 +134,6 @@ export function StyledLinkCard({
 						style={{
 							...(titleColor && {
 								color: StandartTextColor[titleColor],
-							}),
-							...(titleWrap && {
-								textWrap: "balance",
-								textAlign: "center",
 							}),
 							...(titleBackgroundColor && {
 								backgroundColor: StandartBackgroundColor[titleBackgroundColor],
