@@ -32,8 +32,8 @@ export default function PageContent({ items }: PageContentProps) {
 					(item) =>
 						item.name.toLowerCase().includes(filter) ||
 						item.type.toLowerCase().includes(filter) ||
-						item.subType.toLowerCase().includes(filter)
-			  );
+						item.subType.toLowerCase().includes(filter),
+				);
 
 	return (
 		<UIBasics.Box
@@ -97,6 +97,16 @@ export default function PageContent({ items }: PageContentProps) {
 				title="Ferramentas"
 				allItems={filteredItems}
 				type="Tool"
+			/>
+			<ItemTypeDisplay
+				title="Kits"
+				allItems={filteredItems}
+				type="Kit"
+			/>
+			<ItemTypeDisplay
+				title="Veículos"
+				allItems={filteredItems}
+				type="Vehicle"
 			/>
 			<ItemTypeDisplay
 				title="Especiais"

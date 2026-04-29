@@ -14,10 +14,17 @@ export enum SkillType {
 }
 export enum SkillSubType {
 	Unknown,
-	MajorAction,
-	MinorAction,
-	MajorReaction,
-	MinorReaction,
+	// MajorAction,
+	// MinorAction,
+	// MajorReaction,
+	// MinorReaction,
+	Combat,
+	Magic,
+	Sensory,
+	Intellectual,
+	Aspect,
+	Miscellaneous,
+	Special,
 }
 
 export type SkillComponents = {

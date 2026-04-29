@@ -18,6 +18,8 @@ export enum ItemType {
 	Tool,
 	Miscellaneous,
 	Special,
+	Kit,
+	Vehicle,
 	Random,
 }
 export enum ItemSubType {
@@ -58,6 +60,9 @@ export enum ItemSubType {
 	Tool,
 	Key,
 	Toy,
+	Terrestrial,
+	Aquatic,
+	Aerial,
 	Random,
 }
 
@@ -105,6 +110,8 @@ export const ItemTypeName: Record<keyof typeof ItemType, string> = {
 	Miscellaneous: "Miscelâneo",
 	Random: "Aleatório",
 	Tool: "Ferramenta",
+	Kit: "Kit",
+	Vehicle: "Veículo",
 	Unknown: "?",
 };
 export const ItemTypePluralName: Record<keyof typeof ItemType, string> = {
@@ -119,5 +126,7 @@ export const ItemTypePluralName: Record<keyof typeof ItemType, string> = {
 	Miscellaneous: "Miscelâneos",
 	Random: "Aleatórios",
 	Tool: "Ferramentas",
+	Kit: "Kits",
+	Vehicle: "Veículos",
 	Unknown: "?",
 };

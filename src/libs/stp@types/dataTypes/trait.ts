@@ -8,6 +8,13 @@ export enum TraitType {
 }
 export enum TraitSubType {
 	Unknown,
+	Combat,
+	Magic,
+	Sensory,
+	Intellectual,
+	Aspect,
+	Miscellaneous,
+	Special,
 }
 
 import { GenericEffect, Guid } from "../index";
