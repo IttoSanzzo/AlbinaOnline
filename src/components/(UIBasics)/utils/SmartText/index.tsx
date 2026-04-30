@@ -7,6 +7,13 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const SmartTextContainer = newStyledElement.div(styles.smartTextContainer);
 
+function preprocessApiUrl(url: string): string {
+	if (url.startsWith("/racas")) return `/races${url.substring(6)}`;
+	if (url.startsWith("/tracos")) return `/traits${url.substring(7)}`;
+	if (url.startsWith("/maestrias")) return `/masteries${url.substring(10)}`;
+	return url;
+}
+
 function getSmartLink(smartSlice: string, key: number): ReactNode {
 	if (smartSlice[0] !== "[") return <p key={key}>"-SmartLinkError-"</p>;
 
@@ -17,13 +24,14 @@ function getSmartLink(smartSlice: string, key: number): ReactNode {
 	const indexOfId = href.lastIndexOf("#");
 	const iconUrl =
 		indexOfId !== -1 ? href.slice(0, href.lastIndexOf("#")) : href;
+	const finalIconUrl = preprocessApiUrl(iconUrl);
 
 	return (
 		<StyledLink
 			key={key}
 			title={title}
 			href={href}
-			icon={getAlbinaApiFullAddress(`/favicon${iconUrl}`)}
+			icon={getAlbinaApiFullAddress(`/favicon${finalIconUrl}`)}
 			textMode={true}
 		/>
 	);
@@ -112,27 +120,27 @@ export function SmartText({ content }: SmartTextProps) {
 				switch (content[start + 1]) {
 					case "@":
 						parts.push(
-							getSmartLink(content.slice(start + 3, index - 1), index)
+							getSmartLink(content.slice(start + 3, index - 1), index),
 						);
 						break;
 					case "Q":
 						parts.push(
-							getSmartQuote(content.slice(start + 3, index - 1), index)
+							getSmartQuote(content.slice(start + 3, index - 1), index),
 						);
 						break;
 					case "B":
 						parts.push(
-							getSmartBullet(content.slice(start + 3, index - 1), index)
+							getSmartBullet(content.slice(start + 3, index - 1), index),
 						);
 						break;
 					case "T":
 						parts.push(
-							getSmartToggle(content.slice(start + 3, index - 1), index)
+							getSmartToggle(content.slice(start + 3, index - 1), index),
 						);
 						break;
 					case "C":
 						parts.push(
-							getSmartColor(content.slice(start + 3, index - 1), index)
+							getSmartColor(content.slice(start + 3, index - 1), index),
 						);
 						break;
 				}
