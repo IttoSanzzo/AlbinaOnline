@@ -71,7 +71,7 @@ export default async function RacePageContent({
 								textColor="pink"
 								withBold
 								withItalic>
-								{`》${raceData.type}`}
+								{`》[@/[${raceData.type}]racas]`}
 							</UIBasics.Text>
 						</UIBasics.Callout>
 					}
@@ -85,7 +85,7 @@ export default async function RacePageContent({
 								textColor="yellow"
 								withBold
 								withItalic>
-								{`》${raceData.subType}`}
+								{`》[@/[${raceData.subType}]racas]`}
 							</UIBasics.Text>
 						</UIBasics.Callout>
 					}

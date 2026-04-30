@@ -1,25 +1,27 @@
 import { UIBasics } from "@/components/(UIBasics)";
+import { SpellSubType, SpellType } from "@/libs/stp@types";
 
-function getTabulatedType(type: string) {
+function getTabulatedType(type: keyof typeof SpellType) {
 	switch (type) {
-		case "Unique":
-			return "🌟[@/[Única]spells#unicas]";
+		// case "Unique":
+		// return "🌟[@/[Única]spells#unicas]";
 		default:
-			return "Unknown?";
+			return "[@/[Nenhum]spells]";
 	}
 }
-function getTabulatedSubType(subType: string) {
+function getTabulatedSubType(subType: keyof typeof SpellSubType) {
 	switch (subType) {
-		case "MajorAction":
-			return "⊱⸙Ação Maior⸙";
+		// case "MajorAction":
+		// return "⊱⸙Ação Maior⸙";
+		case "Unknown":
 		default:
-			return "Unknown?";
+			return "[@/[Nenhum]spells]";
 	}
 }
 
 interface SpellTypologyCalloutProps {
-	type: string;
-	subType: string;
+	type: keyof typeof SpellType;
+	subType: keyof typeof SpellSubType;
 }
 export default function SpellTypologyCallout({
 	type,

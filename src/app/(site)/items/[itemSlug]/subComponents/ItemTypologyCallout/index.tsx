@@ -4,107 +4,121 @@ import { ItemSubType, ItemType } from "@/libs/stp@types";
 function getTabulatedType(type: keyof typeof ItemType) {
 	switch (type) {
 		case "Armament":
-			return "🌟[@/[Armamento]items#armamentos]";
+			return "[@/[Armamento]items#armamentos]";
 		case "Focus":
-			return "🌟[@/[Focus]items#focus]";
+			return "[@/[Focus]items#focus]";
 		case "Shielding":
-			return "🌟[@/[Escudo]items#escudos]";
+			return "[@/[Escudo]items#escudos]";
 		case "Frame":
-			return "🌟[@/[Frame]items#frames]";
+			return "[@/[Frame]items#frames]";
 		case "Wearable":
-			return "🌟[@/[Vestimenta Auxiliar]items#vestimentas-auxiliares]";
+			return "[@/[Vestimenta Auxiliar]items#vestimentas-auxiliares]";
 		case "Accessory":
-			return "🌟[@/[Acessório]items#acessorios]";
+			return "[@/[Acessório]items#acessorios]";
 		case "Consumable":
-			return "🌟[@/[Consumível]items#consumiveis]";
+			return "[@/[Consumível]items#consumiveis]";
 		case "Special":
-			return "🌟[@/[Especial]items#especiais]";
+			return "[@/[Especial]items#especiais]";
 		case "Miscellaneous":
-			return "🌟[@/[Miscelâneo]items#miscelâneos]";
+			return "[@/[Miscelâneo]items#miscelâneos]";
 		case "Tool":
-			return "🌟[@/[Ferramenta]items#ferramentas]";
+			return "[@/[Ferramenta]items#ferramentas]";
+		case "Kit":
+			return "[@/[Kit]items#kits]";
+		case "Vehicle":
+			return "[@/[Veículo]items#veiculos]";
 		case "Random":
-			return "🌟[@/[Aleatório]items#aleatorios]";
+			return "[@/[Aleatório]items#aleatorios]";
+		case "Unknown":
 		default:
-			return "🌟[@/[Unknown]items]?";
+			return "[@/[Unknown]items]";
 	}
 }
 function getTabulatedCategory(subType: keyof typeof ItemSubType) {
 	switch (subType) {
 		case "Grimoire":
-			return "⊱⸙Grimório⸙";
+			return "[@/[Grimório]items]";
 		case "Staff":
-			return "⊱⸙Cajado⸙";
+			return "[@/[Cajado]items]";
 		case "Scepter":
-			return "⊱⸙Cetro⸙";
+			return "[@/[Cetro]items]";
 		case "Wand":
-			return "⊱⸙Varinha⸙";
+			return "[@/[Varinha]items]";
 		case "Orb":
-			return "⊱⸙Orbe⸙";
+			return "[@/[Orbe]items]";
 		case "ShortBlade":
-			return "⊱⸙Lâmina Pequena⸙";
+			return "[@/[Lâmina Pequena]items]";
 		case "Sword":
-			return "⊱⸙Espada⸙";
+			return "[@/[Espada]items]";
 		case "Axe":
-			return "⊱⸙Machado⸙";
+			return "[@/[Machado]items]";
 		case "Bow":
-			return "⊱⸙Arco⸙";
+			return "[@/[Arco]items]";
 		case "Crossbow":
-			return "⊱⸙Besta⸙";
+			return "[@/[Besta]items]";
 		case "Polearm":
-			return "⊱⸙Arma de Haste⸙";
+			return "[@/[Arma de Haste]items]";
 		case "ConcussiveWeapon":
-			return "⊱⸙Arma de Concussão⸙";
+			return "[@/[Arma de Concussão]items]";
 		case "FireWeapon":
-			return "⊱⸙Arma de Fogo⸙";
+			return "[@/[Arma de Fogo]items]";
 		case "TetheredWeapon":
-			return "⊱⸙Arma Flexível⸙";
+			return "[@/[Arma Flexível]items]";
 		case "BluntWeapon":
-			return "⊱⸙Arma Cega⸙";
+			return "[@/[Arma Cega]items]";
 		case "LightShield":
-			return "⊱⸙Escudo Leve⸙";
+			return "[@/[Escudo Leve]items]";
 		case "MediumShield":
-			return "⊱⸙Escudo Médio⸙";
+			return "[@/[Escudo Médio]items]";
 		case "HeavyShield":
-			return "⊱⸙Escudo Pesado⸙";
+			return "[@/[Escudo Pesado]items]";
 		case "LightFrame":
-			return "⊱⸙Frame Leve⸙";
+			return "[@/[Frame Leve]items]";
 		case "MediumFrame":
-			return "⊱⸙Frame Médio⸙";
+			return "[@/[Frame Médio]items]";
 		case "HeavyFrame":
-			return "⊱⸙Frame Pesado⸙";
+			return "[@/[Frame Pesado]items]";
 		case "Amulet":
-			return "⊱⸙Amuleto⸙";
+			return "[@/[Amuleto]items]";
 		case "Catalyst":
-			return "⊱⸙Catalisador⸙";
+			return "[@/[Catalisador]items]";
 		case "Charm":
-			return "⊱⸙Talismã⸙";
+			return "[@/[Talismã]items]";
 		case "Codex":
-			return "⊱⸙Codex⸙";
+			return "[@/[Codex]items]";
 		case "Container":
-			return "⊱⸙Container⸙";
+			return "[@/[Container]items]";
 		case "Food":
-			return "⊱⸙Comida⸙";
+			return "[@/[Comida]items]";
 		case "Key":
-			return "⊱⸙Chave⸙";
+			return "[@/[Chave]items]";
 		case "Material":
-			return "⊱⸙Material⸙";
+			return "[@/[Material]items]";
 		case "Potion":
-			return "⊱⸙Poção⸙";
+			return "[@/[Poção]items]";
 		case "Relic":
-			return "⊱⸙Relíquia⸙";
+			return "[@/[Relíquia]items]";
 		case "Ring":
-			return "⊱⸙Anel⸙";
+			return "[@/[Anel]items]";
 		case "Scroll":
-			return "⊱⸙Scroll⸙";
+			return "[@/[Scroll]items]";
 		case "ThrownWeapon":
-			return "⊱⸙Arma de Arremesso⸙";
+			return "[@/[Arma de Arremesso]items]";
 		case "Tool":
-			return "⊱⸙Ferramenta⸙";
+			return "[@/[Ferramenta]items]";
+		case "Toy":
+			return "[@/[Brinquedo]items]";
+		case "Terrestrial":
+			return "[@/[Terrestre]items]";
+		case "Aquatic":
+			return "[@/[Aquático]items]";
+		case "Aerial":
+			return "[@/[Aéreo]items]";
+		case "Random":
+			return "[@/[Aleatório]items]";
 		case "Unknown":
-			return "⊱⸙Unknown⸙";
 		default:
-			return "Unknown?";
+			return "[@/[Unknown]items]";
 	}
 }
 

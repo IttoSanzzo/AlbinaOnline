@@ -1,63 +1,65 @@
 import { UIBasics } from "@/components/(UIBasics)";
+import { MasterySubType, MasteryType } from "@/libs/stp@types";
 
-function getTabulatedType(type: string) {
+function getTabulatedType(type: keyof typeof MasteryType) {
 	switch (type) {
 		case "Proficiency":
-			return "🌟[@/[Proficiências]maestrias#proficiencias]";
+			return "[@/[🌟Proficiências]maestrias#proficiencias]";
 		case "Expertise":
-			return "🪡[@/[Perícias]maestrias#pericias]";
+			return "[@/[🪡Perícias]maestrias#pericias]";
 		case "Knowledge":
-			return "📖[@/[Conhecimentos]maestrias#conhecimentos]";
+			return "[@/[📖Conhecimentos]maestrias#conhecimentos]";
 		case "Craft":
-			return "👜[@/[Ofícios]maestrias#oficios]";
+			return "[@/[👜Ofícios]maestrias#oficios]";
 		default:
-			return "Unknown?";
+			return "[@/[Unknown]maestrias]";
 	}
 }
-function getTabulatedCategory(subType: string) {
+function getTabulatedCategory(subType: keyof typeof MasterySubType) {
 	switch (subType) {
 		case "Agility":
-			return "⊱🦵🏻⸙Agilidade⸙";
+			return "[@/[🦵🏻Agilidade]maestrias]";
 		case "Intelligence":
-			return "⊱🧠⸙Inteligência⸙";
+			return "[@/[🧠Inteligência]maestrias]";
 		case "Strength":
-			return "⊱💪🏻⸙Força⸙";
+			return "[@/[💪🏻Força]maestrias]";
 		case "Constitution":
-			return "⊱🍻⸙Constituição⸙";
+			return "[@/[🍻Constituição]maestrias]";
 		case "Technique":
-			return "⊱🤏🏻⸙Técnica⸙";
+			return "[@/[🤏🏻Técnica]maestrias]";
 		case "Charisma":
-			return "⊱🎭⸙Carisma⸙";
+			return "[@/[🎭Carisma]maestrias]";
 		case "Wisdom":
-			return "⊱🧙🏻‍♂️⸙Sabedoria⸙";
+			return "[@/[🧙🏻‍♂️Sabedoria]maestrias]";
 		case "Singular":
-			return "⊱📘⸙Singular⸙";
+			return "[@/[📘Singular]maestrias]";
 		case "Multiple":
-			return "⊱📚⸙Múltiplo⸙";
+			return "[@/[📚Múltiplo]maestrias]";
 		case "General":
-			return "⊱👔⸙Geral⸙";
+			return "[@/[👔Geral]maestrias]";
 		case "Combatant":
-			return "⊱🥋⸙Combatente⸙";
+			return "[@/[🥋Combatente]maestrias]";
 		case "Production":
-			return "⊱🥽⸙Produção⸙";
+			return "[@/[🥽Produção]maestrias]";
 		case "Armed":
-			return "⊱⚔️⸙Armada⸙";
+			return "[@/[⚔️Armada]maestrias]";
 		case "Armored":
-			return "⊱🛡️⸙Defensiva⸙";
+			return "[@/[🛡️Defensiva]maestrias]";
 		case "Focus":
-			return "⊱🪄⸙Foco⸙";
+			return "[@/[🪄Foco]maestrias]";
 		case "CombatStyle":
-			return "⊱🎖️⸙Estilo de Combate⸙";
+			return "[@/[🎖️Estilo de Combate]maestrias]";
 		case "Tool":
-			return "⊱🛠️⸙Ferramenta⸙";
+			return "[@/[🛠️Ferramenta]maestrias]";
+		case "Unknown":
 		default:
-			return "⊱Unknown?";
+			return "[@/[Unknown]maestrias]";
 	}
 }
 
 interface MasteryTypologyCalloutProps {
-	type: string;
-	subType: string;
+	type: keyof typeof MasteryType;
+	subType: keyof typeof MasterySubType;
 }
 export default function MasteryTypologyCallout({
 	type,
