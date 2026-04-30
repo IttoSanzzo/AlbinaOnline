@@ -26,7 +26,7 @@ function getTabulatedType(type: keyof typeof ItemType) {
 		case "Random":
 			return "🌟[@/[Aleatório]items#aleatorios]";
 		default:
-			return "Unknown?";
+			return "🌟[@/[Unknown]items]?";
 	}
 }
 function getTabulatedCategory(subType: keyof typeof ItemSubType) {
