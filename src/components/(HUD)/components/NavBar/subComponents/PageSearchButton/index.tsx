@@ -133,8 +133,13 @@ function searchEntryToStyledLink(
 ): ReactNode {
 	return (
 		<StyledLink
-			key={`${searchEntry.type}${searchEntry.id}`}
-			title={searchEntry.title}
+			key={`${searchEntry.type}|${searchEntry.id}`}
+			hoverTitle={searchEntry.title}
+			title={
+				searchEntry.title.length <= 16
+					? searchEntry.title
+					: `${searchEntry.title.substring(0, 15)}...`
+			}
 			href={getPageLinkFromSearchEntry(searchEntry.entity, searchEntry.slug)}
 			icon={searchEntry.iconUrl}
 			onClick={() => {
@@ -285,10 +290,15 @@ export function PageSearchButton() {
 							label="Pesquisar"
 						/>
 					</HookedForm.Form>
-					{watchedValues.query.length === 0 ? (
+					{watchedValues.query.length < 3 ? (
 						<>
 							{navigationHistoryState.history.length > 0 && (
 								<UIBasics.Box
+									style={{
+										marginBottom: "-2px",
+										borderBottomLeftRadius: "0",
+										borderBottomRightRadius: "0",
+									}}
 									withoutPadding
 									withoutMargin>
 									<UIBasics.Header
@@ -302,7 +312,12 @@ export function PageSearchButton() {
 										children={navigationHistoryState.history.map((entry) => (
 											<StyledLink
 												key={entry.url}
-												title={entry.name}
+												hoverTitle={entry.name}
+												title={
+													entry.name.length <= 16
+														? entry.name
+														: `${entry.name.substring(0, 15)}...`
+												}
 												href={entry.url}
 												icon={entry.icon}
 												onClick={() => {
@@ -323,6 +338,10 @@ export function PageSearchButton() {
 								/>
 							) : (
 								<UIBasics.Box
+									style={{
+										borderTopLeftRadius: "0",
+										borderTopRightRadius: "0",
+									}}
 									withoutPadding
 									withoutMargin>
 									<UIBasics.Header

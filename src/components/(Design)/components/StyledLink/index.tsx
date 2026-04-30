@@ -16,6 +16,7 @@ export interface StyledLinkProps extends LinkProps {
 	textMode?: boolean;
 	tryAutomaticIcon?: boolean;
 	usePreview?: boolean;
+	hoverTitle?: string;
 }
 
 export function StyledLink({
@@ -25,6 +26,7 @@ export function StyledLink({
 	textMode = false,
 	tryAutomaticIcon = false,
 	usePreview = true,
+	hoverTitle,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -37,6 +39,7 @@ export function StyledLink({
 
 	return (
 		<StyledLinkContainer
+			title={hoverTitle}
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
 			{usePreview && (
 				<LinkPreview

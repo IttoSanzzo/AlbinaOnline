@@ -58,10 +58,7 @@ export function Breadcrumbs() {
 			const url = pathName;
 			const lastCrumb = crumbs[crumbs.length - 1];
 			addHistoryEntry({
-				name:
-					lastCrumb.name.length <= 16
-						? lastCrumb.name
-						: `${lastCrumb.name.substring(0, 15)}...`,
+				name: lastCrumb.name,
 				icon: lastCrumb.icon ?? getAlbinaApiFullAddress("/favicon/home"),
 				url: url,
 			});
