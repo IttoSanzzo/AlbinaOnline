@@ -1,6 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
@@ -221,6 +222,10 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				genericEffects={spell.effects}
 				targetId={spell.id}
 				targetType="Spell"
+			/>
+
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/spells/${spell.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

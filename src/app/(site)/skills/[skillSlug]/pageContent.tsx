@@ -10,6 +10,9 @@ import SkillPropertiesDisplay from "./subComponents/SkillPropertiesDisplay";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -55,7 +58,17 @@ export default async function SkillPageContent({
 			/>
 			<SkillPropertiesDisplay skillProperties={skillData.properties} />
 
+			<StaticGallery
+				url={getAlbinaApiFullAddress(`/images/skills/${skillData.slug}`)}
+				hideIfEmpty
+			/>
+
 			<GenericEffectsDisplay effects={skillData.effects} />
+
+			<LinkedCharacters
+				endpoint={`/skills/by-id/${skillData.id}/linked-characters`}
+			/>
+
 			<GenericPageFooter
 				version={skillData.albinaVersion}
 				lastUpdate={skillData.updatedAt}

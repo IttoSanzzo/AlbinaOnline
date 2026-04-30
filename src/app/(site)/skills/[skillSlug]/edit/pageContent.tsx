@@ -1,6 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
@@ -195,6 +196,10 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				genericEffects={skill.effects}
 				targetId={skill.id}
 				targetType="Skill"
+			/>
+
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/skills/${skill.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

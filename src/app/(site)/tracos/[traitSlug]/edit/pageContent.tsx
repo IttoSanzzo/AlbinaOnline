@@ -1,6 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
@@ -166,6 +167,10 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				genericEffects={trait.effects}
 				targetId={trait.id}
 				targetType="Trait"
+			/>
+
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/traits/${trait.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

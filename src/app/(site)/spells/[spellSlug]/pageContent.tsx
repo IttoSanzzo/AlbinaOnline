@@ -10,6 +10,9 @@ import SpellPropertiesDisplay from "./subComponents/SpellPropertiesDisplay";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -60,7 +63,17 @@ export default async function SpellPageContent({
 				spellLevel={spellData.domainLevel}
 			/>
 
+			<StaticGallery
+				url={getAlbinaApiFullAddress(`/images/spells/${spellData.slug}`)}
+				hideIfEmpty
+			/>
+
 			<GenericEffectsDisplay effects={spellData.effects} />
+
+			<LinkedCharacters
+				endpoint={`/spells/by-id/${spellData.id}/linked-characters`}
+			/>
+
 			<GenericPageFooter
 				version={spellData.albinaVersion}
 				lastUpdate={spellData.updatedAt}

@@ -9,6 +9,9 @@ import TraitTypologyCallout from "./subComponents/TraitTypologyCallout";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -64,7 +67,18 @@ export default async function TraitPageContent({
 					/>
 				))}
 			/>
+
+			<StaticGallery
+				url={getAlbinaApiFullAddress(`/images/traits/${traitData.slug}`)}
+				hideIfEmpty
+			/>
+
 			<GenericEffectsDisplay effects={traitData.effects} />
+
+			<LinkedCharacters
+				endpoint={`/traits/by-id/${traitData.id}/linked-characters`}
+			/>
+
 			<GenericPageFooter
 				version={traitData.albinaVersion}
 				lastUpdate={traitData.updatedAt}

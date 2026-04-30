@@ -260,6 +260,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				targetId={item.id}
 				targetType="Item"
 			/>
+
 			<DynamicGallery
 				url={getAlbinaApiFullAddress(`/images/items/${item.slug}`)}
 			/>

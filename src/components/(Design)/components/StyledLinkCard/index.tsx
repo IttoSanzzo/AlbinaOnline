@@ -83,8 +83,7 @@ export function StyledLinkCard({
 			<Tilt options={tiltOptions}>
 				<StyledLinkCardContainer
 					title={title}
-					style={containerStyle}
-					data-tilt>
+					style={containerStyle}>
 					{usePreview && (
 						<LinkPreview
 							href={href}

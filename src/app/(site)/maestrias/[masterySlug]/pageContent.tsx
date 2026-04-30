@@ -9,6 +9,9 @@ import MasteryTypologyCallout from "./subComponents/MasteryTypologyCallout";
 import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
+import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
+import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -53,7 +56,17 @@ export default async function MasteryPageContent({
 				}
 				colum2={<GenericInfoCallout info={masteryData.info} />}
 			/>
+			<StaticGallery
+				url={getAlbinaApiFullAddress(`/images/masteries/${masteryData.slug}`)}
+				hideIfEmpty
+			/>
+
 			<GenericEffectsDisplay effects={masteryData.effects} />
+
+			<LinkedCharacters
+				endpoint={`/masteries/by-id/${masteryData.id}/linked-characters`}
+			/>
+
 			<GenericPageFooter
 				version={masteryData.albinaVersion}
 				lastUpdate={masteryData.updatedAt}

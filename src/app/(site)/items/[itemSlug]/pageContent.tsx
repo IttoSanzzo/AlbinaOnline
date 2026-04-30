@@ -14,6 +14,7 @@ import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import { ItemData } from "@/libs/stp@types";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
+import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
 
 interface ItemPageContentProps {
 	itemSlug: string;
@@ -55,12 +56,18 @@ export default async function ItemPageContent({
 				colum2={<GenericInfoCallout info={itemData.info} />}
 			/>
 			<ItemPropertiesDisplay itemProperties={itemData.properties} />
+
 			<StaticGallery
 				url={getAlbinaApiFullAddress(`/images/items/${itemData.slug}`)}
 				hideIfEmpty
 			/>
 
 			<GenericEffectsDisplay effects={itemData.effects} />
+
+			<LinkedCharacters
+				endpoint={`/items/by-id/${itemData.id}/linked-characters`}
+			/>
+
 			<GenericPageFooter
 				version={itemData.albinaVersion}
 				lastUpdate={itemData.updatedAt}
