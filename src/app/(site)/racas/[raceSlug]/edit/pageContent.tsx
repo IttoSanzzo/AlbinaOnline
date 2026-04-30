@@ -12,7 +12,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
 	LanguageType,
@@ -140,9 +140,27 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/racas",
+			name: "Raças",
+			icon: getAlbinaApiFullAddress(`/favicon/races`),
+		},
+		{
+			href: `/racas/${race.slug}`,
+			name: race.name,
+			icon: race.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${race.name}]`,
+			icon: race.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
-			title=""
+			title="EDIT"
 			isEditable={true}
 			banner={race.bannerUrl}
 			icon={race.iconUrl}
@@ -151,6 +169,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			metadataTag={`race-${race.slug}`}
 			cacheTags={["/races"]}
 			cachePaths={["/racas"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

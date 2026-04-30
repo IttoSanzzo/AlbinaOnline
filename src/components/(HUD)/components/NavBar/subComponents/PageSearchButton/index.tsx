@@ -58,7 +58,7 @@ function getPageLinkFromSearchEntry(
 		case "Skill":
 			return `/skills/${route}`;
 		case "Spell":
-			return `/spell/${route}`;
+			return `/spells/${route}`;
 		case "Trait":
 			return `/tracos/${route}`;
 		case "Race":

@@ -12,7 +12,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	GenericInfo,
 	TraitData,
@@ -104,6 +104,24 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/tracos",
+			name: "Traços",
+			icon: getAlbinaApiFullAddress(`/favicon/traits`),
+		},
+		{
+			href: `/tracos/${trait.slug}`,
+			name: trait.name,
+			icon: trait.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${trait.name}]`,
+			icon: trait.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
 			title=""
@@ -117,6 +135,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			metadataTag={`trait-${trait.slug}`}
 			cacheTags={["/traits"]}
 			cachePaths={["/tracos"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

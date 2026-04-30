@@ -12,7 +12,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
 	EquipmentSlotType,
@@ -163,9 +163,27 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/items",
+			name: "Items",
+			icon: getAlbinaApiFullAddress(`/favicon/items`),
+		},
+		{
+			href: `/items/${item.slug}`,
+			name: item.name,
+			icon: item.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${item.name}]`,
+			icon: item.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
-			title=""
+			title="EDIT"
 			isEditable={true}
 			banner={item.bannerUrl}
 			icon={item.iconUrl}
@@ -174,6 +192,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			metadataTag={`item-${item.slug}`}
 			cacheTags={["/items"]}
 			cachePaths={["/items"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

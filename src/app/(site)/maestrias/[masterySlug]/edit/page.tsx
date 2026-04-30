@@ -5,7 +5,7 @@ import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Edit Mastery",
-	icon: getAlbinaApiFullAddress("/favicon/core-page/maestrias"),
+	icon: getAlbinaApiFullAddress("/favicon/maestrias/slug/edit"),
 	ogImage: {
 		url: getAlbinaApiFullAddress("/banner/core-page/maestrias"),
 	},

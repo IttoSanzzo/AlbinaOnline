@@ -12,7 +12,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
 	GenericInfo,
@@ -108,9 +108,27 @@ export function EditMasteryPageContent({
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/maestrias",
+			name: "Maestrias",
+			icon: getAlbinaApiFullAddress(`/favicon/masteries`),
+		},
+		{
+			href: `/maestrias/${mastery.slug}`,
+			name: mastery.name,
+			icon: mastery.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${mastery.name}]`,
+			icon: mastery.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
-			title=""
+			title="EDIT"
 			isEditable={true}
 			banner={mastery.bannerUrl}
 			icon={mastery.iconUrl}
@@ -123,6 +141,7 @@ export function EditMasteryPageContent({
 			metadataTag={`mastery-${mastery.slug}`}
 			cacheTags={["/masteries"]}
 			cachePaths={["/maestrias"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

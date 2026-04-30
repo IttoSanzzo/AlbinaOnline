@@ -12,7 +12,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	GenericInfo,
 	SkillData,
@@ -82,7 +82,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			name: skill.name,
 			slug: skill.slug,
 			type: SkillType[skill.type].toString(),
-			subType: SkillSubType[skill.subType].toString(),
+			subType: (SkillSubType[skill.subType] ?? SkillSubType.Unknown).toString(),
 			info: JSON.stringify(skill.info, null, 2),
 			properties: JSON.stringify(skill.properties, null, 2),
 		},
@@ -127,9 +127,27 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/skills",
+			name: "Skills",
+			icon: getAlbinaApiFullAddress(`/favicon/skills`),
+		},
+		{
+			href: `/skills/${skill.slug}`,
+			name: skill.name,
+			icon: skill.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${skill.name}]`,
+			icon: skill.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
-			title=""
+			title="EDIT"
 			isEditable={true}
 			banner={skill.bannerUrl}
 			icon={skill.iconUrl}
@@ -140,6 +158,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			metadataTag={`skill-${skill.slug}`}
 			cacheTags={["/skills"]}
 			cachePaths={["/skills"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>

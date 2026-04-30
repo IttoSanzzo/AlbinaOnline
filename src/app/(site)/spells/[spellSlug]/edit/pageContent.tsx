@@ -13,7 +13,7 @@ import {
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	GenericInfo,
 	SpellData,
@@ -136,6 +136,24 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
+	const breadcrumbs: Breadcrumb[] = [
+		{
+			href: "/spells",
+			name: "Spells",
+			icon: getAlbinaApiFullAddress(`/favicon/spells`),
+		},
+		{
+			href: `/spells/${spell.slug}`,
+			name: spell.name,
+			icon: spell.iconUrl,
+		},
+		{
+			href: `#`,
+			name: `Edit [${spell.name}]`,
+			icon: spell.iconUrl,
+		},
+	];
+
 	return (
 		<GenericPageContainer
 			title=""
@@ -149,6 +167,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			metadataTag={`spell-${spell.slug}`}
 			cacheTags={["/spells"]}
 			cachePaths={["/spells"]}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
