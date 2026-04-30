@@ -20,7 +20,7 @@ function getTabulatedType(type: keyof typeof ItemType) {
 		case "Special":
 			return "[@/[Especial]items#especiais]";
 		case "Miscellaneous":
-			return "[@/[Miscelâneo]items#miscelâneos]";
+			return "[@/[Miscelâneo]items#miscelaneos]";
 		case "Tool":
 			return "[@/[Ferramenta]items#ferramentas]";
 		case "Kit":
