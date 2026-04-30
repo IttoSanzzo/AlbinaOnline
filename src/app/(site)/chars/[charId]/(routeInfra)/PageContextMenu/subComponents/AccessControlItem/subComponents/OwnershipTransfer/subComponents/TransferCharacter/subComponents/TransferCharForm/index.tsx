@@ -35,7 +35,7 @@ export function TransferCharForm({
 			username: formData.newOwnerUserName,
 		};
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiFullAddress()}/characters/${characterId}/owner`,
+			getAlbinaApiFullAddress(`/chars/${characterId}/owner`),
 			{
 				method: "PUT",
 				body: JSON.stringify(body),

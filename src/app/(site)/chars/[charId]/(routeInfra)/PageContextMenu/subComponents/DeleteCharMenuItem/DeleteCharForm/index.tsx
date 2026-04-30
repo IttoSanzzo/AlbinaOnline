@@ -33,7 +33,7 @@ export function DeleteCharForm({
 
 	async function onSubmit() {
 		const response = await authenticatedFetchAsync(
-			`${getAlbinaApiFullAddress()}/characters/${characterId}`,
+			getAlbinaApiFullAddress(`/chars/${characterId}`),
 			{
 				method: "DELETE",
 				headers: {
