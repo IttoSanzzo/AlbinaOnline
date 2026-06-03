@@ -9,7 +9,6 @@ import {
 	HookedForm,
 	SelectOption,
 	zEnumKey,
-	zEnumKeyArrayString,
 	zJsonStringTyped,
 	zSlug,
 } from "@/libs/stp@forms";
@@ -26,7 +25,7 @@ import {
 	canEditCatalogEntry,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions } from "@/utils/Data";
+import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -69,9 +68,11 @@ const schema = z.object({
 	subType: zEnumKey(SpellSubType, []),
 	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
 	properties: zJsonStringTyped<SpellProperties>(SpellPropertiesSchema),
-	domainLevel: z.number().min(0, "Min 0"),
-	spellDomains: zEnumKeyArrayString(SpellDomain, ["Unknown"]),
-	magicAttributes: zEnumKeyArrayString(MagicAttribute, ["Unknown"]),
+	domainLevel: z.number().min(0, "Min 0").max(12, "Max 12"),
+	spellDomains: z.array(z.string()),
+	magicAttributes: z.array(z.string()),
+	// spellDomains: zEnumKeyArrayString(SpellDomain, ["Unknown"]),
+	// magicAttributes: zEnumKeyArrayString(MagicAttribute, ["Unknown"]),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -93,8 +94,8 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			info: JSON.stringify(spell.info, null, 2),
 			properties: JSON.stringify(spell.properties, null, 2),
 			domainLevel: spell.domainLevel,
-			spellDomains: JSON.stringify(spell.spellDomains),
-			magicAttributes: JSON.stringify(spell.magicAttributes),
+			spellDomains: spell.spellDomains,
+			magicAttributes: spell.magicAttributes,
 		},
 	});
 
@@ -107,8 +108,12 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			info: formData.info,
 			properties: formData.properties,
 			domainLevel: formData.domainLevel,
-			spellDomains: formData.spellDomains,
-			magicAttributes: formData.magicAttributes,
+			spellDomains:
+				formData.spellDomains.length == 0 ? ["Unknown"] : formData.spellDomains,
+			magicAttributes:
+				formData.magicAttributes.length == 0
+					? ["Unknown"]
+					: formData.magicAttributes,
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -179,17 +184,50 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					fieldName="name"
 					label="Name"
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							label="Type"
+							options={typeOptions}
+							width={"100%"}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							label="SubType"
+							options={subTypeOptions}
+							width={"100%"}
+						/>
+					}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.MultiSelect<FormInput>
+							fieldName="spellDomains"
+							label="Spell Domains"
+							options={enumToSelectStringOptions(SpellDomain, ["Unknown"])}
+							width={"100%"}
+						/>
+					}
+					colum2={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="domainLevel"
+							label="Domain Level"
+							min={0}
+							width={"100%"}
+						/>
+					}
+				/>
+				<HookedForm.MultiSelect<FormInput>
+					fieldName="magicAttributes"
+					label="Magic Attributes"
+					options={enumToSelectStringOptions(MagicAttribute, ["Unknown"])}
 				/>
 				<HookedForm.TextAreaInput<FormInput>
 					fieldName="info"
@@ -200,23 +238,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				<HookedForm.TextAreaInput<FormInput>
 					fieldName="properties"
 					label="Properties"
-					height={300}
-					style={{ fontFamily: "monospace" }}
-				/>
-				<HookedForm.NumberInput<FormInput>
-					fieldName="domainLevel"
-					label="Domain Level"
-					min={0}
-				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="spellDomains"
-					label="Spell Domains"
-					height={300}
-					style={{ fontFamily: "monospace" }}
-				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="magicAttributes"
-					label="Magic Attributes"
 					height={300}
 					style={{ fontFamily: "monospace" }}
 				/>
