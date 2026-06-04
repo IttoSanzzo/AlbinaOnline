@@ -18,5 +18,6 @@
 		"package-lock.json": true
 	},
 	"hide-files.files": [],
-	"explorerExclude.backup": {}
+	"explorerExclude.backup": {},
+	"postman.settings.dotenv-detection-notification-visibility": false
 }

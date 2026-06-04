@@ -204,6 +204,34 @@ export default function SpellPropertiesDisplay({
 								[
 									<UIBasics.Text
 										textColor="orange"
+										children="Extras"
+									/>,
+									<UIBasics.Text
+										textColor="orange"
+										children="Descrição"
+										textAlign="flex-center"
+										withBold
+									/>,
+								],
+								...spellProperties.extras.map((extra) => [
+									<UIBasics.Text>{`${extra.key}`}</UIBasics.Text>,
+									<UIBasics.Text>{extra.value}</UIBasics.Text>,
+								]),
+							],
+						}}
+					/>
+				)}
+				{spellProperties.chants.length !== 0 && (
+					<UIBasics.Table
+						withHeaderRow
+						textColor="gray"
+						fixedLinePositions={[1]}
+						fixedLineWidths={[15]}
+						tableData={{
+							tableLanes: [
+								[
+									<UIBasics.Text
+										textColor="orange"
 										children="Linhas"
 									/>,
 									<UIBasics.Text
@@ -214,7 +242,7 @@ export default function SpellPropertiesDisplay({
 									/>,
 								],
 								...spellProperties.chants.map((chantLine, index) => [
-									<UIBasics.Text>{`⦇Linha ${index}⦈`}</UIBasics.Text>,
+									<UIBasics.Text>{`⦇Linha ${index + 1}⦈`}</UIBasics.Text>,
 									<UIBasics.Text>{chantLine}</UIBasics.Text>,
 								]),
 							],

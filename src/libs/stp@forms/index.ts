@@ -6,6 +6,7 @@ import { Form } from "./components/Form";
 import { SelectComponent } from "./components/Select";
 import { MultiSelectComponent } from "./components/MultiSelect";
 import { TextInput } from "./components/TextInput";
+import { TextArrayInput } from "./components/TextArrayInput";
 import { TextAreaInput } from "./components/TextAreaInput";
 import { NumberInput } from "./components/NumberInput";
 import { NumberInputInline } from "./components/NumberInputInline";
@@ -24,6 +25,7 @@ export const HookedForm = {
 	Form: Form,
 	SubmitButton: SubmitButton,
 	TextInput: TextInput,
+	TextArrayInput: TextArrayInput,
 	TextAreaInput: TextAreaInput,
 	NumberInputInline: NumberInputInline,
 	NumberInput: NumberInput,

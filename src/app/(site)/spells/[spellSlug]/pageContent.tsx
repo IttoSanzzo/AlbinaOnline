@@ -22,11 +22,11 @@ interface SpellPageContentProps {
 export default async function SpellPageContent({
 	spellSlug,
 }: SpellPageContentProps) {
-	const SpellPageData = await getPageData(spellSlug);
-	if (SpellPageData.spellData == undefined) {
+	const spellPageData = await getPageData(spellSlug);
+	if (spellPageData.spellData == undefined) {
 		return <>Error</>;
 	}
-	const { spellData, borderColor } = SpellPageData;
+	const { spellData, borderColor } = spellPageData;
 
 	return (
 		<GenericPageContainer

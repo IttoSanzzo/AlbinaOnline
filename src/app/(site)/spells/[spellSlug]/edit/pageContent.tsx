@@ -14,15 +14,14 @@ import {
 } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
-	GenericInfo,
 	SpellData,
-	SpellProperties,
 	SpellSubType,
 	SpellType,
 	RoleHierarchy,
 	SpellDomain,
 	MagicAttribute,
 	canEditCatalogEntry,
+	GenericExtraProperty,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
@@ -37,27 +36,12 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
-	miscellaneous: z.array(z.string()),
-});
 const GenericExtraPropertySchema = z.object({
 	key: z.string(),
 	value: z.string(),
 });
-const SpellComponentsSchema = z.object({
-	mana: z.string(),
-	stamina: z.string(),
-	time: z.string(),
-	duration: z.string(),
-	form: z.string(),
-	range: z.string(),
-	area: z.string(),
-});
+
 const SpellPropertiesSchema = z.object({
-	components: SpellComponentsSchema,
-	chants: z.array(z.string()),
 	extras: z.array(GenericExtraPropertySchema),
 });
 
@@ -66,13 +50,23 @@ const schema = z.object({
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(SpellType, []),
 	subType: zEnumKey(SpellSubType, []),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
-	properties: zJsonStringTyped<SpellProperties>(SpellPropertiesSchema),
+	properties: zJsonStringTyped<{ extras: GenericExtraProperty[] }>(
+		SpellPropertiesSchema,
+	),
 	domainLevel: z.number().min(0, "Min 0").max(12, "Max 12"),
 	spellDomains: z.array(z.string()),
 	magicAttributes: z.array(z.string()),
-	// spellDomains: zEnumKeyArrayString(SpellDomain, ["Unknown"]),
-	// magicAttributes: zEnumKeyArrayString(MagicAttribute, ["Unknown"]),
+	mana: z.string().min(1, "Min1").optional(),
+	stamina: z.string().optional(),
+	time: z.string().optional(),
+	duration: z.string().optional(),
+	form: z.string().optional(),
+	range: z.string().optional(),
+	area: z.string().optional(),
+	chants: z.array(z.string()),
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -85,17 +79,31 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
-		mode: "onChange",
+		mode: "all",
 		defaultValues: {
 			name: spell.name,
 			slug: spell.slug,
 			type: SpellType[spell.type].toString(),
 			subType: SpellSubType[spell.subType].toString(),
-			info: JSON.stringify(spell.info, null, 2),
-			properties: JSON.stringify(spell.properties, null, 2),
-			domainLevel: spell.domainLevel,
 			spellDomains: spell.spellDomains,
+			domainLevel: spell.domainLevel,
 			magicAttributes: spell.magicAttributes,
+			mana: spell.properties?.components.mana ?? "",
+			stamina: spell.properties?.components.stamina ?? "",
+			time: spell.properties?.components.time ?? "",
+			duration: spell.properties?.components.duration ?? "",
+			form: spell.properties?.components.form ?? "",
+			range: spell.properties?.components.range ?? "",
+			area: spell.properties?.components.area ?? "",
+			properties: JSON.stringify(
+				{ extras: spell.properties?.extras ?? [] },
+				null,
+				2,
+			),
+			chants: spell.properties?.chants ?? [],
+			summary: spell.info.summary,
+			description: spell.info.description,
+			miscellaneous: spell.info.miscellaneous,
 		},
 	});
 
@@ -105,8 +113,24 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
-			properties: formData.properties,
+			info: {
+				summary: formData.summary,
+				description: formData.description,
+				miscellaneous: formData.miscellaneous,
+			},
+			properties: {
+				...formData.properties,
+				components: {
+					mana: formData.mana,
+					stamina: formData.stamina,
+					time: formData.time,
+					duration: formData.duration,
+					form: formData.form,
+					range: formData.range,
+					area: formData.area,
+				},
+				chants: formData.chants,
+			},
 			domainLevel: formData.domainLevel,
 			spellDomains:
 				formData.spellDomains.length == 0 ? ["Unknown"] : formData.spellDomains,
@@ -192,7 +216,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							placeholder="Select Type"
 							label="Type"
 							options={typeOptions}
-							width={"100%"}
 						/>
 					}
 					colum2={
@@ -201,7 +224,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							placeholder="Select SubType"
 							label="SubType"
 							options={subTypeOptions}
-							width={"100%"}
 						/>
 					}
 				/>
@@ -212,7 +234,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							fieldName="spellDomains"
 							label="Spell Domains"
 							options={enumToSelectStringOptions(SpellDomain, ["Unknown"])}
-							width={"100%"}
 						/>
 					}
 					colum2={
@@ -220,26 +241,104 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							fieldName="domainLevel"
 							label="Domain Level"
 							min={0}
-							width={"100%"}
+							max={12}
 						/>
 					}
 				/>
-				<HookedForm.MultiSelect<FormInput>
-					fieldName="magicAttributes"
-					label="Magic Attributes"
-					options={enumToSelectStringOptions(MagicAttribute, ["Unknown"])}
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.MultiSelect<FormInput>
+							fieldName="magicAttributes"
+							label="Magic Attributes"
+							options={enumToSelectStringOptions(MagicAttribute, ["Unknown"])}
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="mana"
+							label="Mana"
+						/>
+					}
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="stamina"
+							label="Stamina"
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="time"
+							label="Time"
+						/>
+					}
+					colum3={
+						<HookedForm.TextInput<FormInput>
+							fieldName="duration"
+							label="Duration"
+						/>
+					}
 				/>
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="form"
+							label="Form"
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="range"
+							label="Range"
+						/>
+					}
+					colum3={
+						<HookedForm.TextInput<FormInput>
+							fieldName="area"
+							label="Area"
+						/>
+					}
+				/>
+
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="chants"
+					label="Chants"
+				/>
+
 				<HookedForm.TextAreaInput<FormInput>
 					fieldName="properties"
 					label="Properties"
 					height={300}
 					style={{ fontFamily: "monospace" }}
+				/>
+
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput
+							label="Summary"
+							fieldName="summary"
+							width={"99%"}
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput
+							label="Description"
+							fieldName="description"
+							width={"99%"}
+						/>
+					}
+					colum3={
+						<HookedForm.TextArrayInput
+							label="Miscellaneous"
+							fieldName="miscellaneous"
+							width={"99%"}
+						/>
+					}
 				/>
 
 				<HookedForm.SubmitButton label="Save" />

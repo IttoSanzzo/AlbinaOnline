@@ -14,7 +14,7 @@ const TextInputError = newStyledElement.div(styles.textInputError);
 
 type TextInputProps<TFormInput> = {
 	fieldName: Path<TFormInput>;
-	label: string;
+	label?: string;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	fontSize?:
 		| "xxs"
@@ -37,7 +37,7 @@ type TextInputProps<TFormInput> = {
 
 export function TextInput<TFormInput extends FieldValues>({
 	fieldName,
-	label,
+	label = fieldName,
 	labelBackground,
 	lesserPadding = false,
 	textCentered = false,

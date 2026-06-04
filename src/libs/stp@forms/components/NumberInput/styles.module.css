@@ -7,6 +7,7 @@
 	margin: var(--sp-2) 0;
 	position: relative;
 	min-width: 100px;
+	width: 100%;
 
 	&:focus-within {
 		border: 1px solid var(--cl-gray-200);
