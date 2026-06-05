@@ -5,13 +5,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import {
-	HookedForm,
-	SelectOption,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	SpellData,
@@ -21,7 +15,6 @@ import {
 	SpellDomain,
 	MagicAttribute,
 	canEditCatalogEntry,
-	GenericExtraProperty,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
@@ -36,33 +29,27 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericExtraPropertySchema = z.object({
-	key: z.string(),
-	value: z.string(),
-});
-
-const SpellPropertiesSchema = z.object({
-	extras: z.array(GenericExtraPropertySchema),
-});
-
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(SpellType, []),
 	subType: zEnumKey(SpellSubType, []),
-	properties: zJsonStringTyped<{ extras: GenericExtraProperty[] }>(
-		SpellPropertiesSchema,
-	),
 	domainLevel: z.number().min(0, "Min 0").max(12, "Max 12"),
 	spellDomains: z.array(z.string()),
 	magicAttributes: z.array(z.string()),
-	mana: z.string().min(1, "Min1").optional(),
+	mana: z.string().optional(),
 	stamina: z.string().optional(),
 	time: z.string().optional(),
 	duration: z.string().optional(),
 	form: z.string().optional(),
 	range: z.string().optional(),
 	area: z.string().optional(),
+	extras: z.array(
+		z.object({
+			key: z.string(),
+			value: z.string(),
+		}),
+	),
 	chants: z.array(z.string()),
 	summary: z.array(z.string()),
 	description: z.array(z.string()),
@@ -95,11 +82,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			form: spell.properties?.components.form ?? "",
 			range: spell.properties?.components.range ?? "",
 			area: spell.properties?.components.area ?? "",
-			properties: JSON.stringify(
-				{ extras: spell.properties?.extras ?? [] },
-				null,
-				2,
-			),
+			extras: spell.properties?.extras ?? [],
 			chants: spell.properties?.chants ?? [],
 			summary: spell.info.summary,
 			description: spell.info.description,
@@ -119,7 +102,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				miscellaneous: formData.miscellaneous,
 			},
 			properties: {
-				...formData.properties,
+				extras: formData.extras,
 				components: {
 					mana: formData.mana,
 					stamina: formData.stamina,
@@ -304,16 +287,39 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					}
 				/>
 
+				<HookedForm.ObjectArrayInput
+					fieldName="extras"
+					label="Extras"
+					defaultObject={{ key: "", value: "" }}
+					style={{ fontFamily: "monospace" }}
+					childrenGenerator={({ index, lastRef }) => {
+						return (
+							<UIBasics.MultiColumn.Two
+								divisionRatio={-3}
+								colum1={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="key"
+										label="Key"
+										index={index}
+										ref={lastRef}
+									/>
+								}
+								colum2={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="value"
+										label="Key"
+										index={index}
+									/>
+								}
+							/>
+						);
+					}}
+				/>
 				<HookedForm.TextArrayInput<FormInput>
 					fieldName="chants"
 					label="Chants"
-				/>
-
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="properties"
-					label="Properties"
-					height={300}
-					style={{ fontFamily: "monospace" }}
 				/>
 
 				<UIBasics.MultiColumn.Three
@@ -323,6 +329,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							label="Summary"
 							fieldName="summary"
 							width={"99%"}
+							useTextArea
 						/>
 					}
 					colum2={
@@ -330,6 +337,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							label="Description"
 							fieldName="description"
 							width={"99%"}
+							useTextArea
 						/>
 					}
 					colum3={
@@ -337,17 +345,19 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 							label="Miscellaneous"
 							fieldName="miscellaneous"
 							width={"99%"}
+							useTextArea
 						/>
 					}
 				/>
 
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={spell.name}
 				deletionRoute={getAlbinaApiFullAddress(`/spells/${spell.slug}`)}

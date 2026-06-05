@@ -1,15 +1,15 @@
-import { GenericEffect, GenericEffectContent } from "@/libs/stp@types";
+import { GenericEffect } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { HookedForm, SelectOption, zJsonStringTyped } from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey } from "@/libs/stp@forms";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
-import { UIBasics } from "@/components/(UIBasics)";
+import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import { UnlinkEffectButton } from "./subComponents/UnlinkEffectButton";
 import { DeleteEffectButton } from "./subComponents/DeleteEffectButton";
 import {
@@ -20,20 +20,16 @@ import { capitalize } from "@/utils/StringUtils";
 import { ChangeEffectRole } from "./subComponents/ChangeEffectRole";
 import { CopyEffectIdsButton } from "./CopyEffectIdsButton";
 
-const GenericEffectContentArraySchema = z.array(
-	z.object({
-		type: z.string(),
-		value: z.string(),
-		color: z.string(),
-		tableData: z.any().nullable(),
-	}),
-);
-
 const schema = z.object({
 	name: z.string().min(1, "Must be at leat 1 character long"),
 	color: z.string(),
-	contents: zJsonStringTyped<GenericEffectContent[]>(
-		GenericEffectContentArraySchema,
+	contents: z.array(
+		z.object({
+			type: z.string(),
+			value: z.string(),
+			color: z.string(zEnumKey(StandartTextColor)),
+			tableData: z.any().nullable(),
+		}),
 	),
 });
 type FormInput = z.input<typeof schema>;
@@ -57,7 +53,7 @@ export function GenericEffectEditor({
 		defaultValues: {
 			name: genericEffect.name,
 			color: genericEffect.color ?? "Default",
-			contents: JSON.stringify(genericEffect.contents, null, 2) ?? "[]",
+			contents: genericEffect.contents,
 		},
 	});
 
@@ -83,6 +79,10 @@ export function GenericEffectEditor({
 		revalidateTagByClientSide("/effects");
 	}
 
+	const contentTypeOptions: SelectOption[] = ["Text"].map((type) => ({
+		name: capitalize(type),
+		value: type,
+	}));
 	const colorOptions: SelectOption[] = [
 		"Default",
 		"Gray",
@@ -155,17 +155,60 @@ export function GenericEffectEditor({
 					options={colorOptions}
 					label="Color *"
 				/>
-				<HookedForm.TextAreaInput<FormData>
-					labelBackground="gray"
+				<HookedForm.ObjectArrayInput<FormData>
 					fieldName="contents"
-					label="Contents *"
-					height={500}
-					placeholder={
-						'[\n\t{\n\t\t"type": "Quote | Table",\n\t\t"color": null,\n\t\t"value": "..."\n\t},\n\t{\n\t\t...\n\t}\n]'
-					}
+					label="Contents"
+					defaultObject={{
+						type: "Text",
+						color: "Default",
+						value: "",
+						tableData: null,
+					}}
+					childrenGenerator={({ index, lastRef }) => (
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+							}}>
+							<UIBasics.MultiColumn.Two
+								colum1={
+									<HookedForm.ObjectArraySelectInput<FormInput>
+										fieldName="contents"
+										objectKey="type"
+										label="Type"
+										index={index}
+										options={contentTypeOptions}
+										labelBackground="gray"
+									/>
+								}
+								colum2={
+									<HookedForm.ObjectArraySelectInput<FormInput>
+										fieldName="contents"
+										objectKey="color"
+										label="Color"
+										index={index}
+										options={colorOptions}
+										labelBackground="gray"
+									/>
+								}
+							/>
+							<HookedForm.ObjectArrayTextInput<FormInput>
+								fieldName="contents"
+								objectKey="value"
+								label="Value"
+								index={index}
+								labelBackground="gray"
+								useTextArea
+								ref={lastRef}
+							/>
+						</div>
+					)}
 				/>
 
-				<HookedForm.SubmitButton label="Salvar" />
+				<HookedForm.SubmitButton
+					label="Salvar"
+					useDebugTitle
+				/>
 				<HookedForm.SimpleMessage
 					color="red"
 					message={error}

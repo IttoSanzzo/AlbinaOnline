@@ -29,6 +29,13 @@ export function Form<TFormData extends FieldValues>({
 	return (
 		<FormContainer
 			onSubmit={form.handleSubmit(onSubmit ?? (() => {}))}
+			onKeyDownCapture={(event) => {
+				if (event.ctrlKey && event.key.toLowerCase() == "s") {
+					event.preventDefault();
+					const form = event.currentTarget.closest("form");
+					if (form) form.requestSubmit();
+				}
+			}}
 			{...rest}>
 			<HookedFormContextProvider
 				form={form}

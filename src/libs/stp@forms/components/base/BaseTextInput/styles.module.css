@@ -1,4 +1,4 @@
-.textInputContainer {
+.baseTextInputContainer {
 	display: flex;
 	flex-direction: column;
 	color: var(--cl-gray-100);
@@ -12,7 +12,8 @@
 		border: 1px solid var(--cl-gray-200);
 	}
 }
-.textInputField {
+.baseTextInputField,
+.baseTextAreaInputField {
 	background-color: transparent;
 	color: var(--cl-gray-100);
 	padding: var(--sp-5) var(--sp-4);
@@ -25,8 +26,11 @@
 		border-radius: var(--rd-sm) !important;
 	}
 }
+.baseTextAreaInputField {
+	resize: vertical;
+}
 
-.textInputLabel {
+.baseTextInputLabel {
 	font-size: var(--fs-xs);
 	color: var(--cl-gray-200);
 	background-color: var(--cl-gray-800);
@@ -37,7 +41,7 @@
 	left: 10px;
 }
 
-.textInputError {
+.baseTextInputError {
 	font-size: var(--fs-xs);
 	color: var(--cl-red-500);
 	background-color: var(--cl-gray-800);

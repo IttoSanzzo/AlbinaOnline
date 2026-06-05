@@ -164,10 +164,6 @@ export function PageSearchButton() {
 				e.preventDefault();
 				setOpenState(true);
 			}
-			if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
-				e.preventDefault();
-				setOpenState(true);
-			}
 		}
 		window.addEventListener("keydown", handleKeyDown);
 		return () => {
