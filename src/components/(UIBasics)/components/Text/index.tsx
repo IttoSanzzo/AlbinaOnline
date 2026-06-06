@@ -17,6 +17,7 @@ interface TextProps extends StandartColorProps {
 	withUnderline?: boolean;
 	textAlign?: "left" | "center" | "right" | "flex-center";
 	display?: CSSProperties["display"];
+	whiteSpace?: CSSProperties["whiteSpace"];
 }
 export function Text({
 	children,
@@ -27,10 +28,12 @@ export function Text({
 	withUnderline,
 	textAlign,
 	display,
+	whiteSpace,
 }: TextProps) {
 	const style: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
 		backgroundColor: StandartBackgroundColorKeyToProperty(backgroundColor),
+		whiteSpace: whiteSpace,
 		...(withBold && { fontWeight: "bold" }),
 		...(withItalic && { fontStyle: "italic" }),
 		...(withUnderline && { textDecoration: "underline" }),

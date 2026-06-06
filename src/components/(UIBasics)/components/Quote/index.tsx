@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartColorProps, StandartTextColor } from "../../core";
@@ -11,8 +11,14 @@ const ContentContainer = newStyledElement.div(styles.contentContainer);
 
 interface QuoteProps extends StandartColorProps {
 	children?: ReactNode | string;
+	whiteSpace?: CSSProperties["whiteSpace"];
 }
-export function Quote({ children, textColor, backgroundColor }: QuoteProps) {
+export function Quote({
+	children,
+	whiteSpace,
+	textColor,
+	backgroundColor,
+}: QuoteProps) {
 	const style = StandartColorKeysToProperties(textColor, backgroundColor);
 
 	return (
@@ -24,7 +30,10 @@ export function Quote({ children, textColor, backgroundColor }: QuoteProps) {
 						: StandartTextColor.default,
 				}}
 			/>
-			<ContentContainer>
+			<ContentContainer
+				style={{
+					whiteSpace: whiteSpace,
+				}}>
 				{typeof children === "string" ? (
 					<UIBasics.Text>{children}</UIBasics.Text>
 				) : (

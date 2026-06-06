@@ -20,6 +20,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 					titleColor={info.summary.length > 0 ? "blue" : "darkGray"}
 					title={"🪄|Resumo|🪄"}>
 					<UIBasics.List.Quote
+						whiteSpace="pre-wrap"
 						withDivisor
 						quotes={info.summary}
 					/>
@@ -29,6 +30,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 					titleColor={info.description.length > 0 ? "blue" : "darkGray"}
 					title={"🔎|Descrição Geral|🔎"}>
 					<UIBasics.List.Quote
+						whiteSpace="pre-wrap"
 						withDivisor
 						quotes={info.description}
 					/>
@@ -38,6 +40,7 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 					titleColor={info.miscellaneous.length > 0 ? "blue" : "darkGray"}
 					title={"💮|Miscelâneas|💮"}>
 					<UIBasics.List.Quote
+						whiteSpace="pre-wrap"
 						withDivisor
 						quotes={info.miscellaneous}
 					/>

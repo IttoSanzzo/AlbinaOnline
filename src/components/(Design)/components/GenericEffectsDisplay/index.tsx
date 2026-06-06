@@ -5,7 +5,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 export const GenericEffectsDisplayContainer = newStyledElement.div(
-	styles.genericEffectsDisplayContainer
+	styles.genericEffectsDisplayContainer,
 );
 
 interface GenericEffectsDisplayProps {
@@ -24,7 +24,7 @@ function getIconProps(name: string): StpIconProps {
 }
 
 export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
-	if (effects.length == 0) return <></>;
+	if (effects.length == 0) return null;
 	return (
 		<GenericEffectsDisplayContainer>
 			<UIBasics.Header
@@ -58,6 +58,7 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 						title={fullTitle}>
 						{effect.contents.map((content, index) => (
 							<UIBasics.Quote
+								whiteSpace="pre-wrap"
 								key={index}
 								children={content.value}
 								textColor={content.color}
