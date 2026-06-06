@@ -5,20 +5,12 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import {
-	HookedForm,
-	SelectOption,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
 	EquipmentSlotType,
-	GenericInfo,
 	ItemData,
-	ItemProperties,
 	ItemSlotTypeName,
 	ItemSubType,
 	ItemType,
@@ -39,60 +31,42 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
-	miscellaneous: z.array(z.string()),
-});
-const GenericExtraPropertySchema = z.object({
-	key: z.string(),
-	value: z.string(),
-});
-const ItemStatsSchema = z.object({
+const schema = z.object({
+	slug: zSlug(),
+	name: z.string().min(1, "Min 1 lenght"),
+	type: zEnumKey(ItemType),
+	subType: zEnumKey(ItemSubType),
+	weight: z.number(),
+	compatibleSlots: z.array(z.string()),
+	MagicAttributes: z.array(z.string()),
 	damage: z.string(),
 	accuracy: z.string(),
 	defense: z.string(),
 	damageType: z.string(),
 	range: z.string(),
-});
-const ItemPropertiesSchema = z.object({
-	// compatibleSlots: z.array(z.string()),
-	// weight: z.number(),
-	// magicAttributes: z.array(z.string()),
-	stats: ItemStatsSchema.nullable(),
-	extras: z.array(GenericExtraPropertySchema),
-});
-
-const schema = z.object({
-	slug: zSlug(),
-	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(ItemType, ["Unknown"]),
-	subType: zEnumKey(ItemSubType, ["Unknown"]),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
-	properties: zJsonStringTyped<ItemProperties>(ItemPropertiesSchema),
-
-	weight: z.number(),
-	compatibleSlots: z.array(z.string()),
-	MagicAttributes: z.array(z.string()),
+	extras: z.array(
+		z.object({
+			key: z.string(),
+			value: z.string(),
+		}),
+	),
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, ["Unknown"]);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType, [
-	"Unknown",
-]);
+const typeOptions: SelectOption[] = enumToSelectOptions(ItemType);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType);
 const compatibleSlotOptions: SelectOption[] = enumToSelectStringOptions(
 	EquipmentSlotType,
-	["Unknown"],
 ).map((option) => ({
 	...option,
 	name: ItemSlotTypeName[option.name as keyof typeof EquipmentSlotType],
 }));
-const magicAttributeOptions: SelectOption[] = enumToSelectStringOptions(
-	MagicAttribute,
-	["Unknown"],
-);
+const magicAttributeOptions: SelectOption[] =
+	enumToSelectStringOptions(MagicAttribute);
 
 interface EditItemPageContentProps {
 	item: ItemData;
@@ -108,18 +82,18 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			slug: item.slug,
 			type: ItemType[item.type].toString(),
 			subType: ItemSubType[item.subType].toString(),
-			info: JSON.stringify(item.info, null, 2),
-			properties: JSON.stringify(
-				{
-					stats: item.properties.stats,
-					extras: item.properties.extras,
-				},
-				null,
-				2,
-			),
 			weight: item.properties.weight,
 			compatibleSlots: item.properties.compatibleSlots,
 			MagicAttributes: item.properties.magicAttributes,
+			damage: item.properties.stats?.damage ?? "",
+			accuracy: item.properties.stats?.accuracy ?? "",
+			defense: item.properties.stats?.defense ?? "",
+			damageType: item.properties.stats?.damageType ?? "",
+			range: item.properties.stats?.range ?? "",
+			extras: item.properties.extras,
+			summary: item.info.summary,
+			description: item.info.description,
+			miscellaneous: item.info.miscellaneous,
 		},
 	});
 
@@ -129,16 +103,38 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
-			properties: formData.properties,
+			properties: {
+				stats: undefined as unknown,
+				extras: formData.extras,
+				weight: formData.weight,
+				compatibleSlots: formData.compatibleSlots.map(
+					(value: LintIgnoredAny) => EquipmentSlotType[value],
+				) as [keyof typeof EquipmentSlotType],
+				magicAttributes: formData.MagicAttributes.map(
+					(value: LintIgnoredAny) => MagicAttribute[value],
+				) as [keyof typeof MagicAttribute],
+			},
+			info: {
+				summary: formData.summary,
+				description: formData.description,
+				miscellaneous: formData.miscellaneous,
+			},
 		};
-		body.properties.weight = formData.weight;
-		body.properties.compatibleSlots = formData.compatibleSlots.map(
-			(value: LintIgnoredAny) => EquipmentSlotType[value],
-		) as [keyof typeof EquipmentSlotType];
-		body.properties.magicAttributes = formData.MagicAttributes.map(
-			(value: LintIgnoredAny) => MagicAttribute[value],
-		) as [keyof typeof MagicAttribute];
+		if (
+			formData.damage != "" ||
+			formData.accuracy != "" ||
+			formData.defense != "" ||
+			formData.damageType != "" ||
+			formData.range != ""
+		) {
+			body.properties.stats = {
+				damage: formData.damage,
+				accuracy: formData.accuracy,
+				defense: formData.defense,
+				damageType: formData.damageType,
+				range: formData.range,
+			};
+		}
 
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -204,23 +200,24 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					fieldName="name"
 					label="Name"
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
-				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
-				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							label="Type"
+							options={typeOptions}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							label="SubType"
+							options={subTypeOptions}
+						/>
+					}
 				/>
 				<UIBasics.MultiColumn.Three
 					withoutPadding
@@ -251,20 +248,109 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 						/>
 					}
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="properties"
-					label="Properties"
-					height={300}
-					style={{ fontFamily: "monospace" }}
+
+				<UIBasics.MultiColumn.Two
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="damage"
+							label={"Damage"}
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="damageType"
+							label={"Damage Type"}
+						/>
+					}
+				/>
+				<UIBasics.MultiColumn.Three
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="accuracy"
+							label={"Accuracy"}
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="defense"
+							label={"Defense"}
+						/>
+					}
+					colum3={
+						<HookedForm.TextInput<FormInput>
+							fieldName="range"
+							label={"Range"}
+						/>
+					}
 				/>
 
+				<HookedForm.ObjectArrayInput
+					fieldName="extras"
+					label="Extras"
+					defaultObject={{ key: "", value: "" }}
+					style={{ fontFamily: "monospace" }}
+					childrenGenerator={({ index, lastRef }) => {
+						return (
+							<UIBasics.MultiColumn.Two
+								divisionRatio={-3}
+								colum1={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="key"
+										label="Key"
+										index={index}
+										ref={lastRef}
+									/>
+								}
+								colum2={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="value"
+										label="Key"
+										index={index}
+									/>
+								}
+							/>
+						);
+					}}
+				/>
+
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput
+							label="Summary"
+							fieldName="summary"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput
+							label="Description"
+							fieldName="description"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum3={
+						<HookedForm.TextArrayInput
+							label="Miscellaneous"
+							fieldName="miscellaneous"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+				/>
+
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={item.name}
 				deletionRoute={getAlbinaApiFullAddress(`/items/${item.slug}`)}
