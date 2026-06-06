@@ -27,7 +27,7 @@ const schema = z.object({
 		z.object({
 			type: z.string(),
 			value: z.string(),
-			color: z.string(zEnumKey(StandartTextColor)),
+			color: z.string(zEnumKey(StandartTextColor)).nullable(),
 			tableData: z.any().nullable(),
 		}),
 	),
@@ -79,7 +79,7 @@ export function GenericEffectEditor({
 		revalidateTagByClientSide("/effects");
 	}
 
-	const contentTypeOptions: SelectOption[] = ["Text"].map((type) => ({
+	const contentTypeOptions: SelectOption[] = ["Text", "Quote"].map((type) => ({
 		name: capitalize(type),
 		value: type,
 	}));
@@ -199,6 +199,7 @@ export function GenericEffectEditor({
 								index={index}
 								labelBackground="gray"
 								useTextArea
+								style={{ minHeight: "100px" }}
 								ref={lastRef}
 							/>
 						</div>

@@ -13,7 +13,9 @@ export function ShortcutsEngine() {
 	}
 	async function pushEditRoute(event: KeyboardEvent, pathName: string) {
 		event.preventDefault();
-		if (pathName.split("/").length == 3) router.push(`${pathName}/edit`);
+		if (pathName.endsWith("/edit"))
+			router.push(pathName.substring(0, pathName.length - 5));
+		else if (pathName.split("/").length == 3) router.push(`${pathName}/edit`);
 	}
 
 	useEffect(() => {
