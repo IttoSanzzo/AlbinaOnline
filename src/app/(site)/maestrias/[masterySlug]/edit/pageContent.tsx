@@ -5,17 +5,10 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import {
-	HookedForm,
-	SelectOption,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
-	GenericInfo,
 	MasteryData,
 	MasterySubType,
 	MasteryType,
@@ -34,18 +27,14 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
-	miscellaneous: z.array(z.string()),
-});
-
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(MasteryType, ["Unknown"]),
 	subType: zEnumKey(MasterySubType, ["Unknown"]),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -66,7 +55,9 @@ export function EditMasteryPageContent({
 			slug: mastery.slug,
 			type: MasteryType[mastery.type].toString(),
 			subType: MasterySubType[mastery.subType].toString(),
-			info: JSON.stringify(mastery.info, null, 2),
+			summary: mastery.info.summary,
+			description: mastery.info.description,
+			miscellaneous: mastery.info.miscellaneous,
 		},
 	});
 
@@ -76,7 +67,11 @@ export function EditMasteryPageContent({
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
+			info: {
+				summary: formData.summary,
+				description: formData.description,
+				miscellaneous: formData.miscellaneous,
+			},
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -145,40 +140,76 @@ export function EditMasteryPageContent({
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormInput>
-					fieldName="slug"
-					label="Slug"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="name"
+							label="Name"
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="slug"
+							label="Slug"
+						/>
+					}
 				/>
-				<HookedForm.TextInput<FormInput>
-					fieldName="name"
-					label="Name"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							label="Type"
+							options={typeOptions}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							label="SubType"
+							options={subTypeOptions}
+						/>
+					}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
-				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
-				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput
+							label="Summary"
+							fieldName="summary"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput
+							label="Description"
+							fieldName="description"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum3={
+						<HookedForm.TextArrayInput
+							label="Miscellaneous"
+							fieldName="miscellaneous"
+							width={"99%"}
+							useTextArea
+						/>
+					}
 				/>
 
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={mastery.name}
 				deletionRoute={getAlbinaApiFullAddress(`/masteries/${mastery.slug}`)}
@@ -188,14 +219,13 @@ export function EditMasteryPageContent({
 
 			<UIBasics.Divisor />
 
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/masteries/${mastery.slug}`)}
+			/>
 			<EntityEffectsEditor
 				genericEffects={mastery.effects}
 				targetId={mastery.id}
 				targetType="Mastery"
-			/>
-
-			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/masteries/${mastery.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

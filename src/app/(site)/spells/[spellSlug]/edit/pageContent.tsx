@@ -183,13 +183,20 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormInput>
-					fieldName="slug"
-					label="Slug"
-				/>
-				<HookedForm.TextInput<FormInput>
-					fieldName="name"
-					label="Name"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.TextInput<FormInput>
+							fieldName="name"
+							label="Name"
+						/>
+					}
+					colum2={
+						<HookedForm.TextInput<FormInput>
+							fieldName="slug"
+							label="Slug"
+						/>
+					}
 				/>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
@@ -367,14 +374,13 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 
 			<UIBasics.Divisor />
 
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/spells/${spell.slug}`)}
+			/>
 			<EntityEffectsEditor
 				genericEffects={spell.effects}
 				targetId={spell.id}
 				targetType="Spell"
-			/>
-
-			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/spells/${spell.slug}`)}
 			/>
 		</GenericPageContainer>
 	);
