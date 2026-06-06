@@ -216,7 +216,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="spellDomains"
 							label="Spell Domains"
-							options={enumToSelectStringOptions(SpellDomain, ["Unknown"])}
+							options={enumToSelectStringOptions(SpellDomain)}
 						/>
 					}
 					colum2={
@@ -234,7 +234,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="magicAttributes"
 							label="Magic Attributes"
-							options={enumToSelectStringOptions(MagicAttribute, ["Unknown"])}
+							options={enumToSelectStringOptions(MagicAttribute)}
 						/>
 					}
 					colum2={

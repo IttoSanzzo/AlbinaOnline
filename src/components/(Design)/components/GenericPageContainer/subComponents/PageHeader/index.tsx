@@ -3,7 +3,7 @@ import { EditablePageTitle } from "../EditablePageTitle";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ReactNode } from "react";
-import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { PageIcon } from "../PageIcon";
 
 const PageHeaderContainer = newStyledElement.div(styles.pageHeaderContainer);
 const TitlesContainer = newStyledElement.div(styles.titlesContainer);
@@ -53,20 +53,10 @@ export function PageHeader({
 					cacheTags={cacheTags}
 				/>
 			) : (
-				<ImageWithTTL
-					src={icon}
-					alt="Page's favicon"
-					width={512}
-					height={512}
-					quality={100}
-					preload
-					style={
-						borderColor
-							? {
-									backgroundColor: `${borderColor}${borderOpacity}`,
-								}
-							: undefined
-					}
+				<PageIcon
+					iconSrc={icon}
+					borderColor={borderColor}
+					borderOpacity={borderOpacity}
 				/>
 			)}
 			<TitlesContainer>

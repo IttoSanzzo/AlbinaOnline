@@ -8,6 +8,7 @@ import {
 } from "./subComponents/ChangeBannerButton";
 import { useRef, useState } from "react";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { ImageModal } from "../ImageModal";
 
 const EditablePageBannerContainer = newStyledElement.div(
 	styles.pageBannerContainer,
@@ -56,6 +57,7 @@ export function EditablePageBanner({
 						}
 					: undefined
 			}>
+			<ImageModal url={bannerSrc} />
 			<ImageWithTTL
 				src={banner}
 				alt="Page's banner"

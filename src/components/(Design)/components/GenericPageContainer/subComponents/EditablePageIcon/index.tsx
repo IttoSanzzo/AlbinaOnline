@@ -8,6 +8,7 @@ import {
 } from "./subComponents/ChangeIconButton";
 import { useRef, useState } from "react";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { ImageModal } from "../ImageModal";
 
 const EditablePageIconContainer = newStyledElement.div(
 	styles.pageIconContainer,
@@ -37,6 +38,7 @@ export function EditablePageIcon({
 
 	return (
 		<EditablePageIconContainer>
+			<ImageModal url={iconSrc} />
 			<ImageWithTTL
 				src={icon}
 				alt="Page's icon"
