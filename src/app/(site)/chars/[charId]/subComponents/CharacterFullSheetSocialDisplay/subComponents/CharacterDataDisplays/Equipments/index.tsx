@@ -35,7 +35,11 @@ export function _CharacterEquipmentsDisplay({
 		<UIBasics.Box
 			backgroundColor="darkGray"
 			withoutBorder
-			style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
+			style={{
+				borderTopLeftRadius: 0,
+				borderTopRightRadius: 0,
+				paddingTop: 0,
+			}}>
 			<UIBasics.MultiColumn.Two
 				colum1={
 					<UIBasics.Table

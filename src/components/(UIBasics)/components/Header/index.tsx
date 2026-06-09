@@ -11,10 +11,12 @@ import {
 interface HeaderProps extends StandartColorProps, StandartTextProps {
 	children: ReactNode | string;
 	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
+	withoutMargin?: boolean;
 }
 
 export function Header({
 	headerType = "h1",
+	withoutMargin = false,
 	children,
 	textColor,
 	backgroundColor,
@@ -30,6 +32,7 @@ export function Header({
 		...(withItalic && { fontStyle: "italic" }),
 		...(withUnderline && { textDecoration: "underline" }),
 		...(textAlign && { textAlign: textAlign }),
+		...(withoutMargin && { margin: "0" }),
 	};
 	const HeaderElement = newStyledElement[headerType](styles.headerContainer);
 

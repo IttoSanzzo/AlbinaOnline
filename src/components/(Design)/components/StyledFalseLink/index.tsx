@@ -36,7 +36,7 @@ export function StyledFalseLink({
 					height={21}
 					alt=""
 				/>
-				<span>{title}</span>
+				<span title={title}>{title}</span>
 			</button>
 		</StyledFalseLinkContainer>
 	);

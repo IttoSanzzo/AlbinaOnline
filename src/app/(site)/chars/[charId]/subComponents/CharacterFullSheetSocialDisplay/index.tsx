@@ -162,6 +162,7 @@ export function CharacterFullSheetSocialDisplay({
 					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
 					withoutMargin
 					isEditable={false}
+					hideIfEmpty
 				/>
 			</UIBasics.Box>
 		</>

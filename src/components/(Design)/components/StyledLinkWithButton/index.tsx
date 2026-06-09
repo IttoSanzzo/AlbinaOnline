@@ -4,6 +4,7 @@ import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon, StpIconProps } from "@/libs/stp@icons";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { CSSProperties } from "react";
 
 const StyledLinkWithButtonContainer = newStyledElement.div(
 	styles.styledLinkContainer,
@@ -18,6 +19,8 @@ export interface StyledLinkWithButtonProps extends LinkProps {
 	tryAutomaticIcon?: boolean;
 	buttonIcon: StpIconProps;
 	onClick: () => void;
+	style?: CSSProperties;
+	titleStyle?: CSSProperties;
 }
 
 export function StyledLinkWithButton({
@@ -28,6 +31,8 @@ export function StyledLinkWithButton({
 	tryAutomaticIcon = false,
 	onClick,
 	buttonIcon,
+	style,
+	titleStyle,
 	...rest
 }: StyledLinkWithButtonProps) {
 	const finalIcon = icon
@@ -40,6 +45,7 @@ export function StyledLinkWithButton({
 
 	return (
 		<StyledLinkWithButtonContainer
+			style={style}
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
 			<Link
 				href={href}
@@ -51,7 +57,11 @@ export function StyledLinkWithButton({
 					alt=""
 				/>
 
-				<span>{title}</span>
+				<span
+					style={titleStyle}
+					title={title}>
+					{title}
+				</span>
 			</Link>
 			<ActionButton onClick={onClick}>{StpIcon(buttonIcon)}</ActionButton>
 		</StyledLinkWithButtonContainer>

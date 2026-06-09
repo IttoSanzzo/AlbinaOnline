@@ -4,6 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { CSSProperties } from "react";
 
 export const StyledLinkContainer = newStyledElement.div(
 	styles.styledLinkContainer,
@@ -17,6 +18,8 @@ export interface StyledLinkProps extends LinkProps {
 	tryAutomaticIcon?: boolean;
 	usePreview?: boolean;
 	hoverTitle?: string;
+	style?: CSSProperties;
+	titleStyle?: CSSProperties;
 }
 
 export function StyledLink({
@@ -27,6 +30,8 @@ export function StyledLink({
 	tryAutomaticIcon = false,
 	usePreview = true,
 	hoverTitle,
+	style,
+	titleStyle,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -39,6 +44,7 @@ export function StyledLink({
 
 	return (
 		<StyledLinkContainer
+			style={style}
 			title={hoverTitle}
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
 			{usePreview && (
@@ -56,7 +62,11 @@ export function StyledLink({
 					height={21}
 					alt=""
 				/>
-				<span>{title}</span>
+				<span
+					style={titleStyle}
+					title={title}>
+					{title}
+				</span>
 			</Link>
 		</StyledLinkContainer>
 	);

@@ -140,6 +140,7 @@ function formTable(
 				title={characterItem.item.name}
 				icon={characterItem.item.iconUrl}
 				href={`/items/${characterItem.item.slug}`}
+				titleStyle={{ display: "inline", height: "21px" }}
 				onClick={() =>
 					handleItemRemoval(
 						characterId,
@@ -172,17 +173,32 @@ export function _CharacterItemStacksDisplay() {
 	const { characterId } = useContext(CharacterIdContext);
 
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title="Items"
-			memoryId={`${characterId}-Items`}>
-			<div style={{ position: "relative" }}>
+			style={{ position: "relative", borderTopLeftRadius: "var(--rd-md)" }}
+			withoutPadding
+			withoutMargin
+			withoutBorderRadius
+			withoutBorder>
+			<UIBasics.Header
+				textAlign="center"
+				textColor="yellow"
+				children="Items"
+				headerType="h2"
+				withoutMargin
+			/>
+			<UIBasics.Box
+				withoutBorder
+				withoutMargin
+				style={{
+					position: "relative",
+					maxHeight: "445px",
+					overflowY: "scroll",
+				}}>
 				<UIBasics.Table
 					fixedLineWidths={[30, 20]}
 					fixedLinePositions={[2, 3]}
-					style={{ margin: 0 }}
+					style={{ margin: "0", width: "100%" }}
 					withHeaderColumn={false}
 					columnBackgroundColors={["gray"]}
 					withHeaderRow
@@ -195,13 +211,13 @@ export function _CharacterItemStacksDisplay() {
 						),
 					}}
 				/>
-				<AddItemButton
-					characterItems={characterItems}
-					setCharacterItems={setCharacterItems}
-					characterId={characterId}
-				/>
-			</div>
-		</UIBasics.ToggleHeader>
+			</UIBasics.Box>
+			<AddItemButton
+				characterItems={characterItems}
+				setCharacterItems={setCharacterItems}
+				characterId={characterId}
+			/>
+		</UIBasics.Box>
 	);
 }
 

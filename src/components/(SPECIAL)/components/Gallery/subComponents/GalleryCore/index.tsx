@@ -15,11 +15,13 @@ interface GalleryCoreProps {
 	withoutMargin?: boolean;
 	isEditable?: boolean;
 	galleryData?: GalleryData;
+	hideIfEmpty?: boolean;
 }
 export function GalleryCore({
 	url,
 	withoutMargin = false,
 	isEditable = true,
+	hideIfEmpty = false,
 	...rest
 }: GalleryCoreProps) {
 	const [galleryData, setGalleryData] = useState<GalleryData>(
@@ -67,6 +69,7 @@ export function GalleryCore({
 		if (carouselRef.current) carouselRef.current.moveTo(newIndex);
 	}
 
+	if (hideIfEmpty && galleryData.images.length == 0) return null;
 	return (
 		<>
 			<GalleryCarousel
