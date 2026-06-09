@@ -41,7 +41,7 @@ export function LyurCoinsController({ lyurCoins }: LyurCoinsControllerProps) {
 		defaultValues: lyurCoins,
 	});
 	useEffect(() => {
-		form.reset(lyurCoins);
+		if (!form.formState.isDirty) form.reset(lyurCoins);
 	}, [lyurCoins]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -63,6 +63,7 @@ export function LyurCoinsController({ lyurCoins }: LyurCoinsControllerProps) {
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
+		form.reset({ ...currentValues });
 		return true;
 	}
 

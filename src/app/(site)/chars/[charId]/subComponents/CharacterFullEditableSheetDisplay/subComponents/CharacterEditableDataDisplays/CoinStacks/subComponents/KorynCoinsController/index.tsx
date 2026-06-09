@@ -53,7 +53,7 @@ export function KorynCoinsController({
 		defaultValues: korynCoins,
 	});
 	useEffect(() => {
-		form.reset(korynCoins);
+		if (!form.formState.isDirty) form.reset(korynCoins);
 	}, [korynCoins]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -75,6 +75,7 @@ export function KorynCoinsController({
 		}
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		form.reset({ ...currentValues });
 		return true;
 	}
 

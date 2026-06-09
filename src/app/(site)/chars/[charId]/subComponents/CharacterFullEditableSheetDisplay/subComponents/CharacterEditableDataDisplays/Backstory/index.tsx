@@ -30,7 +30,7 @@ export function CharacterBackstoryDisplay({
 		},
 	});
 	useEffect(() => {
-		form.reset({ backstory: characterBackstory });
+		if (!form.formState.isDirty) form.reset({ backstory: characterBackstory });
 	}, [characterBackstory]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -56,6 +56,7 @@ export function CharacterBackstoryDisplay({
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
+		form.reset({ backstory: currentValues.backstory });
 		return true;
 	}
 

@@ -42,7 +42,7 @@ export function CharacterProfileDisplay({
 		defaultValues: { ...characterProfile },
 	});
 	useEffect(() => {
-		form.reset({ ...characterProfile });
+		if (!form.formState.isDirty) form.reset({ ...characterProfile });
 	}, [characterProfile]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -64,6 +64,7 @@ export function CharacterProfileDisplay({
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
+		form.reset({ ...currentValues });
 		return true;
 	}
 

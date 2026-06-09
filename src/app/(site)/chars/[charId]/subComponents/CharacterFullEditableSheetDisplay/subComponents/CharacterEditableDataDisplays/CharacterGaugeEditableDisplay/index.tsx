@@ -10,14 +10,13 @@ import { CoreMetricsContext } from "../../CharacterEditableSheetContextProviders
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import { CharToastMessage } from "..";
 import toast from "react-hot-toast";
-import React from "react";
 
 const schema = z
 	.object({
-		baseCurrent: z.coerce.number(),
-		baseMax: z.coerce.number().min(0, "Mínimo de 0"),
-		temporaryCurrentModifier: z.coerce.number(),
-		temporaryMaxModifier: z.coerce.number(),
+		baseCurrent: z.number(),
+		baseMax: z.number().min(0, "Mínimo de 0"),
+		temporaryCurrentModifier: z.number(),
+		temporaryMaxModifier: z.number(),
 	})
 	.superRefine((formData, ctx) => {
 		const effectiveMax = formData.baseMax + formData.temporaryMaxModifier;
@@ -70,29 +69,25 @@ export function CharacterGaugeEditableDisplay({
 	const { characterId } = useContext(CharacterIdContext);
 	const { coreMetrics, setCoreMetrics } = useContext(CoreMetricsContext);
 
-	const defaultValues = {
-		baseCurrent: coreMetrics[gauge].baseCurrent,
-		baseMax: coreMetrics[gauge].baseMax,
-		temporaryCurrentModifier: coreMetrics[gauge].temporaryCurrentModifier,
-		temporaryMaxModifier: coreMetrics[gauge].temporaryMaxModifier,
-	};
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
-		defaultValues: defaultValues,
+		defaultValues: {
+			baseCurrent: coreMetrics[gauge].baseCurrent,
+			baseMax: coreMetrics[gauge].baseMax,
+			temporaryCurrentModifier: coreMetrics[gauge].temporaryCurrentModifier,
+			temporaryMaxModifier: coreMetrics[gauge].temporaryMaxModifier,
+		},
 	});
 	const watchedValues = form.watch();
 
 	useEffect(() => {
-		form.setValue("baseCurrent", coreMetrics[gauge].baseCurrent);
-		form.setValue("baseMax", coreMetrics[gauge].baseMax);
-		form.setValue(
-			"temporaryCurrentModifier",
-			coreMetrics[gauge].temporaryCurrentModifier,
-		);
-		form.setValue(
-			"temporaryMaxModifier",
-			coreMetrics[gauge].temporaryMaxModifier,
-		);
+		if (!form.formState.isDirty)
+			form.reset({
+				baseCurrent: coreMetrics[gauge].baseCurrent,
+				baseMax: coreMetrics[gauge].baseMax,
+				temporaryCurrentModifier: coreMetrics[gauge].temporaryCurrentModifier,
+				temporaryMaxModifier: coreMetrics[gauge].temporaryMaxModifier,
+			});
 	}, [coreMetrics]);
 
 	async function onFormChange(formData: FormData) {
@@ -129,6 +124,12 @@ export function CharacterGaugeEditableDisplay({
 		setCoreMetrics(body);
 		setErrorMessage("");
 		toast.success("Salvo", { id: toastId });
+		form.reset({
+			baseCurrent: formData.baseCurrent,
+			baseMax: formData.baseMax,
+			temporaryCurrentModifier: formData.temporaryCurrentModifier,
+			temporaryMaxModifier: formData.temporaryMaxModifier,
+		});
 		return true;
 	}
 
@@ -156,21 +157,23 @@ export function CharacterGaugeEditableDisplay({
 									`${acronym} Atual`,
 									"baseCurrent",
 									color,
-									undefined,
-									Number(
-										watchedValues.baseMax + watchedValues.temporaryMaxModifier,
-									),
+									-watchedValues.temporaryMaxModifier,
+									watchedValues.baseMax + watchedValues.temporaryMaxModifier,
 								),
 								formTableEntry(
 									`${acronym} Temp.`,
 									"temporaryCurrentModifier",
 									color,
+									-9999,
+									9999,
 								),
-								formTableEntry(`${acronym} Max`, "baseMax", color),
+								formTableEntry(`${acronym} Max`, "baseMax", color, 0, 9999),
 								formTableEntry(
 									`${acronym} Max Temp.`,
 									"temporaryMaxModifier",
 									color,
+									0,
+									9999,
 								),
 							],
 						}}

@@ -50,6 +50,7 @@ export function MasteryLevelController({
 
 	return (
 		<SideActionNumberInputButtons
+			lockResetBehindDebounce
 			key={masteryId}
 			min={0}
 			max={10}

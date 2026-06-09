@@ -77,7 +77,7 @@ export function CharacterParametersDisplay() {
 		defaultValues: parameters,
 	});
 	useEffect(() => {
-		form.reset(parameters);
+		if (!form.formState.isDirty) form.reset(parameters);
 	}, [parameters]);
 	const watchedValues = form.watch();
 
@@ -100,6 +100,7 @@ export function CharacterParametersDisplay() {
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
+		form.reset({ ...currentValues });
 		return true;
 	}
 

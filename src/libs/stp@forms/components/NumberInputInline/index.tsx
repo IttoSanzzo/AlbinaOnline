@@ -7,14 +7,14 @@ import { StandartTextColor } from "@/components/(UIBasics)";
 import { useHookedForm } from "../../context/HookedFormContext";
 
 const NumberInputFieldContainer = newStyledElement.div(
-	styles.numberInputFieldContainer
+	styles.numberInputFieldContainer,
 );
 const NumberInputField = newStyledElement.input(styles.numberInputField);
 const NumberInputDecrementButton = newStyledElement.button(
-	styles.numberInputDecrementButton
+	styles.numberInputDecrementButton,
 );
 const NumberInputIncrementButton = newStyledElement.button(
-	styles.numberInputIncrementButton
+	styles.numberInputIncrementButton,
 );
 
 type NumberInputInlineProps<TFormData> = {
@@ -69,16 +69,16 @@ export function NumberInputInline<TFormData extends FieldValues>({
 	function handleDecrement() {
 		const currentValue = Number(field.value);
 		const newValue: number =
-			(isNaN(currentValue) ? 0 : currentValue) - (step ? step : 1);
+			(isNaN(currentValue) ? 0 : currentValue) - (step ?? 1);
 		field.onChange(
-			min != undefined ? (newValue < min ? min : newValue) : newValue
+			min != undefined ? (newValue < min ? min : newValue) : newValue,
 		);
 		triggerDebounceAction();
 	}
 	function handleIncrement() {
 		const currentValue = Number(field.value);
 		const newValue: number =
-			(isNaN(currentValue) ? 0 : currentValue) + (step ? step : 1);
+			(isNaN(currentValue) ? 0 : currentValue) + (step ?? 1);
 		field.onChange(max ? (newValue > max ? max : newValue) : newValue);
 		triggerDebounceAction();
 	}

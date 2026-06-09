@@ -49,8 +49,10 @@ export function CharacterActionsPoolDisplay({
 		defaultValues: { ...actionPoolState },
 	});
 	useEffect(() => {
-		form.reset({ ...characterActionsPool });
-		setActionsPoolState(characterActionsPool);
+		if (!form.formState.isDirty) {
+			form.reset({ ...characterActionsPool });
+			setActionsPoolState(characterActionsPool);
+		}
 	}, [characterActionsPool]);
 
 	async function onFormChange(formData: FormData) {
@@ -79,6 +81,7 @@ export function CharacterActionsPoolDisplay({
 		}));
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		form.reset(body);
 		return true;
 	}
 

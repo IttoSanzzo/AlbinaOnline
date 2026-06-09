@@ -49,8 +49,10 @@ export function ItemAmountController({
 	}
 	return (
 		<SideActionNumberInputButtons
+			lockResetBehindDebounce
 			key={itemId}
 			min={1}
+			max={9999}
 			defaultValue={amount}
 			action={handleItemAmountChange}
 		/>

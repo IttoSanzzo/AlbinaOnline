@@ -60,14 +60,15 @@ export function CoreMiscAndSimpleMetrics() {
 		},
 	});
 	useEffect(() => {
-		formCore.reset({
-			walkSpeed: coreMetrics.speedStats.walkSpeed,
-			combatSpeed: coreMetrics.speedStats.combatSpeed,
-			swimSpeed: coreMetrics.speedStats.swimSpeed,
-			flySpeed: coreMetrics.speedStats.flySpeed,
-			armorClass: coreMetrics.armorClass,
-			initiative: coreMetrics.initiative,
-		});
+		if (!formCore.formState.isDirty)
+			formCore.reset({
+				walkSpeed: coreMetrics.speedStats.walkSpeed,
+				combatSpeed: coreMetrics.speedStats.combatSpeed,
+				swimSpeed: coreMetrics.speedStats.swimSpeed,
+				flySpeed: coreMetrics.speedStats.flySpeed,
+				armorClass: coreMetrics.armorClass,
+				initiative: coreMetrics.initiative,
+			});
 	}, [coreMetrics]);
 
 	const formMisc = useForm<FormDataMisc>({
@@ -78,9 +79,10 @@ export function CoreMiscAndSimpleMetrics() {
 	});
 
 	useEffect(() => {
-		formMisc.reset({
-			carryCapacity: miscMetrics.carryCapacity,
-		});
+		if (!formMisc.formState.isDirty)
+			formMisc.reset({
+				carryCapacity: miscMetrics.carryCapacity,
+			});
 	}, [miscMetrics]);
 
 	async function onCoreFormChange(formData: FormDataCore) {
@@ -94,7 +96,6 @@ export function CoreMiscAndSimpleMetrics() {
 			},
 			armorClass: formData.armorClass,
 			initiative: formData.initiative,
-			characterId: characterId,
 		};
 		const toastId = toast.loading(CharToastMessage.loading);
 		const response = await authenticatedFetchAsync(
@@ -115,12 +116,19 @@ export function CoreMiscAndSimpleMetrics() {
 		setCoreMetrics(body);
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		formCore.reset({
+			walkSpeed: formData.walkSpeed,
+			combatSpeed: formData.combatSpeed,
+			swimSpeed: formData.swimSpeed,
+			flySpeed: formData.flySpeed,
+			armorClass: formData.armorClass,
+			initiative: formData.initiative,
+		});
 		return true;
 	}
 	async function onMiscFormChange(formData: FormDataMisc) {
 		const body: CharacterMiscMetrics = {
 			...miscMetrics,
-			characterId: characterId,
 			carryCapacity: formData.carryCapacity,
 		};
 
@@ -143,6 +151,9 @@ export function CoreMiscAndSimpleMetrics() {
 		setMiscMetrics(body);
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		formMisc.reset({
+			carryCapacity: formData.carryCapacity,
+		});
 		return true;
 	}
 

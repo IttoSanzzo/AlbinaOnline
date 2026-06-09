@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 export async function authenticatedFetchAsync(
 	input: RequestInfo | URL,
-	init: RequestInit = {}
+	init: RequestInit = {},
 ): Promise<Response> {
 	const url =
 		typeof input === "string" || input instanceof URL
@@ -16,7 +16,9 @@ export async function authenticatedFetchAsync(
 			: input;
 	init.credentials = "include";
 	const response = await fetch(url, init).catch(() => {
-		toast.error("Error while fetching authenticated data");
+		setTimeout(() => {
+			toast.error("Error while fetching authenticated data");
+		}, 1 * 800);
 	});
 	if (!response) {
 		return new Response(null, { status: 500, statusText: "Fetch failed" });

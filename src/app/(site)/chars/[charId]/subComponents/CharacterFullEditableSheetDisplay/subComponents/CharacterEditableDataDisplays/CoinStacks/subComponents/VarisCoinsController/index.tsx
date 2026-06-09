@@ -44,7 +44,7 @@ export function VarisCoinsController({
 	});
 
 	useEffect(() => {
-		form.reset({ varis: varisCoins ?? 0 });
+		if (!form.formState.isDirty) form.reset({ varis: varisCoins ?? 0 });
 	}, [varisCoins]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -66,6 +66,7 @@ export function VarisCoinsController({
 		}
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		form.reset({ ...currentValues });
 		return true;
 	}
 

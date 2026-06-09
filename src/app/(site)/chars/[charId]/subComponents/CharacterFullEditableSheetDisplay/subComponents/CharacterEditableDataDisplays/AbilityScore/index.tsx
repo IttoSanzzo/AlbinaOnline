@@ -74,7 +74,7 @@ export function CharacterAbilityScoreDisplay() {
 		defaultValues: abilityScore,
 	});
 	useEffect(() => {
-		form.reset(abilityScore);
+		if (!form.formState.isDirty) form.reset(abilityScore);
 	}, [abilityScore]);
 	const watchedValues = form.watch();
 
@@ -97,6 +97,7 @@ export function CharacterAbilityScoreDisplay() {
 		}
 		setErrorMessage("");
 		toast.success(CharToastMessage.success, { id: toastId });
+		form.reset(currentValues);
 		return true;
 	}
 

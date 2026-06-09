@@ -85,7 +85,7 @@ export function CharacterSpellDomainsDisplay({
 		defaultValues: spellDomains,
 	});
 	useEffect(() => {
-		form.reset(spellDomains);
+		if (!form.formState.isDirty) form.reset(spellDomains);
 	}, [spellDomains]);
 
 	async function handleWatchedAction(currentValues: FormData) {
@@ -107,6 +107,7 @@ export function CharacterSpellDomainsDisplay({
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setErrorMessage("");
+		form.reset({ ...currentValues });
 		return true;
 	}
 

@@ -40,36 +40,18 @@ export function GaugesTable() {
 	});
 
 	useEffect(() => {
-		form.setValue("currentHp", coreMetrics.healthPoints.baseCurrent);
-		form.setValue(
-			"temporaryHp",
-			coreMetrics.healthPoints.temporaryCurrentModifier,
-		);
-		form.setValue("currentEp", coreMetrics.staminaPoints.baseCurrent);
-		form.setValue(
-			"temporaryEp",
-			coreMetrics.staminaPoints.temporaryCurrentModifier,
-		);
-		form.setValue("currentMp", coreMetrics.manaPoints.baseCurrent);
-		form.setValue(
-			"temporaryMp",
-			coreMetrics.manaPoints.temporaryCurrentModifier,
-		);
+		if (!form.formState.isDirty)
+			form.reset({
+				currentHp: coreMetrics.healthPoints.baseCurrent,
+				temporaryHp: coreMetrics.healthPoints.temporaryCurrentModifier,
+				currentEp: coreMetrics.staminaPoints.baseCurrent,
+				temporaryEp: coreMetrics.staminaPoints.temporaryCurrentModifier,
+				currentMp: coreMetrics.manaPoints.baseCurrent,
+				temporaryMp: coreMetrics.manaPoints.temporaryCurrentModifier,
+			});
 	}, [coreMetrics]);
 
 	async function onFormChange(formData: FormData): Promise<boolean> {
-		if (
-			formData.currentHp >
-				coreMetrics.healthPoints.baseMax +
-					coreMetrics.healthPoints.temporaryCurrentModifier ||
-			formData.currentEp >
-				coreMetrics.staminaPoints.baseMax +
-					coreMetrics.staminaPoints.temporaryCurrentModifier ||
-			formData.currentMp >
-				coreMetrics.manaPoints.baseMax +
-					coreMetrics.manaPoints.temporaryCurrentModifier
-		)
-			return false;
 		const body: CharacterCoreMetrics = {
 			...coreMetrics,
 			healthPoints: {
@@ -106,6 +88,14 @@ export function GaugesTable() {
 		}
 		toast.success(CharToastMessage.success, { id: toastId });
 		setCoreMetrics(body);
+		form.reset({
+			currentHp: formData.currentHp,
+			temporaryHp: formData.temporaryHp,
+			currentEp: formData.currentEp,
+			temporaryEp: formData.temporaryEp,
+			currentMp: formData.currentMp,
+			temporaryMp: formData.temporaryMp,
+		});
 		return true;
 	}
 

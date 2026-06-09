@@ -35,12 +35,14 @@ type SideActionNumberInputButtonsProps = {
 	step?: number;
 	debounceMiliseconds?: number;
 	action: (value: number) => void;
+	lockResetBehindDebounce?: boolean;
 	style?: React.CSSProperties;
 	className?: string;
 };
 
 export function SideActionNumberInputButtons({
 	defaultValue = 0,
+	lockResetBehindDebounce = false,
 	fontSize,
 	style,
 	min,
@@ -63,11 +65,13 @@ export function SideActionNumberInputButtons({
 		},
 	});
 	useEffect(() => {
-		form.reset({ currentValue: defaultValue });
-	}, [defaultValue]);
+		if (lockResetBehindDebounce == false || !form.formState.isDirty)
+			form.reset({ currentValue: defaultValue });
+	}, [defaultValue, lockResetBehindDebounce]);
 
 	async function handleWatchedAction(currentValues: FormData) {
 		action(currentValues.currentValue);
+		form.reset({ ...currentValues });
 		return true;
 	}
 
