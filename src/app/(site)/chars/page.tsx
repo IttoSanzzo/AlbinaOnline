@@ -22,6 +22,7 @@ export default async function CharsPageServerShell() {
 			icon={getAlbinaApiFullAddress("/favicon/core-page/chars")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/chars")}>
 			<SetNavBarModules contextMenuButton={routeInfra.PageContextMenu} />
+
 			<CharsPageContent />
 		</GenericPageContainer>
 	);

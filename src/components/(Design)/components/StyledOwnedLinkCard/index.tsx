@@ -9,15 +9,14 @@ import { Tilt } from "../Tilt";
 import { TiltOptions } from "vanilla-tilt";
 
 const StyledOwnedLinkCardContainer = newStyledElement.div(
-	styles.styledOwnedLinkCardContainer
+	styles.styledOwnedLinkCardContainer,
 );
 const OwnerPageLinkContainer = newStyledElement.div(
-	styles.ownerPageLinkContainer
+	styles.ownerPageLinkContainer,
 );
 
 interface StyledOwnedLinkCardProps
-	extends StyledLinkCardProps,
-		OwnerPageLinkProps {}
+	extends StyledLinkCardProps, OwnerPageLinkProps {}
 export function StyledOwnedLinkCard({
 	ownerId,
 	size = 150,

@@ -1,7 +1,12 @@
 "use client";
 
 import { StyledOwnedLinkCard } from "@/components/(Design)/components/StyledOwnedLinkCard";
-import { useCurrentUser, useUserFavorites } from "@/libs/stp@hooks";
+import {
+	AnchorProps,
+	SetAnchorNavigation,
+	useCurrentUser,
+	useUserFavorites,
+} from "@/libs/stp@hooks";
 import { CharacterData } from "@/libs/stp@types";
 import { useEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
@@ -91,6 +96,8 @@ export default function CharsPageContent() {
 		: filteredCharacters.filter(
 				(character) => character.ownerId == currentUser.user?.id,
 			);
+
+	const letterIds: Set<string> = new Set();
 
 	return (
 		<UIBasics.Box
@@ -206,35 +213,59 @@ export default function CharsPageContent() {
 						direction="row"
 						backgroundColor="darkGray"
 						columnWidth={150}>
-						{filteredCharacters.map((character) => (
-							<StyledOwnedLinkCard
-								key={character.id}
-								size={150}
-								ownerId={character.ownerId}
-								href={`/chars/${character.id}`}
-								title={character.name}
-								artworkUrl={character.iconUrl}
-								layout="rectangle"
-								borderColor={character.isPublic ? undefined : "purple"}
-								titleBackgroundColor={
-									!character.isAlive
-										? "darkGray"
-										: character.isNpc
+						{filteredCharacters.map((character) => {
+							const letter = (character.name[0] ?? "0").toLowerCase();
+							let id: string | undefined = undefined;
+							if (!letterIds.has(letter)) {
+								id = letter;
+								letterIds.add(letter);
+							}
+							return (
+								<StyledOwnedLinkCard
+									key={character.id}
+									id={id}
+									size={150}
+									ownerId={character.ownerId}
+									href={`/chars/${character.id}`}
+									title={character.name}
+									artworkUrl={character.iconUrl}
+									layout="rectangle"
+									borderColor={character.isPublic ? undefined : "purple"}
+									titleBackgroundColor={
+										!character.isAlive
 											? "darkGray"
-											: "red"
-								}
-								titleColor={
-									!character.isAlive
-										? "darkGray"
-										: character.isNpc
-											? "gray"
-											: "red"
-								}
-							/>
-						))}
+											: character.isNpc
+												? "darkGray"
+												: "red"
+									}
+									titleColor={
+										!character.isAlive
+											? "darkGray"
+											: character.isNpc
+												? "gray"
+												: "red"
+									}
+								/>
+							);
+						})}
 					</UIBasics.List.Grid>
 				</>
 			)}
+			<SetAnchorNavigation
+				anchors={[
+					{ id: "seus-favoritos", name: "Seus Favoritos" },
+					{ id: "seus-personagens", name: "Seus Personagens" },
+					{ id: "todos", name: "Todos" },
+					...letterIds.values().map(
+						(id) =>
+							({
+								id: id,
+								name: id,
+								indentation: 1,
+							}) as AnchorProps,
+					),
+				]}
+			/>
 		</UIBasics.Box>
 	);
 }

@@ -29,6 +29,7 @@ export interface StyledLinkCardProps {
 	size?: number;
 	layout?: "square" | "rectangle";
 	usePreview?: boolean;
+	id?: string;
 }
 export function StyledLinkCard({
 	href,
@@ -41,6 +42,7 @@ export function StyledLinkCard({
 	backgroundColor,
 	titleBackgroundColor,
 	usePreview = true,
+	id,
 }: StyledLinkCardProps) {
 	const tiltOptions: TiltOptions = {
 		reverse: true,
@@ -82,6 +84,7 @@ export function StyledLinkCard({
 		return (
 			<Tilt options={tiltOptions}>
 				<StyledLinkCardContainer
+					id={id}
 					title={title}
 					style={containerStyle}>
 					{usePreview && (
@@ -111,6 +114,7 @@ export function StyledLinkCard({
 	return (
 		<Tilt options={tiltOptions}>
 			<StyledLinkCardContainer
+				id={id}
 				title={title}
 				style={containerStyle}>
 				{usePreview && (
