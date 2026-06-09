@@ -27,6 +27,13 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
+const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
+	"Unknown",
+]);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
+	"Unknown",
+]);
+
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
@@ -93,13 +100,6 @@ export function EditMasteryPageContent({
 		await revalidatePathByClientSide("/maestrias");
 	}
 
-	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
-		"Unknown",
-	]);
-
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
@@ -142,18 +142,8 @@ export function EditMasteryPageContent({
 				onSubmit={onSubmit}>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="name"
-							label="Name"
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="slug"
-							label="Slug"
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
@@ -161,7 +151,6 @@ export function EditMasteryPageContent({
 						<HookedForm.Select<FormInput>
 							fieldName="type"
 							placeholder="Select Type"
-							label="Type"
 							options={typeOptions}
 						/>
 					}
@@ -169,7 +158,6 @@ export function EditMasteryPageContent({
 						<HookedForm.Select<FormInput>
 							fieldName="subType"
 							placeholder="Select SubType"
-							label="SubType"
 							options={subTypeOptions}
 						/>
 					}
@@ -178,7 +166,6 @@ export function EditMasteryPageContent({
 					withoutPadding
 					colum1={
 						<HookedForm.TextArrayInput
-							label="Summary"
 							fieldName="summary"
 							width={"99%"}
 							useTextArea
@@ -186,7 +173,6 @@ export function EditMasteryPageContent({
 					}
 					colum2={
 						<HookedForm.TextArrayInput
-							label="Description"
 							fieldName="description"
 							width={"99%"}
 							useTextArea
@@ -194,7 +180,6 @@ export function EditMasteryPageContent({
 					}
 					colum3={
 						<HookedForm.TextArrayInput
-							label="Miscellaneous"
 							fieldName="miscellaneous"
 							width={"99%"}
 							useTextArea

@@ -29,6 +29,9 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
+const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType, []);
+
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
@@ -142,9 +145,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		await revalidatePathByClientSide("/spells");
 	}
 
-	const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType, []);
-
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
 
@@ -185,18 +185,8 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				onSubmit={onSubmit}>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="name"
-							label="Name"
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="slug"
-							label="Slug"
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
@@ -204,7 +194,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 						<HookedForm.Select<FormInput>
 							fieldName="type"
 							placeholder="Select Type"
-							label="Type"
 							options={typeOptions}
 						/>
 					}
@@ -212,7 +201,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 						<HookedForm.Select<FormInput>
 							fieldName="subType"
 							placeholder="Select SubType"
-							label="SubType"
 							options={subTypeOptions}
 						/>
 					}
@@ -222,14 +210,12 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="spellDomains"
-							label="Spell Domains"
 							options={enumToSelectStringOptions(SpellDomain)}
 						/>
 					}
 					colum2={
 						<HookedForm.NumberInput<FormInput>
 							fieldName="domainLevel"
-							label="Domain Level"
 							min={0}
 							max={12}
 						/>
@@ -240,63 +226,26 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="magicAttributes"
-							label="Magic Attributes"
 							options={enumToSelectStringOptions(MagicAttribute)}
 						/>
 					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="mana"
-							label="Mana"
-						/>
-					}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="mana" />}
 				/>
 				<UIBasics.MultiColumn.Three
 					withoutPadding
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="stamina"
-							label="Stamina"
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="time"
-							label="Time"
-						/>
-					}
-					colum3={
-						<HookedForm.TextInput<FormInput>
-							fieldName="duration"
-							label="Duration"
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="stamina" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="time" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="duration" />}
 				/>
 				<UIBasics.MultiColumn.Three
 					withoutPadding
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="form"
-							label="Form"
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="range"
-							label="Range"
-						/>
-					}
-					colum3={
-						<HookedForm.TextInput<FormInput>
-							fieldName="area"
-							label="Area"
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="form" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="range" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="area" />}
 				/>
 
 				<HookedForm.ObjectArrayInput
 					fieldName="extras"
-					label="Extras"
 					defaultObject={{ key: "", value: "" }}
 					style={{ fontFamily: "monospace" }}
 					childrenGenerator={({ index, lastRef }) => {
@@ -307,7 +256,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 									<HookedForm.ObjectArrayTextInput<FormInput>
 										fieldName="extras"
 										objectKey="key"
-										label="Key"
 										index={index}
 										ref={lastRef}
 									/>
@@ -316,7 +264,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 									<HookedForm.ObjectArrayTextInput<FormInput>
 										fieldName="extras"
 										objectKey="value"
-										label="Key"
 										index={index}
 									/>
 								}
@@ -324,16 +271,12 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 						);
 					}}
 				/>
-				<HookedForm.TextArrayInput<FormInput>
-					fieldName="chants"
-					label="Chants"
-				/>
+				<HookedForm.TextArrayInput<FormInput> fieldName="chants" />
 
 				<UIBasics.MultiColumn.Three
 					withoutPadding
 					colum1={
 						<HookedForm.TextArrayInput
-							label="Summary"
 							fieldName="summary"
 							width={"99%"}
 							useTextArea
@@ -341,7 +284,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					}
 					colum2={
 						<HookedForm.TextArrayInput
-							label="Description"
 							fieldName="description"
 							width={"99%"}
 							useTextArea
@@ -349,7 +291,6 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					}
 					colum3={
 						<HookedForm.TextArrayInput
-							label="Miscellaneous"
 							fieldName="miscellaneous"
 							width={"99%"}
 							useTextArea

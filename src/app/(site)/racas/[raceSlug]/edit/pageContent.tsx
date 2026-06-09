@@ -4,28 +4,18 @@ import { GenericPageContainer } from "@/components/(Design)";
 import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
-import {
-	HookedForm,
-	SelectOption,
-	zArrayString,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
 	LanguageType,
 	RaceData,
-	RaceGenerals,
-	RaceInfo,
 	RaceSubType,
 	RaceType,
 	RoleHierarchy,
 } from "@/libs/stp@types";
-import { RaceParameters } from "@/libs/stp@types/dataTypes/race";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions } from "@/utils/Data";
+import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -37,7 +27,16 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const RaceInfoSchema = z.object({
+const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, ["Unknown"]);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(RaceSubType, [
+	"Unknown",
+]);
+
+const schema = z.object({
+	slug: zSlug(),
+	name: z.string().min(1, "Min 1 lenght"),
+	type: zEnumKey(RaceType, ["Unknown"]),
+	subType: zEnumKey(RaceSubType, ["Unknown"]),
 	introduction: z.array(z.string()),
 	personality: z.array(z.string()),
 	culture: z.array(z.string()),
@@ -45,33 +44,18 @@ const RaceInfoSchema = z.object({
 	groups: z.array(z.string()),
 	relations: z.array(z.string()),
 	description: z.array(z.string()),
-	images: z.array(z.string()),
-});
-const RaceParametersSchema = z.object({
-	vitality: z.number(),
-	vigor: z.number(),
-	manapool: z.number(),
-	physicalPower: z.number(),
-	magicalPower: z.number(),
-});
-const RaceGeneralsSchema = z.object({
+	vitality: z.number().min(1, "Min 1").max(4, "Max 4"),
+	vigor: z.number().min(1, "Min 1").max(4, "Max 4"),
+	manapool: z.number().min(1, "Min 1").max(4, "Max 4"),
+	physicalPower: z.number().min(1, "Min 1").max(4, "Max 4"),
+	magicalPower: z.number().min(1, "Min 1").max(4, "Max 4"),
 	height: z.string(),
 	weight: z.string(),
 	longevity: z.string(),
 	speed: z.string(),
 	language: zEnumKey(LanguageType, []),
-});
-
-const schema = z.object({
-	slug: zSlug(),
-	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(RaceType, ["Unknown"]),
-	subType: zEnumKey(RaceSubType, ["Unknown"]),
-	info: zJsonStringTyped<RaceInfo>(RaceInfoSchema),
-	parameters: zJsonStringTyped<RaceParameters>(RaceParametersSchema),
-	generals: zJsonStringTyped<RaceGenerals>(RaceGeneralsSchema),
-	skillSlugs: zArrayString(),
-	traitSlugs: zArrayString(),
+	skillSlugs: z.array(z.string()),
+	traitSlugs: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -90,11 +74,25 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			slug: race.slug,
 			type: RaceType[race.type].toString(),
 			subType: RaceSubType[race.subType].toString(),
-			info: JSON.stringify(race.info, null, 2),
-			parameters: JSON.stringify(race.parameters, null, 2),
-			generals: JSON.stringify(race.generals, null, 2),
-			skillSlugs: JSON.stringify(race.skillSlugs),
-			traitSlugs: JSON.stringify(race.traitSlugs),
+			introduction: race.info.introduction,
+			personality: race.info.personality,
+			culture: race.info.culture,
+			miscellaneous: race.info.miscellaneous,
+			groups: race.info.groups,
+			relations: race.info.relations,
+			description: race.info.description,
+			vitality: race.parameters.vitality,
+			vigor: race.parameters.vigor,
+			manapool: race.parameters.manapool,
+			physicalPower: race.parameters.physicalPower,
+			magicalPower: race.parameters.magicalPower,
+			height: race.generals.height,
+			weight: race.generals.weight,
+			longevity: race.generals.longevity,
+			speed: race.generals.speed,
+			language: race.generals.language,
+			skillSlugs: race.skillSlugs,
+			traitSlugs: race.traitSlugs,
 		},
 	});
 
@@ -104,9 +102,30 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
-			parameters: formData.parameters,
-			generals: formData.generals,
+			info: {
+				introduction: formData.introduction,
+				personality: formData.personality,
+				culture: formData.culture,
+				miscellaneous: formData.miscellaneous,
+				groups: formData.groups,
+				relations: formData.relations,
+				description: formData.description,
+				images: [],
+			},
+			parameters: {
+				vitality: formData.vitality,
+				vigor: formData.vigor,
+				manapool: formData.manapool,
+				physicalPower: formData.physicalPower,
+				magicalPower: formData.magicalPower,
+			},
+			generals: {
+				height: formData.height,
+				weight: formData.weight,
+				longevity: formData.longevity,
+				speed: formData.speed,
+				language: formData.language,
+			},
 			skillSlugs: formData.skillSlugs,
 			traitSlugs: formData.traitSlugs,
 		};
@@ -129,13 +148,6 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		await revalidateTagByClientSide("/races");
 		await revalidatePathByClientSide("/racas");
 	}
-
-	const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(RaceSubType, [
-		"Unknown",
-	]);
 
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
@@ -173,64 +185,136 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormInput>
-					fieldName="slug"
-					label="Slug"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
-				<HookedForm.TextInput<FormInput>
-					fieldName="name"
-					label="Name"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							options={typeOptions}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							options={subTypeOptions}
+						/>
+					}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="introduction"
+					useTextArea
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="personality"
+					useTextArea
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="culture"
+					useTextArea
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="parameters"
-					label="Parameters"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="miscellaneous"
+					useTextArea
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="generals"
-					label="Generals"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="groups"
+					useTextArea
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="traitSlugs"
-					label="Trait Slugs"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="relations"
+					useTextArea
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="skillSlugs"
-					label="Skill Slugs"
-					height={200}
-					style={{ fontFamily: "monospace" }}
+				<HookedForm.TextArrayInput<FormInput>
+					fieldName="description"
+					useTextArea
 				/>
-
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="vitality"
+							min={1}
+							max={4}
+						/>
+					}
+					colum2={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="vigor"
+							min={1}
+							max={4}
+						/>
+					}
+					colum3={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="manapool"
+							min={1}
+							max={4}
+						/>
+					}
+				/>
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="physicalPower"
+							min={1}
+							max={4}
+						/>
+					}
+					colum2={
+						<HookedForm.NumberInput<FormInput>
+							fieldName="magicalPower"
+							min={1}
+							max={4}
+						/>
+					}
+				/>
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="height" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="weight" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="speed" />}
+				/>
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="longevity" />}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="language"
+							options={enumToSelectStringOptions(LanguageType)}
+						/>
+					}
+				/>
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput<FormInput>
+							fieldName="traitSlugs"
+							width={"99%"}
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput<FormInput>
+							fieldName="skillSlugs"
+							width={"99%"}
+						/>
+					}
+				/>
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={race.name}
 				deletionRoute={getAlbinaApiFullAddress(`/races/${race.slug}`)}

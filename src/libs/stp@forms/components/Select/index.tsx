@@ -4,6 +4,7 @@ import { FieldValues, Path, useController } from "react-hook-form";
 import { CSSProperties } from "react";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { BaseSelect } from "../base/BaseSelect";
+import { startCase } from "lodash";
 
 export type SelectOption = {
 	value: string | number;
@@ -13,7 +14,8 @@ export type SelectOption = {
 
 type SelectProps<TFormInput extends FieldValues> = {
 	fieldName: Path<TFormInput>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	placeholder?: string;
 	options: SelectOption[];
 	width?: CSSProperties["width"];
@@ -21,6 +23,8 @@ type SelectProps<TFormInput extends FieldValues> = {
 };
 export function SelectComponent<TFormInput extends FieldValues>({
 	fieldName,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	...rest
 }: SelectProps<TFormInput>) {
 	const {
@@ -39,6 +43,7 @@ export function SelectComponent<TFormInput extends FieldValues>({
 		<BaseSelect
 			value={field.value ?? ""}
 			errorMessage={error?.message}
+			label={label}
 			onValueChange={(event) => {
 				field.onChange(event);
 				triggerDebounceAction();

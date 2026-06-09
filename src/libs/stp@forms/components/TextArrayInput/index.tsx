@@ -6,10 +6,12 @@ import { FieldValues, Path } from "react-hook-form";
 import { ObjectArrayInput } from "../ObjectArrayInput";
 import { ObjectArrayTextInput } from "../ObjectArrayTextInput";
 import styles from "./styles.module.css";
+import { startCase } from "lodash";
 
 type TextArrayInputProps<TFormInput> = {
 	fieldName: Path<TFormInput>;
 	label?: string;
+	autoLabelFormatting?: boolean;
 	defaultText?: string;
 	defaultValue?: string[];
 	useTextArea?: boolean;
@@ -38,7 +40,8 @@ type TextArrayInputProps<TFormInput> = {
 
 export function TextArrayInput<TFormInput extends FieldValues>({
 	fieldName,
-	label = fieldName,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	defaultText = "",
 	useTextArea,
 	...rest

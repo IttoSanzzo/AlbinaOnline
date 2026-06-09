@@ -6,6 +6,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
+import { startCase } from "lodash";
 
 const PasswordInputContainer = newStyledElement.div(
 	styles.passwordInputContainer,
@@ -16,7 +17,8 @@ const PasswordInputError = newStyledElement.div(styles.passwordInputError);
 interface PasswordInputProps<TFormData>
 	extends PasswordToggleField.PasswordToggleFieldInputProps {
 	fieldName: Path<TFormData>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -38,7 +40,8 @@ interface PasswordInputProps<TFormData>
 }
 export function PasswordInput<TFormData extends FieldValues>({
 	fieldName,
-	label,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	lesserPadding = false,
 	textCentered = false,
 	labelBackground,

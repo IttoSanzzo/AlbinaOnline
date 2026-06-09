@@ -5,10 +5,12 @@ import { InputHTMLAttributes, RefObject } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { BaseTextInput } from "../base/BaseTextInput";
+import { startCase } from "lodash";
 
 type ObjectArrayTextInputProps<TFormInput> = {
 	fieldName: Path<TFormInput>;
 	objectKey: string | null;
+	autoLabelFormatting?: boolean;
 	label?: string;
 	index: number;
 	useTextArea?: boolean;
@@ -37,6 +39,12 @@ export function ObjectArrayTextInput<TFormInput extends FieldValues>({
 	fieldName,
 	objectKey,
 	index,
+	autoLabelFormatting = true,
+	label = objectKey == null
+		? "_"
+		: autoLabelFormatting
+			? startCase(objectKey)
+			: objectKey,
 	...rest
 }: ObjectArrayTextInputProps<TFormInput>) {
 	const {
@@ -50,6 +58,7 @@ export function ObjectArrayTextInput<TFormInput extends FieldValues>({
 
 	return (
 		<BaseTextInput
+			label={label}
 			{...rest}
 			value={
 				objectKey != null ? field.value[index][objectKey] : field.value[index]

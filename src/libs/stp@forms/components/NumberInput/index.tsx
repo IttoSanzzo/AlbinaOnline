@@ -5,13 +5,15 @@ import clsx from "clsx";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartTextColor } from "@/components/(UIBasics)";
+import { startCase } from "lodash";
 
 const NumberInputContainer = newStyledElement.div(styles.numberInputContainer);
 const NumberInputLabel = newStyledElement.label(styles.numberInputLabel);
 
 type NumberInputProps<TFormData> = {
 	fieldName: Path<TFormData>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -39,7 +41,8 @@ type NewType<TFormData> = NumberInputProps<TFormData>;
 
 export function NumberInput<TFormData>({
 	fieldName,
-	label,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	lesserPadding = false,
 	fontSize,
 	style,

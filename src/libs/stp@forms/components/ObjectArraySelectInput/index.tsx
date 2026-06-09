@@ -3,17 +3,24 @@
 import { FieldValues, Path, useController } from "react-hook-form";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { BaseSelect, BaseSelectProps } from "../base/BaseSelect";
+import { startCase } from "lodash";
 
 type ObjectArraySelectInputProps<TFormInput> = {
 	fieldName: Path<TFormInput>;
 	objectKey: string | null;
+	autoLabelFormatting?: boolean;
 	index: number;
-	// ref?: RefObject<HTMLInputElement | null> | undefined;
 } & BaseSelectProps;
 
 export function ObjectArraySelectInput<TFormInput extends FieldValues>({
 	fieldName,
 	objectKey,
+	autoLabelFormatting = true,
+	label = objectKey == null
+		? "_"
+		: autoLabelFormatting
+			? startCase(objectKey)
+			: objectKey,
 	index,
 	...rest
 }: ObjectArraySelectInputProps<TFormInput>) {
@@ -28,6 +35,7 @@ export function ObjectArraySelectInput<TFormInput extends FieldValues>({
 
 	return (
 		<BaseSelect
+			label={label}
 			{...rest}
 			value={
 				objectKey != null ? field.value[index][objectKey] : field.value[index]

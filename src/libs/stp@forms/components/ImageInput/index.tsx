@@ -18,6 +18,7 @@ import { LintIgnoredAny } from "@/libs/stp@types";
 import { parseGIF, decompressFrames } from "gifuct-js";
 import { encode, UnencodedFrame } from "modern-gif";
 import { extractImagesFromDrop } from "./utils";
+import { startCase } from "lodash";
 
 const ImageInputContainer = newStyledElement.div(styles.imageInputContainer);
 const ImageInputField = newStyledElement.input(styles.imageInputField);
@@ -33,7 +34,8 @@ export interface ImageInputHandle {
 
 type ImageInputProps<TFormData> = {
 	fieldName: Path<TFormData>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	accept?: string;
 	previewMaxWidth?: CSSProperties["maxWidth"];
@@ -62,7 +64,8 @@ const ImageInputInner = <TFormData extends FieldValues>(
 ) => {
 	const {
 		fieldName,
-		label,
+		autoLabelFormatting = true,
+		label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 		labelBackground,
 		accept = "image/*",
 		previewMaxWidth,

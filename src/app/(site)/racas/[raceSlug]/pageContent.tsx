@@ -114,13 +114,20 @@ export default async function RacePageContent({
 						<UIBasics.Callout
 							icon={{ name: "Sparkle", color: "orange" }}
 							title={
-								<UIBasics.Text>{raceData.info.introduction[0]}</UIBasics.Text>
+								<UIBasics.Text>
+									{raceData.info.introduction.length > 0
+										? raceData.info.introduction[0]
+										: "Missing"}
+								</UIBasics.Text>
 							}
 						/>
 						<UIBasics.List.Quote
 							textColor="default"
-							// quotes={raceData.info.introduction.slice(1)}
-							quotes={["a"]}
+							quotes={
+								raceData.info.introduction.length > 1
+									? raceData.info.introduction.slice(1)
+									: []
+							}
 						/>
 						<UIBasics.Divisor />
 					</UIBasics.Toggle>
@@ -283,37 +290,6 @@ export default async function RacePageContent({
 					}
 				/>
 			</UIBasics.Callout>
-
-			{/* <UIBasics.Callout
-				icon={{ name: "UserCircleGear", color: "yellow" }}
-				titleColor="brown"
-				title={"⪼ Resistências & Fraquezas & Imunidades"}>
-				<UIBasics.MultiColumn.Two
-					colum1={
-						<UIBasics.Callout
-							icon={{ name: "ShieldChevron", color: "orange" }}
-							textColor="orange"
-							title={"⫷Resistências⫸"}>
-							<UIBasics.List.Quote quotes={raceData.defensiveProfile.resistences} />
-						</UIBasics.Callout>
-					}
-					colum2={
-						<UIBasics.Callout
-							icon={{ name: "ShieldWarning", color: "red" }}
-							textColor="red"
-							title={"⫷Fraqueza⫸"}>
-							<UIBasics.List.Quote quotes={raceData.defensiveProfile.weaknesses} />
-						</UIBasics.Callout>
-					}
-				/>
-				<UIBasics.Callout
-					icon={{ name: "ShieldCheck", color: "blue" }}
-					textColor="blue"
-					title={"⫷Imunidades⫸"}>
-					<UIBasics.List.Quote quotes={raceData.defensiveProfile.immunities} />
-				</UIBasics.Callout>
-			</UIBasics.Callout> */}
-
 			{raceData.traitSlugs.length > 0 && (
 				<>
 					<UIBasics.Header

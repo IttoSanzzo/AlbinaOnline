@@ -20,6 +20,7 @@ import styles from "./styles.module.css";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { StpIcon } from "@/libs/stp@icons";
 import { LintIgnoredAny } from "@/libs/stp@types";
+import { startCase } from "lodash";
 
 const ObjectArrayInputContainer = newStyledElement.div(
 	styles.objectArrayInputContainer,
@@ -58,6 +59,7 @@ interface ChildGeneratorProps<TFormInput extends FieldValues> {
 type ObjectArrayInputProps<TFormInput extends FieldValues> = {
 	fieldName: Path<TFormInput>;
 	label?: string;
+	autoLabelFormatting?: boolean;
 	defaultObject: object;
 	defaultValue?: string[];
 	childrenGenerator: (props: ChildGeneratorProps<TFormInput>) => ReactNode;
@@ -86,7 +88,8 @@ type ObjectArrayInputProps<TFormInput extends FieldValues> = {
 
 export function ObjectArrayInput<TFormInput extends FieldValues>({
 	fieldName,
-	label = fieldName,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	defaultObject,
 	defaultValue,
 	childrenGenerator,

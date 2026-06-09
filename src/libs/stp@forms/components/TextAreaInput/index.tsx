@@ -4,9 +4,10 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { useHookedForm } from "../../context/HookedFormContext";
+import { startCase } from "lodash";
 
 const TextAreaInputContainer = newStyledElement.div(
-	styles.textAreaInputContainer
+	styles.textAreaInputContainer,
 );
 const TextAreaInputField = newStyledElement.textarea(styles.textAreaInputField);
 const TextAreaInputLabel = newStyledElement.label(styles.textAreaInputLabel);
@@ -14,7 +15,8 @@ const TextAreaInputError = newStyledElement.div(styles.textAreaInputError);
 
 type TextAreaInputProps<TFormInput> = {
 	fieldName: Path<TFormInput>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	labelBackground?: keyof typeof StandartBackgroundColor;
 	height?: React.CSSProperties["height"];
 	fontSize?:
@@ -37,7 +39,8 @@ type TextAreaInputProps<TFormInput> = {
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 export function TextAreaInput<TFormInput extends FieldValues>({
 	fieldName,
-	label,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	labelBackground,
 	height,
 	lesserPadding = false,

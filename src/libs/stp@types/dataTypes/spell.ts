@@ -3,6 +3,7 @@ import {
 	GenericExtraProperty,
 	GenericInfo,
 	Guid,
+	MagicAttribute,
 	SpellDomain,
 } from "../index";
 
@@ -41,7 +42,7 @@ export type SpellData = {
 	properties?: SpellProperties;
 	domainLevel: number;
 	spellDomains: (keyof typeof SpellDomain)[];
-	magicAttributes: string[];
+	magicAttributes: (keyof typeof MagicAttribute)[];
 	effects: GenericEffect[];
 	createdAt: string;
 	updatedAt: string;

@@ -1,3 +1,10 @@
+import {
+	GenericEffect,
+	GenericExtraProperty,
+	GenericInfo,
+	Guid,
+} from "../index";
+
 export enum TraitType {
 	Unknown,
 	Generic,
@@ -17,13 +24,8 @@ export enum TraitSubType {
 	Special,
 }
 
-import { GenericEffect, Guid } from "../index";
-
-export type TraitInfo = {
-	summary: string[];
-	description: string[];
-	miscellaneous: string[];
-	requirements: string[];
+export type TraitProperties = {
+	requirements: GenericExtraProperty[];
 };
 
 export type TraitData = {
@@ -34,7 +36,8 @@ export type TraitData = {
 	subType: keyof typeof TraitSubType;
 	iconUrl: string;
 	bannerUrl: string;
-	info: TraitInfo;
+	properties: TraitProperties;
+	info: GenericInfo;
 	effects: GenericEffect[];
 	createdAt: string;
 	updatedAt: string;

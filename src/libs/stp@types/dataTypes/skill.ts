@@ -3,6 +3,7 @@ import {
 	GenericExtraProperty,
 	GenericInfo,
 	Guid,
+	MagicAttribute,
 } from "../index";
 
 export enum SkillType {
@@ -50,8 +51,9 @@ export type SkillData = {
 	subType: keyof typeof SkillSubType;
 	iconUrl: string;
 	bannerUrl: string;
-	info: GenericInfo;
+	magicAttributes: (keyof typeof MagicAttribute)[];
 	properties?: SkillProperties;
+	info: GenericInfo;
 	effects: GenericEffect[];
 	createdAt: string;
 	updatedAt: string;

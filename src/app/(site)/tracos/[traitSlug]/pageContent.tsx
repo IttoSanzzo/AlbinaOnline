@@ -39,7 +39,6 @@ export default async function TraitPageContent({
 				type={"trait"}
 				data={traitData}
 			/>
-
 			<UIBasics.Header
 				textColor="purple"
 				backgroundColor="gray"
@@ -55,30 +54,42 @@ export default async function TraitPageContent({
 				}
 				colum2={<GenericInfoCallout info={traitData.info} />}
 			/>
-			<UIBasics.Callout
-				textColor="orange"
-				title="Requerimentos:"
-				icon={{ name: "Keyhole", color: "orange" }}
-				children={traitData.info.requirements.map((requirement, index) => (
-					<UIBasics.Quote
-						key={index}
-						textColor="yellow"
-						children={requirement}
-					/>
-				))}
-			/>
-
+			{traitData.properties.requirements.length !== 0 && (
+				<UIBasics.Table
+					withHeaderRow
+					textColor="gray"
+					fixedLinePositions={[1]}
+					fixedLineWidths={[25]}
+					tableData={{
+						tableLanes: [
+							[
+								<UIBasics.Text
+									textColor="orange"
+									children="Requerimentos"
+								/>,
+								<UIBasics.Text
+									textColor="orange"
+									children="Descrição"
+									textAlign="flex-center"
+									withBold
+								/>,
+							],
+							...traitData.properties.requirements.map((requirement) => [
+								<UIBasics.Text>{`⦇ ${requirement.key} ⦈`}</UIBasics.Text>,
+								<UIBasics.Text>{`⪩ ${requirement.value}`}</UIBasics.Text>,
+							]),
+						],
+					}}
+				/>
+			)}
 			<StaticGallery
 				url={getAlbinaApiFullAddress(`/images/traits/${traitData.slug}`)}
 				hideIfEmpty
 			/>
-
 			<GenericEffectsDisplay effects={traitData.effects} />
-
 			<LinkedCharacters
 				endpoint={`/traits/by-id/${traitData.id}/linked-characters`}
 			/>
-
 			<GenericPageFooter
 				version={traitData.albinaVersion}
 				lastUpdate={traitData.updatedAt}

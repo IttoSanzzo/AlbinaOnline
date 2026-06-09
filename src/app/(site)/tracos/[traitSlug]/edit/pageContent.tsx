@@ -5,16 +5,9 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import {
-	HookedForm,
-	SelectOption,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
-	GenericInfo,
 	TraitData,
 	TraitSubType,
 	TraitType,
@@ -34,18 +27,25 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
-	miscellaneous: z.array(z.string()),
-});
+const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, ["Unknown"]);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(TraitSubType, [
+	"Unknown",
+]);
 
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(TraitType, ["Unknown"]),
+	type: zEnumKey(TraitType, []),
 	subType: zEnumKey(TraitSubType, []),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
+	requirements: z.array(
+		z.object({
+			key: z.string(),
+			value: z.string(),
+		}),
+	),
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -64,7 +64,10 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			slug: trait.slug,
 			type: TraitType[trait.type].toString(),
 			subType: TraitSubType[trait.subType].toString(),
-			info: JSON.stringify(trait.info, null, 2),
+			requirements: trait.properties.requirements,
+			summary: trait.info.summary,
+			description: trait.info.description,
+			miscellaneous: trait.info.miscellaneous,
 		},
 	});
 
@@ -74,7 +77,14 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
+			properties: {
+				requirements: formData.requirements,
+			},
+			info: {
+				summary: formData.summary,
+				description: formData.description,
+				miscellaneous: formData.miscellaneous,
+			},
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -95,11 +105,6 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		await revalidateTagByClientSide("/traits");
 		await revalidatePathByClientSide("/tracos");
 	}
-
-	const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(TraitSubType, []);
 
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
@@ -139,40 +144,88 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormInput>
-					fieldName="slug"
-					label="Slug"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
-				<HookedForm.TextInput<FormInput>
-					fieldName="name"
-					label="Name"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							options={typeOptions}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							options={subTypeOptions}
+						/>
+					}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
-				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
-				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
+				<HookedForm.ObjectArrayInput
+					fieldName="requirements"
+					defaultObject={{ key: "", value: "" }}
 					style={{ fontFamily: "monospace" }}
+					childrenGenerator={({ index, lastRef }) => {
+						return (
+							<UIBasics.MultiColumn.Two
+								divisionRatio={-3}
+								colum1={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="requirements"
+										objectKey="key"
+										index={index}
+										ref={lastRef}
+									/>
+								}
+								colum2={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="requirements"
+										objectKey="value"
+										index={index}
+									/>
+								}
+							/>
+						);
+					}}
+				/>
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput
+							fieldName="summary"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput
+							fieldName="description"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum3={
+						<HookedForm.TextArrayInput
+							fieldName="miscellaneous"
+							width={"99%"}
+							useTextArea
+						/>
+					}
 				/>
 
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={trait.name}
 				deletionRoute={getAlbinaApiFullAddress(`/traits/${trait.slug}`)}
@@ -182,14 +235,13 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 
 			<UIBasics.Divisor />
 
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/traits/${trait.slug}`)}
+			/>
 			<EntityEffectsEditor
 				genericEffects={trait.effects}
 				targetId={trait.id}
 				targetType="Trait"
-			/>
-
-			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/traits/${trait.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

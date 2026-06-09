@@ -5,25 +5,18 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import {
-	HookedForm,
-	SelectOption,
-	zEnumKey,
-	zJsonStringTyped,
-	zSlug,
-} from "@/libs/stp@forms";
+import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
-	GenericInfo,
 	SkillData,
-	SkillProperties,
 	SkillSubType,
 	SkillType,
 	RoleHierarchy,
 	canEditCatalogEntry,
+	MagicAttribute,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions } from "@/utils/Data";
+import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -35,36 +28,33 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const GenericInfoSchema = z.object({
-	summary: z.array(z.string()),
-	description: z.array(z.string()),
-	miscellaneous: z.array(z.string()),
-});
-const GenericExtraPropertySchema = z.object({
-	key: z.string(),
-	value: z.string(),
-});
-const SkillComponentsSchema = z.object({
-	mana: z.string(),
-	stamina: z.string(),
-	time: z.string(),
-	duration: z.string(),
-	form: z.string(),
-	range: z.string(),
-	area: z.string(),
-});
-const SkillPropertiesSchema = z.object({
-	components: SkillComponentsSchema,
-	extras: z.array(GenericExtraPropertySchema),
-});
+const typeOptions: SelectOption[] = enumToSelectOptions(SkillType, ["Unknown"]);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(SkillSubType, [
+	"Unknown",
+]);
 
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(SkillType, ["Unknown"]),
 	subType: zEnumKey(SkillSubType, ["Unknown"]),
-	info: zJsonStringTyped<GenericInfo>(GenericInfoSchema),
-	properties: zJsonStringTyped<SkillProperties>(SkillPropertiesSchema),
+	magicAttributes: z.array(z.string()).optional(), // TODO: Remove optional when added to the BD
+	mana: z.string().optional(),
+	stamina: z.string().optional(),
+	time: z.string().optional(),
+	duration: z.string().optional(),
+	form: z.string().optional(),
+	range: z.string().optional(),
+	area: z.string().optional(),
+	extras: z.array(
+		z.object({
+			key: z.string(),
+			value: z.string(),
+		}),
+	),
+	summary: z.array(z.string()),
+	description: z.array(z.string()),
+	miscellaneous: z.array(z.string()),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -82,9 +72,19 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			name: skill.name,
 			slug: skill.slug,
 			type: SkillType[skill.type].toString(),
-			subType: (SkillSubType[skill.subType] ?? SkillSubType.Unknown).toString(),
-			info: JSON.stringify(skill.info, null, 2),
-			properties: JSON.stringify(skill.properties, null, 2),
+			subType: SkillSubType[skill.subType].toString(),
+			// magicAttributes: skill.magicAttributes,
+			mana: skill.properties?.components.mana ?? "",
+			stamina: skill.properties?.components.stamina ?? "",
+			time: skill.properties?.components.time ?? "",
+			duration: skill.properties?.components.duration ?? "",
+			form: skill.properties?.components.form ?? "",
+			range: skill.properties?.components.range ?? "",
+			area: skill.properties?.components.area ?? "",
+			extras: skill.properties?.extras ?? [],
+			summary: skill.info.summary,
+			description: skill.info.description,
+			miscellaneous: skill.info.miscellaneous,
 		},
 	});
 
@@ -94,8 +94,27 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
-			info: formData.info,
-			properties: formData.properties,
+			info: {
+				summary: formData.summary,
+				description: formData.description,
+				miscellaneous: formData.miscellaneous,
+			},
+			properties: {
+				extras: formData.extras,
+				components: {
+					mana: formData.mana,
+					stamina: formData.stamina,
+					time: formData.time,
+					duration: formData.duration,
+					form: formData.form,
+					range: formData.range,
+					area: formData.area,
+				},
+			},
+			magicAttributes:
+				(formData.magicAttributes ?? []).length == 0
+					? ["Unknown"]
+					: formData.magicAttributes,
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -116,13 +135,6 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		await revalidateTagByClientSide("/skills");
 		await revalidatePathByClientSide("/skills");
 	}
-
-	const typeOptions: SelectOption[] = enumToSelectOptions(SkillType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(SkillSubType, [
-		"Unknown",
-	]);
 
 	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
 		return null;
@@ -162,46 +174,111 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
-				<HookedForm.TextInput<FormInput>
-					fieldName="slug"
-					label="Slug"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
-				<HookedForm.TextInput<FormInput>
-					fieldName="name"
-					label="Name"
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.Select<FormInput>
+							fieldName="type"
+							placeholder="Select Type"
+							options={typeOptions}
+						/>
+					}
+					colum2={
+						<HookedForm.Select<FormInput>
+							fieldName="subType"
+							placeholder="Select SubType"
+							options={subTypeOptions}
+						/>
+					}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="type"
-					placeholder="Select Type"
-					label="Type"
-					options={typeOptions}
+				<UIBasics.MultiColumn.Two
+					withoutPadding
+					colum1={
+						<HookedForm.MultiSelect<FormInput>
+							fieldName="magicAttributes"
+							options={enumToSelectStringOptions(MagicAttribute)}
+						/>
+					}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="mana" />}
 				/>
-				<HookedForm.Select<FormInput>
-					fieldName="subType"
-					placeholder="Select SubType"
-					label="SubType"
-					options={subTypeOptions}
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="stamina" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="time" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="duration" />}
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="info"
-					label="Info"
-					height={200}
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={<HookedForm.TextInput<FormInput> fieldName="form" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="range" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="area" />}
+				/>
+				<HookedForm.ObjectArrayInput
+					fieldName="extras"
+					defaultObject={{ key: "", value: "" }}
 					style={{ fontFamily: "monospace" }}
+					childrenGenerator={({ index, lastRef }) => {
+						return (
+							<UIBasics.MultiColumn.Two
+								divisionRatio={-3}
+								colum1={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="key"
+										label="Key"
+										index={index}
+										ref={lastRef}
+									/>
+								}
+								colum2={
+									<HookedForm.ObjectArrayTextInput<FormInput>
+										fieldName="extras"
+										objectKey="value"
+										index={index}
+									/>
+								}
+							/>
+						);
+					}}
 				/>
-				<HookedForm.TextAreaInput<FormInput>
-					fieldName="properties"
-					label="Properties"
-					height={300}
-					style={{ fontFamily: "monospace" }}
+				<UIBasics.MultiColumn.Three
+					withoutPadding
+					colum1={
+						<HookedForm.TextArrayInput
+							fieldName="summary"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum2={
+						<HookedForm.TextArrayInput
+							fieldName="description"
+							width={"99%"}
+							useTextArea
+						/>
+					}
+					colum3={
+						<HookedForm.TextArrayInput
+							fieldName="miscellaneous"
+							width={"99%"}
+							useTextArea
+						/>
+					}
 				/>
 
+				<HookedForm.Space />
 				<HookedForm.SubmitButton label="Save" />
 				<HookedForm.SimpleMessage
 					message={error}
 					color="red"
 				/>
 			</HookedForm.Form>
-			<HookedForm.Space />
+			<HookedForm.Space height={2} />
 			<DeletionAlertDialog
 				safetyText={skill.name}
 				deletionRoute={getAlbinaApiFullAddress(`/skills/${skill.slug}`)}
@@ -211,14 +288,13 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 
 			<UIBasics.Divisor />
 
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/images/skills/${skill.slug}`)}
+			/>
 			<EntityEffectsEditor
 				genericEffects={skill.effects}
 				targetId={skill.id}
 				targetType="Skill"
-			/>
-
-			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/skills/${skill.slug}`)}
 			/>
 		</GenericPageContainer>
 	);

@@ -194,18 +194,8 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				onSubmit={onSubmit}>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="name"
-							label="Name"
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="slug"
-							label="Slug"
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="name" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="slug" />}
 				/>
 				<UIBasics.MultiColumn.Two
 					withoutPadding
@@ -213,7 +203,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 						<HookedForm.Select<FormInput>
 							fieldName="type"
 							placeholder="Select Type"
-							label="Type"
 							options={typeOptions}
 						/>
 					}
@@ -221,7 +210,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 						<HookedForm.Select<FormInput>
 							fieldName="subType"
 							placeholder="Select SubType"
-							label="SubType"
 							options={subTypeOptions}
 						/>
 					}
@@ -231,17 +219,13 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="compatibleSlots"
-							label="Compatible Slots"
 							options={compatibleSlotOptions}
-							width={"100%"}
 						/>
 					}
 					colum2={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="MagicAttributes"
-							label="Magic Attributes"
 							options={magicAttributeOptions}
-							width={"100%"}
 						/>
 					}
 					colum3={
@@ -257,43 +241,17 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				/>
 
 				<UIBasics.MultiColumn.Two
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="damage"
-							label={"Damage"}
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="damageType"
-							label={"Damage Type"}
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="damage" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="damageType" />}
 				/>
 				<UIBasics.MultiColumn.Three
-					colum1={
-						<HookedForm.TextInput<FormInput>
-							fieldName="accuracy"
-							label={"Accuracy"}
-						/>
-					}
-					colum2={
-						<HookedForm.TextInput<FormInput>
-							fieldName="defense"
-							label={"Defense"}
-						/>
-					}
-					colum3={
-						<HookedForm.TextInput<FormInput>
-							fieldName="range"
-							label={"Range"}
-						/>
-					}
+					colum1={<HookedForm.TextInput<FormInput> fieldName="accuracy" />}
+					colum2={<HookedForm.TextInput<FormInput> fieldName="defense" />}
+					colum3={<HookedForm.TextInput<FormInput> fieldName="range" />}
 				/>
 
 				<HookedForm.ObjectArrayInput
 					fieldName="extras"
-					label="Extras"
 					defaultObject={{ key: "", value: "" }}
 					style={{ fontFamily: "monospace" }}
 					childrenGenerator={({ index, lastRef }) => {
@@ -304,7 +262,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 									<HookedForm.ObjectArrayTextInput<FormInput>
 										fieldName="extras"
 										objectKey="key"
-										label="Key"
 										index={index}
 										ref={lastRef}
 									/>
@@ -313,7 +270,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 									<HookedForm.ObjectArrayTextInput<FormInput>
 										fieldName="extras"
 										objectKey="value"
-										label="Key"
 										index={index}
 									/>
 								}
@@ -326,7 +282,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					withoutPadding
 					colum1={
 						<HookedForm.TextArrayInput
-							label="Summary"
 							fieldName="summary"
 							width={"99%"}
 							useTextArea
@@ -334,7 +289,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					}
 					colum2={
 						<HookedForm.TextArrayInput
-							label="Description"
 							fieldName="description"
 							width={"99%"}
 							useTextArea
@@ -342,7 +296,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					}
 					colum3={
 						<HookedForm.TextArrayInput
-							label="Miscellaneous"
 							fieldName="miscellaneous"
 							width={"99%"}
 							useTextArea

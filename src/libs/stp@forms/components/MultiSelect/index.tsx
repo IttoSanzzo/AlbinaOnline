@@ -6,6 +6,7 @@ import styles from "./styles.module.css";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
+import { startCase } from "lodash";
 
 const MultiSelectContainer = newStyledElement.div(styles.multiSelectContainer);
 const MultiSelectLabel = newStyledElement.label(styles.multiSelectLabel);
@@ -19,13 +20,15 @@ export type MultiSelectOption = {
 
 type MultiSelectProps<TFormInput extends FieldValues> = {
 	fieldName: Path<TFormInput>;
-	label: string;
+	label?: string;
+	autoLabelFormatting?: boolean;
 	options: MultiSelectOption[];
 	width?: CSSProperties["width"];
 };
 export function MultiSelectComponent<TFormInput extends FieldValues>({
 	fieldName,
-	label,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	options,
 	width,
 }: MultiSelectProps<TFormInput>) {

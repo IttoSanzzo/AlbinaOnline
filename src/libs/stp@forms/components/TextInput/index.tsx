@@ -4,15 +4,18 @@ import { InputHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { BaseTextInput, BaseTextInputProps } from "../base/BaseTextInput";
+import { startCase } from "lodash";
 
 interface TextInputProps<TFormInput>
 	extends BaseTextInputProps, InputHTMLAttributes<HTMLInputElement> {
 	fieldName: Path<TFormInput>;
+	autoLabelFormatting?: boolean;
 }
 
 export function TextInput<TFormInput extends FieldValues>({
 	fieldName,
-	label = fieldName,
+	autoLabelFormatting = true,
+	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
 	...rest
 }: TextInputProps<TFormInput>) {
 	const {
