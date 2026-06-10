@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 export type AnchorProps = {
 	name: string;
-	id: string;
+	id?: string;
 	indentation?: 0 | 1 | 2;
 };
 
@@ -28,5 +28,5 @@ export const useAnchorNavigationStore = create<AnchorNavigationState>(
 				anchors: null,
 				isSet: false,
 			}),
-	})
+	}),
 );

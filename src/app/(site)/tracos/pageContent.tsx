@@ -6,10 +6,11 @@ import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
-	{ name: "Genéricas", id: "genericas" },
-	{ name: "Comuns", id: "comuns" },
-	{ name: "Raciais", id: "raciais" },
-	{ name: "Únicas", id: "unicas" },
+	{ name: "Genéricas" },
+	{ name: "Comuns" },
+	{ name: "Raciais" },
+	{ name: "Bençãos" },
+	{ name: "Únicas" },
 ];
 
 export default async function TraitsPageContent() {

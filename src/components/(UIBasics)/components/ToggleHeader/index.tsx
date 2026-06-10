@@ -75,6 +75,7 @@ interface ToggleHeaderProps extends StandartColorProps {
 	memoryId?: string;
 	routeSensitiveMemory?: boolean;
 	defaultOpenState?: boolean;
+	style?: CSSProperties;
 }
 export function ToggleHeader({
 	children,
@@ -88,6 +89,7 @@ export function ToggleHeader({
 	textColor,
 	backgroundColor,
 	defaultOpenState = false,
+	style,
 }: ToggleHeaderProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
@@ -158,7 +160,10 @@ export function ToggleHeader({
 		else openContent();
 	}
 
-	const colorStyle = StandartColorKeysToProperties(textColor, backgroundColor);
+	const colorStyle = {
+		...StandartColorKeysToProperties(textColor, backgroundColor),
+		...style,
+	};
 	const contentStyle: CSSProperties = {
 		minHeight: 0,
 		maxHeight: isOpen ? `${contentMaxHeight}px` : 0,

@@ -22,6 +22,7 @@ export function InventoryDrawer({
 }: InventoryDrawerProps) {
 	return (
 		<CharacterDrawerBaseHeader
+			roundUp
 			title="Inventário"
 			memoryId={`${characterId}-Inventory`}>
 			<UIBasics.Box

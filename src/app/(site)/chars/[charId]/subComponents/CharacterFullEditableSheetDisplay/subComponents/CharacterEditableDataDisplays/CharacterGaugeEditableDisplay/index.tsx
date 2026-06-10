@@ -1,6 +1,6 @@
 import { HookedForm } from "@/libs/stp@forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CharacterIdContext } from "../../CharacterEditableSheetContextProviders";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
@@ -58,12 +58,14 @@ interface CharacterGaugeEditableDisplayProps {
 	name: string;
 	acronym: string;
 	color: keyof typeof StandartTextColor;
+	style?: CSSProperties;
 }
 export function CharacterGaugeEditableDisplay({
 	gauge,
 	name,
 	acronym,
 	color,
+	style,
 }: CharacterGaugeEditableDisplayProps) {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 	const { characterId } = useContext(CharacterIdContext);
@@ -134,12 +136,18 @@ export function CharacterGaugeEditableDisplay({
 	}
 
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title={name}
-			memoryId={`${characterId}-${acronym}`}>
+			withoutMargin
+			withoutBorder
+			withoutBorderRadius
+			style={{ padding: "5px", ...style }}>
+			<UIBasics.Header
+				children={name}
+				textAlign="center"
+				headerType="h2"
+				textColor="yellow"
+			/>
 			<HookedForm.Form
 				form={form}
 				onChangeAction={onFormChange}
@@ -186,6 +194,6 @@ export function CharacterGaugeEditableDisplay({
 					/>
 				</div>
 			</HookedForm.Form>
-		</UIBasics.ToggleHeader>
+		</UIBasics.Box>
 	);
 }

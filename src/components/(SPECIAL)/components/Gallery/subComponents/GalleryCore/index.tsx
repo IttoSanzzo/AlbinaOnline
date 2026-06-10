@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { CSSProperties, useLayoutEffect, useRef, useState } from "react";
 import { GalleryCarousel } from "./subComponents/GalleryCarousel";
 import { GalleryData } from "@/libs/stp@types";
 import { GalleryImageModal } from "./subComponents/GalleryImageModal";
@@ -16,12 +16,16 @@ interface GalleryCoreProps {
 	isEditable?: boolean;
 	galleryData?: GalleryData;
 	hideIfEmpty?: boolean;
+	id?: string;
+	style?: CSSProperties;
 }
 export function GalleryCore({
 	url,
 	withoutMargin = false,
 	isEditable = true,
 	hideIfEmpty = false,
+	id = "galeria",
+	style,
 	...rest
 }: GalleryCoreProps) {
 	const [galleryData, setGalleryData] = useState<GalleryData>(
@@ -73,6 +77,8 @@ export function GalleryCore({
 	return (
 		<>
 			<GalleryCarousel
+				id={id}
+				style={style}
 				galleryData={galleryData}
 				url={url}
 				imageAction={handleImageClickEvent}

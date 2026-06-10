@@ -4,7 +4,13 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { GalleryData } from "@/libs/stp@types";
 import ImageBox, { GalleryImageActionFunction } from "../ImageBox";
 import styles from "./styles.module.css";
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, {
+	CSSProperties,
+	Dispatch,
+	SetStateAction,
+	useRef,
+	useState,
+} from "react";
 import { CarouselHandle } from "@/components/(UIBasics)/components/Carousel";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";
@@ -21,6 +27,8 @@ interface GalleryCarouselProps {
 	imageAction?: GalleryImageActionFunction;
 	carouselRef?: React.RefObject<CarouselHandle | null>;
 	setFullViewOpenState?: Dispatch<SetStateAction<boolean>>;
+	id?: string;
+	style?: CSSProperties;
 }
 export const GalleryCarousel = React.memo(
 	function GalleryCarousel({
@@ -32,12 +40,16 @@ export const GalleryCarousel = React.memo(
 		withoutMargin,
 		carouselRef,
 		setFullViewOpenState,
+		id,
+		style,
 	}: GalleryCarouselProps) {
 		const [isDragging, setIsDragging] = useState<boolean>(false);
 		const addButtonRef = useRef<AddImageButtonHandle | null>(null);
 
 		return (
 			<UIBasics.Box
+				style={style}
+				id={id}
 				backgroundColor="darkGray"
 				withoutBorder
 				withoutMargin={withoutMargin}

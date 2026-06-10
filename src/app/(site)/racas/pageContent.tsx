@@ -6,11 +6,11 @@ import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
-	{ name: "Humanos", id: "Humanos" },
-	{ name: "Feéricos", id: "Feéricos" },
-	{ name: "Demônios", id: "Demônios" },
-	{ name: "Dracônicos", id: "Dracônicos" },
-	{ name: "Seireis", id: "Seireis" },
+	{ name: "Humanos" },
+	{ name: "Feéricos" },
+	{ name: "Demônios" },
+	{ name: "Dracônicos" },
+	{ name: "Seireis" },
 ];
 
 export default async function RacesPageContent() {

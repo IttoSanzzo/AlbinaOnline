@@ -62,7 +62,15 @@ export default async function ItemPageContent({
 				hideIfEmpty
 			/>
 
-			<GenericEffectsDisplay effects={itemData.effects} />
+			<GenericEffectsDisplay
+				effects={itemData.effects}
+				preAnchors={[
+					{ name: "¤ Especificações ¤" },
+					{ name: "¤ Propriedades ¤" },
+					{ name: "Galeria" },
+				]}
+				postAnchors={[{ name: "Personagens Relacionados" }]}
+			/>
 
 			<LinkedCharacters
 				endpoint={`/items/by-id/${itemData.id}/linked-characters`}

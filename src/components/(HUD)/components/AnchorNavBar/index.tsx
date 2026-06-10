@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 import clsx from "clsx";
 
 const AnchorNavBarContainer = newStyledElement.div(
-	styles.anchorNavBarContainer
+	styles.anchorNavBarContainer,
 );
 const AnchorLines = newStyledElement.div(styles.anchorLines);
 const AnchorLine = newStyledElement.span(styles.anchorLine);
@@ -22,13 +22,13 @@ export function AnchorNavBar() {
 		? anchors.map((anchor) => {
 				return {
 					name: anchor.name,
-					id: idfyString(anchor.id),
+					id: idfyString(anchor.id ?? anchor.name),
 					indentation: anchor.indentation,
 				};
-		  })
+			})
 		: [];
 	const visibleId = useVisibleSections(
-		refinedAnchors?.map((anchor) => anchor.id)
+		refinedAnchors?.map((anchor) => anchor.id!),
 	);
 	if (isSet === false || !anchors?.length) return null;
 
@@ -40,7 +40,7 @@ export function AnchorNavBar() {
 						key={anchor.id}
 						className={clsx(
 							styles[`line-indentation-level-${anchor.indentation ?? 0}`],
-							anchor.id === visibleId ? styles["activeAnchorLine"] : undefined
+							anchor.id === visibleId ? styles["activeAnchorLine"] : undefined,
 						)}
 					/>
 				))}
@@ -50,7 +50,9 @@ export function AnchorNavBar() {
 							key={anchor.id}
 							className={clsx(
 								styles[`item-indentation-level-${anchor.indentation ?? 0}`],
-								anchor.id === visibleId ? styles["activeAnchorItem"] : undefined
+								anchor.id === visibleId
+									? styles["activeAnchorItem"]
+									: undefined,
 							)}>
 							<Link href={`#${anchor.id}`}>
 								》<div>{anchor.name}</div>

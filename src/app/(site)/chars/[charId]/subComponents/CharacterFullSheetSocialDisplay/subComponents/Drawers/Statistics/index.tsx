@@ -1,4 +1,4 @@
-import { UIBasics } from "@/components/(UIBasics)";
+import { StandartBackgroundColor, UIBasics } from "@/components/(UIBasics)";
 import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader";
 import { CharacterDataDisplays } from "../../CharacterDataDisplays";
 import {
@@ -84,9 +84,21 @@ export function StatisticsDrawer({
 							name="Estamina"
 							acronym="EP"
 							color="green"
+							style={{
+								borderBottomLeftRadius: "var(--rd-md)",
+							}}
 						/>
 					}
-					colum2={<></>}
+					colum2={
+						<div
+							style={{
+								backgroundColor: StandartBackgroundColor["darkGray"],
+								width: "100%",
+								height: "100%",
+								borderBottomRightRadius: "var(--rd-md)",
+							}}
+						/>
+					}
 				/>
 			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>

@@ -17,17 +17,19 @@ export const metadata: Metadata = assembleMetadata({
 });
 
 const anchorNavigationData = [
-	{ name: "Armamentos", id: "armamentos" },
-	{ name: "Focus", id: "focus" },
-	{ name: "Escudos", id: "escudos" },
-	{ name: "Frames", id: "frames" },
-	{ name: "Vestimentas Auxiliares", id: "vestimentas-auxiliares" },
-	{ name: "Acessórios", id: "acessorios" },
-	{ name: "Consumíveis", id: "consumiveis" },
-	{ name: "Miscelaneos", id: "miscelaneos" },
-	{ name: "Ferramentas", id: "ferramentas" },
-	{ name: "Especiais", id: "especiais" },
-	{ name: "Aleatórios", id: "aleatorios" },
+	{ name: "Armamentos" },
+	{ name: "Focus" },
+	{ name: "Escudos" },
+	{ name: "Frames" },
+	{ name: "Vestimentas Auxiliares" },
+	{ name: "Acessórios" },
+	{ name: "Consumíveis" },
+	{ name: "Miscelaneos" },
+	{ name: "Ferramentas" },
+	{ name: "Kits" },
+	{ name: "Veículos" },
+	{ name: "Especiais" },
+	{ name: "Aleatórios" },
 ];
 
 export default async function ItemsPageServerShell() {

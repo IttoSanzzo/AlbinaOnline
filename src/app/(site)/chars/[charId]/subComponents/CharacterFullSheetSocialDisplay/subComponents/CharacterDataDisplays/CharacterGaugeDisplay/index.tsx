@@ -1,10 +1,11 @@
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import { CharacterCoreMetrics, Guid } from "@/libs/stp@types";
+import { CSSProperties } from "react";
 
 function formTableEntry(
 	title: string,
 	value: number,
-	color: keyof typeof StandartTextColor
+	color: keyof typeof StandartTextColor,
 ) {
 	return [
 		<UIBasics.Text
@@ -27,23 +28,30 @@ interface CharacterGaugeDisplayProps {
 	name: string;
 	acronym: string;
 	color: keyof typeof StandartTextColor;
+	style?: CSSProperties;
 }
 export function CharacterGaugeDisplay({
-	characterId,
 	coreMetrics,
 	gauge,
 	name,
 	acronym,
 	color,
+	style,
 }: CharacterGaugeDisplayProps) {
 	const thisGauge = coreMetrics[gauge];
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title={name}
-			memoryId={`${characterId}-${acronym}`}>
+			withoutMargin
+			withoutBorder
+			withoutBorderRadius
+			style={{ padding: "5px", ...style }}>
+			<UIBasics.Header
+				children={name}
+				textAlign="center"
+				headerType="h2"
+				textColor="yellow"
+			/>
 			<div
 				style={{
 					display: "flex",
@@ -56,18 +64,18 @@ export function CharacterGaugeDisplay({
 							formTableEntry(
 								`${acronym} Temp.`,
 								thisGauge.temporaryCurrentModifier,
-								color
+								color,
 							),
 							formTableEntry(`${acronym} Max`, thisGauge.baseMax, color),
 							formTableEntry(
 								`${acronym} Max Temp.`,
 								thisGauge.temporaryMaxModifier,
-								color
+								color,
 							),
 						],
 					}}
 				/>
 			</div>
-		</UIBasics.ToggleHeader>
+		</UIBasics.Box>
 	);
 }

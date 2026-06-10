@@ -6,7 +6,6 @@ import { Breadcrumb, useBreadcrumbs } from "@/libs/stp@hooks";
 import { StyledLink } from "@/components/(Design)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useEffect, useMemo } from "react";
-import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
@@ -72,8 +71,10 @@ export function Breadcrumbs() {
 			{crumbs.map((breadcrumb, index) => (
 				<span key={breadcrumb.href}>
 					{index == crumbs.length - 1 ? (
-						<StyledFalseLink
+						<StyledLink
 							textMode
+							usePreview={false}
+							href="#"
 							title={breadcrumb.name}
 							icon={breadcrumb.icon}
 						/>

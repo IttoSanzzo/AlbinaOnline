@@ -18,10 +18,10 @@ export const metadata: Metadata = assembleMetadata({
 });
 
 const anchorNavigationData: AnchorProps[] = [
-	{ name: "Proficiências", id: "Proficiências" },
-	{ name: "Perícias", id: "Perícias" },
-	{ name: "Conhecimentos", id: "Conhecimentos" },
-	{ name: "Ofícios", id: "Ofícios" },
+	{ name: "Proficiências" },
+	{ name: "Perícias" },
+	{ name: "Conhecimentos" },
+	{ name: "Ofícios" },
 ];
 
 export default async function MasteriesPageServerShell() {

@@ -3,6 +3,8 @@ import { StpIconProps } from "@/libs/stp@icons";
 import { GenericEffect } from "@/libs/stp@types";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
+import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
+import { idfyString } from "@/utils/StringUtils";
 
 export const GenericEffectsDisplayContainer = newStyledElement.div(
 	styles.genericEffectsDisplayContainer,
@@ -10,6 +12,8 @@ export const GenericEffectsDisplayContainer = newStyledElement.div(
 
 interface GenericEffectsDisplayProps {
 	effects: GenericEffect[];
+	preAnchors?: AnchorProps[];
+	postAnchors?: AnchorProps[];
 }
 
 function getIconProps(name: string): StpIconProps {
@@ -23,8 +27,17 @@ function getIconProps(name: string): StpIconProps {
 	}
 }
 
-export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
-	if (effects.length == 0) return null;
+export function GenericEffectsDisplay({
+	effects,
+	preAnchors = [],
+	postAnchors = [],
+}: GenericEffectsDisplayProps) {
+	if (effects.length == 0)
+		return preAnchors.length == 0 && postAnchors.length == 0 ? null : (
+			<SetAnchorNavigation anchors={[...preAnchors, ...postAnchors]} />
+		);
+	const effectAnchors: AnchorProps[] = [];
+
 	return (
 		<GenericEffectsDisplayContainer>
 			<UIBasics.Header
@@ -49,10 +62,17 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 				) : (
 					effect.role
 				);
+				const id = `effect-${idfyString(effect.name ?? effect.role)}`;
+				effectAnchors.push({
+					name: effect.name ?? effect.role,
+					id: id,
+					indentation: 1,
+				});
 
 				return (
 					<UIBasics.Callout
 						key={index}
+						id={id}
 						icon={iconProps}
 						titleColor={iconProps.color}
 						title={fullTitle}>
@@ -67,6 +87,16 @@ export function GenericEffectsDisplay({ effects }: GenericEffectsDisplayProps) {
 					</UIBasics.Callout>
 				);
 			})}
+			{(preAnchors.length > 0 || postAnchors.length > 0) && (
+				<SetAnchorNavigation
+					anchors={[
+						...preAnchors,
+						{ name: "🏮 Efeitos 🏮", id: "-efeitos-" },
+						...effectAnchors,
+						...postAnchors,
+					]}
+				/>
+			)}
 		</GenericEffectsDisplayContainer>
 	);
 }

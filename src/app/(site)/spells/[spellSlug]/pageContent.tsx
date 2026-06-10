@@ -68,7 +68,18 @@ export default async function SpellPageContent({
 				hideIfEmpty
 			/>
 
-			<GenericEffectsDisplay effects={spellData.effects} />
+			<GenericEffectsDisplay
+				effects={spellData.effects}
+				preAnchors={[
+					{ name: "¤ Especificações ¤" },
+					{
+						name: "¤ Propriedades ¤",
+						id: `-feitico-nivel-${spellData.domainLevel}-`,
+					},
+					{ name: "Galeria" },
+				]}
+				postAnchors={[{ name: "Personagens Relacionados" }]}
+			/>
 
 			<LinkedCharacters
 				endpoint={`/spells/by-id/${spellData.id}/linked-characters`}

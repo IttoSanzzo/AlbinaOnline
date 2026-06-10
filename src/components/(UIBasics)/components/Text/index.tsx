@@ -18,6 +18,7 @@ interface TextProps extends StandartColorProps {
 	textAlign?: "left" | "center" | "right" | "flex-center";
 	display?: CSSProperties["display"];
 	whiteSpace?: CSSProperties["whiteSpace"];
+	id?: string;
 }
 export function Text({
 	children,
@@ -29,6 +30,7 @@ export function Text({
 	textAlign,
 	display,
 	whiteSpace,
+	id,
 }: TextProps) {
 	const style: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -44,7 +46,9 @@ export function Text({
 	};
 
 	return (
-		<TextContainer style={style}>
+		<TextContainer
+			style={style}
+			id={id}>
 			<SmartText content={children} />
 		</TextContainer>
 	);

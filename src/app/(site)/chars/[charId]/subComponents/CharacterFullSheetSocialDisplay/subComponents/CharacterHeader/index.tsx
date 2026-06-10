@@ -26,6 +26,7 @@ export function CharacterHeader({
 }: CharacterHeaderProps) {
 	return (
 		<UIBasics.Box
+			id="cabecalho"
 			backgroundColor="blue"
 			withoutBorder>
 			<UIBasics.Box

@@ -9,10 +9,10 @@ import {
 } from "../..";
 
 const HorizontalTableContainer = newStyledElement.table(
-	styles.horizontalTableContainer
+	styles.horizontalTableContainer,
 );
 const VerticalTableContainer = newStyledElement.table(
-	styles.verticalTableContainer
+	styles.verticalTableContainer,
 );
 
 export interface TableData {
@@ -30,6 +30,7 @@ interface TableProps extends StandartColorProps {
 	withoutBorderRadius?: boolean;
 	withoutMargin?: boolean;
 	style?: CSSProperties;
+	id?: string;
 }
 
 export function Table({
@@ -45,6 +46,7 @@ export function Table({
 	withoutBorderRadius,
 	withoutMargin,
 	style,
+	id,
 }: TableProps) {
 	const baseStyle: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -58,6 +60,7 @@ export function Table({
 	if (fixedLinePositions.length != fixedLineWidths.length)
 		return (
 			<UIBasics.Text
+				id={id}
 				textColor="red"
 				backgroundColor="yellow"
 				children="UIBasics.Table: fixedLinePositions and fixedLineWidths should not have different lengths."
@@ -67,7 +70,9 @@ export function Table({
 	if (direction === "row") {
 		let fixedPositionIndex = -1;
 		return (
-			<HorizontalTableContainer style={baseStyle}>
+			<HorizontalTableContainer
+				style={baseStyle}
+				id={id}>
 				<tbody>
 					{tableLanes.map((row, laneIndex) => (
 						<tr key={laneIndex}>
@@ -120,7 +125,7 @@ export function Table({
 	const newTableLength = tableLanes.length === 1 ? 2 : tableLanes.length;
 	const reordenedTable: Array<ReactNode[]> = Array.from(
 		{ length: newTableLength },
-		() => []
+		() => [],
 	);
 
 	tableLanes.forEach((column, columnIndex) => {
@@ -130,7 +135,9 @@ export function Table({
 	});
 
 	return (
-		<VerticalTableContainer style={baseStyle}>
+		<VerticalTableContainer
+			style={baseStyle}
+			id={id}>
 			<thead>
 				<tr>
 					{reordenedTable[0].map((content, index) => (

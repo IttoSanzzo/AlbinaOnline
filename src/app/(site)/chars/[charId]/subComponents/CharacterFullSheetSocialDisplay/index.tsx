@@ -163,6 +163,7 @@ export function CharacterFullSheetSocialDisplay({
 					withoutMargin
 					isEditable={false}
 					hideIfEmpty
+					style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
 				/>
 			</UIBasics.Box>
 		</>

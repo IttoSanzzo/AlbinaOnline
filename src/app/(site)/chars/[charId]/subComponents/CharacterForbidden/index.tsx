@@ -13,8 +13,12 @@ const CharacterForbiddenContainer = newStyledElement.div(
 
 interface CharacterForbiddenProps {
 	characterId: Guid;
+	loadCharacterAsync: () => Promise<boolean>;
 }
-export function CharacterForbidden({ characterId }: CharacterForbiddenProps) {
+export function CharacterForbidden({
+	characterId,
+	loadCharacterAsync,
+}: CharacterForbiddenProps) {
 	const [owner, setOwner] = useState<FullUser | null>(null);
 
 	useEffect(() => {
@@ -31,6 +35,18 @@ export function CharacterForbidden({ characterId }: CharacterForbiddenProps) {
 		});
 	}, [characterId]);
 
+	useEffect(() => {
+		let timeout: NodeJS.Timeout | undefined = undefined;
+		function tryReloadingCharacter() {
+			timeout = setTimeout(async () => {
+				const success = await loadCharacterAsync();
+				if (!success) tryReloadingCharacter();
+			}, 5 * 1000);
+		}
+		tryReloadingCharacter();
+		return () => clearTimeout(timeout);
+	}, [characterId, loadCharacterAsync]);
+
 	return (
 		<CharacterForbiddenContainer>
 			<UIBasics.Header textColor="red">
@@ -46,7 +62,7 @@ export function CharacterForbidden({ characterId }: CharacterForbiddenProps) {
 					href={`/users/${owner.username}`}
 					title={owner.nickname}
 					artworkUrl={getAlbinaApiFullAddress(
-						`/favicon/users/${owner.username}`,
+						`/users/${owner.username}/favicon`,
 					)}
 				/>
 			) : (

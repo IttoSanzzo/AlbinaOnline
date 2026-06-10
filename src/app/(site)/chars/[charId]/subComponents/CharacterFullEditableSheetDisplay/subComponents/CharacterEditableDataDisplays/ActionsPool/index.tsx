@@ -86,12 +86,18 @@ export function CharacterActionsPoolDisplay({
 	}
 
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title="Ações / Turno"
-			memoryId={`${characterId}-ActionsPool`}>
+			withoutMargin
+			withoutBorder
+			withoutBorderRadius
+			style={{ borderTopLeftRadius: "var(--rd-md)", padding: "5px" }}>
+			<UIBasics.Header
+				children="Ações / Turno"
+				textAlign="center"
+				headerType="h2"
+				textColor="yellow"
+			/>
 			<HookedForm.Form
 				form={form}
 				onChangeAction={onFormChange}
@@ -115,6 +121,6 @@ export function CharacterActionsPoolDisplay({
 					color="red"
 				/>
 			</HookedForm.Form>
-		</UIBasics.ToggleHeader>
+		</UIBasics.Box>
 	);
 }

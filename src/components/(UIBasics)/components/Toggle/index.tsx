@@ -69,6 +69,7 @@ interface ToggleProps extends StandartColorProps {
 	memoryId?: string;
 	routeSensitiveMemory?: boolean;
 	defaultOpenState?: boolean;
+	id?: string;
 }
 export function Toggle({
 	children,
@@ -80,6 +81,7 @@ export function Toggle({
 	textColor,
 	backgroundColor,
 	defaultOpenState = false,
+	id,
 }: ToggleProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
@@ -161,7 +163,9 @@ export function Toggle({
 	};
 
 	return (
-		<ToggleContainer style={colorStyle}>
+		<ToggleContainer
+			style={colorStyle}
+			id={id}>
 			<HeaderContainer>
 				<button
 					style={colorStyle}

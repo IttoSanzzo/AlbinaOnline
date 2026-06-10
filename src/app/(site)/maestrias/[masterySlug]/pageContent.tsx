@@ -61,7 +61,22 @@ export default async function MasteryPageContent({
 				hideIfEmpty
 			/>
 
-			<GenericEffectsDisplay effects={masteryData.effects} />
+			<GenericEffectsDisplay
+				effects={masteryData.effects}
+				preAnchors={[
+					{
+						name: "¤ Especificações ¤",
+					},
+					{
+						name: "Galeria",
+					},
+				]}
+				postAnchors={[
+					{
+						name: "Personagens Relacionados",
+					},
+				]}
+			/>
 
 			<LinkedCharacters
 				endpoint={`/masteries/by-id/${masteryData.id}/linked-characters`}

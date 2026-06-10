@@ -21,16 +21,21 @@ interface CharacterActionsPoolDisplayProps {
 	actionsPool: CharacterActionsPool;
 }
 export function CharacterActionsPoolDisplay({
-	characterId,
 	actionsPool,
 }: CharacterActionsPoolDisplayProps) {
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title="Ações / Turno"
-			memoryId={`${characterId}-ActionsPool`}>
+			withoutMargin
+			withoutBorder
+			withoutBorderRadius
+			style={{ borderTopLeftRadius: "var(--rd-md)", padding: "5px" }}>
+			<UIBasics.Header
+				children="Ações / Turno"
+				textAlign="center"
+				headerType="h2"
+				textColor="yellow"
+			/>
 			<div style={{ display: "flex" }}>
 				<UIBasics.Table
 					tableData={{
@@ -45,6 +50,6 @@ export function CharacterActionsPoolDisplay({
 					}}
 				/>
 			</div>
-		</UIBasics.ToggleHeader>
+		</UIBasics.Box>
 	);
 }

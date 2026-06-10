@@ -56,6 +56,7 @@ export default async function TraitPageContent({
 			/>
 			{traitData.properties.requirements.length !== 0 && (
 				<UIBasics.Table
+					id="requirements"
 					withHeaderRow
 					textColor="gray"
 					fixedLinePositions={[1]}
@@ -86,7 +87,26 @@ export default async function TraitPageContent({
 				url={getAlbinaApiFullAddress(`/images/traits/${traitData.slug}`)}
 				hideIfEmpty
 			/>
-			<GenericEffectsDisplay effects={traitData.effects} />
+			<GenericEffectsDisplay
+				effects={traitData.effects}
+				preAnchors={[
+					{
+						name: "¤ Especificações ¤",
+					},
+					{
+						name: "¤ Requerimentos ¤",
+						id: "requirements",
+					},
+					{
+						name: "Galeria",
+					},
+				]}
+				postAnchors={[
+					{
+						name: "Personagens Relacionados",
+					},
+				]}
+			/>
 			<LinkedCharacters
 				endpoint={`/traits/by-id/${traitData.id}/linked-characters`}
 			/>

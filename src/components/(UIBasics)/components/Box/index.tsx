@@ -24,6 +24,7 @@ interface BoxProps {
 	onDragLeave?: DragEventHandler<HTMLDivElement>;
 	onDragOver?: DragEventHandler<HTMLDivElement>;
 	onDrop?: DragEventHandler<HTMLDivElement>;
+	id?: string;
 }
 
 export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
@@ -46,6 +47,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		onDragLeave,
 		onDragOver,
 		onDrop,
+		id,
 	}: BoxProps,
 	ref,
 ) {
@@ -77,7 +79,8 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 			onDrop={onDrop}
 			ref={ref}
 			style={defaultStyle}
-			className={className}>
+			className={className}
+			id={id}>
 			{children}
 		</BoxContainer>
 	);

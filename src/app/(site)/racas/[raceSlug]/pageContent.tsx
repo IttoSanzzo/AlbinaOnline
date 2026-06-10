@@ -1,6 +1,10 @@
 import { GenericPageContainer, GenericPageFooter } from "@/components/(Design)";
 import { getPageData } from "./(routeInfra)";
-import { SetCurrentPageData, SetNavBarModules } from "@/libs/stp@hooks";
+import {
+	SetAnchorNavigation,
+	SetCurrentPageData,
+	SetNavBarModules,
+} from "@/libs/stp@hooks";
 import { FavoriteButton } from "@/components/(SPECIAL)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { RacialSkillsGridDisplay } from "./subComponents/RacialSkillsGridDisplay";
@@ -48,13 +52,77 @@ export default async function RacePageContent({
 				type={"race"}
 				data={raceData}
 			/>
+			<SetAnchorNavigation
+				anchors={[
+					{
+						name: "🏮Especificações🏮",
+						indentation: 0,
+					},
+					{
+						name: "Informações Gerais",
+						indentation: 0,
+					},
+					{
+						name: "Cultura, Comunidade e Curiosidades",
+						indentation: 1,
+					},
+					{
+						name: "Introdução",
+						indentation: 2,
+					},
+					{
+						name: "Personalidade Comum",
+						indentation: 2,
+					},
+					{
+						name: "Traços de Cultura",
+						indentation: 2,
+					},
+					{
+						name: "Miscelâneas",
+						indentation: 2,
+					},
+					{
+						name: "Palheta de Agremiações",
+						indentation: 2,
+					},
+					{
+						name: "Relacionamento Interracial",
+						indentation: 2,
+					},
+					{
+						name: "Aparência e Fisiologia",
+						indentation: 1,
+					},
+					{
+						name: "Descrição",
+						indentation: 2,
+					},
+					{
+						name: "Galeria",
+						indentation: 2,
+					},
+					{
+						name: "🏮Características🏮",
+						indentation: 0,
+					},
+					{
+						name: "🏮Traços Raciais🏮",
+						indentation: 0,
+					},
+					{
+						name: "🏮Habilidades Raciais🏮",
+						indentation: 0,
+					},
+				]}
+			/>
 
 			<UIBasics.Header
 				textColor={"orange"}
 				backgroundColor={"gray"}
 				withUnderline={true}
 				textAlign="center">
-				🏮Informações Gerais🏮
+				🏮Especificações🏮
 			</UIBasics.Header>
 			<UIBasics.Callout
 				icon={{ name: "Shuffle", color: "purple" }}
@@ -94,20 +162,23 @@ export default async function RacePageContent({
 			<UIBasics.Callout
 				icon={{ name: "Cards", color: "red" }}
 				titleColor="red"
-				title={"⫷Informações Gerais⫸"}>
+				title={"⫷Informações Gerais⫸"}
+				id="informacoes-gerais">
 				<UIBasics.Divisor />
 				<UIBasics.Callout
 					icon={{ name: "BookOpen", color: "yellow", style: "fill" }}
 					titleColor="yellow"
-					title={"Cultura, Comunidade e Curiosidades..:"}>
+					title={"Cultura, Comunidade e Curiosidades..:"}
+					id="cultura-comunidade-e-curiosidades">
 					<UIBasics.Toggle
+						id="introducao"
 						memoryId="introduction"
 						textColor="orange"
 						title={
 							<UIBasics.Text
 								withUnderline
 								withItalic>
-								》Cultura, Comunidade e Curiosidades..:
+								》Introdução
 							</UIBasics.Text>
 						}>
 						<UIBasics.Divisor />
@@ -133,6 +204,7 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 					<UIBasics.Toggle
 						memoryId="personality"
+						id="personalidade-comum"
 						textColor="orange"
 						title={
 							<UIBasics.Text
@@ -149,6 +221,7 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 					<UIBasics.Toggle
 						memoryId="culture"
+						id="tracos-de-cultura"
 						textColor="orange"
 						title={
 							<UIBasics.Text
@@ -165,6 +238,7 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 					<UIBasics.Toggle
 						memoryId="miscellaneous"
+						id="miscelaneas"
 						textColor="orange"
 						title={
 							<UIBasics.Text
@@ -181,6 +255,7 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 					<UIBasics.Toggle
 						memoryId="groups"
+						id="palheta-de-agremiacoes"
 						textColor="orange"
 						title={
 							<UIBasics.Text
@@ -197,6 +272,7 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 					<UIBasics.Toggle
 						memoryId="relations"
+						id="relacionamento-interracial"
 						textColor="orange"
 						title={
 							<UIBasics.Text
@@ -213,10 +289,12 @@ export default async function RacePageContent({
 					</UIBasics.Toggle>
 				</UIBasics.Callout>
 				<UIBasics.Callout
+					id="aparencia-e-fisiologia"
 					icon={{ name: "PersonArmsSpread", color: "yellow", style: "fill" }}
 					titleColor="yellow"
 					title={"Aparência e Fisiologia..:"}>
 					<UIBasics.Toggle
+						id="descricao"
 						memoryId="description"
 						textColor="orange"
 						title={

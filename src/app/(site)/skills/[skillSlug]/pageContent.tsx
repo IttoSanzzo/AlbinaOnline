@@ -63,7 +63,25 @@ export default async function SkillPageContent({
 				hideIfEmpty
 			/>
 
-			<GenericEffectsDisplay effects={skillData.effects} />
+			<GenericEffectsDisplay
+				effects={skillData.effects}
+				preAnchors={[
+					{
+						name: "¤ Especificações ¤",
+					},
+					{
+						name: "¤ Propriedades ¤",
+					},
+					{
+						name: "Galeria",
+					},
+				]}
+				postAnchors={[
+					{
+						name: "Personagens Relacionados",
+					},
+				]}
+			/>
 
 			<LinkedCharacters
 				endpoint={`/skills/by-id/${skillData.id}/linked-characters`}

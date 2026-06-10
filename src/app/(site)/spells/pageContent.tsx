@@ -35,8 +35,8 @@ export default function PageContent({ spells }: PageContentProps) {
 						spell.name.toLowerCase().includes(filter) ||
 						spell.type.toLowerCase().includes(filter) ||
 						spell.subType.toLowerCase().includes(filter) ||
-						spell.domainLevel === Number(filter)
-			  );
+						spell.domainLevel === Number(filter),
+				);
 
 	const DomainInfos = [
 		["Affaiblir", "affaiblir"],

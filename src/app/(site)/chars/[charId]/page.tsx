@@ -4,6 +4,7 @@ import CharPageContent from "./pageContent";
 import { Guid } from "@/libs/stp@types";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
+import { SetAnchorNavigation } from "@/libs/stp@hooks";
 
 interface CharPageServerShellProps {
 	params: Promise<{ charId: Guid }>;
@@ -22,7 +23,7 @@ export async function generateMetadata({
 			next: {
 				tags: [`page-metadata-char-${charId}`],
 			},
-		}
+		},
 	);
 	if (!response.ok) {
 		return assembleMetadata({
@@ -46,5 +47,21 @@ export default async function CharPageServerShell({
 }: CharPageServerShellProps) {
 	const { charId } = await params;
 
-	return <CharPageContent characterId={charId} />;
+	return (
+		<>
+			<CharPageContent characterId={charId} />
+			<SetAnchorNavigation
+				anchors={[
+					{ name: "Cabeçalho" },
+					{ name: "Inventário" },
+					{ name: "Estatísticas" },
+					{ name: "Traços & Skills & Spells" },
+					{ name: "Parâmetros & Maestrias" },
+					{ name: "Domínios" },
+					{ name: "Outros" },
+					{ name: "Galeria" },
+				]}
+			/>
+		</>
+	);
 }

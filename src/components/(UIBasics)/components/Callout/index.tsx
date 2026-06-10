@@ -14,6 +14,7 @@ interface CalloutProps extends StandartColorProps {
 	title?: ReactNode | string | string[];
 	titleColor?: keyof typeof StandartTextColor;
 	icon?: StpIconProps;
+	id?: string;
 }
 
 export function Callout({
@@ -23,6 +24,7 @@ export function Callout({
 	children,
 	textColor,
 	backgroundColor,
+	id,
 }: CalloutProps) {
 	if (title) {
 		const finalTitle =
@@ -41,7 +43,9 @@ export function Callout({
 			);
 
 		return (
-			<UIBasics.Box backgroundColor={backgroundColor}>
+			<UIBasics.Box
+				backgroundColor={backgroundColor}
+				id={id}>
 				<ContentContainer
 					style={
 						textColor ? { color: StandartTextColor[textColor] } : undefined
@@ -56,7 +60,9 @@ export function Callout({
 		);
 	}
 	return (
-		<UIBasics.Box backgroundColor={backgroundColor}>
+		<UIBasics.Box
+			backgroundColor={backgroundColor}
+			id={id}>
 			<ContentContainer
 				style={textColor ? { color: StandartTextColor[textColor] } : undefined}>
 				{children}

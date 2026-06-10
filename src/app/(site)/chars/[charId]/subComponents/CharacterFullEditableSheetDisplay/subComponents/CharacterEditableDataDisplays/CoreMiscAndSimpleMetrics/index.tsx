@@ -158,30 +158,18 @@ export function CoreMiscAndSimpleMetrics() {
 	}
 
 	return (
-		<UIBasics.ToggleHeader
-			contentMargin="none"
+		<UIBasics.Box
 			backgroundColor="darkGray"
-			titleColor="yellow"
-			title="Miscs"
-			memoryId={`${characterId}-MiscMetrics`}>
-			<HookedForm.Form
-				form={formMisc}
-				onChangeAction={onMiscFormChange}
-				style={{ display: "flex" }}>
-				<UIBasics.Table
-					tableData={{
-						tableLanes: [formTableEntry("Carga Máxima", "carryCapacity")],
-					}}
-				/>
-				<HookedForm.SimpleMessage
-					message={
-						formCore.formState.isValid || formMisc.formState.isValid
-							? errorMessage
-							: "Valor inválido detectado"
-					}
-					color="red"
-				/>
-			</HookedForm.Form>
+			withoutMargin
+			withoutBorder
+			withoutBorderRadius
+			style={{ borderTopRightRadius: "var(--rd-md)", padding: "5px" }}>
+			<UIBasics.Header
+				children="Miscs"
+				textAlign="center"
+				headerType="h2"
+				textColor="yellow"
+			/>
 			<HookedForm.Form
 				form={formCore}
 				onChangeAction={onCoreFormChange}
@@ -207,6 +195,24 @@ export function CoreMiscAndSimpleMetrics() {
 					color="red"
 				/>
 			</HookedForm.Form>
-		</UIBasics.ToggleHeader>
+			<HookedForm.Form
+				form={formMisc}
+				onChangeAction={onMiscFormChange}
+				style={{ display: "flex" }}>
+				<UIBasics.Table
+					tableData={{
+						tableLanes: [formTableEntry("Carga Máxima", "carryCapacity")],
+					}}
+				/>
+				<HookedForm.SimpleMessage
+					message={
+						formCore.formState.isValid || formMisc.formState.isValid
+							? errorMessage
+							: "Valor inválido detectado"
+					}
+					color="red"
+				/>
+			</HookedForm.Form>
+		</UIBasics.Box>
 	);
 }

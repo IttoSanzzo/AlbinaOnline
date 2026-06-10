@@ -47,6 +47,7 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 			return false;
 		} else {
 			const data = await response.json();
+			setError(null);
 			setCharacterData(data.character);
 			return true;
 		}
@@ -62,7 +63,12 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 	if (error != null) {
 		switch (error) {
 			case 403:
-				return <CharacterForbidden characterId={characterId} />;
+				return (
+					<CharacterForbidden
+						characterId={characterId}
+						loadCharacterAsync={loadCharacterAsync}
+					/>
+				);
 			case 404:
 				return <>Not Found</>;
 			case 500:
