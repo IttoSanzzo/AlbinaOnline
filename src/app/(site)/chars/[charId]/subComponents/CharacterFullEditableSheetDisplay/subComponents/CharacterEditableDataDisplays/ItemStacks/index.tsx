@@ -140,7 +140,7 @@ function formTable(
 				title={characterItem.item.name}
 				icon={characterItem.item.iconUrl}
 				href={`/items/${characterItem.item.slug}`}
-				titleStyle={{ display: "inline", height: "21px" }}
+				titleStyle={{ display: "block", height: "21px", overflow: "hidden" }}
 				onClick={() =>
 					handleItemRemoval(
 						characterId,

@@ -3,7 +3,7 @@
 import { StyledLink, StyledLinkProps } from "@/components/(Design)";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useRef } from "react";
+import { CSSProperties, useRef } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
@@ -14,8 +14,12 @@ const DragButton = newStyledElement.button(styles.dragButton);
 
 interface SortableLinkProps {
 	linkProps: StyledLinkProps;
+	titleStyle?: CSSProperties;
 }
-export function SortableStyledLink({ linkProps }: SortableLinkProps) {
+export function SortableStyledLink({
+	linkProps,
+	titleStyle,
+}: SortableLinkProps) {
 	const stableIdRef = useRef(linkProps.href ?? crypto.randomUUID());
 	const id = stableIdRef.current;
 
@@ -34,7 +38,10 @@ export function SortableStyledLink({ linkProps }: SortableLinkProps) {
 			ref={setNodeRef}
 			style={style}
 			{...attributes}>
-			<StyledLink {...linkProps} />
+			<StyledLink
+				{...linkProps}
+				titleStyle={titleStyle}
+			/>
 			<DragButton {...listeners}>☰</DragButton>
 		</SortableLinkContainer>
 	);

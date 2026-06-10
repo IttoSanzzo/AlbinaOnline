@@ -110,6 +110,11 @@ export default function SortableIndexedPagesGroup({
 							{pageLinks.map((indexedPage) => (
 								<SortableStyledLink
 									key={indexedPage.link}
+									titleStyle={{
+										display: "block",
+										height: "21px",
+										overflow: "hidden",
+									}}
 									linkProps={{
 										title: indexedPage.name,
 										href: indexedPage.link,
