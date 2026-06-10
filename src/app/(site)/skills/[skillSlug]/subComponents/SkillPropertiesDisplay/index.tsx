@@ -1,12 +1,14 @@
 import { UIBasics } from "@/components/(UIBasics)";
-import { SkillProperties } from "@/libs/stp@types";
+import { MagicAttribute, SkillProperties } from "@/libs/stp@types";
 
 interface SkillPropertiesDisplayProps {
 	skillProperties?: SkillProperties;
+	magicAttributes: (keyof typeof MagicAttribute)[];
 }
 
 export default function SkillPropertiesDisplay({
 	skillProperties,
+	magicAttributes,
 }: SkillPropertiesDisplayProps) {
 	if (!skillProperties) return <></>;
 	return (
@@ -22,6 +24,28 @@ export default function SkillPropertiesDisplay({
 			<UIBasics.Box
 				backgroundColor="darkGray"
 				withoutBorder>
+				<UIBasics.Table
+					textColor="gray"
+					withHeaderColumn={false}
+					withHeaderRow
+					tableData={{
+						tableLanes: [
+							[
+								<UIBasics.Text
+									textColor="orange"
+									children={`Atributos Mágicos`}
+								/>,
+							],
+							[
+								<UIBasics.Text>
+									{magicAttributes.length == 0
+										? "Nenhum"
+										: magicAttributes.join(", ")}
+								</UIBasics.Text>,
+							],
+						],
+					}}
+				/>
 				<UIBasics.MultiColumn.Two
 					colum1={
 						<UIBasics.Table

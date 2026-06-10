@@ -1,11 +1,11 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
-import { SpellProperties } from "@/libs/stp@types";
+import { MagicAttribute, SpellProperties } from "@/libs/stp@types";
 
 interface SpellPropertiesDisplayProps {
 	spellProperties?: SpellProperties;
 	spellDomains: string[];
-	magicAttributes: string[];
+	magicAttributes: (keyof typeof MagicAttribute)[];
 	spellLevel: number;
 }
 
@@ -16,7 +16,6 @@ export default function SpellPropertiesDisplay({
 	spellLevel,
 }: SpellPropertiesDisplayProps) {
 	if (!spellProperties) return <></>;
-	if (magicAttributes.length === 0) magicAttributes[0] = "Nenhum";
 
 	return (
 		<UIBasics.Box
@@ -45,13 +44,23 @@ export default function SpellPropertiesDisplay({
 											children={"Domínios"}
 										/>,
 									],
-									...spellDomains.map((spellDomain) => [
-										<StyledLink
-											href={`/spells/${spellDomain.toLowerCase()}`}
-											title={spellDomain}
-											textMode
-										/>,
-									]),
+									[
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												gap: "5px",
+											}}>
+											{...spellDomains.map((spellDomain) => [
+												<StyledLink
+													key={spellDomain}
+													href={`/spells/${spellDomain.toLowerCase()}`}
+													title={spellDomain}
+													textMode
+												/>,
+											])}
+										</div>,
+									],
 								],
 							}}
 						/>
@@ -69,9 +78,13 @@ export default function SpellPropertiesDisplay({
 											children={`Atributos Mágicos`}
 										/>,
 									],
-									...magicAttributes.map((magicAttribute) => [
-										<UIBasics.Text>{magicAttribute}</UIBasics.Text>,
-									]),
+									[
+										<UIBasics.Text>
+											{magicAttributes.length == 0
+												? "Nenhum"
+												: magicAttributes.join(", ")}
+										</UIBasics.Text>,
+									],
 								],
 							}}
 						/>

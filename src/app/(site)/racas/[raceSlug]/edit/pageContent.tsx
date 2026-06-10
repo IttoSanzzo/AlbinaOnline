@@ -22,6 +22,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -96,6 +97,10 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		},
 	});
 
+	if (loading || user == null) return null;
+	if (!canEditCatalogEntry(RoleHierarchy[user.role]))
+		redirect(`/racas/${race.slug}`);
+
 	async function onSubmit(formData: FormData) {
 		const body = {
 			slug: formData.slug,
@@ -148,9 +153,6 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		await revalidateTagByClientSide("/races");
 		await revalidatePathByClientSide("/racas");
 	}
-
-	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
-		return null;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{

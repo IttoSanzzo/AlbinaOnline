@@ -26,6 +26,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -38,7 +39,7 @@ const schema = z.object({
 	subType: zEnumKey(ItemSubType),
 	weight: z.number(),
 	compatibleSlots: z.array(z.string()),
-	MagicAttributes: z.array(z.string()),
+	magicAttributes: z.array(z.string()),
 	damage: z.string(),
 	accuracy: z.string(),
 	defense: z.string(),
@@ -84,7 +85,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			subType: ItemSubType[item.subType].toString(),
 			weight: item.properties.weight,
 			compatibleSlots: item.properties.compatibleSlots,
-			MagicAttributes: item.properties.magicAttributes,
+			magicAttributes: item.properties.magicAttributes,
 			damage: item.properties.stats?.damage ?? "",
 			accuracy: item.properties.stats?.accuracy ?? "",
 			defense: item.properties.stats?.defense ?? "",
@@ -96,6 +97,10 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			miscellaneous: item.info.miscellaneous,
 		},
 	});
+
+	if (loading || user == null) return null;
+	if (!canEditCatalogEntry(RoleHierarchy[user.role]))
+		redirect(`/items/${item.slug}`);
 
 	async function onSubmit(formData: FormData) {
 		const body = {
@@ -110,7 +115,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				compatibleSlots: formData.compatibleSlots.map(
 					(value: LintIgnoredAny) => EquipmentSlotType[value],
 				) as [keyof typeof EquipmentSlotType],
-				magicAttributes: formData.MagicAttributes.map(
+				magicAttributes: formData.magicAttributes.map(
 					(value: LintIgnoredAny) => MagicAttribute[value],
 				) as [keyof typeof MagicAttribute],
 			},
@@ -155,9 +160,6 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		await revalidateTagByClientSide("/items");
 		await revalidatePathByClientSide("/items");
 	}
-
-	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
-		return null;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
@@ -224,7 +226,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 					}
 					colum2={
 						<HookedForm.MultiSelect<FormInput>
-							fieldName="MagicAttributes"
+							fieldName="magicAttributes"
 							options={magicAttributeOptions}
 						/>
 					}

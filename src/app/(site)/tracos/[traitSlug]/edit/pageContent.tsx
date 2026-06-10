@@ -22,6 +22,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -71,6 +72,10 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		},
 	});
 
+	if (loading || user == null) return null;
+	if (!canEditCatalogEntry(RoleHierarchy[user.role]))
+		redirect(`/tracos/${trait.slug}`);
+
 	async function onSubmit(formData: FormData) {
 		const body = {
 			slug: formData.slug,
@@ -105,9 +110,6 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		await revalidateTagByClientSide("/traits");
 		await revalidatePathByClientSide("/tracos");
 	}
-
-	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
-		return null;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{

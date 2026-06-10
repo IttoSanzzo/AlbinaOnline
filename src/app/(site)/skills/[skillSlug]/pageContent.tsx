@@ -56,7 +56,10 @@ export default async function SkillPageContent({
 				}
 				colum2={<GenericInfoCallout info={skillData.info} />}
 			/>
-			<SkillPropertiesDisplay skillProperties={skillData.properties} />
+			<SkillPropertiesDisplay
+				skillProperties={skillData.properties}
+				magicAttributes={skillData.magicAttributes}
+			/>
 
 			<StaticGallery
 				url={getAlbinaApiFullAddress(`/images/skills/${skillData.slug}`)}

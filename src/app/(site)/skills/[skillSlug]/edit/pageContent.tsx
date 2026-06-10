@@ -14,6 +14,7 @@ import {
 	RoleHierarchy,
 	canEditCatalogEntry,
 	MagicAttribute,
+	LintIgnoredAny,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
@@ -23,6 +24,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -38,7 +40,7 @@ const schema = z.object({
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(SkillType, ["Unknown"]),
 	subType: zEnumKey(SkillSubType, ["Unknown"]),
-	magicAttributes: z.array(z.string()).optional(), // TODO: Remove optional when added to the BD
+	magicAttributes: z.array(z.string()),
 	mana: z.string().optional(),
 	stamina: z.string().optional(),
 	time: z.string().optional(),
@@ -73,7 +75,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			slug: skill.slug,
 			type: SkillType[skill.type].toString(),
 			subType: SkillSubType[skill.subType].toString(),
-			// magicAttributes: skill.magicAttributes,
+			magicAttributes: skill.magicAttributes,
 			mana: skill.properties?.components.mana ?? "",
 			stamina: skill.properties?.components.stamina ?? "",
 			time: skill.properties?.components.time ?? "",
@@ -87,6 +89,10 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			miscellaneous: skill.info.miscellaneous,
 		},
 	});
+
+	if (loading || user == null) return null;
+	if (!canEditCatalogEntry(RoleHierarchy[user.role]))
+		redirect(`/skills/${skill.slug}`);
 
 	async function onSubmit(formData: FormData) {
 		const body = {
@@ -111,10 +117,9 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 					area: formData.area,
 				},
 			},
-			magicAttributes:
-				(formData.magicAttributes ?? []).length == 0
-					? ["Unknown"]
-					: formData.magicAttributes,
+			magicAttributes: formData.magicAttributes.map(
+				(value: LintIgnoredAny) => MagicAttribute[value],
+			) as [keyof typeof MagicAttribute],
 		};
 		const toastId = toast.loading("Saving...");
 		const response = await authenticatedFetchAsync(
@@ -135,9 +140,6 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		await revalidateTagByClientSide("/skills");
 		await revalidatePathByClientSide("/skills");
 	}
-
-	if (loading || user == null || !canEditCatalogEntry(RoleHierarchy[user.role]))
-		return null;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
