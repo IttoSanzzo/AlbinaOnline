@@ -3,35 +3,41 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useContext } from "react";
 import { MasteriesContext } from "../../../../CharacterEditableSheetContextProviders";
-import { Guid } from "@/libs/stp@types";
+import { CharacterMasteryExpanded } from "@/libs/stp@types";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "../../..";
+import { EditMasteryNotesButton } from "../EditMasteryNotesButton";
 
 interface MasteryLinkWithDeletionProps {
-	characterId: Guid;
-	masteryId: Guid;
-	name: string;
-	slug: string;
+	mastery: CharacterMasteryExpanded;
 }
 export function MasteryLinkWithDeletion({
-	characterId,
-	masteryId,
-	name,
-	slug,
+	mastery,
 }: MasteryLinkWithDeletionProps) {
 	const { setCharacterMasteries } = useContext(MasteriesContext);
 
 	return (
 		<StyledLinkWithButton
-			title={name}
-			href={`/maestrias/${slug}`}
-			icon={getAlbinaApiFullAddress(`/favicon/masteries/${slug}`)}
+			style={{ marginRight: "2px" }}
+			linkStyle={{
+				height: "28px",
+				overflow: "hidden",
+			}}
+			titleStyle={{
+				textAlign: "left",
+				minWidth: "400px",
+			}}
+			title={mastery.mastery.name}
+			href={`/maestrias/${mastery.mastery.slug}`}
+			icon={getAlbinaApiFullAddress(
+				`/favicon/masteries/${mastery.mastery.slug}`,
+			)}
 			buttonIcon={{ name: "Trash", color: "red" }}
 			onClick={async () => {
-				const body = { masteryId: masteryId };
+				const body = { masteryId: mastery.masteryId };
 				const toastId = toast.loading(CharToastMessage.loading);
 				const response = await authenticatedFetchAsync(
-					`${getAlbinaApiFullAddress()}/chars/${characterId}/masteries`,
+					`${getAlbinaApiFullAddress()}/chars/${mastery.characterId}/masteries`,
 					{
 						method: "DELETE",
 						body: JSON.stringify(body),
@@ -46,9 +52,16 @@ export function MasteryLinkWithDeletion({
 				}
 				toast.success(CharToastMessage.success, { id: toastId });
 				setCharacterMasteries((state) => {
-					return state.filter((mastery) => mastery.masteryId != masteryId);
+					return state.filter(
+						(masteryF) => masteryF.masteryId != mastery.masteryId,
+					);
 				});
-			}}
-		/>
+			}}>
+			<EditMasteryNotesButton
+				characterId={mastery.characterId}
+				masteryId={mastery.masteryId}
+				notes={mastery.notes}
+			/>
+		</StyledLinkWithButton>
 	);
 }

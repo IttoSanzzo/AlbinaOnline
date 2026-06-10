@@ -21,6 +21,7 @@ export interface StyledLinkWithButtonProps extends LinkProps {
 	onClick: () => void;
 	style?: CSSProperties;
 	titleStyle?: CSSProperties;
+	linkStyle?: CSSProperties;
 	children?: ReactNode;
 }
 
@@ -34,6 +35,7 @@ export function StyledLinkWithButton({
 	buttonIcon,
 	style,
 	titleStyle,
+	linkStyle,
 	children,
 	...rest
 }: StyledLinkWithButtonProps) {
@@ -51,6 +53,7 @@ export function StyledLinkWithButton({
 			className={textMode ? styles.styledLinkInTextMode : undefined}>
 			<Link
 				href={href}
+				style={linkStyle}
 				{...rest}>
 				<ImageWithTTL
 					src={finalIcon}

@@ -17,7 +17,7 @@ type FormData = z.infer<typeof schema>;
 interface NotesEditionCoreProps {
 	characterId: Guid;
 	entityId: Guid;
-	targetType: "skill" | "spell" | "trait";
+	targetType: "skills" | "spells" | "traits" | "masteries";
 	defaultValue?: string;
 	setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -45,7 +45,7 @@ export function NotesEditionCore({
 		const toastId = toast.loading("Salvando...");
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(
-				`/chars/${characterId}/${targetType}s/${entityId}/notes`,
+				`/chars/${characterId}/${targetType}/${entityId}/notes`,
 			),
 			{
 				method: "PUT",

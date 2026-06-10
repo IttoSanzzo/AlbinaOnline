@@ -57,7 +57,6 @@ function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
 	if (name) {
 		if (value) routeStorage.setItem(pathname, name, true);
 		else routeStorage.setItem(pathname, name, false);
-		// else routeStorage.removeItem(pathname, name);
 	}
 }
 
@@ -70,9 +69,10 @@ interface ToggleProps extends StandartColorProps {
 	routeSensitiveMemory?: boolean;
 	defaultOpenState?: boolean;
 	id?: string;
-	style?: CSSProperties;
 	floatingReverseButton?: boolean;
 	withoutPadding?: boolean;
+	style?: CSSProperties;
+	buttonStyle?: CSSProperties;
 }
 export function Toggle({
 	children,
@@ -86,6 +86,7 @@ export function Toggle({
 	defaultOpenState = false,
 	id,
 	style,
+	buttonStyle,
 	floatingReverseButton = false,
 	withoutPadding = false,
 }: ToggleProps) {
@@ -194,7 +195,7 @@ export function Toggle({
 			<HeaderContainer>
 				{floatingReverseButton && TitleElement}
 				<button
-					style={colorStyle}
+					style={{ ...colorStyle, ...buttonStyle }}
 					onClick={handleOpenButton}
 					aria-expanded={isOpen}
 					aria-controls={`UIBasics-toggle-${memoryId ?? "content"}`}

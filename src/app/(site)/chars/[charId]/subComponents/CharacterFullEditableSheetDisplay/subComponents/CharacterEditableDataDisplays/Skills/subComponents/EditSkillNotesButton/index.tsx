@@ -44,7 +44,7 @@ export function EditSkillNotesButton({
 							<NotesEditionCore
 								characterId={characterId}
 								entityId={skillId}
-								targetType="skill"
+								targetType="skills"
 								defaultValue={notes}
 								setOpenState={setOpenState}
 							/>

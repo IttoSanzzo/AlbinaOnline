@@ -46,7 +46,6 @@ function formTable(
 		React.SetStateAction<CharacterSkillExpanded[]>
 	>,
 ): React.JSX.Element[][] {
-	console.log(characterSkills);
 	const titleRow = [
 		<UIBasics.Text
 			textColor="gray"
@@ -73,6 +72,7 @@ function formTable(
 					withoutPadding
 					contentMargin="none"
 					textColor="gray"
+					memoryId={`${characterSkill.characterId}-skills-${characterSkill.skillId}-notes`}
 					title={
 						<StyledLinkWithButton
 							buttonIcon={{ name: "TrashIcon", color: "red" }}

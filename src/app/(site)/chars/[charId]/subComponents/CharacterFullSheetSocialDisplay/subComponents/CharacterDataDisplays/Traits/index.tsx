@@ -35,6 +35,7 @@ function formTable(
 					withoutPadding
 					contentMargin="none"
 					textColor="gray"
+					memoryId={`${characterTrait.characterId}-traits-${characterTrait.traitId}-notes`}
 					title={
 						<StyledLink
 							title={characterTrait.trait.name}

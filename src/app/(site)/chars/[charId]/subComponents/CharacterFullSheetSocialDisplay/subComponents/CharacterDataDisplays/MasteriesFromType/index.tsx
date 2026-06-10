@@ -20,10 +20,61 @@ const MasteriesDrawerContainer = newStyledElement.div(
 
 function tableMasteryEntry(
 	mastery: CharacterMasteryExpanded,
-	abilityScore?: number,
+	abilityScore: CharacterAbilityScore,
 ) {
+	let finalAbilityScoreModifier: number | undefined = undefined;
+
+	switch (mastery.mastery.type) {
+		case "Expertise":
+			finalAbilityScoreModifier = abilityScore[
+				mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
+			] as number;
+			break;
+		case "Knowledge":
+			finalAbilityScoreModifier = Math.max(
+				abilityScore.intelligence,
+				abilityScore.wisdom,
+			);
+			break;
+		case "Craft":
+			switch (mastery.mastery.subType) {
+				case "Production":
+					finalAbilityScoreModifier = Math.max(
+						abilityScore.technique,
+						abilityScore.intelligence,
+					);
+					break;
+				case "Combatant":
+					finalAbilityScoreModifier = Math.max(
+						abilityScore.technique,
+						abilityScore.strength,
+					);
+					break;
+				case "General":
+					finalAbilityScoreModifier = Math.max(
+						abilityScore.wisdom,
+						abilityScore.intelligence,
+						abilityScore.charisma,
+					);
+					break;
+			}
+			break;
+		default:
+			break;
+	}
+
+	const bonusValue =
+		Number(mastery.level) +
+		(finalAbilityScoreModifier !== undefined
+			? abilityScoreBonusValue(finalAbilityScoreModifier)
+			: 0);
 	return [
 		<StyledLink
+			style={{ marginRight: "2px" }}
+			titleStyle={{
+				textAlign: "left",
+				minWidth: "400px",
+			}}
 			title={mastery.mastery.name}
 			href={`/maestrias/${mastery.mastery.slug}`}
 			icon={getAlbinaApiFullAddress(
@@ -35,10 +86,7 @@ function tableMasteryEntry(
 			textAlign="center"
 			children={mastery.level.toString()}
 		/>,
-		bonusValueText(
-			mastery.level +
-				(abilityScore !== undefined ? abilityScoreBonusValue(abilityScore) : 0),
-		),
+		bonusValueText(bonusValue),
 	];
 }
 const tableHeaderRow = (title: string = "Nome") => [
@@ -71,7 +119,11 @@ function formTable(
 		return [
 			tableHeaderRow(title),
 			[
-				"-",
+				<UIBasics.Text
+					textAlign="center"
+					display="block"
+					children="-"
+				/>,
 				<UIBasics.Text
 					textAlign="center"
 					display="block"
@@ -85,50 +137,46 @@ function formTable(
 			],
 		];
 	}
+
 	return [
 		tableHeaderRow(title),
 		...masteries.map((mastery) => {
-			switch (mastery.mastery.type) {
-				case "Proficiency":
-					return tableMasteryEntry(mastery);
-				case "Expertise":
-					return tableMasteryEntry(
-						mastery,
-						abilityScore[
-							mastery.mastery.subType.toLocaleLowerCase() as keyof CharacterAbilityScore
-						] as number,
-					);
-				case "Knowledge":
-					return tableMasteryEntry(
-						mastery,
-						Math.max(abilityScore.intelligence, abilityScore.wisdom),
-					);
-				case "Craft":
-					switch (mastery.mastery.subType) {
-						case "Production":
-							return tableMasteryEntry(
-								mastery,
-								Math.max(abilityScore.technique, abilityScore.intelligence),
-							);
-						case "Combatant":
-							return tableMasteryEntry(
-								mastery,
-								Math.max(abilityScore.technique, abilityScore.strength),
-							);
-						case "General":
-							return tableMasteryEntry(
-								mastery,
-								Math.max(
-									abilityScore.wisdom,
-									abilityScore.intelligence,
-									abilityScore.charisma,
-								),
-							);
-					}
-				// no-fallthrough
-				default:
-					return tableMasteryEntry(mastery);
-			}
+			return tableMasteryEntry(mastery, abilityScore);
+		}),
+	];
+}
+
+function formSubTable(
+	masteries: CharacterMasteryExpanded[],
+): (ReactNode | undefined)[] {
+	if (masteries.length == 0) return [undefined, undefined];
+	return [
+		undefined,
+		...masteries.map((mastery) => {
+			if (mastery.notes.length == 0) return undefined;
+			return (
+				<UIBasics.Toggle
+					floatingReverseButton
+					withoutPadding
+					contentMargin="none"
+					buttonStyle={{
+						top: "-28px",
+					}}
+					memoryId={`${mastery.characterId}-masteries-${mastery.masteryId}-notes`}
+					key={mastery.id}>
+					<p
+						style={{
+							border: "5px solid var(--cl-gray-800)",
+							borderRight: 0,
+							borderTop: 0,
+							padding: "var(--sp-1) var(--sp-3)",
+							display: "block",
+							whiteSpace: "pre-wrap",
+						}}>
+						{mastery.notes}
+					</p>
+				</UIBasics.Toggle>
+			);
 		}),
 	];
 }
@@ -155,19 +203,18 @@ function _CharacterMasteriesFromTypeDisplay({
 			withoutPadding>
 			<MasteriesDrawerContainer>
 				<UIBasics.Table
-					fixedLinePositions={[1, 3]}
-					fixedLineWidths={[50, 19]}
+					fixedLinePositions={[2, 3]}
+					fixedLineWidths={[15, 19]}
 					direction="row"
 					withHeaderRow
 					withoutMargin
 					tableData={{
-						tableLanes: [
-							...formTable(
-								masteryPluralNames[type],
-								masteriesFromThisType,
-								abilityScore,
-							),
-						],
+						tableLanes: formTable(
+							masteryPluralNames[type],
+							masteriesFromThisType,
+							abilityScore,
+						),
+						subLanes: formSubTable(masteriesFromThisType),
 					}}
 				/>
 			</MasteriesDrawerContainer>

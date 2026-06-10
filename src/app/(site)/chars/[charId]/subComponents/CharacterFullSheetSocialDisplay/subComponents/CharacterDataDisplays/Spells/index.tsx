@@ -51,6 +51,7 @@ function formTable(
 								withoutPadding
 								contentMargin="none"
 								textColor="gray"
+								memoryId={`${characterSpell.characterId}-spells-${characterSpell.spellId}-notes`}
 								title={
 									<StyledLink
 										title={characterSpell.spell.name}

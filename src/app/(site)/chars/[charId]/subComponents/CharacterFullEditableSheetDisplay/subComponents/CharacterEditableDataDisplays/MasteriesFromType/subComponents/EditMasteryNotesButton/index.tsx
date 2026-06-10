@@ -10,18 +10,18 @@ import { Guid } from "@/libs/stp@types";
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const EditButton = newStyledElement.button(styles.editButton);
 
-interface EditSpellNotesButtonProps {
+interface EditMasteryNotesButtonProps {
 	characterId: Guid;
-	skillId: Guid;
+	masteryId: Guid;
 	notes: string;
 	style?: CSSProperties;
 }
-export function EditSpellNotesButton({
+export function EditMasteryNotesButton({
 	characterId,
-	skillId,
+	masteryId,
 	notes,
 	style,
-}: EditSpellNotesButtonProps) {
+}: EditMasteryNotesButtonProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 
 	return (
@@ -43,8 +43,8 @@ export function EditSpellNotesButton({
 							/>
 							<NotesEditionCore
 								characterId={characterId}
-								entityId={skillId}
-								targetType="spells"
+								entityId={masteryId}
+								targetType="masteries"
 								defaultValue={notes}
 								setOpenState={setOpenState}
 							/>

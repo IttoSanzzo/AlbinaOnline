@@ -7,33 +7,36 @@
 	table-layout: fixed;
 	box-shadow: 0px 0px 3px var(--cl-gray-900);
 
-	& tbody tr {
-		& th {
+	& tbody > .horizontalTableRow {
+		width: 100%;
+
+		& > th {
 			word-break: break-all;
 			width: auto;
 			overflow: hidden;
 		}
-		& td {
+		& > td {
 			padding: var(--sp-1);
 			word-break: break-all;
 			width: auto;
 			overflow: hidden;
 		}
-	}
-	& tr:first-child th {
-		border-top-left-radius: var(--rd-md);
-	}
-	& tr:last-child th {
-		border-bottom-left-radius: var(--rd-md);
-	}
-	& tr:first-child td:last-child {
-		border-top-right-radius: var(--rd-md);
-	}
-	& tr:first-child th:last-child {
-		border-top-right-radius: var(--rd-md);
-	}
-	& tr:last-child th:last-child {
-		border-bottom-right-radius: var(--rd-md);
+
+		&:first-child th {
+			border-top-left-radius: var(--rd-md);
+		}
+		&:last-child th {
+			border-bottom-left-radius: var(--rd-md);
+		}
+		&:first-child td:last-child {
+			border-top-right-radius: var(--rd-md);
+		}
+		&:first-child th:last-child {
+			border-top-right-radius: var(--rd-md);
+		}
+		&:last-child th:last-child {
+			border-bottom-right-radius: var(--rd-md);
+		}
 	}
 }
 
@@ -61,7 +64,6 @@
 	}
 	& tbody tr {
 		& td {
-			padding: var(--sp-1) var(--sp-2);
 			word-break: break-all;
 		}
 		& td:first-child {

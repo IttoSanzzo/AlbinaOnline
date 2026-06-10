@@ -34,6 +34,7 @@ function formTable(
 					withoutPadding
 					contentMargin="none"
 					textColor="gray"
+					memoryId={`${characterSkill.characterId}-skills-${characterSkill.skillId}-notes`}
 					title={
 						<StyledLink
 							title={characterSkill.skill.name}

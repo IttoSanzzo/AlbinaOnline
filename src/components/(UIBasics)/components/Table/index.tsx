@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react";
+import { CSSProperties, Fragment, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor, StandartColorProps } from "../../core";
@@ -17,6 +17,7 @@ const VerticalTableContainer = newStyledElement.table(
 
 export interface TableData {
 	tableLanes: Array<ReactNode[]>;
+	subLanes?: (ReactNode | undefined)[];
 }
 
 interface TableProps extends StandartColorProps {
@@ -31,22 +32,26 @@ interface TableProps extends StandartColorProps {
 	withoutMargin?: boolean;
 	style?: CSSProperties;
 	id?: string;
+	className?: string;
+	borderCollapse?: boolean;
 }
 
 export function Table({
-	tableData: { tableLanes },
+	tableData: { tableLanes, subLanes = [] },
 	direction = "row",
 	fixedLinePositions = [],
 	fixedLineWidths = [],
 	columnBackgroundColors = [],
 	withHeaderRow = false,
 	withHeaderColumn = true,
+	borderCollapse = true,
 	textColor,
 	backgroundColor,
 	withoutBorderRadius,
 	withoutMargin,
 	style,
 	id,
+	className,
 }: TableProps) {
 	const baseStyle: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -55,8 +60,10 @@ export function Table({
 		...(withoutMargin && {
 			margin: 0,
 		}),
+		...(borderCollapse && { borderCollapse: "collapse" }),
 		...style,
 	};
+
 	if (fixedLinePositions.length != fixedLineWidths.length)
 		return (
 			<UIBasics.Text
@@ -68,74 +75,101 @@ export function Table({
 		);
 
 	if (direction === "row") {
+		if (subLanes.length > 0 && subLanes.length != tableLanes.length)
+			return (
+				<UIBasics.Text
+					id={id}
+					textColor="red"
+					backgroundColor="yellow"
+					children="UIBasics.Table: SubLanes and TableLanes must have the same length."
+				/>
+			);
+
 		let fixedPositionIndex = -1;
 		return (
 			<HorizontalTableContainer
+				className={className}
 				style={baseStyle}
 				id={id}>
 				<tbody>
 					{tableLanes.map((row, laneIndex) => (
-						<tr key={laneIndex}>
-							{row.map((column, rowIndex) => {
-								const contentStyle = {
-									...(fixedLineWidths.length > 0 &&
-										fixedLinePositions.includes(rowIndex + 1) && {
-											width: `${fixedLineWidths[++fixedPositionIndex]}%`,
-										}),
-									...(rowIndex < columnBackgroundColors.length &&
-										columnBackgroundColors[rowIndex] != undefined && {
-											backgroundColor:
-												StandartBackgroundColor[
-													columnBackgroundColors[rowIndex]
-												],
-										}),
-									...(withHeaderRow &&
-										laneIndex === 0 && {
-											backgroundColor: "#202024",
-										}),
-									...(withHeaderColumn &&
-										rowIndex === 0 && {
-											backgroundColor: "#202024",
-										}),
-								};
-								if (rowIndex === 0) {
+						<Fragment key={laneIndex}>
+							<tr
+								className={styles.horizontalTableRow}
+								// style={
+								// 	subLanes[laneIndex] != undefined
+								// 		? { margin: "none" }
+								// 		: undefined
+								// }
+							>
+								{row.map((column, rowIndex) => {
+									const CellTag = rowIndex === 0 ? "th" : "td";
 									return (
-										<th
+										<CellTag
 											key={rowIndex}
-											style={contentStyle}>
+											style={{
+												...(fixedLineWidths.length > 0 &&
+													fixedLinePositions.includes(rowIndex + 1) && {
+														width: `${fixedLineWidths[++fixedPositionIndex]}%`,
+													}),
+												...(rowIndex < columnBackgroundColors.length &&
+													columnBackgroundColors[rowIndex] != undefined && {
+														backgroundColor:
+															StandartBackgroundColor[
+																columnBackgroundColors[rowIndex]
+															],
+													}),
+												...(withHeaderRow &&
+													laneIndex === 0 && {
+														backgroundColor: "#202024",
+													}),
+												...(withHeaderColumn &&
+													rowIndex === 0 && {
+														backgroundColor: "#202024",
+													}),
+											}}>
 											{column}
-										</th>
+										</CellTag>
 									);
-								}
-								return (
-									<td
-										key={rowIndex}
-										style={contentStyle}>
-										{column}
-									</td>
-								);
-							})}
-						</tr>
+								})}
+							</tr>
+							{subLanes[laneIndex] && (
+								<tr className={styles.horizontalSubLaneRow}>
+									<td colSpan={row.length}>{subLanes[laneIndex]}</td>
+								</tr>
+							)}
+						</Fragment>
 					))}
 				</tbody>
 			</HorizontalTableContainer>
 		);
 	}
 
-	const newTableLength = tableLanes.length === 1 ? 2 : tableLanes.length;
 	const reordenedTable: Array<ReactNode[]> = Array.from(
-		{ length: newTableLength },
+		{ length: tableLanes.length < 2 ? 2 : tableLanes.length },
 		() => [],
 	);
+	if (subLanes.length > 0 && subLanes.length != reordenedTable.length)
+		return (
+			<UIBasics.Text
+				id={id}
+				textColor="red"
+				backgroundColor="yellow"
+				children="UIBasics.Table: SubLanes and TableLanes must have the same length."
+			/>
+		);
 
 	tableLanes.forEach((column, columnIndex) => {
-		for (let i = 0; i < column.length; ++i) {
-			reordenedTable[i][columnIndex] = column[i];
-		}
+		column.forEach((entry, entryIndex) => {
+			if (reordenedTable[entryIndex])
+				reordenedTable[entryIndex][columnIndex] = entry;
+		});
 	});
+	let fixedPositionIndex = -1;
 
 	return (
 		<VerticalTableContainer
+			className={className}
 			style={baseStyle}
 			id={id}>
 			<thead>
@@ -143,6 +177,10 @@ export function Table({
 					{reordenedTable[0].map((content, index) => (
 						<th
 							style={{
+								...(fixedLineWidths.length > 0 &&
+									fixedLinePositions.includes(index + 1) && {
+										width: `${fixedLineWidths[++fixedPositionIndex]}%`,
+									}),
 								...(columnBackgroundColors.length > 0 &&
 									columnBackgroundColors[0] != undefined && {
 										backgroundColor:

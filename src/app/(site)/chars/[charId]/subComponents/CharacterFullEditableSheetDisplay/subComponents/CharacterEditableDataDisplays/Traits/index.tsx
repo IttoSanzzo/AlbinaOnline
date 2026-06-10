@@ -72,6 +72,7 @@ function formTable(
 					withoutPadding
 					contentMargin="none"
 					textColor="gray"
+					memoryId={`${characterTrait.characterId}-traits-${characterTrait.traitId}-notes`}
 					title={
 						<StyledLinkWithButton
 							buttonIcon={{ name: "TrashIcon", color: "red" }}

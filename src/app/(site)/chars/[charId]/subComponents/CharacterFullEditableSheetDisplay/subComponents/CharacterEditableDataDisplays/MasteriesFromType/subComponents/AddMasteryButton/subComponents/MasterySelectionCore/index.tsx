@@ -95,6 +95,7 @@ export function MasterySelectionCore({
 					id: Guid.Empty,
 					level: 0,
 					mastery: mastery,
+					notes: "",
 				},
 			];
 		});

@@ -6,6 +6,7 @@ export type CharacterMastery = {
 	characterId: Guid;
 	masteryId: Guid;
 	level: number;
+	notes: string;
 };
 
 export type CharacterMasteryExpanded = {
