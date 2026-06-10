@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, MouseEventHandler } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartColorProps } from "../../core";
@@ -19,6 +19,8 @@ interface TextProps extends StandartColorProps {
 	display?: CSSProperties["display"];
 	whiteSpace?: CSSProperties["whiteSpace"];
 	id?: string;
+	style?: CSSProperties;
+	onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 export function Text({
 	children,
@@ -31,8 +33,10 @@ export function Text({
 	display,
 	whiteSpace,
 	id,
+	style,
+	onClick,
 }: TextProps) {
-	const style: CSSProperties = {
+	const newStyle: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
 		backgroundColor: StandartBackgroundColorKeyToProperty(backgroundColor),
 		whiteSpace: whiteSpace,
@@ -43,11 +47,13 @@ export function Text({
 			? { display: "flex", justifyContent: "center" }
 			: { textAlign: textAlign }),
 		display: display,
+		...style,
 	};
 
 	return (
 		<TextContainer
-			style={style}
+			onClick={onClick}
+			style={newStyle}
 			id={id}>
 			<SmartText content={children} />
 		</TextContainer>

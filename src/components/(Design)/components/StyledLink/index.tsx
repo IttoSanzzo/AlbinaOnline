@@ -20,6 +20,7 @@ export interface StyledLinkProps extends LinkProps {
 	hoverTitle?: string;
 	style?: CSSProperties;
 	titleStyle?: CSSProperties;
+	target?: "_blank" | "_parent" | "_self" | "_top";
 }
 
 export function StyledLink({
@@ -32,6 +33,7 @@ export function StyledLink({
 	hoverTitle,
 	style,
 	titleStyle,
+	target,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -55,6 +57,7 @@ export function StyledLink({
 			)}
 			<Link
 				href={href}
+				target={target}
 				{...rest}>
 				<ImageWithTTL
 					src={finalIcon}

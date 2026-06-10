@@ -2,6 +2,7 @@
 
 import { GenericPageContainer } from "@/components/(Design)";
 import {
+	AnchorProps,
 	Breadcrumb,
 	SetAnchorNavigation,
 	SetBreadcrumbs,
@@ -11,16 +12,13 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Security } from "./subComponents/Security";
 import { redirect } from "next/navigation";
 import { Connections } from "./subComponents/Connections";
-// import { newStyledElement } from "@setsu-tp/styled-components";
-// import styles from "./styles.module.css";
 
-// const UserFavoriteCarouselContainer = newStyledElement.div(
-// styles.UserFavoriteCarouselContainer,
-// );
-
-const anchorNavigationData = [
-	{ name: "Conexões", id: "conexoes" },
-	{ name: "Segurança", id: "seguranca" },
+const anchorNavigationData: AnchorProps[] = [
+	{ name: "Conexões" },
+	{ name: "Contas Externas", indentation: 1 },
+	{ name: "Outras Conexões", indentation: 1 },
+	{ name: "Outras" },
+	{ name: "Segurança" },
 ];
 
 interface UserConfigurationUserPageContentProps {

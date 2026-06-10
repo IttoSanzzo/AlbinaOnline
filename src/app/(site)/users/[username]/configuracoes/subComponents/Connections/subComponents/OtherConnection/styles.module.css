@@ -1,0 +1,21 @@
+.connectedAccountContainer {
+	display: flex;
+	flex-direction: row;
+	padding: var(--sp-2);
+	border: 1px solid var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	align-items: center;
+	justify-content: space-between;
+}
+
+.providerContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+
+	& > p {
+		font-size: var(--fs-xl);
+		font-weight: 600;
+		color: var(--cl-gray-300);
+	}
+}
