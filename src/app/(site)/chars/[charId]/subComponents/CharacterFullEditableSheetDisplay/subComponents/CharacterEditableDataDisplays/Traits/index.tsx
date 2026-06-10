@@ -8,6 +8,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
+import { EditTraitNotesButton } from "./subComponents/EditTraitNotesButton";
 
 async function handleTraitRemoval(
 	characterId: Guid,
@@ -65,19 +66,67 @@ function formTable(
 	return [
 		titleRow,
 		...characterTraits.map((characterTrait) => [
-			<StyledLinkWithButton
-				buttonIcon={{ name: "TrashIcon", color: "red" }}
-				title={characterTrait.trait.name}
-				icon={characterTrait.trait.iconUrl}
-				href={`/traits/${characterTrait.trait.slug}`}
-				onClick={() =>
-					handleTraitRemoval(
-						characterId,
-						characterTrait.trait.id,
-						setCharacterTraits,
-					)
-				}
-			/>,
+			characterTrait.notes.length > 0 ? (
+				<UIBasics.Toggle
+					floatingReverseButton
+					withoutPadding
+					contentMargin="none"
+					textColor="gray"
+					title={
+						<StyledLinkWithButton
+							buttonIcon={{ name: "TrashIcon", color: "red" }}
+							title={characterTrait.trait.name}
+							icon={characterTrait.trait.iconUrl}
+							href={`/traits/${characterTrait.trait.slug}`}
+							style={{ width: "100%" }}
+							onClick={() =>
+								handleTraitRemoval(
+									characterId,
+									characterTrait.trait.id,
+									setCharacterTraits,
+								)
+							}>
+							<EditTraitNotesButton
+								style={{ right: "30px" }}
+								characterId={characterId}
+								skillId={characterTrait.traitId}
+								notes={characterTrait.notes}
+							/>
+						</StyledLinkWithButton>
+					}>
+					<p
+						style={{
+							border: "5px solid var(--cl-gray-800)",
+							borderTop: 0,
+							borderBottomLeftRadius: "var(--rd-md)",
+							borderBottomRightRadius: "var(--rd-md)",
+							padding: "var(--sp-1) var(--sp-3)",
+							display: "block",
+							whiteSpace: "pre-wrap",
+						}}>
+						{characterTrait.notes}
+					</p>
+				</UIBasics.Toggle>
+			) : (
+				<StyledLinkWithButton
+					buttonIcon={{ name: "TrashIcon", color: "red" }}
+					title={characterTrait.trait.name}
+					icon={characterTrait.trait.iconUrl}
+					href={`/traits/${characterTrait.trait.slug}`}
+					onClick={() =>
+						handleTraitRemoval(
+							characterId,
+							characterTrait.trait.id,
+							setCharacterTraits,
+						)
+					}>
+					<EditTraitNotesButton
+						characterId={characterId}
+						skillId={characterTrait.traitId}
+						notes={characterTrait.notes}
+					/>
+				</StyledLinkWithButton>
+			),
 		]),
 	];
 }

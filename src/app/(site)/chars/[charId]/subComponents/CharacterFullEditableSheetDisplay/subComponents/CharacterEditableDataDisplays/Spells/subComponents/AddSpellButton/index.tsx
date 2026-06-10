@@ -4,9 +4,9 @@ import { StpIcon } from "@/libs/stp@icons";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { CharacterSpellExpanded, Guid } from "@/libs/stp@types";
-import { SpellSelectionCore } from "./subComponents/SpellSelectionCore";
 import { StateSwitch } from "@/components/(UTILS)";
 import { useState } from "react";
+import { SpellSelectionCore } from "./subComponents/SpellSelectionCore";
 
 const ButtonContainer = newStyledElement.div(styles.buttonContainer);
 const AddButton = newStyledElement.button(styles.addButton);

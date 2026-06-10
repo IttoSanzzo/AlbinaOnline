@@ -45,11 +45,40 @@ function formTable(
 				...characterSpells
 					.filter((spell) => spell.spell.domainLevel === index)
 					.map((characterSpell) => [
-						<StyledLink
-							title={characterSpell.spell.name}
-							icon={characterSpell.spell.iconUrl}
-							href={`/spells/${characterSpell.spell.slug}`}
-						/>,
+						(characterSpell.notes ?? "").length > 0 ? (
+							<UIBasics.Toggle
+								floatingReverseButton
+								withoutPadding
+								contentMargin="none"
+								textColor="gray"
+								title={
+									<StyledLink
+										title={characterSpell.spell.name}
+										icon={characterSpell.spell.iconUrl}
+										href={`/spells/${characterSpell.spell.slug}`}
+										style={{ width: "100%" }}
+									/>
+								}>
+								<p
+									style={{
+										border: "5px solid var(--cl-gray-800)",
+										borderTop: 0,
+										borderBottomLeftRadius: "var(--rd-md)",
+										borderBottomRightRadius: "var(--rd-md)",
+										padding: "var(--sp-1) var(--sp-3)",
+										display: "block",
+										whiteSpace: "pre-wrap",
+									}}>
+									{characterSpell.notes}
+								</p>
+							</UIBasics.Toggle>
+						) : (
+							<StyledLink
+								title={characterSpell.spell.name}
+								icon={characterSpell.spell.iconUrl}
+								href={`/spells/${characterSpell.spell.slug}`}
+							/>
+						),
 					]),
 			];
 		}),
@@ -87,15 +116,17 @@ export function _CharacterSpellsDisplay({
 	}, []);
 
 	return (
-		<UIBasics.Table
-			style={{ margin: 0 }}
-			withHeaderColumn={false}
-			columnBackgroundColors={["gray"]}
-			withHeaderRow
-			tableData={{
-				tableLanes: formTable(characterSpells),
-			}}
-		/>
+		<div>
+			<UIBasics.Table
+				style={{ margin: 0 }}
+				withHeaderColumn={false}
+				columnBackgroundColors={["gray"]}
+				withHeaderRow
+				tableData={{
+					tableLanes: formTable(characterSpells),
+				}}
+			/>
+		</div>
 	);
 }
 

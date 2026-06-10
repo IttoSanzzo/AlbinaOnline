@@ -5,6 +5,7 @@ export type CharacterSpell = {
 	id: Guid;
 	characterId: Guid;
 	spellId: Guid;
+	notes: string;
 };
 export type CharacterSpellExpanded = {
 	spell: SpellData;

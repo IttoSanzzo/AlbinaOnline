@@ -29,11 +29,40 @@ function formTable(
 	return [
 		titleRow,
 		...characterTraits.map((characterTrait) => [
-			<StyledLink
-				title={characterTrait.trait.name}
-				icon={characterTrait.trait.iconUrl}
-				href={`/traits/${characterTrait.trait.slug}`}
-			/>,
+			(characterTrait.notes ?? "").length > 0 ? (
+				<UIBasics.Toggle
+					floatingReverseButton
+					withoutPadding
+					contentMargin="none"
+					textColor="gray"
+					title={
+						<StyledLink
+							title={characterTrait.trait.name}
+							icon={characterTrait.trait.iconUrl}
+							href={`/traits/${characterTrait.trait.slug}`}
+							style={{ width: "100%" }}
+						/>
+					}>
+					<p
+						style={{
+							border: "5px solid var(--cl-gray-800)",
+							borderTop: 0,
+							borderBottomLeftRadius: "var(--rd-md)",
+							borderBottomRightRadius: "var(--rd-md)",
+							padding: "var(--sp-1) var(--sp-3)",
+							display: "block",
+							whiteSpace: "pre-wrap",
+						}}>
+						{characterTrait.notes}
+					</p>
+				</UIBasics.Toggle>
+			) : (
+				<StyledLink
+					title={characterTrait.trait.name}
+					icon={characterTrait.trait.iconUrl}
+					href={`/traits/${characterTrait.trait.slug}`}
+				/>
+			),
 		]),
 	];
 }
@@ -76,19 +105,21 @@ export function _CharacterTraitsDisplay({
 	});
 
 	return (
-		<UIBasics.Table
-			style={{
-				marginLeft: "5px",
-				marginBottom: 0,
-				width: "calc(100% - 10px)",
-			}}
-			withHeaderColumn={false}
-			columnBackgroundColors={["gray"]}
-			withHeaderRow
-			tableData={{
-				tableLanes: formTable(characterTraits),
-			}}
-		/>
+		<div>
+			<UIBasics.Table
+				style={{
+					marginLeft: "5px",
+					marginBottom: 0,
+					width: "calc(100% - 10px)",
+				}}
+				withHeaderColumn={false}
+				columnBackgroundColors={["gray"]}
+				withHeaderRow
+				tableData={{
+					tableLanes: formTable(characterTraits),
+				}}
+			/>
+		</div>
 	);
 }
 

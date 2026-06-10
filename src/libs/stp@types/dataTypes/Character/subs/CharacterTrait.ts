@@ -5,6 +5,7 @@ export type CharacterTrait = {
 	id: Guid;
 	characterId: Guid;
 	traitId: Guid;
+	notes: string;
 };
 export type CharacterTraitExpanded = {
 	trait: TraitData;

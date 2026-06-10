@@ -52,3 +52,15 @@
 		display: unset;
 	}
 }
+
+.toggleContainer.floatingReverseButton .headerContainer {
+	position: relative;
+
+	& > button {
+		position: absolute;
+
+		top: 0;
+		right: 0;
+		width: unset;
+	}
+}

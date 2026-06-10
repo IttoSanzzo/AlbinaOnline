@@ -5,6 +5,7 @@ export type CharacterSkill = {
 	id: Guid;
 	characterId: Guid;
 	skillId: Guid;
+	notes: string;
 };
 export type CharacterSkillExpanded = {
 	skill: SkillData;

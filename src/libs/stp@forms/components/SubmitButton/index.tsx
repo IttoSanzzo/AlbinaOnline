@@ -8,12 +8,12 @@ import { LintIgnoredAny } from "@/libs/stp@types";
 const SubmitButtonTrigger = newStyledElement.button(styles.submitButtonTrigger);
 
 interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	label: string;
+	label?: string;
 	color?: "gray" | "green" | "red" | "teal" | "blue" | "violet" | "mauve";
 	useDebugTitle?: boolean;
 }
 export function SubmitButton({
-	label,
+	label = "Submit",
 	color = "green",
 	className,
 	disabled,

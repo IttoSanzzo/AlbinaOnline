@@ -28,11 +28,40 @@ function formTable(
 	return [
 		titleRow,
 		...characterSkills.map((characterSkill) => [
-			<StyledLink
-				title={characterSkill.skill.name}
-				icon={characterSkill.skill.iconUrl}
-				href={`/skills/${characterSkill.skill.slug}`}
-			/>,
+			(characterSkill.notes ?? "").length > 0 ? (
+				<UIBasics.Toggle
+					floatingReverseButton
+					withoutPadding
+					contentMargin="none"
+					textColor="gray"
+					title={
+						<StyledLink
+							title={characterSkill.skill.name}
+							icon={characterSkill.skill.iconUrl}
+							href={`/skills/${characterSkill.skill.slug}`}
+							style={{ width: "100%" }}
+						/>
+					}>
+					<p
+						style={{
+							border: "5px solid var(--cl-gray-800)",
+							borderTop: 0,
+							borderBottomLeftRadius: "var(--rd-md)",
+							borderBottomRightRadius: "var(--rd-md)",
+							padding: "var(--sp-1) var(--sp-3)",
+							display: "block",
+							whiteSpace: "pre-wrap",
+						}}>
+						{characterSkill.notes}
+					</p>
+				</UIBasics.Toggle>
+			) : (
+				<StyledLink
+					title={characterSkill.skill.name}
+					icon={characterSkill.skill.iconUrl}
+					href={`/skills/${characterSkill.skill.slug}`}
+				/>
+			),
 		]),
 	];
 }
@@ -68,15 +97,17 @@ export function _CharacterSkillsDisplay({
 	}, []);
 
 	return (
-		<UIBasics.Table
-			style={{ margin: 0 }}
-			withHeaderColumn={false}
-			columnBackgroundColors={["gray"]}
-			withHeaderRow
-			tableData={{
-				tableLanes: formTable(characterSkills),
-			}}
-		/>
+		<div>
+			<UIBasics.Table
+				style={{ margin: 0 }}
+				withHeaderColumn={false}
+				columnBackgroundColors={["gray"]}
+				withHeaderRow
+				tableData={{
+					tableLanes: formTable(characterSkills),
+				}}
+			/>
+		</div>
 	);
 }
 

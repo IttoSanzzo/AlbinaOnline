@@ -12,8 +12,8 @@ import { insertSorted } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useLayoutEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { CharToastMessage } from "../../../../..";
 import { fetchWithTTLCache } from "@/utils/FetchCommonTools";
+import { CharToastMessage } from "../../../../..";
 
 interface SpellSelectionCoreProps {
 	characterId: Guid;
@@ -93,6 +93,7 @@ export function SpellSelectionCore({
 				characterId: characterId,
 				spellId: spell.id,
 				spell: spell,
+				notes: "",
 			};
 			const compareFunction = (
 				cs1: CharacterSpellExpanded,

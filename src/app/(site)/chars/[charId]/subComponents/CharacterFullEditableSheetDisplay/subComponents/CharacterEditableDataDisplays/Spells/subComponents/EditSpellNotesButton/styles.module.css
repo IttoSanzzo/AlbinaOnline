@@ -1,0 +1,32 @@
+.buttonContainer {
+	position: absolute;
+	top: 4px;
+	right: 5px;
+	opacity: 0;
+	transition: 0.25s linear opacity;
+}
+.editButton {
+	display: flex;
+	border: none;
+	background-color: var(--cl-gray-600);
+	color: var(--cl-gray-200);
+	border-radius: var(--rd-sm);
+	text-align: center;
+	align-items: center;
+	transition: 0.25s linear background;
+
+	& > svg {
+		width: 20px;
+		height: 20px;
+	}
+	&:hover {
+		cursor: pointer;
+		background-color: var(--cl-gray-500);
+	}
+}
+
+@media (max-width: 768) {
+	.buttonContainer {
+		opacity: 1;
+	}
+}

@@ -31,6 +31,9 @@
 		background-color: var(--cl-gray-700);
 		color: var(--cl-gray-100);
 	}
+	&:has(:nth-child(3)):hover :last-child {
+		opacity: 1;
+	}
 }
 
 .styledLinkInTextMode {

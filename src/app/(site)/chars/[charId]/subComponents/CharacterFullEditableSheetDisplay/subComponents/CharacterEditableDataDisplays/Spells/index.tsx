@@ -8,6 +8,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
+import { EditSpellNotesButton } from "./subComponents/EditSpellNotesButton";
 
 async function handleSpellRemoval(
 	characterId: Guid,
@@ -82,19 +83,67 @@ function formTable(
 				...characterSpells
 					.filter((spell) => spell.spell.domainLevel === index)
 					.map((characterSpell) => [
-						<StyledLinkWithButton
-							buttonIcon={{ name: "TrashIcon", color: "red" }}
-							title={characterSpell.spell.name}
-							icon={characterSpell.spell.iconUrl}
-							href={`/spells/${characterSpell.spell.slug}`}
-							onClick={() =>
-								handleSpellRemoval(
-									characterId,
-									characterSpell.spell.id,
-									setCharacterSpells,
-								)
-							}
-						/>,
+						characterSpell.notes.length > 0 ? (
+							<UIBasics.Toggle
+								floatingReverseButton
+								withoutPadding
+								contentMargin="none"
+								textColor="gray"
+								title={
+									<StyledLinkWithButton
+										buttonIcon={{ name: "TrashIcon", color: "red" }}
+										title={characterSpell.spell.name}
+										icon={characterSpell.spell.iconUrl}
+										href={`/spells/${characterSpell.spell.slug}`}
+										style={{ width: "100%" }}
+										onClick={() =>
+											handleSpellRemoval(
+												characterId,
+												characterSpell.spell.id,
+												setCharacterSpells,
+											)
+										}>
+										<EditSpellNotesButton
+											style={{ right: "30px" }}
+											characterId={characterId}
+											skillId={characterSpell.spellId}
+											notes={characterSpell.notes}
+										/>
+									</StyledLinkWithButton>
+								}>
+								<p
+									style={{
+										border: "5px solid var(--cl-gray-800)",
+										borderTop: 0,
+										borderBottomLeftRadius: "var(--rd-md)",
+										borderBottomRightRadius: "var(--rd-md)",
+										padding: "var(--sp-1) var(--sp-3)",
+										display: "block",
+										whiteSpace: "pre-wrap",
+									}}>
+									{characterSpell.notes}
+								</p>
+							</UIBasics.Toggle>
+						) : (
+							<StyledLinkWithButton
+								buttonIcon={{ name: "TrashIcon", color: "red" }}
+								title={characterSpell.spell.name}
+								icon={characterSpell.spell.iconUrl}
+								href={`/spells/${characterSpell.spell.slug}`}
+								onClick={() =>
+									handleSpellRemoval(
+										characterId,
+										characterSpell.spell.id,
+										setCharacterSpells,
+									)
+								}>
+								<EditSpellNotesButton
+									characterId={characterId}
+									skillId={characterSpell.spellId}
+									notes={characterSpell.notes}
+								/>
+							</StyledLinkWithButton>
+						),
 					]),
 			];
 		}),

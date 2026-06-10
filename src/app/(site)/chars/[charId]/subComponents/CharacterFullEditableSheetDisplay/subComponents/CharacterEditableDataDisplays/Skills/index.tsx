@@ -8,6 +8,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import toast from "react-hot-toast";
 import { CharToastMessage } from "..";
 import { useCharacterUpdated } from "@/libs/stp@hooks";
+import { EditSkillNotesButton } from "./subComponents/EditSkillNotesButton";
 
 async function handleSkillRemoval(
 	characterId: Guid,
@@ -45,6 +46,7 @@ function formTable(
 		React.SetStateAction<CharacterSkillExpanded[]>
 	>,
 ): React.JSX.Element[][] {
+	console.log(characterSkills);
 	const titleRow = [
 		<UIBasics.Text
 			textColor="gray"
@@ -65,19 +67,67 @@ function formTable(
 	return [
 		titleRow,
 		...characterSkills.map((characterSkill) => [
-			<StyledLinkWithButton
-				buttonIcon={{ name: "TrashIcon", color: "red" }}
-				title={characterSkill.skill.name}
-				icon={characterSkill.skill.iconUrl}
-				href={`/skills/${characterSkill.skill.slug}`}
-				onClick={() =>
-					handleSkillRemoval(
-						characterId,
-						characterSkill.skill.id,
-						setCharacterSkills,
-					)
-				}
-			/>,
+			characterSkill.notes.length > 0 ? (
+				<UIBasics.Toggle
+					floatingReverseButton
+					withoutPadding
+					contentMargin="none"
+					textColor="gray"
+					title={
+						<StyledLinkWithButton
+							buttonIcon={{ name: "TrashIcon", color: "red" }}
+							title={characterSkill.skill.name}
+							icon={characterSkill.skill.iconUrl}
+							href={`/skills/${characterSkill.skill.slug}`}
+							style={{ width: "100%" }}
+							onClick={() =>
+								handleSkillRemoval(
+									characterId,
+									characterSkill.skill.id,
+									setCharacterSkills,
+								)
+							}>
+							<EditSkillNotesButton
+								style={{ right: "30px" }}
+								characterId={characterId}
+								skillId={characterSkill.skillId}
+								notes={characterSkill.notes}
+							/>
+						</StyledLinkWithButton>
+					}>
+					<p
+						style={{
+							border: "5px solid var(--cl-gray-800)",
+							borderTop: 0,
+							borderBottomLeftRadius: "var(--rd-md)",
+							borderBottomRightRadius: "var(--rd-md)",
+							padding: "var(--sp-1) var(--sp-3)",
+							display: "block",
+							whiteSpace: "pre-wrap",
+						}}>
+						{characterSkill.notes}
+					</p>
+				</UIBasics.Toggle>
+			) : (
+				<StyledLinkWithButton
+					buttonIcon={{ name: "TrashIcon", color: "red" }}
+					title={characterSkill.skill.name}
+					icon={characterSkill.skill.iconUrl}
+					href={`/skills/${characterSkill.skill.slug}`}
+					onClick={() =>
+						handleSkillRemoval(
+							characterId,
+							characterSkill.skill.id,
+							setCharacterSkills,
+						)
+					}>
+					<EditSkillNotesButton
+						characterId={characterId}
+						skillId={characterSkill.skillId}
+						notes={characterSkill.notes}
+					/>
+				</StyledLinkWithButton>
+			),
 		]),
 	];
 }

@@ -70,6 +70,9 @@ interface ToggleProps extends StandartColorProps {
 	routeSensitiveMemory?: boolean;
 	defaultOpenState?: boolean;
 	id?: string;
+	style?: CSSProperties;
+	floatingReverseButton?: boolean;
+	withoutPadding?: boolean;
 }
 export function Toggle({
 	children,
@@ -82,12 +85,19 @@ export function Toggle({
 	backgroundColor,
 	defaultOpenState = false,
 	id,
+	style,
+	floatingReverseButton = false,
+	withoutPadding = false,
 }: ToggleProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
 	const closingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
+	const arrowRotationDegree = isOpen
+		? "180deg"
+		: floatingReverseButton
+			? "270deg"
+			: "90deg";
 	const pathname = routeSensitiveMemory ? usePathname() : "";
 	const memoryName = useMemo(() => {
 		return memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
@@ -153,6 +163,11 @@ export function Toggle({
 	}
 
 	const colorStyle = StandartColorKeysToProperties(textColor, backgroundColor);
+	const containerStyle: CSSProperties = {
+		...colorStyle,
+		...(withoutPadding && { padding: 0 }),
+		...style,
+	};
 	const contentStyle: CSSProperties = {
 		minHeight: 0,
 		maxHeight: isOpen ? `${contentMaxHeight}px` : 0,
@@ -162,11 +177,22 @@ export function Toggle({
 			}),
 	};
 
+	const TitleElement =
+		typeof title === "string" ? (
+			<UIBasics.Text textColor={titleColor}>{title}</UIBasics.Text>
+		) : (
+			title
+		);
+
 	return (
 		<ToggleContainer
-			style={colorStyle}
+			style={containerStyle}
+			className={
+				floatingReverseButton ? styles.floatingReverseButton : undefined
+			}
 			id={id}>
 			<HeaderContainer>
+				{floatingReverseButton && TitleElement}
 				<button
 					style={colorStyle}
 					onClick={handleOpenButton}
@@ -185,11 +211,7 @@ export function Toggle({
 							style={{ rotate: arrowRotationDegree }}
 						/>
 					</ToggleButtonContainer>
-					{typeof title === "string" ? (
-						<UIBasics.Text textColor={titleColor}>{title}</UIBasics.Text>
-					) : (
-						title
-					)}
+					{!floatingReverseButton && TitleElement}
 				</button>
 			</HeaderContainer>
 			<ContentContainer

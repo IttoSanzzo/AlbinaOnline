@@ -93,6 +93,7 @@ export function SkillSelectionCore({
 				characterId: characterId,
 				skillId: skill.id,
 				skill: skill,
+				notes: "",
 			};
 			const compareFunction = (
 				cs1: CharacterSkillExpanded,

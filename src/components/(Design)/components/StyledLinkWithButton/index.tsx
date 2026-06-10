@@ -4,7 +4,7 @@ import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon, StpIconProps } from "@/libs/stp@icons";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 const StyledLinkWithButtonContainer = newStyledElement.div(
 	styles.styledLinkContainer,
@@ -21,6 +21,7 @@ export interface StyledLinkWithButtonProps extends LinkProps {
 	onClick: () => void;
 	style?: CSSProperties;
 	titleStyle?: CSSProperties;
+	children?: ReactNode;
 }
 
 export function StyledLinkWithButton({
@@ -33,6 +34,7 @@ export function StyledLinkWithButton({
 	buttonIcon,
 	style,
 	titleStyle,
+	children,
 	...rest
 }: StyledLinkWithButtonProps) {
 	const finalIcon = icon
@@ -56,7 +58,6 @@ export function StyledLinkWithButton({
 					height={21}
 					alt=""
 				/>
-
 				<span
 					style={titleStyle}
 					title={title}>
@@ -64,6 +65,7 @@ export function StyledLinkWithButton({
 				</span>
 			</Link>
 			<ActionButton onClick={onClick}>{StpIcon(buttonIcon)}</ActionButton>
+			{children}
 		</StyledLinkWithButtonContainer>
 	);
 }

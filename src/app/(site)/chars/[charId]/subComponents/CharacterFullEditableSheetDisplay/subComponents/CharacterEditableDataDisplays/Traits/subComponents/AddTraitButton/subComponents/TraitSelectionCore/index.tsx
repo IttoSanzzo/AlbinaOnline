@@ -63,7 +63,7 @@ export function TraitSelectionCore({
 	);
 	if (allTraits.length == 0) return null;
 
-	const unacquiredTraitsByType = Array.from({ length: 5 }, (_, index) =>
+	const unacquiredTraitsByType = Array.from({ length: 6 }, (_, index) =>
 		selectionPool.filter((trait) => TraitType[trait.type] === index),
 	);
 
@@ -94,6 +94,7 @@ export function TraitSelectionCore({
 				characterId: characterId,
 				traitId: trait.id,
 				trait: trait,
+				notes: "",
 			};
 			const compareFunction = (
 				cs1: CharacterTraitExpanded,
