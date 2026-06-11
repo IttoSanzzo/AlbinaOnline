@@ -1,9 +1,8 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
-import { CharacterSpellDomains } from "@/libs/stp@types";
+import { CharacterSpellDomains, SpellDomain } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { normalizeText } from "@/utils/StringUtils";
-import React from "react";
 
 function FormSpellDomainTablePair(name: string, level: number) {
 	const lowercaseName = name === "General" ? "" : normalizeText(name);
@@ -27,18 +26,35 @@ interface CharacterSpellDomainsDisplayProps {
 export function CharacterSpellDomainsDisplay({
 	spellDomains,
 }: CharacterSpellDomainsDisplayProps) {
+	const domains = Object.keys(SpellDomain)
+		.filter((key) => Number.isNaN(Number(key)) && key != "Unknown")
+		.map((key) => key.toLowerCase());
+	const generalLevel: number = Math.max(
+		-1,
+		Math.min(
+			4,
+			Math.floor(
+				Object.entries(spellDomains)
+					.filter((domain) => domains.includes(domain[0]))
+					.map((domain) => domain[1] as number)
+					.sort((a, b) => b - a)
+					.slice(0, 4)
+					.reduce((acc, value) => acc + value, 0) / 6,
+			),
+		),
+	);
+
 	return (
 		<div>
 			<UIBasics.Box
 				backgroundColor="purple"
 				withoutBorder
-				withoutMargin>
+				withoutMargin
+				style={{ paddingBottom: 0 }}>
 				<UIBasics.Table
 					textColor="pink"
 					tableData={{
-						tableLanes: [
-							FormSpellDomainTablePair("General", spellDomains.general),
-						],
+						tableLanes: [FormSpellDomainTablePair("General", generalLevel)],
 					}}
 				/>
 			</UIBasics.Box>
@@ -56,13 +72,13 @@ export function CharacterSpellDomainsDisplay({
 									FormSpellDomainTablePair("Khranitel", spellDomains.khranitel),
 									FormSpellDomainTablePair(
 										"Aufbringen",
-										spellDomains.aufbringen
+										spellDomains.aufbringen,
 									),
 									FormSpellDomainTablePair("Migaku", spellDomains.migaku),
 									FormSpellDomainTablePair("Affaiblir", spellDomains.affaiblir),
 									FormSpellDomainTablePair(
 										"Vitaeregio",
-										spellDomains.vitaeregio
+										spellDomains.vitaeregio,
 									),
 								],
 							}}
