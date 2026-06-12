@@ -2,6 +2,7 @@ import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CharacterParameters, RaceData } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { Fragment } from "react/jsx-runtime";
 
 function getParameterGradeSymbol(grade: number) {
 	switch (grade) {
@@ -18,12 +19,28 @@ function getParameterGradeSymbol(grade: number) {
 	}
 	return "?";
 }
+function getParameterGradeTotalLevel(grade: number, points: number) {
+	switch (grade) {
+		case 0:
+			return -1;
+		case 1:
+			return Math.floor(points / 2);
+		case 2:
+			return Math.floor(points / 1.5);
+		case 3:
+			return Math.floor(points / 1.5);
+		case 4:
+			return points;
+	}
+	return -1;
+}
 function tableParameterEntry(
 	key: string,
 	title: string,
-	value: number,
+	investedPoints: number,
 	grade: number,
 ) {
+	const totalLevel = getParameterGradeTotalLevel(grade, investedPoints);
 	return [
 		<StyledLink
 			title={title}
@@ -33,13 +50,19 @@ function tableParameterEntry(
 		<UIBasics.Text
 			display="block"
 			textAlign="center"
-			textColor="orange"
-			children={value.toString()}
+			children={getParameterGradeSymbol(grade)}
 		/>,
 		<UIBasics.Text
 			display="block"
 			textAlign="center"
-			children={getParameterGradeSymbol(grade)}
+			textColor="darkGray"
+			children={investedPoints.toString()}
+		/>,
+		<UIBasics.Text
+			textAlign="center"
+			display="block"
+			textColor="orange"
+			children={`${totalLevel != 0 ? totalLevel : ""}`}
 		/>,
 	];
 }
@@ -55,8 +78,9 @@ export function CharacterParametersDisplay({
 	return (
 		<div style={{ display: "flex" }}>
 			<UIBasics.Table
-				fixedLinePositions={[1, 3]}
-				fixedLineWidths={[50, 12]}
+				fixedLinePositions={[1, 2, 4]}
+				fixedLineWidths={[50, 12, 12]}
+				columnBackgroundColors={[undefined, "darkGray", undefined, "darkGray"]}
 				direction="row"
 				withHeaderRow
 				tableData={{
@@ -66,6 +90,7 @@ export function CharacterParametersDisplay({
 								textColor="gray"
 								children={"Total"}
 							/>,
+							<Fragment />,
 							<UIBasics.Text
 								display="block"
 								textAlign="center"
@@ -78,7 +103,7 @@ export function CharacterParametersDisplay({
 										parameters.arcanePower,
 								)}
 							/>,
-							"",
+							<Fragment />,
 						],
 						tableParameterEntry(
 							"vitality",
