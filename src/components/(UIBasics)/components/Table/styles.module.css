@@ -64,6 +64,7 @@
 	}
 	& tbody tr {
 		& td {
+			padding: var(--sp-1);
 			word-break: break-all;
 		}
 		& td:first-child {
