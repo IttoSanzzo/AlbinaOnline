@@ -10,6 +10,7 @@ import {
 	CharacterMasteryExpanded,
 	Guid,
 	masteryPluralNames,
+	MasterySubType,
 	MasteryType,
 } from "@/libs/stp@types";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
@@ -199,9 +200,12 @@ function _CharacterMasteriesFromTypeDisplay({
 	const { abilityScore } = useContext(AbilityScoreContext);
 	const { characterMasteries } = useContext(MasteriesContext);
 
-	const masteriesFromThisType = characterMasteries.filter(
-		(mastery) => mastery.mastery.type == type,
-	);
+	const masteriesFromThisType = characterMasteries
+		.filter((mastery) => mastery.mastery.type == type)
+		.sort(
+			(a, b) =>
+				MasterySubType[a.mastery.subType] - MasterySubType[b.mastery.subType],
+		);
 
 	return (
 		<UIBasics.Box
