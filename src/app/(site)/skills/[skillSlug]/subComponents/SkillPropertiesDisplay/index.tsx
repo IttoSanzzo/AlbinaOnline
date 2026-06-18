@@ -37,7 +37,11 @@ export default function SkillPropertiesDisplay({
 								/>,
 							],
 							[
-								<UIBasics.Text>
+								<UIBasics.Text
+									style={{
+										width: "100%",
+									}}
+									textAlign="center">
 									{magicAttributes.length == 0
 										? "Nenhum"
 										: magicAttributes.join(", ")}

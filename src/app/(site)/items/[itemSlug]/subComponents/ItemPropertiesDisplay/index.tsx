@@ -31,8 +31,11 @@ export default function ItemPropertiesDisplay({
 									children="📥Slot"
 								/>,
 								<UIBasics.Text
+									style={{
+										width: "100%",
+									}}
 									textColor="gray"
-									textAlign="flex-center"
+									textAlign="center"
 									children={itemProperties.compatibleSlots
 										.map((slot) => ItemSlotTypeName[slot])
 										.join(", ")}
@@ -45,7 +48,10 @@ export default function ItemPropertiesDisplay({
 								/>,
 								<UIBasics.Text
 									textColor="gray"
-									textAlign="flex-center"
+									style={{
+										width: "100%",
+									}}
+									textAlign="center"
 									children={itemProperties.magicAttributes.join(", ")}
 								/>,
 							],
@@ -56,7 +62,10 @@ export default function ItemPropertiesDisplay({
 								/>,
 								<UIBasics.Text
 									textColor="gray"
-									textAlign="flex-center"
+									style={{
+										width: "100%",
+									}}
+									textAlign="center"
 									children={`${itemProperties.weight / 1000} Kgs`}
 								/>,
 							],
