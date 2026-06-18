@@ -26,6 +26,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import z from "zod";
 import styles from "./styles.module.css";
 import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
+import { coreSearchEntriesMock } from "./extras/coreSearchEntriesMock";
 
 const SearchButton = newStyledElement.button(styles.searchButton);
 
@@ -44,8 +45,9 @@ const emptySearchEntries: AllSearchEntriesByType = {
 	race: [],
 	user: [],
 };
+
 function getPageLinkFromSearchEntry(
-	entity: SearchEntryEntity,
+	entity: SearchEntryEntity | "Core",
 	route: string,
 ): string {
 	switch (entity) {
@@ -65,6 +67,8 @@ function getPageLinkFromSearchEntry(
 			return `/racas/${route}`;
 		case "User":
 			return `/users/${route}`;
+		case "Core":
+			return `/${route}`;
 		default:
 			return `/home`;
 	}
@@ -79,6 +83,7 @@ const typeText = (title: string) => (
 );
 
 const typeTitles = {
+	Core: (hidden: boolean) => (hidden ? null : typeText("Core")),
 	Character: (hidden: boolean) => (hidden ? null : typeText("Personagens")),
 	Item: (hidden: boolean) => (hidden ? null : typeText("Items")),
 	Mastery: (hidden: boolean) => (hidden ? null : typeText("Maestrias")),
@@ -156,6 +161,9 @@ export function PageSearchButton() {
 	const [usedLinkHistory, setUsedLinkHistory] = useState<SearchEntry[]>([]);
 	const [searchEntries, setSearchEntries] =
 		useState<AllSearchEntriesByType>(emptySearchEntries);
+	const [searchedCoreEntries, setSearchedCoreEntries] = useState<SearchEntry[]>(
+		[],
+	);
 	const navigationHistoryState = useNavigationHistory();
 
 	useEffect(() => {
@@ -193,12 +201,21 @@ export function PageSearchButton() {
 	const watchedValues = form.watch();
 
 	async function onQueryChange(formData: FormData) {
-		if (formData.query.length === 0) return;
+		if (formData.query.length < 3) return;
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(
 				`/search?query=${encodeURIComponent(formData.query)}`,
 			),
 			{ method: "GET", next: { revalidate: 120 } },
+		);
+		setSearchedCoreEntries(
+			coreSearchEntriesMock.filter(
+				(entry) =>
+					entry.slug.includes(formData.query.toLocaleLowerCase()) ||
+					entry.title
+						.toLowerCase()
+						.includes(formData.query.toLocaleLowerCase()),
+			),
 		);
 		if (!response.ok) {
 			setSearchEntries(emptySearchEntries);
@@ -209,6 +226,7 @@ export function PageSearchButton() {
 	}
 
 	const totalEntriesLength =
+		searchedCoreEntries.length +
 		searchEntries.character.length +
 		searchEntries.item.length +
 		searchEntries.mastery.length +
@@ -220,6 +238,12 @@ export function PageSearchButton() {
 	const globalTitleTitleDisable = 1 >= totalEntriesLength;
 
 	const allLinks: ReactNode[] = [
+		typeTitles.Core(
+			globalTitleTitleDisable || searchedCoreEntries.length === 0,
+		),
+		searchedCoreEntries.map((entry) =>
+			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
+		),
 		typeTitles.Character(
 			globalTitleTitleDisable || searchEntries.character.length === 0,
 		),
