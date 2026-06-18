@@ -1,7 +1,6 @@
 .socialLoginsContainer {
 	display: flex;
 	flex-direction: column;
-	margin-top: calc(-1 * var(--sp-8));
 }
 .socialLoginButtonsContainer {
 	display: flex;

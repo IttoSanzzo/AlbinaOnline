@@ -4,9 +4,10 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { Metadata } from "next";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const RegisterPageContainer = newStyledElement.div(
-	styles.registerPageContainer
+	styles.registerPageContainer,
 );
 const RegisterWindow = newStyledElement.div(styles.registerWindow);
 const RegisterHeader = newStyledElement.h1(styles.registerHeader);
@@ -33,9 +34,15 @@ export default async function RegisterPage({
 		<RegisterPageContainer>
 			<RegisterWindow>
 				<RegisterHeader children="Sign Up" />
+				<UIBasics.EmptyLine />
 				<RegisterForm redirectTo={redirectTo} />
 				<OldcomerFooter>
-					Já possui uma conta? <Link href={loginPageLink}>Faça Login aqui</Link>
+					Já possui uma conta?{" "}
+					<Link
+						href={loginPageLink}
+						style={{ color: "var(--cl-violet-800)" }}>
+						Faça Login aqui
+					</Link>
 					.
 				</OldcomerFooter>
 			</RegisterWindow>

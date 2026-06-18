@@ -129,6 +129,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 		<HookedForm.Form
 			form={form}
 			onSubmit={onSubmit}>
+			<HookedForm.Space height={1} />
 			<HookedForm.TextInput
 				autoComplete="username"
 				label="Usuário *"
@@ -151,6 +152,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 				fieldName="password"
 				placeholder="Senha1234"
 			/>
+			<HookedForm.Space height={1} />
 			<HookedForm.SubmitButton label="Sign Up" />
 			<HookedForm.SimpleMessage
 				message={registerCurrentMessage}
@@ -158,6 +160,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 					registerCurrentMessage == "Cadastro Bem Sucedido!" ? "green" : "red"
 				}
 			/>
+			<HookedForm.Space height={3} />
 		</HookedForm.Form>
 	);
 }

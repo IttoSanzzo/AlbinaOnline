@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { resolveMetadata } from "@/metadata/resolveMetadata";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { SocialLogins } from "./subComponents/SocialLogins";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const LoginPageContainer = newStyledElement.div(styles.loginPageContainer);
 const LoginWindow = newStyledElement.div(styles.loginWindow);
@@ -44,11 +45,18 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 		<LoginPageContainer>
 			<LoginWindow>
 				<LoginHeader children="Log In" />
+				<UIBasics.EmptyLine />
 				<LoginForm redirectTo={redirectTo} />
 				<SocialLogins redirectTo={redirectTo} />
 
 				<NewcomerFooter>
-					Novo aqui? <Link href={registerPageLink}>Cadastre-se aqui</Link>.
+					Novo aqui?{" "}
+					<Link
+						href={registerPageLink}
+						style={{ color: "var(--cl-violet-800)" }}>
+						Cadastre-se aqui
+					</Link>
+					.
 				</NewcomerFooter>
 			</LoginWindow>
 		</LoginPageContainer>

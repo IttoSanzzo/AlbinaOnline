@@ -1,6 +1,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { SocialLoginButton } from "./subComponents/SocialLoginButton";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const SocialLoginsContainer = newStyledElement.div(
 	styles.socialLoginsContainer,
@@ -27,6 +28,7 @@ export async function SocialLogins({ redirectTo }: SocialLoginsProps) {
 					redirectTo={redirectTo}
 				/>
 			</SocialLoginButtonsContainer>
+			<UIBasics.EmptyLine />
 		</SocialLoginsContainer>
 	);
 }
