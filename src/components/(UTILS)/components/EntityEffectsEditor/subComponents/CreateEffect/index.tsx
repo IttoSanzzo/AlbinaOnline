@@ -20,7 +20,7 @@ const LinkEffectButton = newStyledElement.button(styles.linkEffectButton);
 
 const schema = z.object({
 	name: z.string().min(1, "Must be at least 1 character long"),
-	role: z.string().min(1, "Must be at least 1 character long"),
+	role: z.string(),
 });
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
@@ -39,6 +39,7 @@ export function CreateEffect({
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
+		defaultValues: { name: undefined, role: "" },
 	});
 
 	async function onSubmit(data: FormData) {

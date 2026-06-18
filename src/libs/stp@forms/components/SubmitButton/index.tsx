@@ -22,7 +22,7 @@ export function SubmitButton({
 }: SubmitButtonProps) {
 	const {
 		form: {
-			formState: { isValid, isSubmitting, errors },
+			formState: { isValid, isSubmitting, errors, isDirty },
 		},
 	} = useHookedForm();
 
@@ -48,7 +48,9 @@ export function SubmitButton({
 			title={errorString}
 			className={clsx(color, className)}
 			disabled={
-				disabled == false ? false : disabled || !isValid || isSubmitting
+				disabled == false
+					? false
+					: disabled || !isValid || isSubmitting || !isDirty
 			}
 			{...rest}>
 			<label>{label}</label>

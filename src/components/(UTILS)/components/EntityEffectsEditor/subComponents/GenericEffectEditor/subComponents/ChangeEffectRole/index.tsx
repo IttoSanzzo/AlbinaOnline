@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import z from "zod";
 
 const schema = z.object({
-	role: z.string().min(1, "Must be at leat 1 character long"),
+	role: z.string(),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -55,6 +55,7 @@ export function ChangeEffectRole({
 		toast.success("New role saved", { id: toastId });
 		revalidatePathByClientSide(pathname);
 		revalidateTagByClientSide("/effects");
+		form.reset({ ...formData });
 	}
 
 	return (
