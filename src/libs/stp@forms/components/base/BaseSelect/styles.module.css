@@ -40,6 +40,10 @@
 	font-size: var(--fs-md);
 	border-radius: inherit;
 
+	& > span {
+		display: inline-block;
+	}
+
 	& .baseSelectIcon {
 		position: absolute;
 		right: 10px;
@@ -51,6 +55,10 @@
 	}
 	&:hover {
 		cursor: pointer;
+	}
+	&:disabled {
+		cursor: not-allowed;
+		color: var(--cl-gray-500);
 	}
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { ItemSubType, ItemType, LintIgnoredAny } from "@/libs/stp@types";
 import { enumToSelectOptions } from "@/utils/Data";
 import { UseFormReturn } from "react-hook-form";
@@ -18,13 +18,9 @@ interface CreationFormProps {
 	form: UseFormReturn<LintIgnoredAny, unknown, LintIgnoredAny>;
 }
 export function CreationForm({ form }: CreationFormProps) {
-	console.log(form.watch);
-	const typeOptions: SelectOption[] = enumToSelectOptions(ItemType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType, [
-		"Unknown",
-	]);
+	void form;
+	const typeOptions = enumToSelectOptions(ItemType, ["Unknown"]);
+	const subTypeOptions = enumToSelectOptions(ItemSubType, ["Unknown"]);
 
 	return (
 		<>

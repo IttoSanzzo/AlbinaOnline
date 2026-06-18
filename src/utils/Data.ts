@@ -122,6 +122,7 @@ export function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
 export function enumToSelectOptions<T extends Record<string, string | number>>(
 	targetEnum: T,
 	ignoredKeys?: (keyof T)[],
+	valueAsNumber: boolean = false,
 ): SelectOption[] {
 	if (ignoredKeys) {
 		return Object.entries(targetEnum)
@@ -129,7 +130,7 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 			.sort(([key1], [key2]) => key1.localeCompare(key2))
 			.map(([key, value]) => ({
 				name: key,
-				value: value as number,
+				value: valueAsNumber ? (value as number) : key,
 			}));
 	}
 	return Object.entries(targetEnum)
@@ -137,27 +138,6 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 		.sort(([key1], [key2]) => key1.localeCompare(key2))
 		.map(([key, value]) => ({
 			name: key,
-			value: value as number,
-		}));
-}
-
-export function enumToSelectStringOptions<
-	T extends Record<string, string | number>,
->(targetEnum: T, ignoredKeys?: (keyof T)[]): SelectOption[] {
-	if (ignoredKeys) {
-		return Object.entries(targetEnum)
-			.filter(([key]) => isNaN(Number(key)) && !ignoredKeys.includes(key))
-			.sort(([key1], [key2]) => key1.localeCompare(key2))
-			.map(([key]) => ({
-				name: key,
-				value: key as string,
-			}));
-	}
-	return Object.entries(targetEnum)
-		.filter(([key]) => isNaN(Number(key)))
-		.sort(([key1], [key2]) => key1.localeCompare(key2))
-		.map(([key]) => ({
-			name: key,
-			value: key as string,
+			value: valueAsNumber ? (value as number) : key,
 		}));
 }

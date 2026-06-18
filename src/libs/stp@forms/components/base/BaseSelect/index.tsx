@@ -30,6 +30,7 @@ export type BaseSelectProps = {
 	value?: string;
 	defaultValue?: string;
 	onValueChange?: (value: string) => void;
+	disabled?: boolean;
 };
 export function BaseSelect({
 	label,
@@ -38,6 +39,7 @@ export function BaseSelect({
 	placeholder,
 	options,
 	width,
+	disabled,
 	...rest
 }: BaseSelectProps) {
 	return (
@@ -45,6 +47,7 @@ export function BaseSelect({
 			{errorMessage && <BaseSelectError>{errorMessage}</BaseSelectError>}
 			<Select.Root {...rest}>
 				<Select.Trigger
+					disabled={disabled}
 					style={{
 						...(labelBackground && {
 							backgroundColor: StandartBackgroundColor[labelBackground],

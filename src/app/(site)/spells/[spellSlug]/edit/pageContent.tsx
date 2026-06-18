@@ -5,7 +5,13 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import {
+	HookedForm,
+	SelectOption,
+	zEnumKey,
+	zEnumKeyArray,
+	zSlug,
+} from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	SpellData,
@@ -17,7 +23,7 @@ import {
 	canEditCatalogEntry,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
+import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -30,8 +36,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType, []);
+const typeOptions: SelectOption[] = enumToSelectOptions(SpellType);
+const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType);
 
 const schema = z.object({
 	slug: zSlug(),
@@ -39,8 +45,8 @@ const schema = z.object({
 	type: zEnumKey(SpellType, []),
 	subType: zEnumKey(SpellSubType, []),
 	domainLevel: z.number().min(0, "Min 0").max(12, "Max 12"),
-	spellDomains: z.array(z.string()),
-	magicAttributes: z.array(z.string()),
+	spellDomains: zEnumKeyArray(SpellDomain),
+	magicAttributes: zEnumKeyArray(MagicAttribute),
 	mana: z.string().optional(),
 	stamina: z.string().optional(),
 	time: z.string().optional(),
@@ -74,8 +80,8 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		defaultValues: {
 			name: spell.name,
 			slug: spell.slug,
-			type: SpellType[spell.type].toString(),
-			subType: SpellSubType[spell.subType].toString(),
+			type: spell.type,
+			subType: spell.subType,
 			spellDomains: spell.spellDomains,
 			domainLevel: spell.domainLevel,
 			magicAttributes: spell.magicAttributes,
@@ -148,6 +154,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/spells");
 		await revalidatePathByClientSide("/spells");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [
@@ -212,7 +219,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="spellDomains"
-							options={enumToSelectStringOptions(SpellDomain)}
+							options={enumToSelectOptions(SpellDomain)}
 						/>
 					}
 					colum2={
@@ -228,7 +235,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="magicAttributes"
-							options={enumToSelectStringOptions(MagicAttribute)}
+							options={enumToSelectOptions(MagicAttribute)}
 						/>
 					}
 					colum2={<HookedForm.TextInput<FormInput> fieldName="mana" />}

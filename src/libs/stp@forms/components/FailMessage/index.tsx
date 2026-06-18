@@ -2,7 +2,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const SimpleMessageContainer = newStyledElement.div(
-	styles.simpleMessageContainer
+	styles.simpleMessageContainer,
 );
 
 interface SimpleMessageProps {
@@ -14,6 +14,7 @@ export function SimpleMessage({ message, color }: SimpleMessageProps) {
 	return (
 		<SimpleMessageContainer
 			children={message}
+			title={message}
 			className={color}
 		/>
 	);

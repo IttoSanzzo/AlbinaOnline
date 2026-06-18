@@ -37,14 +37,14 @@ export default async function TraitsPageContent() {
 				type="Generic"
 			/>
 			<TraitTypeDisplay
-				title="Comuns"
-				allTraits={allTraits}
-				type="Common"
-			/>
-			<TraitTypeDisplay
 				title="Raciais"
 				allTraits={allTraits}
 				type="Racial"
+			/>
+			<TraitTypeDisplay
+				title="Talentos"
+				allTraits={allTraits}
+				type="Talent"
 			/>
 			<TraitTypeDisplay
 				title="Bençãos"

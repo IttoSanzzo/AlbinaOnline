@@ -4,7 +4,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
@@ -15,7 +15,7 @@ import {
 	RoleHierarchy,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
+import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -28,10 +28,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const typeOptions: SelectOption[] = enumToSelectOptions(RaceType, ["Unknown"]);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(RaceSubType, [
-	"Unknown",
-]);
+const typeOptions = enumToSelectOptions(RaceType, ["Unknown"]);
+const subTypeOptions = enumToSelectOptions(RaceSubType, ["Unknown"]);
 
 const schema = z.object({
 	slug: zSlug(),
@@ -54,7 +52,7 @@ const schema = z.object({
 	weight: z.string(),
 	longevity: z.string(),
 	speed: z.string(),
-	language: zEnumKey(LanguageType, []),
+	language: zEnumKey(LanguageType),
 	skillSlugs: z.array(z.string()),
 	traitSlugs: z.array(z.string()),
 });
@@ -73,8 +71,8 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		defaultValues: {
 			name: race.name,
 			slug: race.slug,
-			type: RaceType[race.type].toString(),
-			subType: RaceSubType[race.subType].toString(),
+			type: race.type,
+			subType: race.subType,
 			introduction: race.info.introduction,
 			personality: race.info.personality,
 			culture: race.info.culture,
@@ -152,6 +150,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/races");
 		await revalidatePathByClientSide("/racas");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [
@@ -290,7 +289,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 					colum2={
 						<HookedForm.Select<FormInput>
 							fieldName="language"
-							options={enumToSelectStringOptions(LanguageType)}
+							options={enumToSelectOptions(LanguageType)}
 						/>
 					}
 				/>

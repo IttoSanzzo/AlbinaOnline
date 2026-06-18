@@ -41,7 +41,7 @@ export function ObjectArrayTextInput<TFormInput extends FieldValues>({
 	index,
 	autoLabelFormatting = true,
 	label = objectKey == null
-		? "_"
+		? ""
 		: autoLabelFormatting
 			? startCase(objectKey)
 			: objectKey,

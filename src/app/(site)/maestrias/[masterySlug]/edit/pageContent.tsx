@@ -5,7 +5,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
@@ -28,12 +28,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
-	"Unknown",
-]);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
-	"Unknown",
-]);
+const typeOptions = enumToSelectOptions(MasteryType, ["Unknown"]);
+const subTypeOptions = enumToSelectOptions(MasterySubType, ["Unknown"]);
 
 const schema = z.object({
 	slug: zSlug(),
@@ -61,8 +57,8 @@ export function EditMasteryPageContent({
 		defaultValues: {
 			name: mastery.name,
 			slug: mastery.slug,
-			type: MasteryType[mastery.type].toString(),
-			subType: MasterySubType[mastery.subType].toString(),
+			type: mastery.type,
+			subType: mastery.subType,
 			summary: mastery.info.summary,
 			description: mastery.info.description,
 			miscellaneous: mastery.info.miscellaneous,
@@ -103,6 +99,7 @@ export function EditMasteryPageContent({
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/masteries");
 		await revalidatePathByClientSide("/maestrias");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [

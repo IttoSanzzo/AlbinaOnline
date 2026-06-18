@@ -5,7 +5,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zEnumKeyArray, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	SkillData,
@@ -17,7 +17,7 @@ import {
 	LintIgnoredAny,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
+import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -30,17 +30,15 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const typeOptions: SelectOption[] = enumToSelectOptions(SkillType, ["Unknown"]);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(SkillSubType, [
-	"Unknown",
-]);
+const typeOptions = enumToSelectOptions(SkillType, ["Unknown"]);
+const subTypeOptions = enumToSelectOptions(SkillSubType, ["Unknown"]);
 
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
 	type: zEnumKey(SkillType, ["Unknown"]),
 	subType: zEnumKey(SkillSubType, ["Unknown"]),
-	magicAttributes: z.array(z.string()),
+	magicAttributes: zEnumKeyArray(MagicAttribute),
 	mana: z.string().optional(),
 	stamina: z.string().optional(),
 	time: z.string().optional(),
@@ -73,8 +71,8 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		defaultValues: {
 			name: skill.name,
 			slug: skill.slug,
-			type: SkillType[skill.type].toString(),
-			subType: SkillSubType[skill.subType].toString(),
+			type: skill.type,
+			subType: skill.subType,
 			magicAttributes: skill.magicAttributes,
 			mana: skill.properties?.components.mana ?? "",
 			stamina: skill.properties?.components.stamina ?? "",
@@ -139,6 +137,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/skills");
 		await revalidatePathByClientSide("/skills");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [
@@ -203,7 +202,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 					colum1={
 						<HookedForm.MultiSelect<FormInput>
 							fieldName="magicAttributes"
-							options={enumToSelectStringOptions(MagicAttribute)}
+							options={enumToSelectOptions(MagicAttribute)}
 						/>
 					}
 					colum2={<HookedForm.TextInput<FormInput> fieldName="mana" />}

@@ -14,12 +14,52 @@ export const zSlug = () =>
 		.regex(/^[a-z0-9-]+$/, "Only lower, numbers and '-'")
 		.regex(
 			/^[a-z0-9]+(-[a-z0-9]+)*$/,
-			"Invalid slug (cannot start or end with with '-')"
+			"Invalid slug (cannot start or end with with '-')",
 		);
 
 export const zEnumKey = <TEnum extends object>(
 	enumObj: TEnum,
-	notIncluded: (keyof TEnum)[] = []
+	notIncluded: (keyof TEnum)[] = [],
+) =>
+	z
+		.string()
+		.refine(
+			(val) =>
+				Object.keys(enumObj)
+					.filter(
+						(key) =>
+							Number.isNaN(Number(key)) &&
+							!notIncluded.includes(key as keyof TEnum),
+					)
+					.includes(val),
+			{
+				message: `Invalid ${enumObj.constructor.name}`,
+			},
+		)
+		.transform((val) => val as keyof TEnum);
+
+export const zEnumKeyArray = <TEnum extends object>(
+	enumObj: TEnum,
+	notIncluded: (keyof TEnum)[] = [],
+) =>
+	z
+		.array(z.string())
+		.refine(
+			(arr) =>
+				arr.every(
+					(val) =>
+						Object.keys(enumObj).includes(val) &&
+						!notIncluded.includes(val as keyof TEnum),
+				),
+			{
+				message: `Array must contain only valid ${enumObj.constructor.name} keys`,
+			},
+		)
+		.transform((arr) => arr as (keyof TEnum)[]);
+
+export const zEnumByKey = <TEnum extends object>(
+	enumObj: TEnum,
+	notIncluded: (keyof TEnum)[] = [],
 ) =>
 	z
 		.string()
@@ -31,9 +71,9 @@ export const zEnumKey = <TEnum extends object>(
 			message: `${enumObj.constructor.name} cannot be excluded value`,
 		});
 
-export const zEnumKeyArray = <TEnum extends object>(
+export const zEnumByKeyArray = <TEnum extends object>(
 	enumObj: TEnum,
-	notIncluded: (keyof TEnum)[] = []
+	notIncluded: (keyof TEnum)[] = [],
 ) =>
 	z
 		.array(z.string())
@@ -45,5 +85,5 @@ export const zEnumKeyArray = <TEnum extends object>(
 			(arr) => arr.every((val) => !notIncluded.includes(val as keyof TEnum)),
 			{
 				message: `Array contains excluded ${enumObj.constructor.name} value`,
-			}
+			},
 		);

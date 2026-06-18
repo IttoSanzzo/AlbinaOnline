@@ -20,6 +20,7 @@ type SelectProps<TFormInput extends FieldValues> = {
 	options: SelectOption[];
 	width?: CSSProperties["width"];
 	defaultValue?: string;
+	disabled?: boolean;
 };
 export function SelectComponent<TFormInput extends FieldValues>({
 	fieldName,

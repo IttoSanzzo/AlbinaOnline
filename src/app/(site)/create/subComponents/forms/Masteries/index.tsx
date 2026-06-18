@@ -15,17 +15,48 @@ export const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
+const typeOptions = enumToSelectOptions(MasteryType, ["Unknown"]);
+
 interface CreationFormProps {
 	form: UseFormReturn<LintIgnoredAny, unknown, LintIgnoredAny>;
 }
 export function CreationForm({ form }: CreationFormProps) {
-	console.log(form.watch);
-	const typeOptions: SelectOption[] = enumToSelectOptions(MasteryType, [
-		"Unknown",
-	]);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(MasterySubType, [
-		"Unknown",
-	]);
+	void form;
+
+	let subTypesFromThisType: string[] = [];
+	switch (form.watch().type) {
+		case "Proficiency":
+			subTypesFromThisType = [
+				"Strength",
+				"Agility",
+				"Technique",
+				"Constitution",
+				"Intelligence",
+				"Wisdom",
+				"Charisma",
+			];
+			break;
+		case "Expertise":
+			subTypesFromThisType = ["Singular", "Multiple"];
+			break;
+		case "Knowledge":
+			subTypesFromThisType = ["Combatant", "Production", "General"];
+			break;
+		case "Craft":
+			subTypesFromThisType = [
+				"Armed",
+				"Focus",
+				"Armored",
+				"CombatStyle",
+				"Tool",
+			];
+			break;
+		default:
+			break;
+	}
+	const subTypeOptions: SelectOption[] = subTypesFromThisType.map(
+		(subType) => ({ value: subType, name: subType }),
+	);
 
 	return (
 		<>
@@ -45,9 +76,10 @@ export function CreationForm({ form }: CreationFormProps) {
 			/>
 			<HookedForm.Select<FormData>
 				fieldName="subType"
-				placeholder="Select SubType"
+				placeholder={`${subTypeOptions.length > 0 ? "Select SubType" : "Select a type first"}`}
 				label="SubType"
 				options={subTypeOptions}
+				disabled={subTypeOptions.length == 0}
 			/>
 		</>
 	);

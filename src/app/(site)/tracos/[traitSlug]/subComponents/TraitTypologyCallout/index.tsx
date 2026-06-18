@@ -4,7 +4,7 @@ import { TraitSubType, TraitType } from "@/libs/stp@types";
 function getTabulatedType(type: keyof typeof TraitType) {
 	switch (type) {
 		case "Generic":
-			return "[@/[Genérico]tracos#genericos]";
+			return "[@/[Genérico]tracos#genericas]";
 		case "Racial":
 			return "[@/[Racial]tracos#raciais]";
 		case "Talent":
@@ -12,7 +12,7 @@ function getTabulatedType(type: keyof typeof TraitType) {
 		case "Blessing":
 			return "[@/[Benção]tracos#bencaos]";
 		case "Unique":
-			return "[@/[Único]tracos#unicos]";
+			return "[@/[Único]tracos#unicas]";
 		case "Unknown":
 		default:
 			return "[@/[Unknown]tracos]";

@@ -5,7 +5,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	TraitData,
@@ -28,10 +28,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-const typeOptions: SelectOption[] = enumToSelectOptions(TraitType, ["Unknown"]);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(TraitSubType, [
-	"Unknown",
-]);
+const typeOptions = enumToSelectOptions(TraitType, ["Unknown"]);
+const subTypeOptions = enumToSelectOptions(TraitSubType, ["Unknown"]);
 
 const schema = z.object({
 	slug: zSlug(),
@@ -63,8 +61,8 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		defaultValues: {
 			name: trait.name,
 			slug: trait.slug,
-			type: TraitType[trait.type].toString(),
-			subType: TraitSubType[trait.subType].toString(),
+			type: trait.type,
+			subType: trait.subType,
 			requirements: trait.properties.requirements,
 			summary: trait.info.summary,
 			description: trait.info.description,
@@ -109,6 +107,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/traits");
 		await revalidatePathByClientSide("/tracos");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [

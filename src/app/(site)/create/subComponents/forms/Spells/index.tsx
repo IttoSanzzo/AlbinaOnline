@@ -1,16 +1,22 @@
 "use client";
 
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zSlug } from "@/libs/stp@forms";
 import { LintIgnoredAny, SpellSubType, SpellType } from "@/libs/stp@types";
-import { enumToSelectOptions } from "@/utils/Data";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
+
+// const typeOptions = enumToSelectOptions(SpellType);
+// const subTypeOptions = enumToSelectOptions(SpellSubType);
 
 export const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
-	type: zEnumKey(SpellType, []),
-	subType: zEnumKey(SpellSubType, []),
+	type: zEnumKey(SpellType)
+		.optional()
+		.transform(() => "Unknown"),
+	subType: zEnumKey(SpellSubType)
+		.optional()
+		.transform(() => "Unknown"),
 });
 type FormData = z.infer<typeof schema>;
 
@@ -18,10 +24,7 @@ interface CreationFormProps {
 	form: UseFormReturn<LintIgnoredAny, unknown, LintIgnoredAny>;
 }
 export function CreationForm({ form }: CreationFormProps) {
-	console.log(form.watch);
-
-	const typeOptions: SelectOption[] = enumToSelectOptions(SpellType, []);
-	const subTypeOptions: SelectOption[] = enumToSelectOptions(SpellSubType, []);
+	void form;
 
 	return (
 		<>
@@ -33,7 +36,7 @@ export function CreationForm({ form }: CreationFormProps) {
 				fieldName="name"
 				label="Name"
 			/>
-			<HookedForm.Select<FormData>
+			{/* <HookedForm.Select<FormData>
 				fieldName="type"
 				placeholder="Select Type"
 				label="Type"
@@ -44,7 +47,7 @@ export function CreationForm({ form }: CreationFormProps) {
 				placeholder="Select SubType"
 				label="SubType"
 				options={subTypeOptions}
-			/>
+			/> */}
 		</>
 	);
 }

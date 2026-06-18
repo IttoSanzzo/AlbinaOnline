@@ -5,7 +5,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { UIBasics } from "@/components/(UIBasics)";
 import { DeletionAlertDialog } from "@/components/(UTILS)/components/DeletionAlertDialog";
 import { EntityEffectsEditor } from "@/components/(UTILS)/components/EntityEffectsEditor";
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import { HookedForm, zEnumKey, zEnumKeyArray, zSlug } from "@/libs/stp@forms";
 import { Breadcrumb, SetBreadcrumbs, useCurrentUser } from "@/libs/stp@hooks";
 import {
 	canEditCatalogEntry,
@@ -14,12 +14,11 @@ import {
 	ItemSlotTypeName,
 	ItemSubType,
 	ItemType,
-	LintIgnoredAny,
 	MagicAttribute,
 	RoleHierarchy,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { enumToSelectOptions, enumToSelectStringOptions } from "@/utils/Data";
+import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import {
 	revalidatePathByClientSide,
@@ -38,8 +37,8 @@ const schema = z.object({
 	type: zEnumKey(ItemType),
 	subType: zEnumKey(ItemSubType),
 	weight: z.number(),
-	compatibleSlots: z.array(z.string()),
-	magicAttributes: z.array(z.string()),
+	compatibleSlots: zEnumKeyArray(EquipmentSlotType),
+	magicAttributes: zEnumKeyArray(MagicAttribute),
 	damage: z.string(),
 	accuracy: z.string(),
 	defense: z.string(),
@@ -58,16 +57,15 @@ const schema = z.object({
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-const typeOptions: SelectOption[] = enumToSelectOptions(ItemType);
-const subTypeOptions: SelectOption[] = enumToSelectOptions(ItemSubType);
-const compatibleSlotOptions: SelectOption[] = enumToSelectStringOptions(
-	EquipmentSlotType,
-).map((option) => ({
-	...option,
-	name: ItemSlotTypeName[option.name as keyof typeof EquipmentSlotType],
-}));
-const magicAttributeOptions: SelectOption[] =
-	enumToSelectStringOptions(MagicAttribute);
+const typeOptions = enumToSelectOptions(ItemType);
+const subTypeOptions = enumToSelectOptions(ItemSubType);
+const compatibleSlotOptions = enumToSelectOptions(EquipmentSlotType).map(
+	(option) => ({
+		...option,
+		name: ItemSlotTypeName[option.name as keyof typeof EquipmentSlotType],
+	}),
+);
+const magicAttributeOptions = enumToSelectOptions(MagicAttribute);
 
 interface EditItemPageContentProps {
 	item: ItemData;
@@ -81,8 +79,8 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		defaultValues: {
 			name: item.name,
 			slug: item.slug,
-			type: ItemType[item.type].toString(),
-			subType: ItemSubType[item.subType].toString(),
+			type: item.type,
+			subType: item.subType,
 			weight: item.properties.weight,
 			compatibleSlots: item.properties.compatibleSlots,
 			magicAttributes: item.properties.magicAttributes,
@@ -112,12 +110,8 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				stats: undefined as unknown,
 				extras: formData.extras,
 				weight: formData.weight,
-				compatibleSlots: formData.compatibleSlots.map(
-					(value: LintIgnoredAny) => EquipmentSlotType[value],
-				) as [keyof typeof EquipmentSlotType],
-				magicAttributes: formData.magicAttributes.map(
-					(value: LintIgnoredAny) => MagicAttribute[value],
-				) as [keyof typeof MagicAttribute],
+				compatibleSlots: formData.compatibleSlots,
+				magicAttributes: formData.magicAttributes,
 			},
 			info: {
 				summary: formData.summary,
@@ -159,6 +153,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/items");
 		await revalidatePathByClientSide("/items");
+		return true;
 	}
 
 	const breadcrumbs: Breadcrumb[] = [
