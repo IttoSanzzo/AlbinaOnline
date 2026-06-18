@@ -74,6 +74,7 @@
 }
 .styledLinkCardContainer:hover .hoverTitleContainer,
 .styledLinkCardContainer:active .hoverTitleContainer,
-.styledLinkCardContainer:focus-within .hoverTitleContainer {
+.styledLinkCardContainer:focus-within .hoverTitleContainer,
+.hoverTitleContainer.alwaysOpen {
 	margin-bottom: 0px;
 }

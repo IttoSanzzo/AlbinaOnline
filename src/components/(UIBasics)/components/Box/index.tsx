@@ -18,6 +18,7 @@ interface BoxProps {
 	minHeight?: React.CSSProperties["minHeight"];
 	flexDirection?: React.CSSProperties["flexDirection"];
 	justifyContent?: React.CSSProperties["justifyContent"];
+	alignItems?: React.CSSProperties["alignItems"];
 	className?: string;
 	style?: CSSProperties;
 	onDragEnter?: DragEventHandler<HTMLDivElement>;
@@ -41,6 +42,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		minWidth,
 		flexDirection,
 		justifyContent,
+		alignItems,
 		className,
 		style,
 		onDragEnter,
@@ -68,6 +70,7 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box(
 		minHeight,
 		flexDirection,
 		justifyContent,
+		alignItems,
 		...style,
 	};
 

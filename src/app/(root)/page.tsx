@@ -1,5 +1,7 @@
+import { GenericPageContainer, StyledLinkCard } from "@/components/(Design)";
+import { UIBasics } from "@/components/(UIBasics)";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
 	metadataBase: new URL("https://albina.setsu.party"),
@@ -40,9 +42,21 @@ export const metadata: Metadata = {
 
 export default function RootPage() {
 	return (
-		<>
-			Root
-			<Link href={"/login"}>Login</Link>
-		</>
+		<GenericPageContainer
+			title="Albina Online"
+			icon={getAlbinaApiFullAddress("/favicon/home")}
+			banner={getAlbinaApiFullAddress("/banner/root")}>
+			<UIBasics.Box
+				alignItems="center"
+				withoutBorder>
+				<StyledLinkCard
+					href={"/login"}
+					artworkUrl={getAlbinaApiFullAddress("/favicon/default/configuration")}
+					size={200}
+					title="Login"
+					titleAlwaysOpen
+				/>
+			</UIBasics.Box>
+		</GenericPageContainer>
 	);
 }

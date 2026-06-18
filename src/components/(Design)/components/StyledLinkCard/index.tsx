@@ -25,15 +25,16 @@ export interface StyledLinkCardProps {
 	borderColor?: keyof typeof StandartTextColor;
 	backgroundColor?: keyof typeof StandartBackgroundColor;
 	titleBackgroundColor?: keyof typeof StandartBackgroundColor;
-	title: string;
+	title?: string;
 	size?: number;
 	layout?: "square" | "rectangle";
 	usePreview?: boolean;
 	id?: string;
+	titleAlwaysOpen?: boolean;
 }
 export function StyledLinkCard({
 	href,
-	title,
+	title = "",
 	artworkUrl,
 	size = 150,
 	layout = "square",
@@ -42,6 +43,7 @@ export function StyledLinkCard({
 	backgroundColor,
 	titleBackgroundColor,
 	usePreview = true,
+	titleAlwaysOpen = false,
 	id,
 }: StyledLinkCardProps) {
 	const tiltOptions: TiltOptions = {
@@ -103,7 +105,9 @@ export function StyledLinkCard({
 								height={size * 2 - 2}
 							/>
 						</ArtworkContainer>
-						<HoverTitleContainer style={hoverTitleStyle}>
+						<HoverTitleContainer
+							style={hoverTitleStyle}
+							className={titleAlwaysOpen ? styles.alwaysOpen : undefined}>
 							{title}
 						</HoverTitleContainer>
 					</Link>
