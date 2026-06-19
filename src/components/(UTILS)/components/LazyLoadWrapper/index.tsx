@@ -24,7 +24,7 @@ export function LazyLoadWrapper({ children }: LazyLoadWrapperProps) {
 		return (
 			<div
 				ref={ref}
-				style={{ width: "100%", height: "100%" }}
+				style={{ display: "flex", width: "1px", height: "1px" }}
 			/>
 		);
 	return children;

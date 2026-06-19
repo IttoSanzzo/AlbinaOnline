@@ -40,6 +40,12 @@
 	}
 }
 
+.resizeObservationContainer {
+	display: flex;
+	width: fit-content;
+	height: fit-content;
+}
+
 .contentContainer {
 	margin-left: 25px;
 	overflow: hidden;

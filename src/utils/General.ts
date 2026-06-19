@@ -2,35 +2,29 @@ import { useRef, useCallback } from "react";
 
 export function useDebouncedCallback<T extends (...args: unknown[]) => void>(
 	fn: T,
-	delay: number
+	delay: number,
 ) {
 	const timeoutRef = useRef<number | null>(null);
 
-	if (timeoutRef.current !== null) {
-		clearTimeout(timeoutRef.current);
-	}
-	const debouncedFn = useCallback(
+	if (timeoutRef.current !== null) clearTimeout(timeoutRef.current);
+	return useCallback(
 		(...args: Parameters<T>) => {
-			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current);
-			}
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
 			timeoutRef.current = window.setTimeout(() => {
 				fn(...args);
 			}, delay);
 		},
-		[fn, delay]
+		[fn, delay],
 	);
-
-	return debouncedFn;
 }
 
 export function debounce<T extends (...args: unknown[]) => void>(
 	fn: T,
-	delay: number
+	delay: number,
 ) {
-	let timer: NodeJS.Timeout;
+	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	return (...args: Parameters<T>) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => fn(...args), delay);
+		if (timeoutRef.current != null) clearTimeout(timeoutRef.current);
+		timeoutRef.current = setTimeout(() => fn(...args), delay);
 	};
 }

@@ -3,7 +3,6 @@
 import {
 	CSSProperties,
 	ReactNode,
-	useCallback,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -16,7 +15,7 @@ import { StandartColorProps, StandartTextColor } from "../../core";
 import { StandartColorKeysToProperties, UIBasics } from "../..";
 import { Triangle } from "@phosphor-icons/react/dist/ssr/Triangle";
 import styles from "./styles.module.css";
-import { useDebouncedCallback } from "@/utils/General";
+import { debounce } from "@/utils/General";
 import { LazyLoadWrapper } from "@/components/(UTILS)/components/LazyLoadWrapper";
 
 const ToggleHeaderContainer = newStyledElement.div(
@@ -29,29 +28,17 @@ const ToggleButtonHeaderContainer = newStyledElement.div(
 const ToggleButtonContainer = newStyledElement.div(
 	styles.toggleButtonContainer,
 );
+const ResizeObservationContainer = newStyledElement.div(
+	styles.resizeObservationContainer,
+);
 const ContentContainer = newStyledElement.div(styles.contentContainer);
 
-function getCurrentOpenState(pathname: string, memoryName?: string) {
-	if (memoryName) {
-		const memoryState: string | null = routeStorage.getItem(
-			pathname,
-			memoryName,
-		);
-		if (memoryState) {
-			return memoryState === "true";
-		}
-	}
-	return false;
-}
-function initialGetCurrentOpenState(
+function getCurrentOpenState(
 	pathname: string,
 	memoryName?: string,
 ): boolean | null {
 	if (memoryName) {
-		const memoryState: string | null = routeStorage.getItem(
-			pathname,
-			memoryName,
-		);
+		const memoryState = routeStorage.getItem(pathname, memoryName);
 		if (!memoryState) return null;
 		return memoryState === "true";
 	}
@@ -61,7 +48,6 @@ function setMemoryOpenState(value: boolean, pathname: string, name?: string) {
 	if (name) {
 		if (value) routeStorage.setItem(pathname, name, true);
 		else routeStorage.setItem(pathname, name, false);
-		// else routeStorage.removeItem(pathname, name);
 	}
 }
 
@@ -94,65 +80,56 @@ export function ToggleHeader({
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
 	const closingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const contentContainerRef = useRef<HTMLDivElement>(null);
+	const observationContainerRef = useRef<HTMLDivElement>(null);
 
 	const arrowRotationDegree = isOpen ? "180deg" : "90deg";
 	const pathname = routeSensitiveMemory ? usePathname() : "";
 	const memoryName = useMemo(() => {
 		return memoryId && memoryId !== "" ? `Toggle/${memoryId}` : undefined;
 	}, [memoryId]);
-	const contentRef = useRef<HTMLDivElement>(null);
 
-	const updateHeight = useCallback(() => {
-		if (!contentRef.current) return;
-		const newHeight = contentRef.current.scrollHeight;
+	const debouncedUpdateHeight = debounce(() => {
+		if (!observationContainerRef.current) return;
+		const newHeight = observationContainerRef.current.scrollHeight;
 		if (newHeight != contentMaxHeight) setContentMaxHeight(newHeight);
-	}, [contentMaxHeight]);
-	const debouncedUpdateHeight = useDebouncedCallback(updateHeight, 10);
+	}, 10);
 
 	function openContent() {
-		if (contentRef.current) {
-			if (closingTimeoutRef.current) {
-				clearTimeout(closingTimeoutRef.current);
-				closingTimeoutRef.current = null;
-			}
-			contentRef.current.classList.add(styles.isOpen);
+		if (closingTimeoutRef.current) {
+			clearTimeout(closingTimeoutRef.current);
+			closingTimeoutRef.current = null;
 		}
+		if (contentContainerRef.current)
+			contentContainerRef.current.classList.add(styles.isOpen);
 		setIsOpen(true);
 	}
 	function closeContent() {
-		if (contentRef.current) {
-			if (closingTimeoutRef.current) clearTimeout(closingTimeoutRef.current);
-			closingTimeoutRef.current = setTimeout(() => {
-				if (contentRef.current)
-					contentRef.current.classList.remove(styles.isOpen);
-			}, 600);
-		}
+		if (closingTimeoutRef.current) clearTimeout(closingTimeoutRef.current);
+		closingTimeoutRef.current = setTimeout(() => {
+			if (contentContainerRef.current)
+				contentContainerRef.current.classList.remove(styles.isOpen);
+		}, 600);
 		setIsOpen(false);
 	}
 
 	useLayoutEffect(() => {
-		const initialState = initialGetCurrentOpenState(pathname, memoryName);
-		if (initialState != null) {
-			if (getCurrentOpenState(pathname, memoryName)) openContent();
+		debouncedUpdateHeight();
+		const initialOpenState = getCurrentOpenState(pathname, memoryName);
+		if (initialOpenState != null) {
+			if (initialOpenState) openContent();
 			else closeContent();
 		}
-		if (contentRef.current)
-			setContentMaxHeight(contentRef.current.scrollHeight);
-	}, []);
+	}, [debouncedUpdateHeight]);
 
 	useLayoutEffect(() => {
-		if (!contentRef.current) return;
-		const element = contentRef.current;
-		if (element.firstElementChild) {
-			const resizeObserver = new ResizeObserver(() => {
-				debouncedUpdateHeight();
-			});
-			resizeObserver.observe(element.firstElementChild);
-			return () => {
-				resizeObserver.disconnect();
-			};
-		}
-	}, [contentRef, debouncedUpdateHeight]);
+		if (!observationContainerRef.current) return;
+		const resizeObserver = new ResizeObserver(() => {
+			debouncedUpdateHeight();
+		});
+		resizeObserver.observe(observationContainerRef.current);
+		return () => resizeObserver.disconnect();
+	}, [observationContainerRef, debouncedUpdateHeight]);
 
 	function handleOpenButton() {
 		setMemoryOpenState(!isOpen, pathname, memoryName);
@@ -205,10 +182,12 @@ export function ToggleHeader({
 			</HeaderContainer>
 			<ContentContainer
 				className={defaultOpenState == true ? styles.isOpen : undefined}
-				id={`UIBasics-toggle-${memoryId ?? "content"}`}
-				ref={contentRef}
+				id={memoryId ? `UIBasics-toggle-${memoryId}` : undefined}
+				ref={contentContainerRef}
 				style={contentStyle}>
-				<LazyLoadWrapper children={children} />
+				<ResizeObservationContainer ref={observationContainerRef}>
+					<LazyLoadWrapper children={children} />
+				</ResizeObservationContainer>
 			</ContentContainer>
 		</ToggleHeaderContainer>
 	);
