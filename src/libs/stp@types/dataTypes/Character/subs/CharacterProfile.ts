@@ -11,6 +11,5 @@ export type CharacterProfile = {
 	bonds: string;
 	summary: string;
 	backgroundHistory: string;
-	images: string[];
-	tags: string[];
+	notes: string;
 };

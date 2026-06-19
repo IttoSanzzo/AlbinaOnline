@@ -23,4 +23,5 @@ export type CharacterCoreMetrics = {
 	speedStats: SpeedStats;
 	armorClass: number;
 	initiative: number;
+	notes: string;
 };

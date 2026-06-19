@@ -5,6 +5,7 @@ import { CharacterHeader } from "./subComponents/CharacterHeader";
 import { UIBasics } from "@/components/(UIBasics)";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
+import { ProfileNotes } from "./subComponents/CharacterEditableDataDisplays/ProfileNotes";
 
 interface CharacterFullSheetEditableDisplayProps {
 	characterData: CharacterExpandedData;
@@ -18,6 +19,11 @@ export function CharacterFullSheetEditableDisplay({
 				characterId={characterData.id}
 				level={characterData.level}
 				race={characterData.race}
+			/>
+
+			<ProfileNotes
+				characterId={characterData.id}
+				notes={characterData.profile.notes}
 			/>
 			<UIBasics.Box
 				backgroundColor="gray"
