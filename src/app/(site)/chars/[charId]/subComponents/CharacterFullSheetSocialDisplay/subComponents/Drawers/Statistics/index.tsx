@@ -7,7 +7,7 @@ import {
 	CharacterMiscMetrics,
 	Guid,
 } from "@/libs/stp@types";
-import React from "react";
+import { MetricsNotes } from "../../CharacterDataDisplays/MetricsNotes";
 
 interface StatisticsDrawerProps {
 	characterId: Guid;
@@ -84,9 +84,6 @@ export function StatisticsDrawer({
 							name="Estamina"
 							acronym="EP"
 							color="green"
-							style={{
-								borderBottomLeftRadius: "var(--rd-md)",
-							}}
 						/>
 					}
 					colum2={
@@ -95,11 +92,11 @@ export function StatisticsDrawer({
 								backgroundColor: StandartBackgroundColor["darkGray"],
 								width: "100%",
 								height: "100%",
-								borderBottomRightRadius: "var(--rd-md)",
 							}}
 						/>
 					}
 				/>
+				<MetricsNotes coreMetrics={coreMetrics} />
 			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);

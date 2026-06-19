@@ -3,6 +3,7 @@ import { CharacterDrawerBaseHeader } from "../../../../CharacterDrawerBaseHeader
 import { CharacterEditableDataDisplays } from "../../CharacterEditableDataDisplays";
 import { CharacterActionsPool, Guid } from "@/libs/stp@types";
 import React from "react";
+import { MetricsNotes } from "../../CharacterEditableDataDisplays/MetricsNotes";
 
 interface StatisticsDrawerProps {
 	characterId: Guid;
@@ -62,9 +63,6 @@ export function _StatisticsDrawer({
 							name="Estamina"
 							acronym="EP"
 							color="green"
-							style={{
-								borderBottomLeftRadius: "var(--rd-md)",
-							}}
 						/>
 					}
 					colum2={
@@ -73,11 +71,11 @@ export function _StatisticsDrawer({
 								backgroundColor: StandartBackgroundColor["darkGray"],
 								width: "100%",
 								height: "100%",
-								borderBottomRightRadius: "var(--rd-md)",
 							}}
 						/>
 					}
 				/>
+				<MetricsNotes characterId={characterId} />
 			</UIBasics.Box>
 		</CharacterDrawerBaseHeader>
 	);
