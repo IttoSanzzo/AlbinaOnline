@@ -56,8 +56,7 @@
 }
 
 .resizeObservationContainer {
-	display: flex;
-	width: fit-content;
+	display: block;
 	height: fit-content;
 }
 
