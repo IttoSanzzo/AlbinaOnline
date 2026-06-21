@@ -12,6 +12,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Security } from "./subComponents/Security";
 import { redirect } from "next/navigation";
 import { Connections } from "./subComponents/Connections";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Conexões" },
@@ -56,7 +57,8 @@ export default function UserConfigurationUserPageContent({
 			title={"Configurações"}
 			banner={getAlbinaApiFullAddress("/banner/default/configuration")}
 			icon={getAlbinaApiFullAddress("/favicon/default/configuration")}
-			subTitle={user.nickname}>
+			subTitle={<UIBasics.Text textColor="gray">{user.nickname}</UIBasics.Text>}
+			subTitle2={<UIBasics.Text textColor="darkGray">{user.id}</UIBasics.Text>}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<Connections />
 			<Security />
