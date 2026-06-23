@@ -16,6 +16,7 @@ export function TextInput<TFormInput extends FieldValues>({
 	fieldName,
 	autoLabelFormatting = true,
 	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
+	onChange,
 	...rest
 }: TextInputProps<TFormInput>) {
 	const {
@@ -34,6 +35,7 @@ export function TextInput<TFormInput extends FieldValues>({
 			errorMessage={fieldState.error?.message}
 			value={field.value ?? ""}
 			onChange={(event) => {
+				if (onChange) onChange(event);
 				field.onChange(event);
 				triggerDebounceAction();
 			}}

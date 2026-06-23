@@ -1,6 +1,12 @@
 "use client";
 
-import { HookedForm, SelectOption, zEnumKey, zSlug } from "@/libs/stp@forms";
+import {
+	HookedForm,
+	SelectOption,
+	toSlug,
+	zEnumKey,
+	zSlug,
+} from "@/libs/stp@forms";
 import { LintIgnoredAny, MasterySubType, MasteryType } from "@/libs/stp@types";
 import { enumToSelectOptions } from "@/utils/Data";
 import { UseFormReturn } from "react-hook-form";
@@ -61,12 +67,15 @@ export function CreationForm({ form }: CreationFormProps) {
 	return (
 		<>
 			<HookedForm.TextInput<FormData>
-				fieldName="slug"
-				label="Slug"
-			/>
-			<HookedForm.TextInput<FormData>
 				fieldName="name"
 				label="Name"
+				onChange={(event) => {
+					form.setValue("slug", toSlug(event.target.value));
+				}}
+			/>
+			<HookedForm.TextInput<FormData>
+				fieldName="slug"
+				label="Slug"
 			/>
 			<HookedForm.Select<FormData>
 				fieldName="type"

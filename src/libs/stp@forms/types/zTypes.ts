@@ -17,6 +17,16 @@ export const zSlug = () =>
 			"Invalid slug (cannot start or end with with '-')",
 		);
 
+export function toSlug(text: string): string {
+	return text
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/-+/g, "-")
+		.replace(/^-|-$/g, "");
+}
+
 export const zEnumKey = <TEnum extends object>(
 	enumObj: TEnum,
 	notIncluded: (keyof TEnum)[] = [],
