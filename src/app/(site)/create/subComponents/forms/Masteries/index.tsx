@@ -25,7 +25,7 @@ export function CreationForm({ form }: CreationFormProps) {
 
 	let subTypesFromThisType: string[] = [];
 	switch (form.watch().type) {
-		case "Proficiency":
+		case "Expertise":
 			subTypesFromThisType = [
 				"Strength",
 				"Agility",
@@ -36,13 +36,13 @@ export function CreationForm({ form }: CreationFormProps) {
 				"Charisma",
 			];
 			break;
-		case "Expertise":
+		case "Knowledge":
 			subTypesFromThisType = ["Singular", "Multiple"];
 			break;
-		case "Knowledge":
+		case "Craft":
 			subTypesFromThisType = ["Combatant", "Production", "General"];
 			break;
-		case "Craft":
+		case "Proficiency":
 			subTypesFromThisType = [
 				"Armed",
 				"Focus",
