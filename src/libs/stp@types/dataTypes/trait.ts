@@ -8,6 +8,8 @@ import {
 export enum TraitType {
 	Unknown,
 	Generic,
+	Imperfection,
+	Aptitude,
 	Racial,
 	Talent,
 	Blessing,
@@ -17,6 +19,7 @@ export enum TraitSubType {
 	Unknown,
 	Combat,
 	Magic,
+	Physical,
 	Sensory,
 	Intellectual,
 	Aspect,
@@ -50,5 +53,7 @@ export const traitNames: Record<keyof typeof TraitType, string> = {
 	Generic: "Genérica",
 	Blessing: "Benção",
 	Talent: "Talento",
+	Aptitude: "Aptidão",
+	Imperfection: "Imperfeição",
 	Unknown: "?",
 };

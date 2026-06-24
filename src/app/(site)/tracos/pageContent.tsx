@@ -7,8 +7,10 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Genéricas" },
-	{ name: "Comuns" },
+	{ name: "Aptidões" },
 	{ name: "Raciais" },
+	{ name: "Talentos" },
+	{ name: "Imperfeições" },
 	{ name: "Bençãos" },
 	{ name: "Únicas" },
 ];
@@ -37,6 +39,11 @@ export default async function TraitsPageContent() {
 				type="Generic"
 			/>
 			<TraitTypeDisplay
+				title="Aptidões"
+				allTraits={allTraits}
+				type="Aptitude"
+			/>
+			<TraitTypeDisplay
 				title="Raciais"
 				allTraits={allTraits}
 				type="Racial"
@@ -45,6 +52,11 @@ export default async function TraitsPageContent() {
 				title="Talentos"
 				allTraits={allTraits}
 				type="Talent"
+			/>
+			<TraitTypeDisplay
+				title="Imperfeições"
+				allTraits={allTraits}
+				type="Imperfection"
 			/>
 			<TraitTypeDisplay
 				title="Bençãos"

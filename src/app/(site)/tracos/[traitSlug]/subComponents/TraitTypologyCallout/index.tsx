@@ -9,6 +9,10 @@ function getTabulatedType(type: keyof typeof TraitType) {
 			return "[@/[Racial]tracos#raciais]";
 		case "Talent":
 			return "[@/[Talento]tracos#talentos]";
+		case "Imperfection":
+			return "[@/[Imperfeição]tracos#imperfeicoes]";
+		case "Aptitude":
+			return "[@/[Aptidão]tracos#aptidoes]";
 		case "Blessing":
 			return "[@/[Benção]tracos#bencaos]";
 		case "Unique":
@@ -28,6 +32,8 @@ function getTabulatedSubType(subType: keyof typeof TraitSubType) {
 			return "[@/[Intelectual]tracos]";
 		case "Magic":
 			return "[@/[Mágico]tracos]";
+		case "Physical":
+			return "[@/[Físico]tracos]";
 		case "Miscellaneous":
 			return "[@/[Miscelânico]tracos]";
 		case "Sensory":
