@@ -8,21 +8,21 @@ import {
 export enum TraitType {
 	Unknown,
 	Generic,
-	Imperfection,
 	Aptitude,
 	Racial,
 	Talent,
+	Imperfection,
 	Blessing,
 	Unique,
 }
 export enum TraitSubType {
 	Unknown,
 	Combat,
-	Magic,
-	Physical,
 	Sensory,
-	Intellectual,
 	Aspect,
+	Physical,
+	Intellectual,
+	Magic,
 	Miscellaneous,
 	Special,
 }

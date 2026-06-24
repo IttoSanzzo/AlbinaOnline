@@ -63,7 +63,7 @@ export function TraitSelectionCore({
 	);
 	if (allTraits.length == 0) return null;
 
-	const unacquiredTraitsByType = Array.from({ length: 6 }, (_, index) =>
+	const unacquiredTraitsByType = Array.from({ length: 8 }, (_, index) =>
 		selectionPool.filter((trait) => TraitType[trait.type] === index),
 	);
 
