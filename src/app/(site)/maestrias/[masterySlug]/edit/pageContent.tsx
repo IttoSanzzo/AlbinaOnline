@@ -210,6 +210,7 @@ export function EditMasteryPageContent({
 				genericEffects={mastery.effects}
 				targetId={mastery.id}
 				targetType="Mastery"
+				defaultEffectName={mastery.name}
 			/>
 		</GenericPageContainer>
 	);

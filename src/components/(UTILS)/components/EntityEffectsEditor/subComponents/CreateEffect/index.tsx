@@ -15,8 +15,12 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
+import { StpIcon } from "@/libs/stp@icons";
 
 const LinkEffectButton = newStyledElement.button(styles.linkEffectButton);
+const SetDefaultEffectNamebutton = newStyledElement.button(
+	styles.setDefaultEffectNamebutton,
+);
 
 const schema = z.object({
 	name: z.string().min(1, "Must be at least 1 character long"),
@@ -29,11 +33,13 @@ interface CreateEffectProps {
 	pathname: string;
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
+	defaultName?: string;
 }
 export function CreateEffect({
 	pathname,
 	targetId,
 	targetType,
+	defaultName,
 }: CreateEffectProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
@@ -114,6 +120,24 @@ export function CreateEffect({
 					<HookedForm.Form
 						form={form}
 						onSubmit={onSubmit}>
+						{defaultName && (
+							<SetDefaultEffectNamebutton
+								type="button"
+								onClick={(event) => {
+									event.preventDefault();
+									form.setValue("name", defaultName, {
+										shouldDirty: true,
+										shouldTouch: true,
+										shouldValidate: true,
+									});
+								}}>
+								<StpIcon
+									name="Tag"
+									color="default"
+									style="bold"
+								/>
+							</SetDefaultEffectNamebutton>
+						)}
 						<HookedForm.TextInput
 							fieldName="name"
 							label="Name"

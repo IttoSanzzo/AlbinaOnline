@@ -243,6 +243,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 				genericEffects={trait.effects}
 				targetId={trait.id}
 				targetType="Trait"
+				defaultEffectName={trait.name}
 			/>
 		</GenericPageContainer>
 	);

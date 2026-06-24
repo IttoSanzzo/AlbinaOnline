@@ -296,6 +296,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 				genericEffects={skill.effects}
 				targetId={skill.id}
 				targetType="Skill"
+				defaultEffectName={skill.name}
 			/>
 		</GenericPageContainer>
 	);

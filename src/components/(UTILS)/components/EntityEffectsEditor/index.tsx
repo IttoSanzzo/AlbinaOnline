@@ -9,6 +9,7 @@ import { CreateEffect } from "./subComponents/CreateEffect";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { ReorderEffects } from "./subComponents/ReorderEffects";
+import { FastCreateEffect } from "./subComponents/FastCreateEffect";
 
 const EffectActionButtonsContainer = newStyledElement.div(
 	styles.effectActionButtonsContainer,
@@ -25,11 +26,13 @@ interface EntityEffectsEditorProps {
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
 	genericEffects: GenericEffect[];
+	defaultEffectName?: string;
 }
 export function EntityEffectsEditor({
 	targetId,
 	targetType,
 	genericEffects,
+	defaultEffectName,
 }: EntityEffectsEditorProps) {
 	const pathname = usePathname();
 	const effectsInOrder = genericEffects.sort((e1, e2) => e1.order - e2.order);
@@ -68,6 +71,13 @@ export function EntityEffectsEditor({
 						pathname={pathname}
 						targetId={targetId}
 						targetType={targetType}
+						defaultName={defaultEffectName}
+					/>
+					<FastCreateEffect
+						pathname={pathname}
+						targetId={targetId}
+						targetType={targetType}
+						name={defaultEffectName ?? "Efeito"}
 					/>
 				</EffectActionButtonsContainer>
 			</UIBasics.Box>

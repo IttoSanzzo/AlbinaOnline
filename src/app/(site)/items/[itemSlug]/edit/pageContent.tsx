@@ -324,6 +324,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 				genericEffects={item.effects}
 				targetId={item.id}
 				targetType="Item"
+				defaultEffectName={item.name}
 			/>
 		</GenericPageContainer>
 	);

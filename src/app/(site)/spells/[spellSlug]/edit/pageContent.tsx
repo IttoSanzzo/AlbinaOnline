@@ -331,6 +331,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 				genericEffects={spell.effects}
 				targetId={spell.id}
 				targetType="Spell"
+				defaultEffectName={spell.name}
 			/>
 		</GenericPageContainer>
 	);
