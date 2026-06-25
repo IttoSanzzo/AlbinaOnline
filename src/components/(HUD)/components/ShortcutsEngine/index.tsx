@@ -17,13 +17,28 @@ export function ShortcutsEngine() {
 			router.push(pathName.substring(0, pathName.length - 5));
 		else if (pathName.split("/").length == 3) router.push(`${pathName}/edit`);
 	}
+	async function pushCreatePage(event: KeyboardEvent) {
+		event.preventDefault();
+		if (pathName != "/create") {
+			localStorage.setItem("create-shortcut-memory", pathName);
+			router.push("/create");
+			return;
+		}
+		const lastPath = localStorage.getItem("create-shortcut-memory");
+		if (lastPath) {
+			localStorage.removeItem("create-shortcut-memory");
+			router.push(lastPath);
+			return;
+		}
+		router.push("/home");
+	}
 
 	useEffect(() => {
 		async function handleKeyDown(event: KeyboardEvent) {
 			switch (event.key.toLowerCase()) {
 				case "f1":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/home");
-					else if (event.altKey) pushRoute(event, "/create");
+					else if (event.altKey) pushCreatePage(event);
 					break;
 				case "f2":
 					if (event.shiftKey && event.ctrlKey) pushRoute(event, "/chars");
