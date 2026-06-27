@@ -40,7 +40,7 @@ function formTable(
 						<StyledLink
 							title={characterTrait.trait.name}
 							icon={characterTrait.trait.iconUrl}
-							href={`/traits/${characterTrait.trait.slug}`}
+							href={`/tracos/${characterTrait.trait.slug}`}
 							style={{ width: "100%" }}
 						/>
 					}>
