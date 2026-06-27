@@ -113,7 +113,7 @@ function formTable(
 					buttonIcon={{ name: "TrashIcon", color: "red" }}
 					title={characterTrait.trait.name}
 					icon={characterTrait.trait.iconUrl}
-					href={`/traits/${characterTrait.trait.slug}`}
+					href={`/tracos/${characterTrait.trait.slug}`}
 					onClick={() =>
 						handleTraitRemoval(
 							characterId,
