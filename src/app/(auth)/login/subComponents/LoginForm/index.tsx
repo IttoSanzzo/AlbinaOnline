@@ -88,6 +88,7 @@ export function LoginForm({ redirectTo }: LoginFormProps) {
 				label="Usuário ou Email *"
 				fieldName="usernameOrEmail"
 				placeholder="Usuário ou Email"
+				autoFocus={true}
 			/>
 			<HookedForm.PasswordInput
 				autoComplete="current-password"

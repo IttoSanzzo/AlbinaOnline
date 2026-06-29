@@ -135,6 +135,7 @@ export function RegisterForm({ redirectTo }: RegisterFormProps) {
 				label="Usuário *"
 				fieldName="username"
 				placeholder="usuario-exemplar"
+				autoFocus={true}
 			/>
 			<HookedForm.TextInput
 				label="Nome *"

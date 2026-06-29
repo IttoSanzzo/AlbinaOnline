@@ -43,6 +43,7 @@ export default function PageContent({ items }: PageContentProps) {
 				<HookedForm.TextInput<FormData>
 					fieldName="filter"
 					label="Filtro"
+					autoFocus={true}
 				/>
 				{filteredItems.length === 0 && (
 					<UIBasics.Header

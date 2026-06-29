@@ -107,6 +107,7 @@ export default function CharsPageContent() {
 				<HookedForm.TextInput<FormData>
 					fieldName="filter"
 					label="Filtro"
+					autoFocus={true}
 				/>
 				{filteredCharacters.length === 0 && (
 					<UIBasics.Header

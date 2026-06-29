@@ -84,6 +84,7 @@ export default function PageContent({ spells }: PageContentProps) {
 						fieldName="filter"
 						label="Filtro"
 						labelBackground="darkGray"
+						autoFocus={true}
 					/>
 					{filteredSpells.length === 0 && (
 						<UIBasics.Header

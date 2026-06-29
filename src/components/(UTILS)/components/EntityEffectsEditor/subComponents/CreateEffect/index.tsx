@@ -142,6 +142,7 @@ export function CreateEffect({
 							fieldName="name"
 							label="Name"
 							placeholder={"Name"}
+							autoFocus={true}
 						/>
 						<HookedForm.TextInput
 							fieldName="role"

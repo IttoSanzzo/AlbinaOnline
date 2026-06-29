@@ -64,6 +64,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 				<HookedForm.TextInput<FormData>
 					fieldName="filter"
 					label="Filtro"
+					autoFocus={true}
 				/>
 				{filteredMasteries.length === 0 && (
 					<UIBasics.Header

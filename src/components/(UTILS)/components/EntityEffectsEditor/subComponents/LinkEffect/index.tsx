@@ -94,6 +94,7 @@ export function LinkEffect({
 							fieldName="effectId"
 							label="Effect Id"
 							placeholder={Guid.Empty}
+							autoFocus={true}
 						/>
 						<HookedForm.TextInput
 							fieldName="role"

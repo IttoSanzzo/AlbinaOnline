@@ -111,6 +111,7 @@ export function ReorderEffects({
 									effect.name
 								}`}
 								fieldName={`newOrder.${index}`}
+								autoFocus={index == 0}
 							/>
 						))}
 						<HookedForm.SubmitButton label="Reorder" />

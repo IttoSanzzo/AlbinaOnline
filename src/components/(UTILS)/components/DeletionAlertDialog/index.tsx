@@ -70,6 +70,7 @@ export function DeletionAlertDialog({
 								fieldName="safetyLine"
 								label="Safety Input"
 								placeholder={safetyText}
+								autoFocus={true}
 							/>
 							<AlertDialog.ButtonsContainer>
 								<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
