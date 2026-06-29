@@ -50,7 +50,7 @@ export function FavoriteButton() {
 			});
 			if (response.ok) await reloadFavorites();
 		} catch (ex) {
-			console.error(ex);
+			void ex;
 		}
 	}
 	async function handleRemoveFavorite() {
@@ -69,7 +69,7 @@ export function FavoriteButton() {
 			});
 			if (response.ok) await reloadFavorites();
 		} catch (ex) {
-			console.error(ex);
+			void ex;
 		}
 	}
 

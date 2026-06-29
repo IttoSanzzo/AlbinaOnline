@@ -1,6 +1,6 @@
 import { Dialog } from "@/libs/stp@radix";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styles from "./styles.module.css";
 import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
@@ -34,12 +34,14 @@ interface CreateEffectProps {
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
 	defaultName?: string;
+	setShouldFocusOnLastEditor: Dispatch<SetStateAction<boolean>>;
 }
 export function CreateEffect({
 	pathname,
 	targetId,
 	targetType,
 	defaultName,
+	setShouldFocusOnLastEditor,
 }: CreateEffectProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [error, setError] = useState<string>("");
@@ -104,6 +106,7 @@ export function CreateEffect({
 		setOpenState(false);
 		revalidatePathByClientSide(pathname);
 		revalidateTagByClientSide("/effects");
+		setShouldFocusOnLastEditor(true);
 	}
 
 	return (

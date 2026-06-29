@@ -8,7 +8,6 @@ import { HookedForm, SelectOption, zEnumKey } from "@/libs/stp@forms";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 import { UnlinkEffectButton } from "./subComponents/UnlinkEffectButton";
 import { DeleteEffectButton } from "./subComponents/DeleteEffectButton";
@@ -19,6 +18,7 @@ import {
 import { capitalize } from "@/utils/StringUtils";
 import { ChangeEffectRole } from "./subComponents/ChangeEffectRole";
 import { CopyEffectIdsButton } from "./CopyEffectIdsButton";
+import { RefObject } from "react";
 
 const schema = z.object({
 	name: z.string().min(1, "Must be at leat 1 character long"),
@@ -42,12 +42,13 @@ const GenericEffectEditorContainer = newStyledElement.div(
 interface GenericEffectEditorProps {
 	genericEffect: GenericEffect;
 	pathname: string;
+	formRef?: RefObject<HTMLFormElement | null>;
 }
 export function GenericEffectEditor({
 	genericEffect,
 	pathname,
+	formRef,
 }: GenericEffectEditorProps) {
-	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -71,12 +72,12 @@ export function GenericEffectEditor({
 		);
 		if (!response.ok) {
 			toast.error("Saving failed", { id: toastId });
-			setError("");
 			return;
 		}
 		toast.success("Saved", { id: toastId });
 		revalidatePathByClientSide(pathname);
 		revalidateTagByClientSide("/effects");
+		return true;
 	}
 
 	const contentTypeOptions: SelectOption[] = ["Text", "Quote"].map((type) => ({
@@ -144,7 +145,8 @@ export function GenericEffectEditor({
 			<HookedForm.Space height={5} />
 			<HookedForm.Form
 				form={form}
-				onSubmit={onSubmit}>
+				onSubmit={onSubmit}
+				ref={formRef}>
 				<HookedForm.TextInput<FormData>
 					labelBackground="gray"
 					fieldName="name"
@@ -209,10 +211,6 @@ export function GenericEffectEditor({
 				<HookedForm.SubmitButton
 					label="Salvar"
 					useDebugTitle
-				/>
-				<HookedForm.SimpleMessage
-					color="red"
-					message={error}
 				/>
 			</HookedForm.Form>
 		</GenericEffectEditorContainer>

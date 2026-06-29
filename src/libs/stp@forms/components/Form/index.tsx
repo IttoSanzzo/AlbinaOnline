@@ -1,6 +1,6 @@
 "use client;";
 
-import React from "react";
+import React, { RefObject } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { FieldValues, UseFormReturn } from "react-hook-form";
@@ -25,6 +25,7 @@ interface FormProps<TFormData extends FieldValues> extends Omit<
 		| Promise<boolean | undefined>;
 	onChangeAction?: (data: TFormData) => void;
 	actionDebounceMs?: number;
+	ref?: RefObject<HTMLFormElement | null>;
 }
 export function Form<TFormData extends FieldValues>({
 	form,
@@ -32,6 +33,7 @@ export function Form<TFormData extends FieldValues>({
 	children,
 	onChangeAction,
 	actionDebounceMs,
+	ref,
 	...rest
 }: FormProps<TFormData>) {
 	async function submitHandler(data: TFormData) {
@@ -43,6 +45,7 @@ export function Form<TFormData extends FieldValues>({
 
 	return (
 		<FormContainer
+			ref={ref}
 			onSubmit={form.handleSubmit(submitHandler)}
 			onKeyDownCapture={(event) => {
 				if (event.ctrlKey && event.key.toLowerCase() == "s") {

@@ -9,6 +9,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import { EntityEffectEditTarget } from "../..";
+import { Dispatch, SetStateAction } from "react";
 
 const FastCreateEffectButton = newStyledElement.button(
 	styles.fastCreateEffectButton,
@@ -19,12 +20,14 @@ interface FastCreateEffectProps {
 	targetId: Guid;
 	targetType: EntityEffectEditTarget;
 	name: string;
+	setShouldFocusOnLastEditor: Dispatch<SetStateAction<boolean>>;
 }
 export function FastCreateEffect({
 	pathname,
 	targetId,
 	targetType,
 	name,
+	setShouldFocusOnLastEditor,
 }: FastCreateEffectProps) {
 	async function handleClick() {
 		const bodyEffect = {
@@ -70,6 +73,7 @@ export function FastCreateEffect({
 		toast.success("Linked", { id: toastId });
 		revalidatePathByClientSide(pathname);
 		revalidateTagByClientSide("/effects");
+		setShouldFocusOnLastEditor(true);
 	}
 
 	return (
