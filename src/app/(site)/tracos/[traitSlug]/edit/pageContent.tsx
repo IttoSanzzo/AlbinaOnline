@@ -107,6 +107,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/traits");
 		await revalidatePathByClientSide("/tracos");
+		if (formData.slug != trait.slug) redirect(`/tracos/${formData.slug}/edit`);
 		return true;
 	}
 

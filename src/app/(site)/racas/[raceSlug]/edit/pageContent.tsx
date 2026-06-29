@@ -150,6 +150,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/races");
 		await revalidatePathByClientSide("/racas");
+		if (formData.slug != race.slug) redirect(`/racas/${formData.slug}/edit`);
 		return true;
 	}
 

@@ -137,6 +137,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/skills");
 		await revalidatePathByClientSide("/skills");
+		if (formData.slug != skill.slug) redirect(`/skills/${formData.slug}/edit`);
 		return true;
 	}
 

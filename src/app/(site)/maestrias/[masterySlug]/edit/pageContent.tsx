@@ -99,6 +99,8 @@ export function EditMasteryPageContent({
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/masteries");
 		await revalidatePathByClientSide("/maestrias");
+		if (formData.slug != mastery.slug)
+			redirect(`/maestrias/${formData.slug}/edit`);
 		return true;
 	}
 

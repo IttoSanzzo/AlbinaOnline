@@ -154,6 +154,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/spells");
 		await revalidatePathByClientSide("/spells");
+		if (formData.slug != spell.slug) redirect(`/spells/${formData.slug}/edit`);
 		return true;
 	}
 

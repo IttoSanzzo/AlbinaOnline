@@ -153,6 +153,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 		toast.success("Saved", { id: toastId });
 		await revalidateTagByClientSide("/items");
 		await revalidatePathByClientSide("/items");
+		if (formData.slug != item.slug) redirect(`/items/${formData.slug}/edit`);
 		return true;
 	}
 
