@@ -3,6 +3,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import React, { Dispatch, SetStateAction } from "react";
 import styles from "./styles.module.css";
+import clsx from "clsx";
 
 const SwitchInternalContainer = newStyledElement.div(
 	styles.switchInternalContainer,
@@ -18,6 +19,8 @@ interface StateSwitchProps {
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
 	) => Promise<boolean>;
 	className?: string;
+	iconTrueClassName?: string;
+	iconFalseClassName?: string;
 }
 export function StateSwitch({
 	label,
@@ -26,6 +29,8 @@ export function StateSwitch({
 	style,
 	onClickCheck,
 	className,
+	iconFalseClassName,
+	iconTrueClassName,
 }: StateSwitchProps) {
 	async function handleClick(
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -41,7 +46,13 @@ export function StateSwitch({
 			<SwitchInternalContainer>
 				<label>{label}</label>
 				<div>
-					<span className={state[0] ? styles.stateTrue : styles.stateFalse} />
+					<span
+						className={
+							state[0]
+								? clsx(styles.stateTrue, iconTrueClassName)
+								: clsx(styles.stateFalse, iconFalseClassName)
+						}
+					/>
 				</div>
 			</SwitchInternalContainer>
 		</SwitchButton>

@@ -4,3 +4,7 @@
 	top: 50%;
 	transform: translateY(-50%);
 }
+
+.privateStyle {
+	background-color: var(--cl-violet-800) !important;
+}

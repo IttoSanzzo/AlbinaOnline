@@ -51,6 +51,7 @@ export function IsPublicSwitch({
 	return (
 		<StateSwitch
 			className={styles.isPublicSwitchButton}
+			iconTrueClassName={styles.privateStyle}
 			onClickCheck={handleClick}
 			state={isPrivateState}
 			label="Privado"
