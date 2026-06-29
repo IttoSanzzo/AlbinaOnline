@@ -30,6 +30,7 @@ export function CreationForm({ form }: CreationFormProps) {
 				onChange={(event) => {
 					form.setValue("slug", toSlug(event.target.value));
 				}}
+				autoFocus={true}
 			/>
 			<HookedForm.TextInput<FormData>
 				fieldName="slug"
