@@ -46,47 +46,49 @@ export function GenericEffectsDisplay({
 				textAlign="center"
 				children={"🏮 Efeitos 🏮"}
 			/>
-			{effects.map((effect, index) => {
-				const iconProps = getIconProps(effect.role);
-				const fullTitle = effect.name ? (
-					<div style={{ display: "flex", gap: "0.5rem" }}>
-						<UIBasics.Text
-							textColor={iconProps.color}
-							children={`${effect.role} -`}
-						/>
-						<UIBasics.Text
-							textColor={effect.color}
-							children={effect.name}
-						/>
-					</div>
-				) : (
-					effect.role
-				);
-				const id = `effect-${idfyString(effect.name ?? effect.role)}`;
-				effectAnchors.push({
-					name: effect.name ?? effect.role,
-					id: id,
-					indentation: 1,
-				});
-
-				return (
-					<UIBasics.Callout
-						key={index}
-						id={id}
-						icon={iconProps}
-						titleColor={iconProps.color}
-						title={fullTitle}>
-						{effect.contents.map((content, index) => (
-							<UIBasics.Quote
-								whiteSpace="pre-wrap"
-								key={index}
-								children={content.value}
-								textColor={content.color}
+			{effects
+				.sort((a, b) => a.order - b.order)
+				.map((effect, index) => {
+					const iconProps = getIconProps(effect.role);
+					const fullTitle = effect.name ? (
+						<div style={{ display: "flex", gap: "0.5rem" }}>
+							<UIBasics.Text
+								textColor={iconProps.color}
+								children={`${effect.role} -`}
 							/>
-						))}
-					</UIBasics.Callout>
-				);
-			})}
+							<UIBasics.Text
+								textColor={effect.color}
+								children={effect.name}
+							/>
+						</div>
+					) : (
+						effect.role
+					);
+					const id = `effect-${idfyString(effect.name ?? effect.role)}-${index}`;
+					effectAnchors.push({
+						name: effect.name ?? effect.role,
+						id: id,
+						indentation: 1,
+					});
+
+					return (
+						<UIBasics.Callout
+							key={index}
+							id={id}
+							icon={iconProps}
+							titleColor={iconProps.color}
+							title={fullTitle}>
+							{effect.contents.map((content, index) => (
+								<UIBasics.Quote
+									whiteSpace="pre-wrap"
+									key={index}
+									children={content.value}
+									textColor={content.color}
+								/>
+							))}
+						</UIBasics.Callout>
+					);
+				})}
 			{(preAnchors.length > 0 || postAnchors.length > 0) && (
 				<SetAnchorNavigation
 					anchors={[
