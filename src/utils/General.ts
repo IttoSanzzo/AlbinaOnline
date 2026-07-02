@@ -28,3 +28,10 @@ export function debounce<T extends (...args: unknown[]) => void>(
 		timeoutRef.current = setTimeout(() => fn(...args), delay);
 	};
 }
+
+export function getElementById<T extends HTMLElement>(id: string) {
+	return document.getElementById(id) as T;
+}
+export function focusIntoElementById<T extends HTMLElement>(id: string) {
+	return getElementById<T>(id).focus();
+}

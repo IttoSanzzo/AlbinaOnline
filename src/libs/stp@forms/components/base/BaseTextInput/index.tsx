@@ -38,6 +38,7 @@ export type BaseTextInputProps = {
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 	useTextArea?: boolean;
+	// ref?: RefObject<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function BaseTextInput({

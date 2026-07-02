@@ -21,6 +21,7 @@ interface TextProps extends StandartColorProps {
 	id?: string;
 	style?: CSSProperties;
 	onClick?: MouseEventHandler<HTMLDivElement> | undefined;
+	className?: string;
 }
 export function Text({
 	children,
@@ -35,6 +36,7 @@ export function Text({
 	id,
 	style,
 	onClick,
+	className,
 }: TextProps) {
 	const newStyle: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -54,7 +56,8 @@ export function Text({
 		<TextContainer
 			onClick={onClick}
 			style={newStyle}
-			id={id}>
+			id={id}
+			className={className}>
 			<SmartText content={children} />
 		</TextContainer>
 	);

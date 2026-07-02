@@ -27,6 +27,7 @@ import z from "zod";
 import styles from "./styles.module.css";
 import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
 import { coreSearchEntriesMock } from "./extras/coreSearchEntriesMock";
+import { focusIntoElementById, getElementById } from "@/utils/General";
 
 const SearchButton = newStyledElement.button(styles.searchButton);
 
@@ -74,26 +75,6 @@ function getPageLinkFromSearchEntry(
 	}
 }
 
-const typeText = (title: string) => (
-	<UIBasics.Text
-		key={`TypeTitle-${title}`}
-		textAlign="center"
-		children={title}
-	/>
-);
-
-const typeTitles = {
-	Core: (hidden: boolean) => (hidden ? null : typeText("Core")),
-	Character: (hidden: boolean) => (hidden ? null : typeText("Personagens")),
-	Item: (hidden: boolean) => (hidden ? null : typeText("Items")),
-	Mastery: (hidden: boolean) => (hidden ? null : typeText("Maestrias")),
-	Skill: (hidden: boolean) => (hidden ? null : typeText("Skills")),
-	Spell: (hidden: boolean) => (hidden ? null : typeText("Spells")),
-	Trait: (hidden: boolean) => (hidden ? null : typeText("Traços")),
-	Race: (hidden: boolean) => (hidden ? null : typeText("Raças")),
-	User: (hidden: boolean) => (hidden ? null : typeText("Usuários")),
-};
-
 function handleAddLinkToHistory(
 	searchEntry: SearchEntry,
 	setLinkHistoryState: Dispatch<SetStateAction<SearchEntry[]>>,
@@ -135,10 +116,17 @@ function searchEntryToStyledLink(
 			query: string;
 		}
 	>,
+	position: number,
+	height: number,
+	extraHeight: number = 0,
 ): ReactNode {
+	const [x, initialY] = getCoordenates(position, height);
+	const y = initialY + extraHeight;
 	return (
 		<StyledLink
 			key={`${searchEntry.type}|${searchEntry.id}`}
+			id={`nav-searchbar-entry-|${x}-${y}|`}
+			className={styles.searchedLink}
 			hoverTitle={searchEntry.title}
 			title={
 				searchEntry.title.length <= 16
@@ -152,6 +140,7 @@ function searchEntryToStyledLink(
 				setOpenState(false);
 				handleAddLinkToHistory(searchEntry, setLinkHistoryState);
 			}}
+			onKeyDown={(event) => handleKeyDown(event, x, y)}
 		/>
 	);
 }
@@ -237,56 +226,52 @@ export function PageSearchButton() {
 		searchEntries.user.length;
 	const globalTitleTitleDisable = 1 >= totalEntriesLength;
 
-	const allLinks: ReactNode[] = [
-		typeTitles.Core(
-			globalTitleTitleDisable || searchedCoreEntries.length === 0,
-		),
-		searchedCoreEntries.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Character(
-			globalTitleTitleDisable || searchEntries.character.length === 0,
-		),
-		searchEntries.character.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Item(globalTitleTitleDisable || searchEntries.item.length === 0),
-		searchEntries.item.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Mastery(
-			globalTitleTitleDisable || searchEntries.mastery.length === 0,
-		),
-		searchEntries.mastery.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Race(globalTitleTitleDisable || searchEntries.race.length === 0),
-		searchEntries.race.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Skill(
-			globalTitleTitleDisable || searchEntries.skill.length === 0,
-		),
-		searchEntries.skill.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Spell(
-			globalTitleTitleDisable || searchEntries.spell.length === 0,
-		),
-		searchEntries.spell.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.Trait(
-			globalTitleTitleDisable || searchEntries.trait.length === 0,
-		),
-		searchEntries.trait.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-		typeTitles.User(globalTitleTitleDisable || searchEntries.user.length === 0),
-		searchEntries.user.map((entry) =>
-			searchEntryToStyledLink(entry, setUsedLinkHistory, setOpenState, form),
-		),
-	];
+	function mapRawLinksAndTitlesListIntoElements(
+		rawList: linkOrTitleEntry[],
+	): ReactNode[] {
+		const height = getHeightFromEntries(rawList.length);
+		const nodes: ReactNode[] = [];
+		for (let index = 0; index < rawList.length; ++index) {
+			const [x, y] = getCoordenates(index + 1, height);
+			if (rawList[index].type == "title")
+				nodes.push(
+					typeTitles[rawList[index].value as string as keyof typeof typeTitles](
+						x,
+						y,
+					),
+				);
+			else
+				nodes.push(
+					searchEntryToStyledLink(
+						rawList[index].value as SearchEntry,
+						setUsedLinkHistory,
+						setOpenState,
+						form,
+						index + 1,
+						height,
+					),
+				);
+		}
+		return nodes;
+	}
+
+	const allSearchEntriesAndTitlesRawList = mapSearchEntriesAndTitlesIntoRawList(
+		searchedCoreEntries,
+		searchEntries,
+		!globalTitleTitleDisable,
+	);
+	const allLinksHeight = getHeightFromEntries(
+		allSearchEntriesAndTitlesRawList.length,
+	);
+	const allLinks: ReactNode[] = mapRawLinksAndTitlesListIntoElements(
+		allSearchEntriesAndTitlesRawList,
+	);
+
+	const historyEntriesHeight = getHeightFromEntries(
+		navigationHistoryState.history.length,
+	);
+	const usedLinkEntriesHeight = getHeightFromEntries(usedLinkHistory.length);
+	const bothHistoriesHeight = historyEntriesHeight + usedLinkEntriesHeight;
 
 	return (
 		<Dialog.Root
@@ -307,7 +292,39 @@ export function PageSearchButton() {
 						actionDebounceMs={500}>
 						<HookedForm.TextInput<FormData>
 							fieldName="query"
+							id="nav-searchbar-input"
 							label="Pesquisar"
+							onKeyDown={(event) => {
+								if (!(event.key == "ArrowDown" || event.key == "ArrowUp"))
+									return;
+								event.preventDefault();
+								try {
+									if (event.key == "ArrowDown")
+										return handleKeyDown(event as LintIgnoredAny, 1, 0);
+									else if (event.key == "ArrowUp") {
+										let totalEntries = 0;
+										let totalHeight = 0;
+										if (watchedValues.query.length >= 3) {
+											totalEntries = allSearchEntriesAndTitlesRawList.length;
+											totalHeight = allLinksHeight;
+										} else {
+											totalEntries =
+												navigationHistoryState.history.length +
+												usedLinkHistory.length;
+											if (
+												usedLinkHistory.length > 0 &&
+												navigationHistoryState.history.length % 2 != 0
+											)
+												totalEntries += 1;
+											totalHeight = bothHistoriesHeight;
+										}
+										const [x, y] = getCoordenates(totalEntries, totalHeight);
+										focusIntoElementById(`nav-searchbar-entry-|${x}-${y}|`);
+									}
+								} catch (ex) {
+									void ex;
+								}
+							}}
 						/>
 					</HookedForm.Form>
 					{watchedValues.query.length < 3 ? (
@@ -329,23 +346,34 @@ export function PageSearchButton() {
 									/>
 									<UIBasics.List.Grid
 										withoutBorder
-										children={navigationHistoryState.history.map((entry) => (
-											<StyledLink
-												key={entry.url}
-												hoverTitle={entry.name}
-												title={
-													entry.name.length <= 16
-														? entry.name
-														: `${entry.name.substring(0, 15)}...`
-												}
-												href={entry.url}
-												icon={entry.icon}
-												onClick={() => {
-													form.setValue("query", "");
-													setOpenState(false);
-												}}
-											/>
-										))}
+										children={navigationHistoryState.history.map(
+											(entry, index) => {
+												const [x, y] = getCoordenates(
+													index + 1,
+													historyEntriesHeight,
+												);
+												return (
+													<StyledLink
+														key={entry.url}
+														id={`nav-searchbar-entry-|${x}-${y}|`}
+														className={styles.searchedLink}
+														hoverTitle={entry.name}
+														title={
+															entry.name.length <= 16
+																? entry.name
+																: `${entry.name.substring(0, 15)}...`
+														}
+														href={entry.url}
+														icon={entry.icon}
+														onClick={() => {
+															form.setValue("query", "");
+															setOpenState(false);
+														}}
+														onKeyDown={(event) => handleKeyDown(event, x, y)}
+													/>
+												);
+											},
+										)}
 									/>
 								</UIBasics.Box>
 							)}
@@ -372,12 +400,15 @@ export function PageSearchButton() {
 									/>
 									<UIBasics.List.Grid
 										withoutBorder
-										children={usedLinkHistory.map((entry) =>
+										children={usedLinkHistory.map((entry, index) =>
 											searchEntryToStyledLink(
 												entry,
 												setUsedLinkHistory,
 												setOpenState,
 												form,
+												index + 1,
+												usedLinkEntriesHeight,
+												historyEntriesHeight,
 											),
 										)}
 									/>
@@ -399,3 +430,180 @@ export function PageSearchButton() {
 		</Dialog.Root>
 	);
 }
+
+function handleKeyDown(
+	event: React.KeyboardEvent<HTMLAnchorElement>,
+	horizontalPos: number,
+	verticalPos: number,
+	isRetry: boolean = false,
+) {
+	if (
+		!(
+			event.key == "ArrowUp" ||
+			event.key == "ArrowRight" ||
+			event.key == "ArrowDown" ||
+			event.key == "ArrowLeft"
+		)
+	)
+		return;
+	event.preventDefault();
+	switch (event.key) {
+		case "ArrowUp": {
+			return focusIntoEntryOrRetry(
+				event,
+				horizontalPos,
+				verticalPos - 1,
+				isRetry,
+			);
+		}
+		case "ArrowRight": {
+			if (horizontalPos == 2)
+				return focusIntoEntryOrRetry(event, 1, verticalPos + 1, isRetry);
+			return focusIntoEntryOrRetry(
+				event,
+				horizontalPos + 1,
+				verticalPos,
+				isRetry,
+			);
+		}
+		case "ArrowDown": {
+			return focusIntoEntryOrRetry(
+				event,
+				horizontalPos,
+				verticalPos + 1,
+				isRetry,
+			);
+		}
+		case "ArrowLeft": {
+			if (horizontalPos == 1)
+				return focusIntoEntryOrRetry(event, 2, verticalPos - 1, isRetry);
+			return focusIntoEntryOrRetry(
+				event,
+				horizontalPos - 1,
+				verticalPos,
+				isRetry,
+			);
+		}
+	}
+}
+
+function focusIntoEntryOrRetry(
+	event: React.KeyboardEvent<HTMLAnchorElement>,
+	horizontalPos: number,
+	verticalPos: number,
+	isRetry: boolean,
+): void {
+	try {
+		const element = getElementById(
+			`nav-searchbar-entry-|${horizontalPos}-${verticalPos}|`,
+		);
+		if (element.tagName != "A")
+			return handleKeyDown(event, horizontalPos, verticalPos, false);
+		element.focus();
+	} catch {
+		if (!isRetry) return handleKeyDown(event, horizontalPos, verticalPos, true);
+		return focusIntoElementById("nav-searchbar-input");
+	}
+}
+
+function getHeightFromEntries(
+	length: number,
+): 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 {
+	return Math.ceil(length / 2) as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+}
+function getCoordenates(position: number, height: number): [number, number] {
+	if (position == 0) return [0, 0];
+	if (position > height) return [2, position - height];
+	return [1, position];
+}
+
+interface linkOrTitleEntry {
+	type: "title" | "entry";
+	value:
+		| "Core"
+		| "Character"
+		| "Item"
+		| "Mastery"
+		| "Skill"
+		| "Spell"
+		| "Trait"
+		| "Race"
+		| "User"
+		| SearchEntry;
+}
+function mapSearchEntriesAndTitlesIntoRawList(
+	coreEntries: SearchEntry[],
+	allOthersByType: AllSearchEntriesByType,
+	showTitles: boolean,
+) {
+	const rawList: linkOrTitleEntry[] = [];
+
+	if (coreEntries.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Core" });
+		for (const entry of coreEntries)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.character.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Character" });
+		for (const entry of allOthersByType.character)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.item.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Item" });
+		for (const entry of allOthersByType.item)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.mastery.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Mastery" });
+		for (const entry of allOthersByType.mastery)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.skill.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Skill" });
+		for (const entry of allOthersByType.skill)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.spell.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Spell" });
+		for (const entry of allOthersByType.spell)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.trait.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Trait" });
+		for (const entry of allOthersByType.trait)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.race.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Race" });
+		for (const entry of allOthersByType.race)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.user.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "User" });
+		for (const entry of allOthersByType.user)
+			rawList.push({ type: "entry", value: entry });
+	}
+	return rawList;
+}
+
+const typeText = (title: string, x: number, y: number) => (
+	<UIBasics.Text
+		key={`TypeTitle-${title}`}
+		id={`nav-searchbar-entry-|${x}-${y}|`}
+		textAlign="center"
+		children={title}
+		className={styles.searchedTitle}
+	/>
+);
+
+const typeTitles = {
+	Core: (x: number, y: number) => typeText("Core", x, y),
+	Character: (x: number, y: number) => typeText("Personagens", x, y),
+	Item: (x: number, y: number) => typeText("Items", x, y),
+	Mastery: (x: number, y: number) => typeText("Maestrias", x, y),
+	Skill: (x: number, y: number) => typeText("Skills", x, y),
+	Spell: (x: number, y: number) => typeText("Spells", x, y),
+	Trait: (x: number, y: number) => typeText("Traços", x, y),
+	Race: (x: number, y: number) => typeText("Raças", x, y),
+	User: (x: number, y: number) => typeText("Usuários", x, y),
+};

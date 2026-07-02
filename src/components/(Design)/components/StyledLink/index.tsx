@@ -4,13 +4,14 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
-import { CSSProperties } from "react";
+import { AnchorHTMLAttributes, CSSProperties } from "react";
 
 export const StyledLinkContainer = newStyledElement.div(
 	styles.styledLinkContainer,
 );
 
-export interface StyledLinkProps extends LinkProps {
+export interface StyledLinkProps
+	extends LinkProps, AnchorHTMLAttributes<HTMLAnchorElement> {
 	title: string;
 	href: string;
 	icon?: string;
@@ -21,6 +22,7 @@ export interface StyledLinkProps extends LinkProps {
 	style?: CSSProperties;
 	titleStyle?: CSSProperties;
 	target?: "_blank" | "_parent" | "_self" | "_top";
+	id?: string;
 }
 
 export function StyledLink({

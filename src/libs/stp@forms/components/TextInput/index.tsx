@@ -1,6 +1,6 @@
 "use client";
 
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, RefObject } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { BaseTextInput, BaseTextInputProps } from "../base/BaseTextInput";
@@ -10,6 +10,7 @@ interface TextInputProps<TFormInput>
 	extends BaseTextInputProps, InputHTMLAttributes<HTMLInputElement> {
 	fieldName: Path<TFormInput>;
 	autoLabelFormatting?: boolean;
+	ref?: RefObject<HTMLInputElement | null>;
 }
 
 export function TextInput<TFormInput extends FieldValues>({

@@ -20,3 +20,22 @@
 		cursor: pointer;
 	}
 }
+
+.searchedLink {
+	transition: 0.25s linear background-color;
+	&:focus {
+		outline: none;
+		background-color: var(--cl-gray-600);
+	}
+}
+.searchedTitle {
+	padding: var(--sp-1);
+	height: 30px;
+	width: 100%;
+	color: var(--cl-gray-500);
+	& div {
+		font-weight: var(--fw-bold);
+		font-size: var(--fs-lg);
+		font-style: italic;
+	}
+}
