@@ -93,6 +93,8 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 		redirect(`/skills/${skill.slug}`);
 
 	async function onSubmit(formData: FormData) {
+		if (formData.magicAttributes.length == 0)
+			formData.magicAttributes = ["Mundane"];
 		const body = {
 			slug: formData.slug,
 			name: formData.name,
