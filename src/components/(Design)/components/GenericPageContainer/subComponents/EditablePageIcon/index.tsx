@@ -38,7 +38,10 @@ export function EditablePageIcon({
 
 	return (
 		<EditablePageIconContainer>
-			<ImageModal url={iconSrc} />
+			<ImageModal
+				url={iconSrc}
+				withTTL
+			/>
 			<ImageWithTTL
 				src={icon}
 				alt="Page's icon"

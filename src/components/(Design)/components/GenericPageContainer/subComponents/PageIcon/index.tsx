@@ -17,7 +17,10 @@ export function PageIcon({
 }: PageIconProps) {
 	return (
 		<PageIconContainer>
-			<ImageModal url={iconSrc} />
+			<ImageModal
+				url={iconSrc}
+				withTTL
+			/>
 			<ImageWithTTL
 				src={iconSrc}
 				alt="Page's icon"

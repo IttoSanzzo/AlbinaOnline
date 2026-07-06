@@ -11,7 +11,10 @@ interface PageBannerProps {
 export function PageBanner({ bannerSrc }: PageBannerProps) {
 	return (
 		<PageBannerContainer>
-			<ImageModal url={bannerSrc} />
+			<ImageModal
+				url={bannerSrc}
+				withTTL
+			/>
 			<ImageWithTTL
 				src={bannerSrc}
 				alt="Page's banner"

@@ -7,6 +7,7 @@ import styles from "./styles.module.css";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { StpIcon } from "@/libs/stp@icons";
 import { useEffect, useRef, useState } from "react";
+import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 
 const LateralButtonsContainer = newStyledElement.div(
 	styles.lateralButtonsContainer,
@@ -15,8 +16,9 @@ const LateralButton = newStyledElement.button(styles.lateralButton);
 
 interface ImageModalProps {
 	url: string;
+	withTTL?: boolean;
 }
-export function ImageModal({ url }: ImageModalProps) {
+export function ImageModal({ url, withTTL = false }: ImageModalProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const imageModalRef = useRef<HTMLDivElement | null>(null);
 
@@ -44,6 +46,8 @@ export function ImageModal({ url }: ImageModalProps) {
 		window.URL.revokeObjectURL(url);
 	}
 
+	const ImageElement = withTTL ? ImageWithTTL : Image;
+
 	return (
 		<div
 			style={{ display: "none" }}
@@ -56,7 +60,7 @@ export function ImageModal({ url }: ImageModalProps) {
 						<Dialog.Content className={styles.modalContent}>
 							<Dialog.Title />
 							<Dialog.Description />
-							<Image
+							<ImageElement
 								src={url}
 								alt={url}
 								fill

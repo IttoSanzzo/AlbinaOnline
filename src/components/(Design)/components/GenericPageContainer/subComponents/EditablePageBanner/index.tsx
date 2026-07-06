@@ -57,7 +57,10 @@ export function EditablePageBanner({
 						}
 					: undefined
 			}>
-			<ImageModal url={bannerSrc} />
+			<ImageModal
+				url={bannerSrc}
+				withTTL
+			/>
 			<ImageWithTTL
 				src={banner}
 				alt="Page's banner"
