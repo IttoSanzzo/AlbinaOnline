@@ -18,7 +18,8 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 				<UIBasics.Toggle
 					memoryId="InfoSummary"
 					titleColor={info.summary.length > 0 ? "blue" : "darkGray"}
-					title={"🪄|Resumo|🪄"}>
+					title={"🪄|Resumo|🪄"}
+					useCloseShortcut>
 					<UIBasics.List.Quote
 						whiteSpace="pre-wrap"
 						withDivisor
@@ -28,7 +29,8 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 				<UIBasics.Toggle
 					memoryId="InfoDescription"
 					titleColor={info.description.length > 0 ? "blue" : "darkGray"}
-					title={"🔎|Descrição Geral|🔎"}>
+					title={"🔎|Descrição Geral|🔎"}
+					useCloseShortcut>
 					<UIBasics.List.Quote
 						whiteSpace="pre-wrap"
 						withDivisor
@@ -38,7 +40,8 @@ export function GenericInfoCallout({ info }: GenericInfoCalloutProps) {
 				<UIBasics.Toggle
 					memoryId="InfoMiscs"
 					titleColor={info.miscellaneous.length > 0 ? "blue" : "darkGray"}
-					title={"💮|Miscelâneas|💮"}>
+					title={"💮|Miscelâneas|💮"}
+					useCloseShortcut>
 					<UIBasics.List.Quote
 						whiteSpace="pre-wrap"
 						withDivisor

@@ -48,7 +48,8 @@ export function ParametersAndMasteriesDrawer({
 		<CharacterDrawerBaseHeader
 			title="Parâmetros & Maestrias"
 			memoryId={`${characterId}-ParametersAndMasteries`}
-			backgroundColor="blue">
+			backgroundColor="blue"
+			switchShortcutKey="4">
 			<UIBasics.MultiColumn.Two
 				colum1={<CharacterEditableDataDisplays.Parameters />}
 				colum2={<CharacterEditableDataDisplays.AbilityScore />}

@@ -24,7 +24,8 @@ export function InventoryDrawer({
 		<CharacterDrawerBaseHeader
 			roundUp
 			title="Inventário"
-			memoryId={`${characterId}-Inventory`}>
+			memoryId={`${characterId}-Inventory`}
+			switchShortcutKey="1">
 			<UIBasics.Box
 				backgroundColor="green"
 				withoutMargin

@@ -16,7 +16,8 @@ export function OthersDrawer({
 	return (
 		<CharacterDrawerBaseHeader
 			title="Outros"
-			memoryId={`${characterId}-Others`}>
+			memoryId={`${characterId}-Others`}
+			switchShortcutKey="6">
 			<UIBasics.Box
 				backgroundColor="blue"
 				withoutPadding

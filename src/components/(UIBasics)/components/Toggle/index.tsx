@@ -60,6 +60,8 @@ interface ToggleProps extends StandartColorProps {
 	withoutPadding?: boolean;
 	style?: CSSProperties;
 	buttonStyle?: CSSProperties;
+	useCloseShortcut?: boolean;
+	switchShortcutKey?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
 }
 export function Toggle({
 	children,
@@ -76,6 +78,8 @@ export function Toggle({
 	buttonStyle,
 	floatingReverseButton = false,
 	withoutPadding = false,
+	useCloseShortcut = false,
+	switchShortcutKey,
 }: ToggleProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
@@ -135,11 +139,36 @@ export function Toggle({
 		return () => resizeObserver.disconnect();
 	}, [observationContainerRef, debouncedUpdateHeight]);
 
-	function handleOpenButton() {
-		setMemoryOpenState(!isOpen, pathname, memoryName);
-		if (isOpen) closeContent();
-		else openContent();
+	function changeOpenState(newState: boolean) {
+		setMemoryOpenState(newState, pathname, memoryName);
+		if (newState) openContent();
+		else closeContent();
 	}
+
+	useLayoutEffect(() => {
+		if (!useCloseShortcut) return;
+		function handleCloseShortcut(event: KeyboardEvent) {
+			if (event.ctrlKey && event.shiftKey && event.key == "F")
+				changeOpenState(false);
+		}
+		document.body.addEventListener("keydown", handleCloseShortcut);
+		return () =>
+			document.body.removeEventListener("keydown", handleCloseShortcut);
+	}, [isOpen, pathname, memoryName]);
+	useLayoutEffect(() => {
+		if (!switchShortcutKey) return;
+		function handleSwitchShortcut(event: KeyboardEvent) {
+			if (
+				event.ctrlKey &&
+				event.shiftKey &&
+				event.code == `Digit${switchShortcutKey}`
+			)
+				changeOpenState(!isOpen);
+		}
+		document.body.addEventListener("keydown", handleSwitchShortcut);
+		return () =>
+			document.body.removeEventListener("keydown", handleSwitchShortcut);
+	}, [isOpen, pathname, memoryName]);
 
 	const colorStyle = StandartColorKeysToProperties(textColor, backgroundColor);
 	const containerStyle: CSSProperties = {
@@ -174,7 +203,9 @@ export function Toggle({
 				{floatingReverseButton && TitleElement}
 				<button
 					style={{ ...colorStyle, ...buttonStyle }}
-					onClick={handleOpenButton}
+					onClick={() => {
+						changeOpenState(!isOpen);
+					}}
 					aria-expanded={isOpen}
 					aria-controls={`UIBasics-toggle-${memoryId ?? "content"}`}
 					aria-label="Toggle content">

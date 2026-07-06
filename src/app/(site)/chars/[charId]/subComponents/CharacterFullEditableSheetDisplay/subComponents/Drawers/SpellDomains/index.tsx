@@ -14,7 +14,8 @@ export function SpellDomainsDrawer({
 	return (
 		<CharacterDrawerBaseHeader
 			title="Domínios"
-			memoryId={`${characterId}-SpellDomains`}>
+			memoryId={`${characterId}-SpellDomains`}
+			switchShortcutKey="5">
 			<UIBasics.Box
 				backgroundColor="purple"
 				withoutPadding

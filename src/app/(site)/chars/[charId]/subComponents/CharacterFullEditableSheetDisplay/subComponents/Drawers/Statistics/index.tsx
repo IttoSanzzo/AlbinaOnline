@@ -16,7 +16,8 @@ export function _StatisticsDrawer({
 	return (
 		<CharacterDrawerBaseHeader
 			title="Estatísticas"
-			memoryId={`${characterId}-Statistics`}>
+			memoryId={`${characterId}-Statistics`}
+			switchShortcutKey="2">
 			<UIBasics.Box
 				backgroundColor="blue"
 				withoutMargin

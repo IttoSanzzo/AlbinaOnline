@@ -12,7 +12,8 @@ export function TraitsSkillsSpellsDrawer({
 	return (
 		<CharacterDrawerBaseHeader
 			title="Traços & Skills & Spells"
-			memoryId={`${characterId}-TraitsSkillsSpells`}>
+			memoryId={`${characterId}-TraitsSkillsSpells`}
+			switchShortcutKey="3">
 			<CharacterEditableDataDisplays.Traits characterId={characterId} />
 			<UIBasics.MultiColumn.Two
 				colum1={
