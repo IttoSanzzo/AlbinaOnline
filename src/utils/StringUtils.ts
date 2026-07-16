@@ -63,3 +63,10 @@ export function normalizeText(text: string): string {
 		.replace(/[\u0300-\u036f]/g, "")
 		.toLowerCase();
 }
+
+export function normalizeDiacriticText(text: string) {
+	return text
+		.normalize("NFD")
+		.replace(/\p{Diacritic}/gu, "")
+		.toLowerCase();
+}

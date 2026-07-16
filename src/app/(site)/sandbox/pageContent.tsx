@@ -1,13 +1,21 @@
-import { GenericPageContainer } from "@/components/(Design)";
-import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
-import { UIBasics } from "@/components/(UIBasics)";
+"use client";
 
-export default async function SandboxPageContent() {
+import { GenericPageContainer } from "@/components/(Design)";
+import { generateAutoMinedSpells } from "../../../../Data/GitIgnored/AutoMinedSpellData/generator";
+
+export default function SandboxPageContent() {
 	return (
-		<GenericPageContainer title="">
-			<UIBasics.Box backgroundColor="red">
-				<LoadingCircle size={200} />
-			</UIBasics.Box>
+		<GenericPageContainer title="Sandobox">
+			<div>
+				<button
+					onClick={async (event) => {
+						event.preventDefault();
+
+						await generateAutoMinedSpells();
+					}}>
+					Here goes nothing
+				</button>
+			</div>
 		</GenericPageContainer>
 	);
 }

@@ -6,6 +6,8 @@ import { getCacheMode } from "@/utils/Cache";
 import { SpellData } from "@/libs/stp@types";
 import PageContent from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { AutoMinedSpellDataMap } from "../../../../Data/GitIgnored/AutoMinedSpellData";
+import { normalizeDiacriticText } from "@/utils/StringUtils";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Spells",
@@ -42,6 +44,18 @@ export default async function SpellsPageServerShell() {
 	const allSpells: SpellData[] = allRawSpells.sort((a, b) =>
 		a.name.localeCompare(b.name),
 	);
+
+	allSpells.forEach((spell) => {
+		if (spell.name.startsWith("@")) {
+			if (
+				AutoMinedSpellDataMap.get(
+					normalizeDiacriticText(spell.name.substring(2)),
+				) == undefined
+			)
+				spell.name = `${spell.name}🔸`;
+			spell.name = spell.name.replace("@ ", "🌐 ");
+		}
+	});
 
 	return (
 		<GenericPageContainer

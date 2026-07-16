@@ -2,13 +2,28 @@ import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { MagicAttribute, SpellProperties } from "@/libs/stp@types";
 
+const defaultManaCostPerLevel = {
+	0: 2,
+	1: 3,
+	2: 5,
+	3: 8,
+	4: 12,
+	5: 17,
+	6: 23,
+	7: 30,
+	8: 38,
+	9: 49,
+	10: 59,
+	11: 70,
+	12: 82,
+};
+
 interface SpellPropertiesDisplayProps {
 	spellProperties?: SpellProperties;
 	spellDomains: string[];
 	magicAttributes: (keyof typeof MagicAttribute)[];
 	spellLevel: number;
 }
-
 export default function SpellPropertiesDisplay({
 	spellProperties,
 	spellDomains,
@@ -16,6 +31,9 @@ export default function SpellPropertiesDisplay({
 	spellLevel,
 }: SpellPropertiesDisplayProps) {
 	if (!spellProperties) return <></>;
+
+	if (spellProperties.components.mana == "")
+		spellProperties.components.mana = `${defaultManaCostPerLevel[spellLevel as keyof typeof defaultManaCostPerLevel]} (Default)`;
 
 	return (
 		<UIBasics.Box
@@ -188,34 +206,6 @@ export default function SpellPropertiesDisplay({
 						textColor="gray"
 						fixedLinePositions={[1]}
 						fixedLineWidths={[25]}
-						tableData={{
-							tableLanes: [
-								[
-									<UIBasics.Text
-										textColor="orange"
-										children="Extras"
-									/>,
-									<UIBasics.Text
-										textColor="orange"
-										children="Descrição"
-										textAlign="flex-center"
-										withBold
-									/>,
-								],
-								...spellProperties.extras.map((extra) => [
-									<UIBasics.Text>{`⦇ ${extra.key} ⦈`}</UIBasics.Text>,
-									<UIBasics.Text>{`⪩ ${extra.value}`}</UIBasics.Text>,
-								]),
-							],
-						}}
-					/>
-				)}
-				{spellProperties.extras.length !== 0 && (
-					<UIBasics.Table
-						withHeaderRow
-						textColor="gray"
-						fixedLinePositions={[1]}
-						fixedLineWidths={[15]}
 						tableData={{
 							tableLanes: [
 								[

@@ -4,6 +4,7 @@ import { PageHeader } from "./subComponents/PageHeader";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { EditablePageBanner } from "./subComponents/EditablePageBanner";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const MainContainer = newStyledElement.div(styles.mainContainer);
 const ContentsContainer = newStyledElement.div(styles.contentsContainer);
@@ -30,8 +31,8 @@ interface GenericPageContainerProps {
 export function GenericPageContainer({
 	children,
 	title,
-	banner,
-	icon,
+	banner = getAlbinaApiFullAddress("/banner/core-page"),
+	icon = getAlbinaApiFullAddress("/favicon/core-page"),
 	borderColor,
 	borderOpacity = 40,
 	isEditable = false,
