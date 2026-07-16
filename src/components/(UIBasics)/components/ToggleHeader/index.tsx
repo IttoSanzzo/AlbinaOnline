@@ -64,6 +64,7 @@ interface ToggleHeaderProps extends StandartColorProps {
 	style?: CSSProperties;
 	useCloseShortcut?: boolean;
 	switchShortcutKey?: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+	titleTitle?: string;
 }
 export function ToggleHeader({
 	children,
@@ -80,6 +81,7 @@ export function ToggleHeader({
 	style,
 	useCloseShortcut = false,
 	switchShortcutKey,
+	titleTitle,
 }: ToggleHeaderProps) {
 	const [isOpen, setIsOpen] = useState<boolean>(defaultOpenState);
 	const [contentMaxHeight, setContentMaxHeight] = useState<number>(0);
@@ -207,6 +209,7 @@ export function ToggleHeader({
 							headerType={headerType}
 							textColor={titleColor ? titleColor : "default"}
 							children={title}
+							title={titleTitle}
 						/>
 					</ToggleButtonHeaderContainer>
 				</button>

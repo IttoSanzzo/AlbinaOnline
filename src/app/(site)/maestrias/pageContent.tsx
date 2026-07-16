@@ -7,6 +7,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
+import { normalizeDiacriticText } from "@/utils/StringUtils";
 
 const schema = z.object({
 	filter: z.string().transform((filter) => filter.toLowerCase()),
@@ -23,16 +24,16 @@ export default function PageContent({ masteries }: PageContentProps) {
 			filter: "",
 		},
 	});
-	const filter = form.watch().filter.toLowerCase();
+	const filter = normalizeDiacriticText(form.watch().filter);
 
 	const filteredMasteries: MasteryData[] =
 		filter.length === 0
 			? masteries
 			: masteries.filter(
 					(masterty) =>
-						masterty.name.toLowerCase().includes(filter) ||
-						masterty.type.toLowerCase().includes(filter) ||
-						masterty.subType.toLowerCase().includes(filter),
+						normalizeDiacriticText(masterty.name).includes(filter) ||
+						normalizeDiacriticText(masterty.type).includes(filter) ||
+						normalizeDiacriticText(masterty.subType).includes(filter),
 				);
 
 	const allProficiencyMasteries = filteredMasteries.filter(
@@ -84,7 +85,8 @@ export default function PageContent({ masteries }: PageContentProps) {
 							memoryId="Proficiências"
 							titleAlign="center"
 							backgroundColor="gray"
-							title={"Proficiências"}>
+							title={"Proficiências"}
+							titleTitle={`Total: ${allProficiencyMasteries.length}`}>
 							<UIBasics.Callout
 								backgroundColor="blue"
 								titleColor="orange"
@@ -180,7 +182,8 @@ export default function PageContent({ masteries }: PageContentProps) {
 							memoryId="Perícias"
 							titleAlign="center"
 							backgroundColor="gray"
-							title={"Perícias"}>
+							title={"Perícias"}
+							titleTitle={`Total: ${allExpertiseMasteries.length}`}>
 							<UIBasics.Callout
 								backgroundColor="blue"
 								titleColor="orange"
@@ -279,7 +282,8 @@ export default function PageContent({ masteries }: PageContentProps) {
 							memoryId="Conhecimentos"
 							titleAlign="center"
 							backgroundColor="gray"
-							title={"Conhecimentos"}>
+							title={"Conhecimentos"}
+							titleTitle={`Total: ${allKnowledgeMasteries.length}`}>
 							<UIBasics.Callout
 								backgroundColor="blue"
 								titleColor="orange"
@@ -363,7 +367,8 @@ export default function PageContent({ masteries }: PageContentProps) {
 							memoryId="Ofícios"
 							titleAlign="center"
 							backgroundColor="gray"
-							title={"Ofícios"}>
+							title={"Ofícios"}
+							titleTitle={`Total: ${allCraftMasteries.length}`}>
 							<UIBasics.Callout
 								backgroundColor="blue"
 								titleColor="orange"
