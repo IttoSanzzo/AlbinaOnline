@@ -16,8 +16,10 @@ export default function TraitTypeDisplay({
 	title,
 }: TraitTypeDisplayProps) {
 	const allTraitsFromThisType = allTraits.filter(
-		(trait) => trait.type === type
+		(trait) => trait.type === type,
 	);
+
+	if (allTraitsFromThisType.length == 0) return null;
 
 	if (!subTypesOrder)
 		return (
@@ -27,6 +29,7 @@ export default function TraitTypeDisplay({
 				<UIBasics.Header
 					textAlign="center"
 					children={title}
+					title={`Total: ${allTraitsFromThisType.length}`}
 				/>
 				<UIBasics.List.Grid
 					backgroundColor="purple"
@@ -57,6 +60,7 @@ export default function TraitTypeDisplay({
 			<UIBasics.Header
 				textAlign="center"
 				children={title}
+				title={`Total: ${allTraitsFromThisTypeOrdened.length}`}
 			/>
 			<UIBasics.List.Grid
 				backgroundColor="purple"
