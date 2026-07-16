@@ -45,6 +45,20 @@ export default async function SpellsPageServerShell() {
 		a.name.localeCompare(b.name),
 	);
 
+	processMinedSpells(allSpells);
+
+	return (
+		<GenericPageContainer
+			title="Todas os Spells"
+			icon={getAlbinaApiFullAddress("/favicon/core-page/spells")}
+			banner={getAlbinaApiFullAddress("/banner/core-page/spells")}>
+			<SetAnchorNavigation anchors={anchorNavigationData} />
+			<PageContent spells={allSpells} />
+		</GenericPageContainer>
+	);
+}
+
+export function processMinedSpells(allSpells: SpellData[]) {
 	allSpells.forEach((spell) => {
 		if (spell.name.startsWith("@")) {
 			if (
@@ -56,14 +70,4 @@ export default async function SpellsPageServerShell() {
 			spell.name = spell.name.replace("@ ", "🌐 ");
 		}
 	});
-
-	return (
-		<GenericPageContainer
-			title="Todas os Spells"
-			icon={getAlbinaApiFullAddress("/favicon/core-page/spells")}
-			banner={getAlbinaApiFullAddress("/banner/core-page/spells")}>
-			<SetAnchorNavigation anchors={anchorNavigationData} />
-			<PageContent spells={allSpells} />
-		</GenericPageContainer>
-	);
 }

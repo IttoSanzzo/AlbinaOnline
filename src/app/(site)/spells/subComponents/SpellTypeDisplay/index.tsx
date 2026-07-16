@@ -12,7 +12,7 @@ export default function SpellTypeDisplay({
 	domain,
 }: SpellTypeDisplayProps) {
 	const allSpellsFromThisType = allSpells.filter((spell) =>
-		spell.spellDomains.includes(domain)
+		spell.spellDomains.includes(domain),
 	);
 
 	const allSpellsOrdenedByLevel = allSpellsFromThisType.reduce<SpellData[][]>(
@@ -22,7 +22,7 @@ export default function SpellTypeDisplay({
 			acc[level].push(spell);
 			return acc;
 		},
-		[]
+		[],
 	);
 
 	return (
@@ -36,6 +36,7 @@ export default function SpellTypeDisplay({
 							textAlign="center"
 							textColor="purple"
 							children={`Nível ${level}`}
+							title={`Total: ${spellLevel.length}`}
 						/>
 						{
 							<UIBasics.List.Grid

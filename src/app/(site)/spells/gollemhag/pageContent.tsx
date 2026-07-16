@@ -4,6 +4,7 @@ import { getCacheMode } from "@/utils/Cache";
 import SpellTypeDisplay from "../subComponents/SpellTypeDisplay";
 import { AnchorProps, SetAnchorNavigation } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { processMinedSpells } from "../page";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Nível 0", id: "Nível 0" },
@@ -31,6 +32,8 @@ export default async function GollemhagPageContent() {
 	const allSpells: SpellData[] = allRawSpells.sort((a, b) =>
 		a.name.localeCompare(b.name),
 	);
+
+	processMinedSpells(allSpells);
 
 	return (
 		<GenericPageContainer

@@ -12,6 +12,7 @@ interface HeaderProps extends StandartColorProps, StandartTextProps {
 	children: ReactNode | string;
 	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
 	withoutMargin?: boolean;
+	title?: string;
 }
 
 export function Header({
@@ -24,6 +25,7 @@ export function Header({
 	withItalic,
 	withUnderline,
 	textAlign,
+	title,
 }: HeaderProps) {
 	const style: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -40,6 +42,7 @@ export function Header({
 		<HeaderElement
 			id={typeof children === "string" ? idfyString(children) : undefined}
 			style={style}
+			title={title}
 			children={children}
 		/>
 	);

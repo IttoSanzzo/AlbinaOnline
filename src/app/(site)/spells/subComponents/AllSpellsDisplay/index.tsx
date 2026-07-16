@@ -14,7 +14,7 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 			acc[level].push(spell);
 			return acc;
 		},
-		[]
+		[],
 	);
 
 	return (
@@ -26,6 +26,7 @@ export default function AllSpellsDisplay({ allSpells }: AllSpellsDisplayProps) {
 							textAlign="center"
 							textColor="purple"
 							children={`Nível ${level}`}
+							title={`Total: ${spellLevel.length}`}
 						/>
 						{
 							<UIBasics.List.Grid

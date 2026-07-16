@@ -9,6 +9,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
+import { normalizeDiacriticText } from "@/utils/StringUtils";
 
 const schema = z.object({
 	filter: z.string().transform((filter) => filter.toLowerCase()),
@@ -25,16 +26,16 @@ export default function PageContent({ spells }: PageContentProps) {
 			filter: "",
 		},
 	});
-	const filter = form.watch().filter.toLowerCase();
+	const filter = normalizeDiacriticText(form.watch().filter);
 
 	const filteredSpells: SpellData[] =
 		filter.length === 0
 			? spells
 			: spells.filter(
 					(spell) =>
-						spell.name.toLowerCase().includes(filter) ||
-						spell.type.toLowerCase().includes(filter) ||
-						spell.subType.toLowerCase().includes(filter) ||
+						normalizeDiacriticText(spell.name).includes(filter) ||
+						normalizeDiacriticText(spell.type).includes(filter) ||
+						normalizeDiacriticText(spell.subType).includes(filter) ||
 						spell.domainLevel === Number(filter),
 				);
 
