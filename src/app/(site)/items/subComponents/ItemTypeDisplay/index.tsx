@@ -24,7 +24,9 @@ export default function ItemTypeDisplay({
 			<UIBasics.Header
 				children={title}
 				textAlign="center"
-				textColor="gray"></UIBasics.Header>
+				textColor="gray"
+				title={`Total: ${allItemsFromThisType.length}`}
+			/>
 			<UIBasics.List.Grid
 				backgroundColor="purple"
 				columnWidth={100}

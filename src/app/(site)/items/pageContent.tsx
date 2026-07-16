@@ -7,6 +7,7 @@ import { HookedForm } from "@/libs/stp@forms";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { normalizeDiacriticText } from "@/utils/StringUtils";
 
 const schema = z.object({
 	filter: z.string().transform((filter) => filter.toLowerCase()),
@@ -23,16 +24,16 @@ export default function PageContent({ items }: PageContentProps) {
 			filter: "",
 		},
 	});
-	const filter = form.watch().filter.toLowerCase();
+	const filter = normalizeDiacriticText(form.watch().filter);
 
 	const filteredItems: ItemData[] =
 		filter.length === 0
 			? items
 			: items.filter(
 					(item) =>
-						item.name.toLowerCase().includes(filter) ||
-						item.type.toLowerCase().includes(filter) ||
-						item.subType.toLowerCase().includes(filter),
+						normalizeDiacriticText(item.name).includes(filter) ||
+						normalizeDiacriticText(item.type).includes(filter) ||
+						normalizeDiacriticText(item.subType).includes(filter),
 				);
 
 	return (
