@@ -22,6 +22,7 @@ export default function ItemTypeDisplay({
 			<UIBasics.Header
 				textAlign="center"
 				children={title}
+				title={`Total: ${allRacesFromThisType.length}`}
 			/>
 			<UIBasics.List.Grid
 				backgroundColor="purple"
