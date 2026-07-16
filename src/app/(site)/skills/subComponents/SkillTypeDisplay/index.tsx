@@ -16,7 +16,7 @@ export default function SkillTypeDisplay({
 	title,
 }: SkillTypeDisplayProps) {
 	const allSkillsFromThisType = allSkills.filter(
-		(skill) => skill.type === type
+		(skill) => skill.type === type,
 	);
 
 	if (!subTypesOrder)
@@ -27,6 +27,7 @@ export default function SkillTypeDisplay({
 				<UIBasics.Header
 					textAlign="center"
 					children={title}
+					title={`Total: ${allSkillsFromThisType.length}`}
 				/>
 				<UIBasics.List.Grid
 					backgroundColor="purple"
@@ -57,6 +58,7 @@ export default function SkillTypeDisplay({
 			<UIBasics.Header
 				textAlign="center"
 				children={title}
+				title={`Total: ${allSkillsFromThisTypeOrdened.length}`}
 			/>
 			<UIBasics.List.Grid
 				backgroundColor="purple"
