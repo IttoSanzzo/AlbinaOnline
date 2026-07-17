@@ -11,6 +11,7 @@ import styles from "./styles.module.css";
 import { useNavigationHistory } from "@/libs/stp@hooks/hooks/useNavigationHistory";
 
 const BreadcrumbContainer = newStyledElement.div(styles.breadcrumbContainer);
+const BreadcrumbSlash = newStyledElement.span(styles.breadcrumbSlash);
 
 function segmentToApiRoute(segment: string): string {
 	switch (segment) {
@@ -66,8 +67,11 @@ export function Breadcrumbs() {
 		}
 	}, [pathName, crumbs, addHistoryEntry, isSet, loadHistory]);
 
+	if (crumbs.length == 1 && crumbs[0].href == "/home") return null;
+
 	return (
 		<BreadcrumbContainer>
+			<BreadcrumbSlash>/</BreadcrumbSlash>
 			{crumbs.map((breadcrumb, index) => (
 				<span key={breadcrumb.href}>
 					{index == crumbs.length - 1 ? (
@@ -86,7 +90,7 @@ export function Breadcrumbs() {
 							icon={breadcrumb.icon}
 						/>
 					)}
-					{crumbs.length > index + 1 && <span>/</span>}
+					{crumbs.length > index + 1 && <BreadcrumbSlash>/</BreadcrumbSlash>}
 				</span>
 			))}
 		</BreadcrumbContainer>

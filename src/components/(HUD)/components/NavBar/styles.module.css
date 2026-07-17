@@ -12,11 +12,23 @@
 	color: var(--cl-gray-100);
 	min-height: 50px;
 }
+
 .navSideContainer {
 	display: flex;
 	align-items: center;
 	flex-direction: row;
 	gap: var(--sp-2);
+}
+
+.homeLink {
+	width: 25px;
+	height: 25px;
+	overflow: hidden;
+	border-radius: var(--rd-md);
+
+	& > a > img {
+		margin: auto;
+	}
 }
 
 .profileButtonContainer {

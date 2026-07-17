@@ -1,6 +1,5 @@
 .breadcrumbContainer {
 	color: var(--cl-gray-400);
-	margin-left: 40px;
 
 	& a {
 		padding: var(--sp-1);
@@ -18,9 +17,10 @@
 	& span:not(:first-child) {
 		margin-left: var(--sp-2);
 	}
+}
 
-	& span span {
-		font-size: var(--fs-xl);
-		font-weight: var(--fw-bold);
-	}
+.breadcrumbSlash {
+	font-size: var(--fs-xl);
+	font-weight: var(--fw-bold);
+	color: var(--cl-gray-400);
 }

@@ -1,12 +1,3 @@
-@keyframes fadeInBg {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 0.6;
-	}
-}
-
 .hideSideBarButtonContainer {
 	position: fixed;
 	top: 7px;
@@ -35,5 +26,14 @@
 		& svg {
 			display: none;
 		}
+	}
+}
+
+@keyframes fadeInBg {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 0.6;
 	}
 }
