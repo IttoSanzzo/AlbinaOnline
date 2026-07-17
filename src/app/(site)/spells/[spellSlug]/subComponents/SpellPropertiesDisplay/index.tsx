@@ -1,6 +1,7 @@
 import { StyledLink } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { MagicAttribute, SpellProperties } from "@/libs/stp@types";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const defaultManaCostPerLevel = {
 	0: 2,
@@ -69,14 +70,23 @@ export default function SpellPropertiesDisplay({
 												justifyContent: "center",
 												gap: "5px",
 											}}>
-											{...spellDomains.map((spellDomain) => [
-												<StyledLink
-													key={spellDomain}
-													href={`/spells/${spellDomain.toLowerCase()}`}
-													title={spellDomain}
-													textMode
-												/>,
-											])}
+											<UIBasics.List.Grid
+												withoutPadding
+												withoutMargin
+												withoutBorder
+												columnWidth={125}>
+												{...spellDomains.map((spellDomain) => [
+													<StyledLink
+														key={spellDomain}
+														href={`/spells/${spellDomain.toLowerCase()}`}
+														icon={getAlbinaApiFullAddress(
+															`/favicon/spells/${spellDomain.toLowerCase()}`,
+														)}
+														title={spellDomain}
+														textMode
+													/>,
+												])}
+											</UIBasics.List.Grid>
 										</div>,
 									],
 								],
