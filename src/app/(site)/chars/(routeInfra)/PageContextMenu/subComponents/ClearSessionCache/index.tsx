@@ -8,7 +8,7 @@ export function ClearSessionCache() {
 				onClick={(event) => {
 					event.preventDefault();
 					allAccessibleCharactersCache.invalidate("all");
-					window.navigation.reload();
+					window.location.reload();
 				}}
 				iconProps={{ name: "Memory", style: "bold" }}>
 				Limpar Cache
