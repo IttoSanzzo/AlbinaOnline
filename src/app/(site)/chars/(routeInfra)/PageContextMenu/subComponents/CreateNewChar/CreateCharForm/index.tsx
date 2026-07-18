@@ -9,6 +9,7 @@ import { z } from "zod";
 import { HookedForm, SelectOption } from "@/libs/stp@forms";
 import { RaceData } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import { allAccessibleCharactersCache } from "@/libs/stp@cache";
 
 const schema = z.object({
 	name: z.string().min(1, "Insira um nome!"),
@@ -61,6 +62,7 @@ export function CreateCharForm() {
 			return;
 		}
 		const responseData = await response.json();
+		allAccessibleCharactersCache.invalidate("all");
 		router.push(`/chars/${responseData.character.id}`);
 	}
 

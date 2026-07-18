@@ -15,17 +15,18 @@ export function Tilt({ children, options, ...props }: Props) {
 	const tilt = useRef<(HTMLDivElement & { destoy: () => void }) | null>(null);
 
 	useEffect(() => {
-		if (tilt.current !== null) {
-			VanillaTilt.init(tilt.current, options);
-		}
+		const element = tilt.current;
+		if (!element) return;
+
+		VanillaTilt.init(element, options);
+
+		// @ts-expect-error - Expected
+		const instance = element.vanillaTilt;
 
 		return () => {
-			if (tilt.current) {
-				// @ts-expect-error - Expected
-				tilt.current.vanillaTilt.destroy();
-			}
+			instance?.destroy();
 		};
-	}, [options]);
+	}, []);
 
 	return (
 		<TiltContainer

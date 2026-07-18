@@ -3,6 +3,7 @@
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { CreateNewChar } from "./subComponents/CreateNewChar";
 import { DropdownMenu } from "@/libs/stp@radix";
+import { ClearSessionCache } from "./subComponents/ClearSessionCache";
 
 export function PageContextMenu() {
 	return (
@@ -20,6 +21,7 @@ export function PageContextMenu() {
 					<DropdownMenu.Arrow />
 
 					<CreateNewChar />
+					<ClearSessionCache />
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>
 		</DropdownMenu.Root>

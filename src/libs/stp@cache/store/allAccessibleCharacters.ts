@@ -1,3 +1,5 @@
+"use client";
+
 import { CharacterData } from "@/libs/stp@types";
 import { SessionCache } from "../core";
 

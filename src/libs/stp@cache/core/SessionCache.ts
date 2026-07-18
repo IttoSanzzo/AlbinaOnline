@@ -10,6 +10,7 @@ interface CacheEntry<T> {
 }
 
 export class SessionCache<TKey, TValue> {
+	public static readonly GLOBAL_PREFIX = "__gjallar_cache__";
 	private readonly prefix: string;
 	private readonly ttlMs: number;
 
@@ -21,7 +22,7 @@ export class SessionCache<TKey, TValue> {
 	}
 
 	private buildKey(key: TKey): string {
-		return `${this.prefix}:${JSON.stringify(key)}`;
+		return `${SessionCache.GLOBAL_PREFIX}:${this.prefix}:${JSON.stringify(key)}`;
 	}
 
 	public get(key: TKey): TValue | null | undefined {
@@ -105,3 +106,29 @@ export class SessionCache<TKey, TValue> {
 		return promise;
 	}
 }
+
+export function clearSessionStorageByPrefix(prefix: string) {
+	for (let i = sessionStorage.length - 1; i >= 0; i--) {
+		const key = sessionStorage.key(i);
+
+		if (key?.startsWith(prefix)) {
+			sessionStorage.removeItem(key);
+		}
+	}
+}
+export function clearAllSessionCaches() {
+	clearSessionStorageByPrefix(SessionCache.GLOBAL_PREFIX);
+}
+
+// function clearSessionStorageOnReload() {
+// 	if (typeof window === "undefined") return;
+
+// 	const navigation = performance.getEntriesByType("navigation")[0] as
+// 		| { type?: string }
+// 		| undefined;
+
+// 	if (navigation?.type === "reload") {
+// 		clearAllSessionCaches();
+// 	}
+// }
+// clearSessionStorageOnReload();

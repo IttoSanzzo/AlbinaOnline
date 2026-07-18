@@ -42,7 +42,6 @@ export default function CharsPageContent() {
 			const characters = await allAccessibleCharactersCache.getOrLoad(
 				"all",
 				async () => {
-					console.log("Droga");
 					const response = await authenticatedFetchAsync(
 						getAlbinaApiFullAddress("/chars"),
 					);
