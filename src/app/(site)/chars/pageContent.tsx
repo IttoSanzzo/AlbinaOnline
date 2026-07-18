@@ -15,8 +15,9 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
-import { authenticatedFetchWithTTLCache } from "@/utils/FetchCommonTools";
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
+import { allAccessibleCharactersCache } from "@/libs/stp@cache";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 
 const schema = z.object({
 	filter: z.string().transform((filter) => filter.toLowerCase()),
@@ -37,22 +38,25 @@ export default function CharsPageContent() {
 	const filter = form.watch().filter.toLowerCase();
 
 	useEffect(() => {
-		authenticatedFetchWithTTLCache<{ characters: CharacterData[] | null }>(
-			getAlbinaApiFullAddress("/chars"),
-			{
-				next: { revalidate: 60 },
-			},
-			60 * 1000,
-		).then(async (response) => {
-			if (response.ok == false) return;
-			setCharacters(
-				response.data.characters
-					? response.data.characters.sort((a, b) =>
-							a.name.localeCompare(b.name),
-						)
-					: [],
+		async function loadCharacters() {
+			const characters = await allAccessibleCharactersCache.getOrLoad(
+				"all",
+				async () => {
+					console.log("Droga");
+					const response = await authenticatedFetchAsync(
+						getAlbinaApiFullAddress("/chars"),
+					);
+					if (!response.ok) return null;
+					return (await response.json()).characters;
+				},
 			);
-		});
+			if (characters == null) {
+				allAccessibleCharactersCache.invalidate("all");
+				return;
+			}
+			setCharacters(characters.sort((a, b) => a.name.localeCompare(b.name)));
+		}
+		loadCharacters();
 	}, [setCharacters]);
 	if (characters === null) return <LoadingCircle />;
 
