@@ -10,7 +10,10 @@ import { HookedForm } from "@/libs/stp@forms";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { AlertDialog } from "@/libs/stp@radix";
 import { Guid } from "@/libs/stp@types";
-import { allAccessibleCharactersCache } from "@/libs/stp@cache";
+import {
+	allAccessibleCharactersCache,
+	characterDataCache,
+} from "@/libs/stp@cache";
 
 const schema = z.object({
 	name: z.string(),
@@ -45,6 +48,7 @@ export function DeleteCharForm({
 		if (response.status != 200) setResponseMessage("A exclusão falhou");
 		else {
 			allAccessibleCharactersCache.invalidate("all");
+			characterDataCache.invalidate(characterId);
 			router.push(`/chars`);
 		}
 	}

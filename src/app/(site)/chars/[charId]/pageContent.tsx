@@ -23,6 +23,7 @@ import { UserPageLink } from "@/components/(UTILS)";
 import { CharacterForbidden } from "./subComponents/CharacterForbidden";
 import { IsNpcSwitch } from "./subComponents/IsNpcSwitch";
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
+import { characterDataCache } from "@/libs/stp@cache";
 
 interface CharPageContentProps {
 	characterId: Guid;
@@ -35,25 +36,33 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 	useCharacterUpdatedPolling(characterId);
 
 	async function loadCharacterAsync(): Promise<boolean> {
-		const response = await authenticatedFetchAsync(
-			`/chars/${characterId}?view=expanded`,
-			{
-				method: "GET",
-				next: { tags: [`/chars/${characterId}`] },
+		const characterData = await characterDataCache.getOrLoad(
+			characterId,
+			async () => {
+				const response = await authenticatedFetchAsync(
+					`/chars/${characterId}?view=expanded`,
+					{
+						method: "GET",
+						next: { tags: [`/chars/${characterId}`] },
+					},
+				);
+				if (!response.ok) {
+					setError(response.status);
+					return null;
+				} else {
+					setError(null);
+					const data = await response.json();
+					return data.character;
+				}
 			},
 		);
-		if (!response.ok) {
-			setError(response.status);
-			return false;
-		} else {
-			const data = await response.json();
-			setError(null);
-			setCharacterData(data.character);
-			return true;
-		}
+		if (characterData == null) return false;
+		setCharacterData(characterData);
+		return true;
 	}
 
 	useCharacterUpdated(characterId, async () => {
+		characterDataCache.invalidate(characterId);
 		return await loadCharacterAsync();
 	});
 

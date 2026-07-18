@@ -5,6 +5,13 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useEffect, useRef } from "react";
 import { eventBus } from "../classes";
 import toast from "react-hot-toast";
+import { characterDataCache } from "@/libs/stp@cache";
+
+async function emitUpdateSignalAsync(characterId: string, updatedAt: string) {
+	return await eventBus.emitAsync(`/chars/${characterId}/updated`, {
+		updatedAt,
+	});
+}
 
 export function useCharacterUpdatedPolling(characterId: string) {
 	const lastUpdatedAt = useRef<string | null>(null);
@@ -23,43 +30,35 @@ export function useCharacterUpdatedPolling(characterId: string) {
 		let isMounted = true;
 		let isFetching = false;
 
-		const init = async () => {
-			const initial = await loadUpdatedAt();
-			if (isMounted) lastUpdatedAt.current = initial;
-		};
+		async function init() {
+			if (isMounted) {
+				const characterData = characterDataCache.get(characterId);
+				const updatedAt = await loadUpdatedAt();
+				if (updatedAt && characterData && characterData.updatedAt != updatedAt)
+					emitUpdateSignalAsync(characterId, updatedAt);
+				lastUpdatedAt.current = updatedAt;
+			}
+		}
+		init();
 
-		const tick = async () => {
+		async function tick() {
 			if (isFetching) return;
 			isFetching = true;
 
 			try {
 				const updatedAt = await loadUpdatedAt();
 				if (!isMounted) return;
-				if (
-					lastUpdatedAt.current &&
-					updatedAt &&
-					lastUpdatedAt.current !== updatedAt
-				) {
-					// const toastId = toast.loading("Sincronizando dados...");
-					const success = await eventBus.emitAsync(
-						`/chars/${characterId}/updated`,
-						{ updatedAt },
-					);
+				if (updatedAt && lastUpdatedAt.current !== updatedAt) {
+					const success = await emitUpdateSignalAsync(characterId, updatedAt);
 					if (!isMounted) return;
-					if (success) {
-						// toast.success("Sincronizado", { id: toastId });
-						lastUpdatedAt.current = updatedAt;
-					} else {
-						toast.error("Sincronização falhou");
-						// toast.error("Sincronização falhou", { id: toastId });
-					}
+					if (success) lastUpdatedAt.current = updatedAt;
+					else toast.error("Sincronização falhou");
 				}
 			} finally {
 				isFetching = false;
 			}
-		};
+		}
 
-		init();
 		const interval = setInterval(tick, 5000);
 		return () => {
 			isMounted = false;
