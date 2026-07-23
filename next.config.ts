@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
 	turbopack: {
 		root: __dirname,
 	},
+	experimental: {
+		staticGenerationMaxConcurrency: 30,
+		webpackBuildWorker: true,
+	},
 	images: {
 		dangerouslyAllowSVG: true,
 		qualities: [25, 50, 75, 90, 100],

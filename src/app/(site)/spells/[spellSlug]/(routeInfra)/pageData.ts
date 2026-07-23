@@ -4,6 +4,7 @@ import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import { AutoMinedSpellDataMap } from "../../../../../../Data/GitIgnored/AutoMinedSpellData";
 import { normalizeDiacriticText } from "@/utils/StringUtils";
+import { Language, translate } from "@/libs/stp@translate";
 
 type SpellPageData = {
 	spellData?: SpellData;
@@ -31,6 +32,7 @@ export async function getPageData(spellSlug: string): Promise<SpellPageData> {
 	const spellData = convertEnumsFromResponse<SpellData>(await response.json());
 
 	overloadDataWithMined(spellData);
+	await generateAutoChants(spellData);
 
 	return {
 		spellData,
@@ -96,5 +98,18 @@ function overloadDataWithMined(spellData: SpellData) {
 		});
 	} catch (ex) {
 		void ex;
+	}
+}
+
+async function generateAutoChants(spellData: SpellData) {
+	if (spellData.properties?.chants.length == 0) {
+		try {
+			spellData.properties.chants.push(`⛏️ ${await translate(spellData.name, {
+				to: Language.LATIN,
+			})}
+			`);
+		} catch (ex) {
+			void ex;
+		}
 	}
 }

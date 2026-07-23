@@ -1,7 +1,7 @@
 "use client";
 
 import { GenericPageContainer } from "@/components/(Design)";
-import { generateAutoMinedSpells } from "../../../../Data/GitIgnored/AutoMinedSpellData/generator";
+// import { Language, translate3 } from "@/libs/stp@translate";
 
 export default function SandboxPageContent() {
 	return (
@@ -10,10 +10,15 @@ export default function SandboxPageContent() {
 				<button
 					onClick={async (event) => {
 						event.preventDefault();
-
-						await generateAutoMinedSpells();
+						// try {
+						// const text = await translate3("Bordão Mágico", {
+						// to: Language.LATIN,
+						// });
+						// } catch (ex) {
+						// console.error(ex);
+						// }
 					}}>
-					Here goes nothing
+					Translate
 				</button>
 			</div>
 		</GenericPageContainer>
