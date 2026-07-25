@@ -55,6 +55,11 @@ const CoreHubPageGroup = (
 				image: getAlbinaApiFullAddress(`/favicon/races`),
 			},
 			{
+				name: "Atlas",
+				link: "/atlas",
+				image: getAlbinaApiFullAddress(`/favicon/atlas`),
+			},
+			{
 				name: "Usuários",
 				link: "/users",
 				image: getAlbinaApiFullAddress(`/favicon/users`),

@@ -63,6 +63,12 @@ export default function HomePage() {
 					titleAlwaysOpen
 				/>
 				<StyledLinkCard
+					artworkUrl={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
+					href="/atlas"
+					title="Atlas"
+					titleAlwaysOpen
+				/>
+				<StyledLinkCard
 					artworkUrl={getAlbinaApiFullAddress("/favicon/core-page/users")}
 					href="/users"
 					title="Usuários"
