@@ -5,6 +5,7 @@ export type { SelectOption } from "./components/Select/index";
 import { Form } from "./components/Form";
 import { SelectComponent } from "./components/Select";
 import { MultiSelectComponent } from "./components/MultiSelect";
+import { BoolInput } from "./components/BoolInput";
 import { TextInput } from "./components/TextInput";
 import { TextArrayInput } from "./components/TextArrayInput";
 import { TextAreaInput } from "./components/TextAreaInput";
@@ -30,6 +31,7 @@ export * from "./types";
 export const HookedForm = {
 	Form: Form,
 	SubmitButton: SubmitButton,
+	BoolInput: BoolInput,
 	TextInput: TextInput,
 	TextArrayInput: TextArrayInput,
 	TextAreaInput: TextAreaInput,

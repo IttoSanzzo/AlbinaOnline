@@ -13,6 +13,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { redirect } from "next/navigation";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -25,7 +26,7 @@ export default async function SkillPageContent({
 }: SkillPageContentProps) {
 	const SkillPageData = await getPageData(skillSlug);
 	if (SkillPageData.skillData == undefined) {
-		return <>Error</>;
+		return redirect("/skills");
 	}
 	const { skillData, borderColor } = SkillPageData;
 

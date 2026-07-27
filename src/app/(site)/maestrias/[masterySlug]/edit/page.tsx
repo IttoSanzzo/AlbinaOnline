@@ -2,6 +2,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditMasteryPageContent } from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Edit Mastery",
@@ -21,6 +22,6 @@ export default async function EditMasteryPageServerShell({
 	const response = await fetch(
 		getAlbinaApiFullAddress(`/masteries/${masterySlug}`),
 	);
-	if (!response.ok) return null;
+	if (!response.ok) return redirect("/maestrias");
 	return <EditMasteryPageContent mastery={await response.json()} />;
 }

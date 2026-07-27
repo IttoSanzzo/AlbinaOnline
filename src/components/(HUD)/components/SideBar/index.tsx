@@ -8,7 +8,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StandartTextColor } from "@/components/(UIBasics)";
 
 const SideBarActivationArea = newStyledElement.div(
-	styles.sideBarActivationArea
+	styles.sideBarActivationArea,
 );
 const SideBarContainer = newStyledElement.div(styles.sideBarContainer);
 const HeaderContainer = newStyledElement.div(styles.headerContainer);

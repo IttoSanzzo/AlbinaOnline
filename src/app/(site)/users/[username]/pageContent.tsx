@@ -50,13 +50,14 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 				if (!response.ok) return;
 				const data = await response.json();
 				setFavorites({
-					character: data.favorites.Character,
 					item: data.favorites.Item,
 					mastery: data.favorites.Mastery,
-					race: data.favorites.Race,
 					skill: data.favorites.Skill,
 					spell: data.favorites.Spell,
 					trait: data.favorites.Trait,
+					location: data.favorites.Location,
+					race: data.favorites.Race,
+					character: data.favorites.Character,
 				});
 			});
 			authenticatedFetchAsync(
@@ -178,15 +179,21 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 								favoriteName="Maestrias"
 							/>
 							<UserFavoriteCarousel
-								favoriteType="skill"
+								favoriteType="race"
 								favorites={favorites}
-								routeBase="skills"
-								favoriteName="Skills"
+								routeBase="racas"
+								favoriteName="Raças"
 							/>
 						</UserFavoriteCarouselContainer>
 					}
 					colum2={
 						<UserFavoriteCarouselContainer>
+							<UserFavoriteCarousel
+								favoriteType="skill"
+								favorites={favorites}
+								routeBase="skills"
+								favoriteName="Skills"
+							/>
 							<UserFavoriteCarousel
 								favoriteType="spell"
 								favorites={favorites}
@@ -199,14 +206,14 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 								routeBase="tracos"
 								favoriteName="Traços"
 							/>
-							<UserFavoriteCarousel
-								favoriteType="race"
-								favorites={favorites}
-								routeBase="racas"
-								favoriteName="Raças"
-							/>
 						</UserFavoriteCarouselContainer>
 					}
+				/>
+				<UserFavoriteCarousel
+					favoriteType="location"
+					favorites={favorites}
+					routeBase="atlas"
+					favoriteName="Localizações"
 				/>
 			</UIBasics.Box>
 		</GenericPageContainer>

@@ -12,6 +12,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
+import { redirect } from "next/navigation";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -24,7 +25,7 @@ export default async function TraitPageContent({
 }: TraitPageContenttProps) {
 	const TraitPageData = await getPageData(traitSlug);
 	if (TraitPageData.traitData == undefined) {
-		return <>Error</>;
+		return redirect("/tracos");
 	}
 	const { traitData, borderColor } = TraitPageData;
 

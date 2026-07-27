@@ -34,7 +34,7 @@ export default function IndexedPagesGroup({
 				defaultOpenState={defaultOpenState}
 				routeSensitiveMemory={false}
 				contentMargin="none"
-				textColor="orange"
+				textColor="purple"
 				title={<h6>{groupName}</h6>}>
 				<IndexedPageLinksContainer>
 					{indexedPages.map((indexedPage) => (

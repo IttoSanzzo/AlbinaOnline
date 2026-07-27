@@ -3,13 +3,14 @@
 	flex: 1;
 	flex-direction: row;
 	gap: var(--sp-1);
+	width: 100%;
 }
 
 .leftColumContainer {
 	display: flex;
 	flex: 1;
 	padding: var(--sp-2) 0 0 var(--sp-1);
-	overflow: scroll;
+	width: 100%;
 
 	transition: 0.3s linear border;
 	border-radius: var(--rd-md);
@@ -18,7 +19,7 @@
 	display: flex;
 	flex: 1;
 	padding: var(--sp-2) var(--sp-1) 0 0;
-	overflow: scroll;
+	width: 100%;
 
 	transition: 0.3s linear border;
 	border-radius: var(--rd-md);

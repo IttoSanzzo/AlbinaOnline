@@ -170,6 +170,16 @@ export default function IndexedPagesGroups() {
 					)}
 				/>
 			)}
+			{favorites.location.length > 0 && (
+				<SortableIndexedPagesGroup
+					groupName="Atlas Fav."
+					groupType="Location"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/atlas",
+						favorites.location,
+					)}
+				/>
+			)}
 			{favorites.race.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Raças Fav."

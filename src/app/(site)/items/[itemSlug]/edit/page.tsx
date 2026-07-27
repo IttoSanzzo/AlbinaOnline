@@ -2,6 +2,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditItemPageContent } from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Edit Item",
@@ -19,6 +20,6 @@ export default async function EditItemPageServerShell({
 }: EditItemPageServerShellProps) {
 	const { itemSlug } = await params;
 	const response = await fetch(getAlbinaApiFullAddress(`/items/${itemSlug}`));
-	if (!response.ok) return <></>;
+	if (!response.ok) return redirect("/items");
 	return <EditItemPageContent item={await response.json()} />;
 }

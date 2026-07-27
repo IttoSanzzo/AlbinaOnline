@@ -20,12 +20,13 @@ export function convertEnumsFromResponse<T>(data: T): T {
 }
 
 const SlugKeyMap = {
-	skills: "skillSlug",
-	races: "raceSlug",
 	items: "itemSlug",
 	masteries: "masterySlug",
+	skills: "skillSlug",
 	traits: "traitSlug",
 	spells: "spellSlug",
+	races: "raceSlug",
+	atlas: "locationSlug",
 } as const;
 type SlugMap = typeof SlugKeyMap;
 
@@ -123,21 +124,17 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 	targetEnum: T,
 	ignoredKeys?: (keyof T)[],
 	valueAsNumber: boolean = false,
+	sort: boolean = true,
 ): SelectOption[] {
-	if (ignoredKeys) {
-		return Object.entries(targetEnum)
-			.filter(([key]) => isNaN(Number(key)) && !ignoredKeys.includes(key))
-			.sort(([key1], [key2]) => key1.localeCompare(key2))
-			.map(([key, value]) => ({
-				name: key,
-				value: valueAsNumber ? (value as number) : key,
-			}));
-	}
-	return Object.entries(targetEnum)
-		.filter(([key]) => isNaN(Number(key)))
-		.sort(([key1], [key2]) => key1.localeCompare(key2))
-		.map(([key, value]) => ({
-			name: key,
-			value: valueAsNumber ? (value as number) : key,
-		}));
+	let entries = Object.entries(targetEnum);
+	if (ignoredKeys)
+		entries = entries.filter(
+			([key]) => isNaN(Number(key)) && !ignoredKeys.includes(key),
+		);
+	else entries = entries.filter(([key]) => isNaN(Number(key)));
+	if (sort) entries.sort(([key1], [key2]) => key1.localeCompare(key2));
+	return entries.map(([key, value]) => ({
+		name: key,
+		value: valueAsNumber ? (value as number) : key,
+	}));
 }

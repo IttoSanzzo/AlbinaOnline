@@ -15,6 +15,7 @@ import { convertEnumsFromResponse } from "@/utils/Data";
 import { ItemData } from "@/libs/stp@types";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
+import { redirect } from "next/navigation";
 
 interface ItemPageContentProps {
 	itemSlug: string;
@@ -26,7 +27,7 @@ export default async function ItemPageContent({
 		cache: getCacheMode(),
 		next: { tags: [`/items`, "/effects"] },
 	});
-	if (!response.ok) return <>Error</>;
+	if (!response.ok) return redirect("/items");
 	const itemData = convertEnumsFromResponse<ItemData>(await response.json());
 
 	return (

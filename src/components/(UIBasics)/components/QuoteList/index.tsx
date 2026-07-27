@@ -25,7 +25,10 @@ export function QuoteList({
 		<QuoteListContainer>
 			{Divisor}
 			{!quotes || quotes.length === 0 ? (
-				<UIBasics.Quote />
+				<UIBasics.Quote
+					whiteSpace={whiteSpace}
+					textColor={textColor}
+				/>
 			) : (
 				quotes.map((quote, index) => (
 					<UIBasics.Quote

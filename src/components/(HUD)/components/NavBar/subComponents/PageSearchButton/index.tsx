@@ -43,6 +43,7 @@ const emptySearchEntries: AllSearchEntriesByType = {
 	skill: [],
 	spell: [],
 	trait: [],
+	location: [],
 	race: [],
 	user: [],
 };
@@ -64,6 +65,8 @@ function getPageLinkFromSearchEntry(
 			return `/spells/${route}`;
 		case "Trait":
 			return `/tracos/${route}`;
+		case "Location":
+			return `/atlas/${route}`;
 		case "Race":
 			return `/racas/${route}`;
 		case "User":
@@ -527,6 +530,7 @@ interface linkOrTitleEntry {
 		| "Skill"
 		| "Spell"
 		| "Trait"
+		| "Location"
 		| "Race"
 		| "User"
 		| SearchEntry;
@@ -543,42 +547,47 @@ function mapSearchEntriesAndTitlesIntoRawList(
 		for (const entry of coreEntries)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.character.length > 0) {
+	if (allOthersByType.character?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Character" });
 		for (const entry of allOthersByType.character)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.item.length > 0) {
+	if (allOthersByType.item?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Item" });
 		for (const entry of allOthersByType.item)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.mastery.length > 0) {
+	if (allOthersByType.mastery?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Mastery" });
 		for (const entry of allOthersByType.mastery)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.skill.length > 0) {
+	if (allOthersByType.skill?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Skill" });
 		for (const entry of allOthersByType.skill)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.spell.length > 0) {
+	if (allOthersByType.spell?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Spell" });
 		for (const entry of allOthersByType.spell)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.trait.length > 0) {
+	if (allOthersByType.trait?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Trait" });
 		for (const entry of allOthersByType.trait)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.race.length > 0) {
+	if (allOthersByType.location?.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Location" });
+		for (const entry of allOthersByType.location)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.race?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Race" });
 		for (const entry of allOthersByType.race)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.user.length > 0) {
+	if (allOthersByType.user?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "User" });
 		for (const entry of allOthersByType.user)
 			rawList.push({ type: "entry", value: entry });
@@ -604,6 +613,7 @@ const typeTitles = {
 	Skill: (x: number, y: number) => typeText("Skills", x, y),
 	Spell: (x: number, y: number) => typeText("Spells", x, y),
 	Trait: (x: number, y: number) => typeText("Traços", x, y),
+	Location: (x: number, y: number) => typeText("Localizações", x, y),
 	Race: (x: number, y: number) => typeText("Raças", x, y),
 	User: (x: number, y: number) => typeText("Usuários", x, y),
 };

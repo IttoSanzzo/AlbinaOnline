@@ -21,6 +21,8 @@ function generalRouteForFavoriteGroupType(
 			return "/spells";
 		case "trait":
 			return "/tracos";
+		case "location":
+			return "/atlas";
 		default:
 			return "";
 	}

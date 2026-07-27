@@ -74,8 +74,16 @@ export function PageHeader({
 				)}
 				{(subTitle || subTitle2) && (
 					<SubTitlesContainer>
-						{subTitle && <SubTitleContainer>{subTitle}</SubTitleContainer>}
-						{subTitle2 && <SubTitleContainer>{subTitle2}</SubTitleContainer>}
+						{subTitle && (
+							<SubTitleContainer className={styles.left}>
+								{subTitle}
+							</SubTitleContainer>
+						)}
+						{subTitle2 && (
+							<SubTitleContainer className={styles.right}>
+								{subTitle2}
+							</SubTitleContainer>
+						)}
 					</SubTitlesContainer>
 				)}
 			</TitlesContainer>

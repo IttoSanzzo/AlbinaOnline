@@ -98,7 +98,7 @@ export default function SortableIndexedPagesGroup({
 				memoryId={`IndexedPages/${groupName}`}
 				routeSensitiveMemory={false}
 				contentMargin="none"
-				textColor="orange"
+				textColor="yellow"
 				title={<h6>{groupName}</h6>}>
 				<DndContext
 					collisionDetection={closestCenter}

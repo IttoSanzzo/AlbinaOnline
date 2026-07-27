@@ -20,6 +20,7 @@ export const createTypeProps = [
 	{ name: "Spell", url: "spells", value: "spells" },
 	{ name: "Traço", url: "tracos", value: "traits" },
 	{ name: "Raça", url: "racas", value: "races" },
+	{ name: "Localização", url: "atlas", value: "atlas" },
 ];
 
 const schema = z.object({

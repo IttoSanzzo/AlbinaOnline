@@ -81,6 +81,16 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 	},
 	{
 		id: "00000000-0000-0000-0000-000000000008" as Guid,
+		slug: "atlas",
+		title: "Localizações",
+		entity: "Core" as LintIgnoredAny,
+		type: "Unknown",
+		subType: "Unknown",
+		iconUrl: getCorePageIcon("atlas"),
+		bannerUrl: getCorePageBanner("atlas"),
+	},
+	{
+		id: "00000000-0000-0000-0000-000000000009" as Guid,
 		slug: "racas",
 		title: "Raças",
 		entity: "Core" as LintIgnoredAny,
@@ -90,7 +100,7 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 		bannerUrl: getCorePageBanner("races"),
 	},
 	{
-		id: "00000000-0000-0000-0000-000000000009" as Guid,
+		id: "00000000-0000-0000-0000-000000000010" as Guid,
 		slug: "users",
 		title: "Usuários",
 		entity: "Core" as LintIgnoredAny,
@@ -100,7 +110,7 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 		bannerUrl: getCorePageBanner("users"),
 	},
 	{
-		id: "00000000-0000-0000-0000-000000000010" as Guid,
+		id: "00000000-0000-0000-0000-000000000011" as Guid,
 		slug: "codex",
 		title: "Codex",
 		entity: "Core" as LintIgnoredAny,
@@ -110,7 +120,7 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 		bannerUrl: getCorePageBanner("codex"),
 	},
 	{
-		id: "00000000-0000-0000-0000-000000000011" as Guid,
+		id: "00000000-0000-0000-0000-000000000012" as Guid,
 		slug: "changelogs",
 		title: "Changelogs",
 		entity: "Core" as LintIgnoredAny,
@@ -120,7 +130,7 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 		bannerUrl: getCorePageBanner("changelogs"),
 	},
 	{
-		id: "00000000-0000-0000-0000-000000000012" as Guid,
+		id: "00000000-0000-0000-0000-000000000013" as Guid,
 		slug: "redirect/configuracoes",
 		title: "Configurações",
 		entity: "Core" as LintIgnoredAny,

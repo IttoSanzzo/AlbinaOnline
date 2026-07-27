@@ -2,6 +2,7 @@ import { MasteryData } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { convertEnumsFromResponse } from "@/utils/Data";
+import { redirect } from "next/navigation";
 
 type MasteryPageData = {
 	masteryData?: MasteryData;
@@ -63,7 +64,8 @@ export async function getPageData(
 			},
 		},
 	);
-	if (!response.ok) return { masteryData: undefined, borderColor: "" };
+	if (!response.ok) return redirect("/maestrias");
+	// return { masteryData: undefined, borderColor: "" };
 	const masteryData = convertEnumsFromResponse<MasteryData>(
 		await response.json(),
 	);

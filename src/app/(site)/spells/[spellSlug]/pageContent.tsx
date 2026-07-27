@@ -13,6 +13,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { LinkedCharacters } from "@/components/(SPECIAL)/components/LinkedCharacters";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { redirect } from "next/navigation";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -24,7 +25,7 @@ export default async function SpellPageContent({
 }: SpellPageContentProps) {
 	const spellPageData = await getPageData(spellSlug);
 	if (spellPageData.spellData == undefined) {
-		return <>Error</>;
+		return redirect("/spells");
 	}
 	const { spellData, borderColor } = spellPageData;
 

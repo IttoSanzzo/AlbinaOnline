@@ -1,3 +1,5 @@
+"use client";
+
 import AlbinaLogo from "@/../public/Mock/AlbinaLogo.png";
 import React from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -12,12 +14,14 @@ export interface StyledFalseLinkProps extends React.ButtonHTMLAttributes<HTMLBut
 	title: string;
 	icon?: string;
 	textMode?: boolean;
+	withoutIcon?: boolean;
 }
 
 export function StyledFalseLink({
 	title,
 	icon,
 	textMode = false,
+	withoutIcon = false,
 	...rest
 }: StyledFalseLinkProps) {
 	const finalIcon = icon ? (icon[0] === "@" ? icon : icon) : AlbinaLogo;
@@ -30,12 +34,14 @@ export function StyledFalseLink({
 					event.preventDefault();
 				}}
 				{...rest}>
-				<ImageWithTTL
-					src={finalIcon}
-					width={21}
-					height={21}
-					alt=""
-				/>
+				{!withoutIcon && (
+					<ImageWithTTL
+						src={finalIcon}
+						width={21}
+						height={21}
+						alt=""
+					/>
+				)}
 				<span title={title}>{title}</span>
 			</button>
 		</StyledFalseLinkContainer>

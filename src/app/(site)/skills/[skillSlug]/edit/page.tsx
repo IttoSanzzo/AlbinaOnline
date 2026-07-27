@@ -2,6 +2,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditSkillPageContent } from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Edit Skill",
@@ -19,6 +20,6 @@ export default async function EditSkillPageServerShell({
 }: EditSkillPageServerShellProps) {
 	const { skillSlug } = await params;
 	const response = await fetch(getAlbinaApiFullAddress(`/skills/${skillSlug}`));
-	if (!response.ok) return <></>;
+	if (!response.ok) return redirect("/skills");
 	return <EditSkillPageContent skill={await response.json()} />;
 }

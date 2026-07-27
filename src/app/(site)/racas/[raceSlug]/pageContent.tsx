@@ -11,6 +11,7 @@ import { RacialSkillsGridDisplay } from "./subComponents/RacialSkillsGridDisplay
 import { RacialTraitsGridDisplay } from "./subComponents/RacialTraitsGridDisplay";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { redirect } from "next/navigation";
 
 export { generateStaticParams, generateMetadata } from "./(routeInfra)";
 
@@ -38,7 +39,7 @@ export default async function RacePageContent({
 }: RacePageContentProps) {
 	const RacePageData = await getPageData(raceSlug);
 	if (RacePageData.raceData == undefined) {
-		return <>Error</>;
+		return redirect("/racas");
 	}
 	const { raceData } = RacePageData;
 

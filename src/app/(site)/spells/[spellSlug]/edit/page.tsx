@@ -2,6 +2,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
 import { EditSpellPageContent } from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Edit Spell",
@@ -19,6 +20,6 @@ export default async function EditSpellPageServerShell({
 }: EditSpellPageServerShellProps) {
 	const { spellSlug } = await params;
 	const response = await fetch(getAlbinaApiFullAddress(`/spells/${spellSlug}`));
-	if (!response.ok) return <></>;
+	if (!response.ok) return redirect("/spells");
 	return <EditSpellPageContent spell={await response.json()} />;
 }
