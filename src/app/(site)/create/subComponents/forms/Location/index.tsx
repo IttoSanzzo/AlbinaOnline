@@ -1,6 +1,12 @@
 "use client";
 
-import { HookedForm, toSlug, zEnumKey, zSlug } from "@/libs/stp@forms";
+import {
+	HookedForm,
+	SelectOption,
+	toSlug,
+	zEnumKey,
+	zSlug,
+} from "@/libs/stp@forms";
 import {
 	LintIgnoredAny,
 	LocationSubType,
@@ -31,17 +37,91 @@ export function CreationForm({ form }: CreationFormProps) {
 		undefined,
 		false,
 	);
-	const subTypeOptions = enumToSelectOptions(
-		LocationSubType,
-		["Unknown"],
-		undefined,
-		false,
-	);
 	const worldPlaneOptions = enumToSelectOptions(
 		WorldPlane,
 		["Unknown"],
 		undefined,
 		false,
+	);
+
+	let subTypesFromThisType: string[] = [];
+	switch (form.watch().type) {
+		case "World":
+			subTypesFromThisType = ["Axis"];
+			break;
+		case "Region":
+			subTypesFromThisType = [
+				"Continent",
+				"Archipelago",
+				"Kingdom",
+				"Province",
+			];
+			break;
+		case "Nature":
+			subTypesFromThisType = [
+				"Island",
+				"Forest",
+				"Desert",
+				"Swamp",
+				"Plains",
+				"Mountain",
+				"Volcano",
+				"Cave",
+				"River",
+				"Lake",
+			];
+			break;
+		case "Settlement":
+			subTypesFromThisType = ["City", "Village", "Farm"];
+			break;
+		case "District":
+			subTypesFromThisType = [
+				"Noble",
+				"Slum",
+				"Merchant",
+				"Military",
+				"Farmland",
+			];
+			break;
+		case "Structure":
+			subTypesFromThisType = [
+				"Castle",
+				"Fortress",
+				"Outpost",
+				"Guild",
+				"Temple",
+				"Store",
+				"Library",
+				"Academy",
+				"Inn",
+				"Dungeon",
+				"Arena",
+				"Prison",
+				"Waystation",
+			];
+			break;
+		case "Interior":
+			subTypesFromThisType = ["Floor", "Hall", "Room"];
+			break;
+		case "Landmark":
+			subTypesFromThisType = [
+				"Monument",
+				"Ruins",
+				"Bridge",
+				"Mine",
+				"Harbor",
+				"Portal",
+				"PointOfInterest",
+			];
+			break;
+		case "Plane":
+			subTypesFromThisType = ["Pocket", "Fixed"];
+			break;
+		default:
+			break;
+	}
+	const subTypeOptions: SelectOption[] = subTypesFromThisType.map(
+		(subType) => ({ value: subType, name: subType }),
 	);
 
 	return (
@@ -59,6 +139,12 @@ export function CreationForm({ form }: CreationFormProps) {
 				label="Slug"
 			/>
 			<HookedForm.Select<FormData>
+				fieldName="worldPlane"
+				placeholder="Select WorldPlane"
+				label="World Plane"
+				options={worldPlaneOptions}
+			/>
+			<HookedForm.Select<FormData>
 				fieldName="type"
 				placeholder="Select Type"
 				label="Type"
@@ -69,12 +155,6 @@ export function CreationForm({ form }: CreationFormProps) {
 				placeholder="Select SubType"
 				label="SubType"
 				options={subTypeOptions}
-			/>
-			<HookedForm.Select<FormData>
-				fieldName="worldPlane"
-				placeholder="Select WorldPlane"
-				label="World Plane"
-				options={worldPlaneOptions}
 			/>
 		</>
 	);
