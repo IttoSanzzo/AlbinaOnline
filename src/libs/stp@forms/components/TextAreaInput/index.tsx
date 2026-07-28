@@ -1,3 +1,5 @@
+"use client";
+
 import { CSSProperties, TextareaHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";

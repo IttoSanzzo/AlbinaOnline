@@ -1,3 +1,5 @@
+"use client";
+
 import { StpIcon } from "@/libs/stp@icons";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";

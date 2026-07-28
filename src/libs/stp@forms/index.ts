@@ -1,5 +1,3 @@
-"use client";
-
 export type { SelectOption } from "./components/Select/index";
 
 import { Form } from "./components/Form";

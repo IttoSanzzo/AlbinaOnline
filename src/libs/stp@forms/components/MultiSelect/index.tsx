@@ -1,3 +1,5 @@
+"use client";
+
 import * as Popover from "@radix-ui/react-popover";
 import { Controller, FieldValues, Path, useController } from "react-hook-form";
 import { CSSProperties } from "react";

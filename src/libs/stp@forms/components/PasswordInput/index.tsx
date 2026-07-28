@@ -1,3 +1,5 @@
+"use client";
+
 import { CSSProperties } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import * as PasswordToggleField from "@radix-ui/react-password-toggle-field";

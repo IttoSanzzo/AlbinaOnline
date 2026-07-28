@@ -19,6 +19,7 @@ import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGalle
 import { GenericInfoMultiColumn } from "@/components/(Design)/components/GenericInfoMultiColumn";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { redirect } from "next/navigation";
+import { toSlug } from "@/libs/stp@forms";
 
 interface LocationPageContentProps {
 	locationSlug: string;
@@ -72,7 +73,7 @@ export default async function LocationPageContent({
 						title={WorldPlaneName[locationData.worldPlane]}
 						href={`/atlas/${locationData.worldPlane}`}
 						icon={getAlbinaApiFullAddress(
-							`/favicon/core-page/atlas/${locationData.worldPlane}`,
+							`/favicon/atlas/${toSlug(locationData.worldPlane)}`,
 						)}
 					/>
 					{" _ "}

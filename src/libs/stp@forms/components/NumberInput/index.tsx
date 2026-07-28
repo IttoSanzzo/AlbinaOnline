@@ -1,3 +1,5 @@
+"use client";
+
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Path } from "react-hook-form";
 import { NumberInputInline } from "../NumberInputInline";
