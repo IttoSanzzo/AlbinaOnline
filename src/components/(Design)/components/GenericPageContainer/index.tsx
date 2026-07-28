@@ -6,7 +6,9 @@ import styles from "./styles.module.css";
 import { EditablePageBanner } from "./subComponents/EditablePageBanner";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
-const MainContainer = newStyledElement.div(styles.mainContainer);
+const GenericPageContainerContainer = newStyledElement.div(
+	styles.genericPageContainerContainer,
+);
 const ContentsContainer = newStyledElement.div(styles.contentsContainer);
 
 interface GenericPageContainerProps {
@@ -47,7 +49,7 @@ export function GenericPageContainer({
 	cacheTags,
 }: GenericPageContainerProps) {
 	return (
-		<MainContainer>
+		<GenericPageContainerContainer>
 			{isEditable && bannerChangeRoute && bannerChangeRoute !== "" ? (
 				<EditablePageBanner
 					route={bannerChangeRoute}
@@ -77,6 +79,6 @@ export function GenericPageContainer({
 				/>
 				{children}
 			</ContentsContainer>
-		</MainContainer>
+		</GenericPageContainerContainer>
 	);
 }

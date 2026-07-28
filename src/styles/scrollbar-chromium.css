@@ -1,6 +1,8 @@
-::-webkit-scrollbar {
-	width: 3px;
-	height: 3px;
+@supports (not (-moz-appearance: none)) {
+	::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
 }
 
 ::-webkit-scrollbar-track {

@@ -61,10 +61,14 @@ export function CreationForm({ form }: CreationFormProps) {
 			subTypesFromThisType = [
 				"Island",
 				"Forest",
+				"WhiteForest",
 				"Desert",
 				"Swamp",
 				"Plains",
 				"Mountain",
+				"GreenMountain",
+				"WhiteMountain",
+				"BrownMountain",
 				"Volcano",
 				"Cave",
 				"River",
@@ -72,7 +76,7 @@ export function CreationForm({ form }: CreationFormProps) {
 			];
 			break;
 		case "Settlement":
-			subTypesFromThisType = ["City", "Village", "Farm"];
+			subTypesFromThisType = ["Metropoly", "City", "Village", "Farm"];
 			break;
 		case "District":
 			subTypesFromThisType = [
@@ -91,6 +95,8 @@ export function CreationForm({ form }: CreationFormProps) {
 				"Guild",
 				"Temple",
 				"Store",
+				"Shop",
+				"Bank",
 				"Library",
 				"Academy",
 				"Inn",

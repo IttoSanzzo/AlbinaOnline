@@ -26,6 +26,7 @@ function _InventoryDrawer({
 					withoutPadding
 					withoutBorderRadius
 					withoutGap
+					divisionRatio={0}
 					colum1={<CharacterEditableDataDisplays.ItemStacks />}
 					colum2={
 						<CharacterEditableDataDisplays.CoinStacks
