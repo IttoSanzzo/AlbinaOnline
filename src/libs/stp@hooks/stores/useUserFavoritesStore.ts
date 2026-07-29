@@ -29,7 +29,6 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 			);
 			if (!response.ok) throw new Error("Not authenticated");
 			const data: { favorites: LintIgnoredAny } = await response.json();
-			console.log(data);
 			set({
 				favorites: {
 					item: data.favorites.Item,

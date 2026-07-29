@@ -2,6 +2,7 @@ import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { LocationData } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { HiddenLocationList } from "./subComponents/HiddenLocationList";
 
 export async function PageContent() {
 	const response = await fetch(getAlbinaApiFullAddress("/atlas"));
@@ -19,6 +20,7 @@ export async function PageContent() {
 					titleAlwaysOpen
 				/>
 			</UIBasics.List.Grid>
+			<HiddenLocationList />
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>

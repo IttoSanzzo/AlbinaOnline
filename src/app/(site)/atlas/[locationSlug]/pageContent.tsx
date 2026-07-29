@@ -80,13 +80,17 @@ export default async function LocationPageContent({
 					<StyledLink
 						title={LocationTypeName[locationData.type]}
 						href={`/atlas`}
-						icon={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
+						icon={getAlbinaApiFullAddress(
+							`/images/target/atlas/squares/${locationData.type}`,
+						)}
 					/>
 					{" _ "}
 					<StyledLink
 						title={LocationSubTypeName[locationData.subType]}
 						href={`/atlas`}
-						icon={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
+						icon={getAlbinaApiFullAddress(
+							`/images/target/atlas/markers/${locationData.subType}`,
+						)}
 					/>
 				</div>
 			}
