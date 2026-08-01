@@ -1,5 +1,6 @@
 import { GenericInfo, Guid } from "../index";
 import { WorldPlane } from "../otherTypes/WorldPlane";
+import { LocationLink } from "./locationLink";
 
 export enum LocationType {
 	Unknown,
@@ -100,8 +101,8 @@ export type LocationData = {
 	info: GenericInfo;
 	richInfo?: LocationRichInfo;
 	isHidden: boolean;
-	// locationLink: ICollection;
-	// locationLink: ICollection;
+	childLocationLinks: LocationLink[];
+	parentLocationLinks: LocationLink[];
 	iconUrl: string;
 	bannerUrl: string;
 	createdAt: string;

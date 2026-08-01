@@ -1,0 +1,9 @@
+.relatedLocationsListContainer {
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+
+	border: 1px solid red;
+	flex: 1;
+	border-radius: var(--rd-md);
+}

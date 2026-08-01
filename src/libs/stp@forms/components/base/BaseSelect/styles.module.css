@@ -83,6 +83,8 @@
 	gap: 4px;
 	background-color: transparent;
 	color: var(--cl-gray-100);
+	cursor: pointer;
+	transition: 0.25s ease-in-out background-color;
 
 	&:hover,
 	&:focus {

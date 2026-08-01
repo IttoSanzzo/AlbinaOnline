@@ -20,6 +20,7 @@ import { GenericInfoMultiColumn } from "@/components/(Design)/components/Generic
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { redirect } from "next/navigation";
 import { toSlug } from "@/libs/stp@forms";
+import { LocationNavigation } from "./subComponents/LocationNavigation";
 
 interface LocationPageContentProps {
 	locationSlug: string;
@@ -105,6 +106,8 @@ export default async function LocationPageContent({
 				data={locationData}
 			/>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
+
+			<LocationNavigation locationSlug={locationData.slug} />
 
 			<StaticGallery
 				url={getAlbinaApiFullAddress(`/images/atlas/${locationData.slug}`)}

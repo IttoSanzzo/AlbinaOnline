@@ -1,6 +1,6 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { Metadata } from "next";
-import { EditLocationPageContent } from "./pageContent";
+import { EditLocationPageView } from "./page.view";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { redirect } from "next/navigation";
 
@@ -21,7 +21,10 @@ export default async function EditLocationPageServerShell({
 	const { locationSlug } = await params;
 	const response = await fetch(
 		getAlbinaApiFullAddress(`/atlas/${locationSlug}`),
+		{
+			next: { tags: ["/atlas"] },
+		},
 	);
 	if (!response.ok) return redirect("/atlas");
-	return <EditLocationPageContent location={await response.json()} />;
+	return <EditLocationPageView location={await response.json()} />;
 }

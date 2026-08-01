@@ -1,0 +1,6 @@
+.locationNavigationMapContainer {
+	border: 1px solid red;
+	aspect-ratio: 16 / 9;
+	flex: 1;
+	border-radius: var(--rd-md);
+}

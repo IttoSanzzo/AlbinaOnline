@@ -27,6 +27,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { LocationLinksEditor } from "./components/LocationLinksEditor.sub";
+import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 
 const schema = z.object({
 	slug: zSlug(),
@@ -57,12 +59,10 @@ const subTypeOptions = enumToSelectOptions(
 );
 const worldPlaneOptions = enumToSelectOptions(WorldPlane, [], undefined, false);
 
-interface EditLocationPageContentProps {
+interface EditLocationPageViewProps {
 	location: LocationData;
 }
-export function EditLocationPageContent({
-	location,
-}: EditLocationPageContentProps) {
+export function EditLocationPageView({ location }: EditLocationPageViewProps) {
 	const { user, loading } = useCurrentUser();
 	const [error, setError] = useState<string>("");
 	const form = useForm<FormInput, unknown, FormData>({
@@ -180,7 +180,16 @@ export function EditLocationPageContent({
 			)}
 			metadataTag={`atlas-${location.slug}`}
 			cacheTags={["/atlas"]}
-			cachePaths={["/atlas"]}>
+			cachePaths={["/atlas"]}
+			subTitle2={
+				<StyledFalseLink
+					withoutIcon
+					title={location.id}
+					onClick={async () => {
+						await navigator.clipboard.writeText(location.id);
+					}}
+				/>
+			}>
 			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<HookedForm.Form
 				form={form}
@@ -278,10 +287,12 @@ export function EditLocationPageContent({
 			/>
 
 			<UIBasics.Divisor />
-
 			<DynamicGallery
 				url={getAlbinaApiFullAddress(`/images/atlas/${location.slug}`)}
 			/>
+			<UIBasics.Divisor />
+
+			<LocationLinksEditor locationData={location} />
 		</GenericPageContainer>
 	);
 }

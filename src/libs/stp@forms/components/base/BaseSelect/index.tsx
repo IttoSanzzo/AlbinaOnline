@@ -73,7 +73,7 @@ export function BaseSelect({
 								<Select.Item
 									key={option.value}
 									value={String(option.value)}
-									className={styles.selectItem}>
+									className={styles.baseSelectItem}>
 									{option.icon && (
 										<Image
 											src={option.icon}

@@ -125,6 +125,7 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 	ignoredKeys?: (keyof T)[],
 	valueAsNumber: boolean = false,
 	sort: boolean = true,
+	iconGenerator?: (key: string) => string,
 ): SelectOption[] {
 	let entries = Object.entries(targetEnum);
 	if (ignoredKeys)
@@ -136,5 +137,6 @@ export function enumToSelectOptions<T extends Record<string, string | number>>(
 	return entries.map(([key, value]) => ({
 		name: key,
 		value: valueAsNumber ? (value as number) : key,
+		icon: iconGenerator ? iconGenerator(key) : undefined,
 	}));
 }
