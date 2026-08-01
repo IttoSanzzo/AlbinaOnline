@@ -2,11 +2,11 @@
 
 import { UIBasics } from "@/components/(UIBasics)";
 import { loadRelatedLocationLinks, LocationData } from "@/libs/stp@types";
-import { LocationLink } from "@/libs/stp@types/dataTypes/locationLink";
+import { LocationLinkExpanded } from "@/libs/stp@types/dataTypes/locationLink";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { LocationLinksEditorCore } from "./LocationLinksEditorCore.sub";
 
-export interface RelatedLocationLink extends LocationLink {
+export interface RelatedLocationLink extends LocationLinkExpanded {
 	isChild: boolean;
 }
 
@@ -24,7 +24,9 @@ export function LocationLinksEditor({
 				locationData.childLocationLinks,
 			);
 			const parentLinks = await loadRelatedLocationLinks(
-				locationData.parentLocationLinks,
+				locationData.parentLocationLinks.filter(
+					(link) => link.parentLocationId != locationData.id,
+				),
 			);
 			relatedLocationsState[1]([
 				...childLinks.map((link) => ({ ...link, isChild: true })),

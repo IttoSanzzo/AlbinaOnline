@@ -18,6 +18,7 @@ interface GridListProps {
 	withoutPadding?: boolean;
 	withoutBorder?: boolean;
 	withoutMargin?: boolean;
+	className?: string;
 	style?: CSSProperties;
 }
 export function GridList({
@@ -29,6 +30,7 @@ export function GridList({
 	withoutBorder = false,
 	withoutMargin = false,
 	withoutPadding = false,
+	className,
 	style,
 }: GridListProps) {
 	if (Number.isInteger(columnWidth)) columnWidth = `${columnWidth}px`;
@@ -43,7 +45,8 @@ export function GridList({
 				withoutBorder={withoutBorder}
 				withoutMargin={withoutMargin}
 				withoutPadding={withoutPadding}
-				backgroundColor={backgroundColor}>
+				backgroundColor={backgroundColor}
+				className={className}>
 				<ContentContainerColumn
 					style={columnsStyle}
 					children={children}
@@ -63,7 +66,8 @@ export function GridList({
 			withoutMargin={withoutMargin}
 			withoutPadding={withoutPadding}
 			backgroundColor={backgroundColor}
-			style={style}>
+			style={style}
+			className={className}>
 			<ContentContainerRow
 				style={columnsStyle}
 				children={children}

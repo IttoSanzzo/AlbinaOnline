@@ -1,0 +1,29 @@
+.locationLinkEditorContainer {
+	display: flex;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-700);
+	padding: var(--sp-3);
+	height: 54px;
+	width: 100%;
+	justify-content: space-between;
+	gap: var(--sp-1);
+}
+
+.linkStyle {
+	width: 100%;
+	overflow: hidden;
+}
+
+.editorRightContainer {
+	display: flex;
+	gap: var(--sp-1);
+	height: 100%;
+}
+
+.iconView {
+	position: relative;
+	height: 150%;
+	top: -25%;
+	aspect-ratio: 1 / 1;
+	border-radius: var(--rd-md);
+}

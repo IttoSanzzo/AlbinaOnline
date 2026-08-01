@@ -13,5 +13,16 @@ export async function RelatedLocationsList({
 	locationData,
 }: RelatedLocationsListProps) {
 	void locationData;
-	return <RelatedLocationsListContainer></RelatedLocationsListContainer>;
+	return (
+		<RelatedLocationsListContainer>
+			{locationData.parentLocationLinks.map((link) => (
+				<div key={link.id}>{link.id}</div>
+			))}
+			<br />
+			<br />
+			{locationData.childLocationLinks.map((link) => (
+				<div key={link.id}>{link.id}</div>
+			))}
+		</RelatedLocationsListContainer>
+	);
 }

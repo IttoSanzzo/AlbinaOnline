@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { LinkPreview } from "@/components/(SPECIAL)";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 import { AnchorHTMLAttributes, CSSProperties } from "react";
+import clsx from "clsx";
 
 export const StyledLinkContainer = newStyledElement.div(
 	styles.styledLinkContainer,
@@ -23,6 +24,7 @@ export interface StyledLinkProps
 	titleStyle?: CSSProperties;
 	target?: "_blank" | "_parent" | "_self" | "_top";
 	id?: string;
+	containerClassName?: string;
 }
 
 export function StyledLink({
@@ -36,6 +38,7 @@ export function StyledLink({
 	style,
 	titleStyle,
 	target,
+	containerClassName,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -50,7 +53,10 @@ export function StyledLink({
 		<StyledLinkContainer
 			style={style}
 			title={hoverTitle}
-			className={textMode ? styles.styledLinkInTextMode : undefined}>
+			className={clsx(
+				textMode ? styles.styledLinkInTextMode : undefined,
+				containerClassName,
+			)}>
 			{usePreview && (
 				<LinkPreview
 					href={href}

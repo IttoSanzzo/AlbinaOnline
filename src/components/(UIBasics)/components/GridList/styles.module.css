@@ -14,3 +14,10 @@
 	gap: var(--sp-1);
 	justify-items: center;
 }
+
+.contentContainerColumn > *,
+.contentContainerRow > * {
+	break-inside: avoid;
+	page-break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+}

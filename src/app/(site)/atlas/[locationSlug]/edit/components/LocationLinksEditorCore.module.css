@@ -1,3 +1,30 @@
 .locationLinksEditorCoreContainer {
 	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+}
+
+.openModalButton {
+	background-color: var(--cl-gray-500);
+	border-radius: var(--rd-md);
+	color: var(--cl-gray-200);
+	padding: var(--sp-2);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+	border: unset;
+
+	&:hover {
+		background-color: var(--cl-gray-600);
+	}
+}
+
+.linksContainer {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.gridStyle {
+	max-height: 250px;
+	overflow-y: scroll;
 }

@@ -1,6 +1,7 @@
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { LocationData } from "../dataTypes/location";
-import { LocationLink } from "../dataTypes/locationLink";
+import { LocationLink, LocationLinkExpanded } from "../dataTypes/locationLink";
+import { Guid } from "../misc/Guid";
 
 export async function loadRelatedLocationLinksFromLocationData(
 	locationData: LocationData,
@@ -15,21 +16,26 @@ export async function loadRelatedLocationLinksFromLocationData(
 
 export async function loadRelatedLocationLinks(
 	unloadedLinks: LocationLink[],
-): Promise<LocationLink[]> {
-	const promises = unloadedLinks.map(async (link) => {
-		console.log(link);
-		const response = await fetch(
-			getAlbinaApiFullAddress(`/atlas/location-links/${link.id}`),
-			{
-				next: {
-					tags: [`/atlas/location-links/${link.id}`],
-				},
-			},
-		);
-		if (!response.ok) return null;
-		return await response.json();
-	});
+): Promise<LocationLinkExpanded[]> {
+	const promises = unloadedLinks.map(
+		async (link) => await loadRelatedLocationLink(link.id),
+	);
 
 	const data = await Promise.all(promises);
 	return data.filter((link) => link != null);
+}
+
+export async function loadRelatedLocationLink(
+	locationLinkId: Guid,
+): Promise<LocationLinkExpanded | null> {
+	const response = await fetch(
+		getAlbinaApiFullAddress(`/atlas/location-links/${locationLinkId}`),
+		{
+			next: {
+				tags: [`/atlas/location-links`],
+			},
+		},
+	);
+	if (!response.ok) return null;
+	return await response.json();
 }
