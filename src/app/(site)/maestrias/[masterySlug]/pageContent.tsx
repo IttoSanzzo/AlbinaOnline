@@ -57,7 +57,7 @@ export default async function MasteryPageContent({
 				colum2={<GenericInfoCallout info={masteryData.info} />}
 			/>
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/masteries/${masteryData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/masteries/${masteryData.slug}`)}
 				hideIfEmpty
 			/>
 

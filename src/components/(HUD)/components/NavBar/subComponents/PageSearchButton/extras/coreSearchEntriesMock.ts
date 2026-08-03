@@ -82,7 +82,7 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 	{
 		id: "00000000-0000-0000-0000-000000000008" as Guid,
 		slug: "atlas",
-		title: "Localizações",
+		title: "Atlas",
 		entity: "Core" as LintIgnoredAny,
 		type: "Unknown",
 		subType: "Unknown",

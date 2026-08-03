@@ -1,0 +1,16 @@
+.locationLinksEditorCoreContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+}
+
+.linksContainer {
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+}
+
+.gridStyle {
+	max-height: 250px;
+	overflow-y: scroll;
+}

@@ -238,7 +238,7 @@ export function EditTraitPageContent({ trait }: EditTraitPageContentProps) {
 			<UIBasics.Divisor />
 
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/traits/${trait.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/traits/${trait.slug}`)}
 			/>
 			<EntityEffectsEditor
 				genericEffects={trait.effects}

@@ -1,7 +1,8 @@
-import { Guid, loadRelatedLocationLink, LocationData } from "@/libs/stp@types";
-import { Dispatch, SetStateAction } from "react";
+import styles from "./EditLocationLinkModal.module.css";
+import { LintIgnoredAny } from "@/libs/stp@types";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Dialog } from "@/libs/stp@radix";
-import { RelatedLocationLink } from "./LocationLinksEditor.sub";
+import { RelatedLocationLink } from "../../../LocationLinksEditor";
 import { HookedForm, zEnumKey } from "@/libs/stp@forms";
 import { enumToSelectOptions } from "@/utils/Data";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
@@ -14,17 +15,11 @@ import {
 	LocationLinkType,
 } from "@/libs/stp@types/dataTypes/locationLink";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
-
-enum ChildOrParent {
-	Child,
-	Parent,
-}
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { StpIcon } from "@/libs/stp@icons";
+import toast from "react-hot-toast";
 
 const schema = z.object({
-	childOrParent: zEnumKey(ChildOrParent),
-	relatedLocationId: z
-		.string()
-		.refine((value) => Guid.isGuid(value), "Not a valid Guid"),
 	type: zEnumKey(LocationLinkType),
 	iconType: zEnumKey(LocationLinkIconType),
 	xCoordenate: z.number().min(-1, "Min -1").max(1000, "Max 1000"),
@@ -34,42 +29,33 @@ const schema = z.object({
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-interface AddLocationLinkModalProps {
-	locationData: LocationData;
+interface EditLocationLinkModalProps {
+	locationLink: RelatedLocationLink;
 	relatedLocationsState: [
 		RelatedLocationLink[],
 		Dispatch<SetStateAction<RelatedLocationLink[]>>,
 	];
-	openState: [boolean, Dispatch<SetStateAction<boolean>>];
 }
-export function AddLocationLinkModal({
-	locationData,
+export function EditLocationLinkModal({
+	locationLink,
 	relatedLocationsState,
-	openState,
-}: AddLocationLinkModalProps) {
+}: EditLocationLinkModalProps) {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+
 	const form = useForm<FormInput, unknown, FormData>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			childOrParent: "Child",
-			iconType: "Auto",
-			type: "DirectDescendant",
-			relatedLocationId: "",
-			xCoordenate: -1,
-			yCoordenate: -1,
+			iconType: locationLink.iconType,
+			type: locationLink.type,
+			xCoordenate: locationLink.displayData?.x ?? -1,
+			yCoordenate: locationLink.displayData?.y ?? -1,
 		},
 		mode: "all",
 	});
 
 	async function onSubmit(formData: FormData) {
+		const toastId = toast.loading("Saving...");
 		const body = {
-			parentLocationId:
-				formData.childOrParent == "Parent"
-					? formData.relatedLocationId
-					: locationData.id,
-			childLocationId:
-				formData.childOrParent == "Child"
-					? formData.relatedLocationId
-					: locationData.id,
 			type: formData.type,
 			iconType: formData.iconType,
 			displayData: undefined as unknown,
@@ -83,44 +69,55 @@ export function AddLocationLinkModal({
 			};
 
 		const response = await authenticatedFetchAsync(
-			getAlbinaApiFullAddress(`/atlas/location-links`),
+			getAlbinaApiFullAddress(`/atlas/location-links/${locationLink.id}`),
 			{
-				method: "POST",
+				method: "PUT",
 				body: JSON.stringify(body),
 				headers: {
 					"Content-Type": "application/json",
 				},
 			},
 		);
-		if (!response.ok) return;
+		if (!response.ok) {
+			toast.error("Error", { id: toastId });
+			return;
+		}
+		toast.success("Saved", { id: toastId });
 		revalidateTagByClientSide(`/atlas`);
 		revalidateTagByClientSide(`/atlas/location-links`);
-		const data = await response.json();
-		const newLocationLink = await loadRelatedLocationLink(data.id);
 		relatedLocationsState[1]((state) => [
-			...state,
-			{ ...newLocationLink!, isChild: formData.childOrParent == "Child" },
+			...state.map((link) =>
+				link.id != locationLink.id
+					? link
+					: {
+							...link,
+							type: formData.type,
+							iconType: formData.iconType,
+							displayData: body.displayData as LintIgnoredAny,
+							icon: getAlbinaApiFullAddress(
+								`/images/atlas/markers/${formData.iconType}`,
+							),
+						},
+			),
 		]);
-		openState[1](false);
+		setIsOpen(false);
+		return true;
 	}
 
 	return (
-		<Dialog.Root open={openState[0]}>
+		<Dialog.Root open={isOpen}>
+			<DialogTrigger
+				className={styles.trigger}
+				onClick={() => setIsOpen(true)}>
+				<StpIcon name="Pencil" />
+			</DialogTrigger>
 			<Dialog.Portal>
-				<Dialog.Overlay onClick={() => openState[1](false)} />
+				<Dialog.Overlay onClick={() => setIsOpen(false)} />
 				<Dialog.Content>
-					<Dialog.Title>Add Link</Dialog.Title>
+					<Dialog.Title>Edit Link</Dialog.Title>
 					<HookedForm.Form
 						form={form}
 						onSubmit={onSubmit}>
-						<HookedForm.Select<FormData>
-							fieldName="childOrParent"
-							options={enumToSelectOptions(ChildOrParent, [], undefined, false)}
-						/>
-						<HookedForm.TextInput<FormData>
-							fieldName="relatedLocationId"
-							placeholder={Guid.Empty}
-						/>
 						<HookedForm.Select<FormData>
 							fieldName="type"
 							options={enumToSelectOptions(
@@ -138,9 +135,7 @@ export function AddLocationLinkModal({
 								undefined,
 								false,
 								(key: string) =>
-									getAlbinaApiFullAddress(
-										`/images/target/atlas/markers/${key}`,
-									),
+									getAlbinaApiFullAddress(`/images/atlas/markers/${key}`),
 							)}
 						/>
 						<HookedForm.NumberInput<FormData>
@@ -153,7 +148,7 @@ export function AddLocationLinkModal({
 							min={-1}
 							max={1000}
 						/>
-						<HookedForm.SubmitButton label="Link" />
+						<HookedForm.SubmitButton label="Save" />
 					</HookedForm.Form>
 					<Dialog.Description />
 				</Dialog.Content>

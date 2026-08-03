@@ -65,7 +65,7 @@ export default async function SpellPageContent({
 			/>
 
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/spells/${spellData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/spells/${spellData.slug}`)}
 				hideIfEmpty
 			/>
 

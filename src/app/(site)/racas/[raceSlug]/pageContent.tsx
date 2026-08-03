@@ -312,7 +312,7 @@ export default async function RacePageContent({
 						/>
 					</UIBasics.Toggle>
 					<StaticGallery
-						url={getAlbinaApiFullAddress(`/images/races/${raceData.slug}`)}
+						url={getAlbinaApiFullAddress(`/gallery/races/${raceData.slug}`)}
 						hideIfEmpty
 					/>
 				</UIBasics.Callout>

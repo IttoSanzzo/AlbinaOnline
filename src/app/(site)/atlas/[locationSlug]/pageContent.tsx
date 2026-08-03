@@ -82,7 +82,7 @@ export default async function LocationPageContent({
 						title={LocationTypeName[locationData.type]}
 						href={`/atlas`}
 						icon={getAlbinaApiFullAddress(
-							`/images/target/atlas/squares/${locationData.type}`,
+							`/images/atlas/squares/${locationData.type}`,
 						)}
 					/>
 					{" _ "}
@@ -90,7 +90,7 @@ export default async function LocationPageContent({
 						title={LocationSubTypeName[locationData.subType]}
 						href={`/atlas`}
 						icon={getAlbinaApiFullAddress(
-							`/images/target/atlas/markers/${locationData.subType}`,
+							`/images/atlas/markers/${locationData.subType}`,
 						)}
 					/>
 				</div>
@@ -110,7 +110,7 @@ export default async function LocationPageContent({
 			<LocationNavigation locationSlug={locationData.slug} />
 
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/atlas/${locationData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/atlas/${locationData.slug}`)}
 				hideIfEmpty
 			/>
 

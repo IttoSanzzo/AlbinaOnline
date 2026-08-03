@@ -4,7 +4,7 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { loadRelatedLocationLinks, LocationData } from "@/libs/stp@types";
 import { LocationLinkExpanded } from "@/libs/stp@types/dataTypes/locationLink";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { LocationLinksEditorCore } from "./LocationLinksEditorCore.sub";
+import { LocationLinksEditorCore } from "./LocationLinksEditor.components/LocationLinksEditorCore";
 
 export interface RelatedLocationLink extends LocationLinkExpanded {
 	isChild: boolean;

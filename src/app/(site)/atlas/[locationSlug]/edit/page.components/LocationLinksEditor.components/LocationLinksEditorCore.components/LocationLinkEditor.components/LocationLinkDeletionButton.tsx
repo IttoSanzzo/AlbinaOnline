@@ -1,5 +1,5 @@
 import styles from "./LocationLinkDeletionButton.module.css";
-import { RelatedLocationLink } from "./LocationLinksEditor.sub";
+import { RelatedLocationLink } from "../../../LocationLinksEditor";
 import { Dispatch, SetStateAction } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";

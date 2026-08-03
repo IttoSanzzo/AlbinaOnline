@@ -159,7 +159,7 @@ export function CharacterFullSheetSocialDisplay({
 					characterBackstory={characterData.backstory.history}
 				/>
 				<DynamicGallery
-					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
+					url={getAlbinaApiFullAddress(`/gallery/chars/${characterData.id}`)}
 					withoutMargin
 					isEditable={false}
 					hideIfEmpty

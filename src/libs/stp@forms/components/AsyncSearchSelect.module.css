@@ -1,0 +1,110 @@
+.asyncSearchSelectContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	color: var(--cl-gray-100);
+	border-radius: var(--rd-sm);
+	border: 1px solid var(--cl-gray-500);
+	margin: var(--sp-2) 0;
+	position: relative;
+	width: 100%;
+
+	&:focus-within {
+		border: 1px solid var(--cl-gray-200);
+	}
+}
+.asyncSearchSelectTextInput {
+	background-color: transparent;
+	color: var(--cl-gray-100);
+	padding: var(--sp-5) var(--sp-4);
+	border: none;
+	border-radius: inherit;
+	outline: none;
+	font-size: var(--fs-md);
+
+	&:-webkit-autofill {
+		border-radius: var(--rd-sm) !important;
+	}
+}
+.asyncSearchSelectLabel {
+	font-size: var(--fs-xs);
+	color: var(--cl-gray-200);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	left: 10px;
+}
+.asyncSearchSelectError {
+	font-size: var(--fs-xs);
+	color: var(--cl-red-500);
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-1);
+	position: absolute;
+	top: calc(-1 * var(--sp-2));
+	right: 10;
+}
+
+.dropdownContainer {
+	position: absolute;
+	z-index: 1;
+	top: calc(100% - 5px);
+	left: -1px;
+	width: calc(100% + 2px);
+	max-height: 250px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background-color: var(--cl-gray-800);
+	border: 1px solid var(--cl-gray-500);
+	border-top: unset;
+	border-bottom-left-radius: var(--rd-md);
+	border-bottom-right-radius: var(--rd-md);
+	overflow-y: scroll;
+
+	animation: 0.25s linear fade-in;
+}
+
+.selectOptionButton {
+	display: flex;
+	flex-direction: row;
+	padding: var(--sp-1);
+	gap: 4px;
+	width: 100%;
+	border: none;
+	background-color: transparent;
+	color: var(--cl-gray-100);
+	cursor: pointer;
+	transition: 0.25s ease-in-out background-color;
+
+	&:hover,
+	&:focus {
+		background-color: var(--cl-gray-600);
+		outline: none;
+	}
+
+	& > p {
+		font-size: var(--fs-sm);
+		font-family: sans-serif, "Courier New", Courier, monospace;
+		line-height: 100%;
+		align-self: center;
+	}
+}
+
+.noOptions {
+	background-color: var(--cl-gray-900);
+	width: 100%;
+	padding: var(--sp-2);
+	text-align: center;
+	color: var(--cl-gray-300);
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

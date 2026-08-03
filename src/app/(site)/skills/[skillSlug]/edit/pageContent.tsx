@@ -293,7 +293,7 @@ export function EditSkillPageContent({ skill }: EditSkillPageContentProps) {
 			<UIBasics.Divisor />
 
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/skills/${skill.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/skills/${skill.slug}`)}
 			/>
 			<EntityEffectsEditor
 				genericEffects={skill.effects}

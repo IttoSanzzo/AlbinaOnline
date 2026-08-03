@@ -326,7 +326,7 @@ export function EditRacePageContent({ race }: EditRacePageContentProps) {
 
 			<UIBasics.Divisor />
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/races/${race.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/races/${race.slug}`)}
 			/>
 			<UIBasics.Divisor />
 		</GenericPageContainer>

@@ -326,7 +326,7 @@ export function EditSpellPageContent({ spell }: EditSpellPageContentProps) {
 			<UIBasics.Divisor />
 
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/spells/${spell.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/spells/${spell.slug}`)}
 			/>
 			<EntityEffectsEditor
 				genericEffects={spell.effects}

@@ -3,6 +3,7 @@ export type { SelectOption } from "./components/Select/index";
 import { Form } from "./components/Form";
 import { SelectComponent } from "./components/Select";
 import { MultiSelectComponent } from "./components/MultiSelect";
+import { AsyncSearchSelect } from "./components/AsyncSearchSelect";
 import { BoolInput } from "./components/BoolInput";
 import { TextInput } from "./components/TextInput";
 import { TextArrayInput } from "./components/TextArrayInput";
@@ -42,6 +43,7 @@ export const HookedForm = {
 	ImageInput: ImageInput,
 	Select: SelectComponent,
 	MultiSelect: MultiSelectComponent,
+	AsyncSearchSelect: AsyncSearchSelect,
 	Space: Space,
 	Separator: Separator,
 	SimpleMessage: SimpleMessage,

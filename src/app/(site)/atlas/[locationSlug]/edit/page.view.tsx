@@ -27,7 +27,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { LocationLinksEditor } from "./components/LocationLinksEditor.sub";
+import { LocationLinksEditor } from "./page.components/LocationLinksEditor";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 
 const schema = z.object({
@@ -288,7 +288,7 @@ export function EditLocationPageView({ location }: EditLocationPageViewProps) {
 
 			<UIBasics.Divisor />
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/atlas/${location.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/atlas/${location.slug}`)}
 			/>
 			<UIBasics.Divisor />
 

@@ -93,6 +93,7 @@ export type LocationLink = {
 	type: keyof typeof LocationLinkType;
 	iconType: keyof typeof LocationLinkIconType;
 	displayData?: LocationLinkDisplayData;
+	icon: string;
 };
 export type LocationLinkExpanded = LocationLink & {
 	parentLocation: LocationData;

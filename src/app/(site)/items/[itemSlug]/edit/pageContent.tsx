@@ -319,7 +319,7 @@ export function EditItemPageContent({ item }: EditItemPageContentProps) {
 			<UIBasics.Divisor />
 
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/items/${item.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/items/${item.slug}`)}
 			/>
 			<EntityEffectsEditor
 				genericEffects={item.effects}

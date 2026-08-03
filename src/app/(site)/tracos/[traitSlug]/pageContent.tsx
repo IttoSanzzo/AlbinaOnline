@@ -85,7 +85,7 @@ export default async function TraitPageContent({
 				/>
 			)}
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/traits/${traitData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/traits/${traitData.slug}`)}
 				hideIfEmpty
 			/>
 			<GenericEffectsDisplay

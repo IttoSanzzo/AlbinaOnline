@@ -50,7 +50,7 @@ export function CharacterFullSheetEditableDisplay({
 					characterBackstory={characterData.backstory.history}
 				/>
 				<DynamicGallery
-					url={getAlbinaApiFullAddress(`/images/chars/${characterData.id}`)}
+					url={getAlbinaApiFullAddress(`/gallery/chars/${characterData.id}`)}
 					withoutMargin
 					style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
 				/>

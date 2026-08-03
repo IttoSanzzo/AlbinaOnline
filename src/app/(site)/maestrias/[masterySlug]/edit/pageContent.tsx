@@ -206,7 +206,7 @@ export function EditMasteryPageContent({
 			<UIBasics.Divisor />
 
 			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/images/masteries/${mastery.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/masteries/${mastery.slug}`)}
 			/>
 			<EntityEffectsEditor
 				genericEffects={mastery.effects}

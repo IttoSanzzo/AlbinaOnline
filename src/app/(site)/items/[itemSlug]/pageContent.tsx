@@ -59,7 +59,7 @@ export default async function ItemPageContent({
 			<ItemPropertiesDisplay itemProperties={itemData.properties} />
 
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/items/${itemData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/items/${itemData.slug}`)}
 				hideIfEmpty
 			/>
 

@@ -1,11 +1,11 @@
 import styles from "./LocationLinkEditor.module.css";
 import { LocationData } from "@/libs/stp@types";
-import { RelatedLocationLink } from "./LocationLinksEditor.sub";
+import { RelatedLocationLink } from "../../LocationLinksEditor";
 import { Dispatch, SetStateAction } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StyledLink } from "@/components/(Design)";
-import { LocationLinkDeletionButton } from "./LocationLinkDeletionButton.sub";
-import { EditLocationLinkModal } from "./EditLocationLinkModal.sub";
+import { LocationLinkDeletionButton } from "./LocationLinkEditor.components/LocationLinkDeletionButton";
+import { EditLocationLinkModal } from "./LocationLinkEditor.components/EditLocationLinkModal";
 import Image from "next/image";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
@@ -38,10 +38,15 @@ export function LocationLinkEditor({
 				containerClassName={styles.linkStyle}
 			/>
 			<EditorRightContainer>
-				<IconView>
+				<IconView
+					title={
+						locationLink.displayData != undefined
+							? `X: ${locationLink.displayData.x}\nY: ${locationLink.displayData.y}\nRotation: ${locationLink.displayData.rotation}\nOpacity: ${locationLink.displayData.opacity}`
+							: "Not Displayed"
+					}>
 					<Image
 						src={getAlbinaApiFullAddress(
-							`/images/target/atlas/markers/${locationLink.iconType}`,
+							`/images/atlas/markers/${locationLink.iconType}`,
 						)}
 						alt=""
 						sizes="100"

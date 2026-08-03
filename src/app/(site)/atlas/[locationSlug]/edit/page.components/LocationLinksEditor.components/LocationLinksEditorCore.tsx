@@ -1,17 +1,17 @@
 import styles from "./LocationLinksEditorCore.module.css";
 import { LocationData } from "@/libs/stp@types";
-import { RelatedLocationLink } from "./LocationLinksEditor.sub";
+import { RelatedLocationLink } from "../LocationLinksEditor";
 import { Dispatch, SetStateAction, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { AddLocationLinkModal } from "./AddLocationLinkModal.sub";
 import { UIBasics } from "@/components/(UIBasics)";
-import { LocationLinkEditor } from "./LocationLinkEditor.sub";
+import { AddLocationLinkModal } from "./LocationLinksEditorCore.components/AddLocationLinkModal";
+import { LocationLinkEditor } from "./LocationLinksEditorCore.components/LocationLinkEditor";
+import { LocationMapEditor } from "./LocationLinksEditorCore.components/LocationMapEditor";
 
 const LocationLinksEditorCoreContainer = newStyledElement.div(
 	styles.locationLinksEditorCoreContainer,
 );
 const LinksContainer = newStyledElement.div(styles.linksContainer);
-const OpenModalButton = newStyledElement.button(styles.openModalButton);
 
 interface LocationLinksEditorCoreProps {
 	locationData: LocationData;
@@ -36,13 +36,7 @@ export function LocationLinksEditorCore({
 				relatedLocationsState={relatedLocationsState}
 				openState={modalOpenState}
 			/>
-			<OpenModalButton
-				onClick={(event) => {
-					event.preventDefault();
-					modalOpenState[1](true);
-				}}>
-				Add Link
-			</OpenModalButton>
+
 			<LinksContainer>
 				{parentLinks.length > 0 && (
 					<UIBasics.Box
@@ -62,7 +56,6 @@ export function LocationLinksEditorCore({
 							{parentLinks.map((link) => (
 								<LocationLinkEditor
 									key={link.id}
-									locationData={locationData}
 									locationLink={link}
 									relatedLocationsState={relatedLocationsState}
 								/>
@@ -89,7 +82,6 @@ export function LocationLinksEditorCore({
 							{childLinks.map((link) => (
 								<LocationLinkEditor
 									key={link.id}
-									locationData={locationData}
 									locationLink={link}
 									relatedLocationsState={relatedLocationsState}
 								/>
@@ -98,6 +90,10 @@ export function LocationLinksEditorCore({
 					</UIBasics.Box>
 				)}
 			</LinksContainer>
+			<LocationMapEditor
+				locationData={locationData}
+				relatedLocationsState={relatedLocationsState}
+			/>
 		</LocationLinksEditorCoreContainer>
 	);
 }

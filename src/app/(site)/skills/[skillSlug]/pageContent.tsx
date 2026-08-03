@@ -63,7 +63,7 @@ export default async function SkillPageContent({
 			/>
 
 			<StaticGallery
-				url={getAlbinaApiFullAddress(`/images/skills/${skillData.slug}`)}
+				url={getAlbinaApiFullAddress(`/gallery/skills/${skillData.slug}`)}
 				hideIfEmpty
 			/>
 
