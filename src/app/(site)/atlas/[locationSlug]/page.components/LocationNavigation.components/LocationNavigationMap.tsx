@@ -1,5 +1,5 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
+import styles from "./LocationNavigationMap.module.css";
 
 const LocationNavigationMapContainer = newStyledElement.div(
 	styles.locationNavigationMapContainer,

@@ -1,6 +1,6 @@
 import { UIBasics } from "@/components/(UIBasics)";
-import { RelatedLocationsList } from "./subComponents/RelatedLocationsList";
-import { LocationNavigationMap } from "./subComponents/LocationNavigationMap";
+import { RelatedLocationsList } from "./LocationNavigation.components/RelatedLocationsList";
+import { LocationNavigationMap } from "./LocationNavigation.components/LocationNavigationMap";
 import { convertEnumsFromResponse } from "@/utils/Data";
 import {
 	loadRelatedLocationLinksFromLocationData,

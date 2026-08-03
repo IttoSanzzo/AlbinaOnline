@@ -1,5 +1,5 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
+import styles from "./RelatedLocationsList.module.css";
 import { LocationData } from "@/libs/stp@types";
 
 const RelatedLocationsListContainer = newStyledElement.div(

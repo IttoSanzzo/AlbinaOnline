@@ -20,14 +20,14 @@ import { GenericInfoMultiColumn } from "@/components/(Design)/components/Generic
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { redirect } from "next/navigation";
 import { toSlug } from "@/libs/stp@forms";
-import { LocationNavigation } from "./subComponents/LocationNavigation";
+import { LocationNavigation } from "./page.components/LocationNavigation";
 
-interface LocationPageContentProps {
+interface LocationPageViewProps {
 	locationSlug: string;
 }
-export default async function LocationPageContent({
+export default async function LocationPageView({
 	locationSlug,
-}: LocationPageContentProps) {
+}: LocationPageViewProps) {
 	const response = await fetch(
 		getAlbinaApiFullAddress(`/atlas/${locationSlug}`),
 		{

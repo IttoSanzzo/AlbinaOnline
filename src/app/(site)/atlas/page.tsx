@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { GenericPageContainer } from "@/components/(Design)";
 import { SetAnchorNavigation } from "@/libs/stp@hooks";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
-import { PageContent } from "./PageContent";
+import { PageView } from "./page.view";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Atlas",
@@ -23,7 +23,7 @@ export default async function ItemsPageServerShell() {
 			icon={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/atlas")}>
 			<SetAnchorNavigation anchors={anchorNavigationData} />
-			<PageContent />
+			<PageView />
 		</GenericPageContainer>
 	);
 }

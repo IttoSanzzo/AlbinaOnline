@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-// import ItemPageContent from "./pageContent";
 import { fetchStaticParamSlugs } from "@/utils/Data";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
-import LocationPageContent from "./pageContent";
+import PageView from "./page.view";
 
 interface LocationPageServerShellProps {
 	params: Promise<{ locationSlug: string }>;
@@ -45,7 +44,7 @@ export default async function ItemPageServerShell({
 }: LocationPageServerShellProps) {
 	const { locationSlug } = await params;
 
-	return <LocationPageContent locationSlug={locationSlug} />;
+	return <PageView locationSlug={locationSlug} />;
 }
 
 export async function generateStaticParams() {

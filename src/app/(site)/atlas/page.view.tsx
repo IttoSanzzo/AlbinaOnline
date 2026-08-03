@@ -4,7 +4,7 @@ import { LocationData } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { HiddenLocationList } from "./subComponents/HiddenLocationList";
 
-export async function PageContent() {
+export async function PageView() {
 	const response = await fetch(getAlbinaApiFullAddress("/atlas"));
 	const locations: LocationData[] = response.ok ? await response.json() : [];
 
