@@ -27,6 +27,7 @@ export function EditMiniLink({
 	return (
 		<EditMiniLinkContainer className={styles[position]}>
 			<Link
+				tabIndex={-1}
 				href={`${baseHref}/edit`}
 				prefetch={false}>
 				<StpIcon

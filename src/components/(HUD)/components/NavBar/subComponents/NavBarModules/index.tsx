@@ -6,7 +6,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const NavBarModulesContainer = newStyledElement.div(
-	styles.navBarModulesContainer
+	styles.navBarModulesContainer,
 );
 
 export function NavBarModules() {
@@ -17,7 +17,7 @@ export function NavBarModules() {
 			{Object.entries(modules).map(([key, componentFactory]) =>
 				["FavoriteModule", "ContextMenuModule"].includes(key) == false ? (
 					<div key={key}>{React.createElement(componentFactory)}</div>
-				) : null
+				) : null,
 			)}
 			{modules.FavoriteModule && (
 				<div key={"FavoriteModule"}>

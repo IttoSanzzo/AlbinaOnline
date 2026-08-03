@@ -7,6 +7,7 @@ import { env } from "process";
 import Link from "next/link";
 import Image from "next/image";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { EditThisPageLink } from "./subComponents/EditThisPageLink";
 
 const NavBarContainer = newStyledElement.div(styles.navBarContainer);
 const NavSideContainer = newStyledElement.div(styles.navSideContainer);
@@ -37,6 +38,7 @@ export function NavBar() {
 				<Breadcrumbs />
 			</NavSideContainer>
 			<NavSideContainer>
+				<EditThisPageLink />
 				<PageSearchButton />
 				<NavBarModules />
 				<ProfileButtonContainer>

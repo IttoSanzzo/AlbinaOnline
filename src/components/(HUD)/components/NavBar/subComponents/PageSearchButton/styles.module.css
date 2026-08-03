@@ -9,6 +9,7 @@
 	height: 25px;
 	width: 25px;
 	margin-top: 3px;
+	transition: 0.25s linear background-color;
 
 	& > svg {
 		height: 15px;
@@ -23,9 +24,14 @@
 
 .searchedLink {
 	transition: 0.25s linear background-color;
+	background-color: var(--cl-gray-700) !important;
+
+	&:hover {
+		background-color: var(--cl-gray-500) !important;
+	}
 	&:focus {
 		outline: none;
-		background-color: var(--cl-gray-600);
+		background-color: var(--cl-gray-500) !important;
 	}
 }
 .searchedTitle {

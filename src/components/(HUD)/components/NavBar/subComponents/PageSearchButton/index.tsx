@@ -43,8 +43,8 @@ const emptySearchEntries: AllSearchEntriesByType = {
 	skill: [],
 	spell: [],
 	trait: [],
-	location: [],
 	race: [],
+	location: [],
 	user: [],
 };
 
@@ -65,10 +65,10 @@ function getPageLinkFromSearchEntry(
 			return `/spells/${route}`;
 		case "Trait":
 			return `/tracos/${route}`;
-		case "Location":
-			return `/atlas/${route}`;
 		case "Race":
 			return `/racas/${route}`;
+		case "Location":
+			return `/atlas/${route}`;
 		case "User":
 			return `/users/${route}`;
 		case "Core":
@@ -144,6 +144,7 @@ function searchEntryToStyledLink(
 				handleAddLinkToHistory(searchEntry, setLinkHistoryState);
 			}}
 			onKeyDown={(event) => handleKeyDown(event, x, y)}
+			withEditLink
 		/>
 	);
 }
@@ -222,10 +223,11 @@ export function PageSearchButton() {
 		searchEntries.character.length +
 		searchEntries.item.length +
 		searchEntries.mastery.length +
-		searchEntries.race.length +
 		searchEntries.skill.length +
 		searchEntries.spell.length +
 		searchEntries.trait.length +
+		searchEntries.race.length +
+		searchEntries.location.length +
 		searchEntries.user.length;
 	const globalTitleTitleDisable = 1 >= totalEntriesLength;
 
@@ -373,6 +375,7 @@ export function PageSearchButton() {
 															setOpenState(false);
 														}}
 														onKeyDown={(event) => handleKeyDown(event, x, y)}
+														withEditLink
 													/>
 												);
 											},
@@ -577,14 +580,14 @@ function mapSearchEntriesAndTitlesIntoRawList(
 		for (const entry of allOthersByType.trait)
 			rawList.push({ type: "entry", value: entry });
 	}
-	if (allOthersByType.location?.length > 0) {
-		if (showTitles) rawList.push({ type: "title", value: "Location" });
-		for (const entry of allOthersByType.location)
-			rawList.push({ type: "entry", value: entry });
-	}
 	if (allOthersByType.race?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Race" });
 		for (const entry of allOthersByType.race)
+			rawList.push({ type: "entry", value: entry });
+	}
+	if (allOthersByType.location?.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Location" });
+		for (const entry of allOthersByType.location)
 			rawList.push({ type: "entry", value: entry });
 	}
 	if (allOthersByType.user?.length > 0) {

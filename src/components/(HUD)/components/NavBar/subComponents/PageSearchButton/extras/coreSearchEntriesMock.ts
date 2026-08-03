@@ -81,16 +81,6 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 	},
 	{
 		id: "00000000-0000-0000-0000-000000000008" as Guid,
-		slug: "atlas",
-		title: "Atlas",
-		entity: "Core" as LintIgnoredAny,
-		type: "Unknown",
-		subType: "Unknown",
-		iconUrl: getCorePageIcon("atlas"),
-		bannerUrl: getCorePageBanner("atlas"),
-	},
-	{
-		id: "00000000-0000-0000-0000-000000000009" as Guid,
 		slug: "racas",
 		title: "Raças",
 		entity: "Core" as LintIgnoredAny,
@@ -98,6 +88,16 @@ export const coreSearchEntriesMock: SearchEntry[] = [
 		subType: "Unknown",
 		iconUrl: getCorePageIcon("races"),
 		bannerUrl: getCorePageBanner("races"),
+	},
+	{
+		id: "00000000-0000-0000-0000-000000000009" as Guid,
+		slug: "atlas",
+		title: "Atlas",
+		entity: "Core" as LintIgnoredAny,
+		type: "Unknown",
+		subType: "Unknown",
+		iconUrl: getCorePageIcon("atlas"),
+		bannerUrl: getCorePageBanner("atlas"),
 	},
 	{
 		id: "00000000-0000-0000-0000-000000000010" as Guid,
