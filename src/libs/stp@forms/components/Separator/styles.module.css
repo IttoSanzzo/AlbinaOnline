@@ -2,4 +2,6 @@
 	background-color: var(--cl-gray-500);
 	height: 1px;
 	margin: 5px;
+	width: 100%;
+	display: flex;
 }

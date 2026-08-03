@@ -1,48 +1,12 @@
 import styles from "./AddLocationLinkModal.module.css";
-import {
-	Guid,
-	loadRelatedLocationLink,
-	LocationData,
-	SearchEntry,
-} from "@/libs/stp@types";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { LocationData } from "@/libs/stp@types";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Dialog } from "@/libs/stp@radix";
 import { RelatedLocationLink } from "../../LocationLinksEditor";
-import { HookedForm, zEnumKey } from "@/libs/stp@forms";
-import { enumToSelectOptions } from "@/utils/Data";
-import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
-import {
-	LocationLinkIconType,
-	LocationLinkType,
-} from "@/libs/stp@types/dataTypes/locationLink";
-import { revalidateTagByClientSide } from "@/utils/ServerActions";
-import { UIBasics } from "@/components/(UIBasics)";
-
-enum ChildOrParent {
-	Child,
-	Parent,
-}
-
-const schema = z.object({
-	childOrParent: zEnumKey(ChildOrParent),
-	relatedLocationId: z
-		.string()
-		.refine((value) => Guid.isGuid(value), "Not a valid Guid"),
-	type: zEnumKey(LocationLinkType),
-	iconType: zEnumKey(LocationLinkIconType),
-	xCoordenate: z.number().min(-1, "Min -1").max(1000, "Max 1000"),
-	yCoordenate: z.number().min(-1, "Min -1").max(1000, "Max 1000"),
-	size: z.number().min(0, "Min 0").max(1000, "Max 1000"),
-	rotation: z.number().min(0, "Min 0").max(360, "Max 360"),
-	opacity: z.number().min(0, "Min 0").max(100, "Max 100"),
-});
-
-type FormInput = z.input<typeof schema>;
-type FormData = z.infer<typeof schema>;
+import { HookedForm } from "@/libs/stp@forms";
+import { LinkLocationForm } from "./AddLocationLinkModal.components/LinkLocationForm";
+import { StateSwitch } from "@/components/(UTILS)";
+import { CreateAndLinkLocationForm } from "./AddLocationLinkModal.components/CreateAndLinkLocationForm";
 
 interface AddLocationLinkModalProps {
 	locationData: LocationData;
@@ -64,75 +28,7 @@ export function AddLocationLinkModal({
 	displayTriggerButton = true,
 	defaultPosition,
 }: AddLocationLinkModalProps) {
-	const form = useForm<FormInput, unknown, FormData>({
-		resolver: zodResolver(schema),
-		defaultValues: {
-			childOrParent: "Child",
-			iconType: "Auto",
-			type: "DirectDescendant",
-			relatedLocationId: "",
-			xCoordenate: defaultPosition?.x ?? -1,
-			yCoordenate: defaultPosition?.y ?? -1,
-			size: 100,
-			rotation: 0,
-			opacity: 100,
-		},
-		mode: "all",
-	});
-
-	useEffect(() => {
-		if (!defaultPosition) return;
-		form.reset((formData) => ({
-			...formData,
-			xCoordenate: defaultPosition.x,
-			yCoordenate: defaultPosition.y,
-		}));
-	}, [defaultPosition]);
-
-	async function onSubmit(formData: FormData) {
-		const body = {
-			parentLocationId:
-				formData.childOrParent == "Parent"
-					? formData.relatedLocationId
-					: locationData.id,
-			childLocationId:
-				formData.childOrParent == "Child"
-					? formData.relatedLocationId
-					: locationData.id,
-			type: formData.type,
-			iconType: formData.iconType,
-			displayData: undefined as unknown,
-		};
-		if (formData.xCoordenate != -1 && formData.yCoordenate != -1)
-			body.displayData = {
-				x: formData.xCoordenate,
-				y: formData.yCoordenate,
-				size: formData.size,
-				rotation: formData.rotation,
-				opacity: formData.opacity,
-			};
-
-		const response = await authenticatedFetchAsync(
-			getAlbinaApiFullAddress(`/atlas/location-links`),
-			{
-				method: "POST",
-				body: JSON.stringify(body),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			},
-		);
-		if (!response.ok) return;
-		revalidateTagByClientSide(`/atlas`);
-		revalidateTagByClientSide(`/atlas/location-links`);
-		const data = await response.json();
-		const newLocationLink = await loadRelatedLocationLink(data.id);
-		relatedLocationsState[1]((state) => [
-			...state,
-			{ ...newLocationLink!, isChild: formData.childOrParent == "Child" },
-		]);
-		openState[1](false);
-	}
+	const createBeforeLinkingState = useState<boolean>(false);
 
 	return (
 		<Dialog.Root open={openState[0]}>
@@ -149,87 +45,35 @@ export function AddLocationLinkModal({
 			<Dialog.Portal>
 				<Dialog.Overlay onClick={() => openState[1](false)} />
 				<Dialog.Content>
-					<Dialog.Title textAlign="center">Add Link</Dialog.Title>
+					<Dialog.Title textAlign="center">
+						{createBeforeLinkingState[0] ? "Create and Link" : "Link"}
+					</Dialog.Title>
 					<HookedForm.Space />
-					<HookedForm.Form
-						form={form}
-						onSubmit={onSubmit}>
-						<HookedForm.Select<FormData>
-							fieldName="childOrParent"
-							options={enumToSelectOptions(ChildOrParent, [], undefined, false)}
+					{createBeforeLinkingState[0] ? (
+						<CreateAndLinkLocationForm
+							locationData={locationData}
+							openState={openState}
+							relatedLocationsState={relatedLocationsState}
+							defaultPosition={defaultPosition}
 						/>
-						<HookedForm.AsyncSearchSelect<FormData>
-							fieldName="relatedLocationId"
-							placeholder={"Location Name"}
-							optionGenerator={async (query) => {
-								const response = await authenticatedFetchAsync(
-									getAlbinaApiFullAddress(`/search/atlas?query=${query}`),
-								);
-								if (!response.ok) return [];
-								const locationMetas: SearchEntry[] = await response.json();
-								return locationMetas.map((meta) => ({
-									name: meta.title,
-									value: meta.id,
-									icon: meta.iconUrl,
-								}));
-							}}
+					) : (
+						<LinkLocationForm
+							locationData={locationData}
+							openState={openState}
+							relatedLocationsState={relatedLocationsState}
+							defaultPosition={defaultPosition}
 						/>
-						<HookedForm.Select<FormData>
-							fieldName="type"
-							options={enumToSelectOptions(
-								LocationLinkType,
-								[],
-								undefined,
-								false,
-							)}
-						/>
-						<HookedForm.Select<FormData>
-							fieldName="iconType"
-							options={enumToSelectOptions(
-								LocationLinkIconType,
-								[],
-								undefined,
-								false,
-								(key: string) =>
-									getAlbinaApiFullAddress(
-										`/images/atlas/markers/${key}?childLocationId=${locationData.id}`,
-									),
-							)}
-						/>
-						<UIBasics.MultiColumn.Two
-							colum1={
-								<HookedForm.NumberInput<FormData>
-									fieldName="xCoordenate"
-									min={-1}
-									max={1000}
-								/>
-							}
-							colum2={
-								<HookedForm.NumberInput<FormData>
-									fieldName="yCoordenate"
-									min={-1}
-									max={1000}
-								/>
-							}
-						/>
-						<HookedForm.NumberInput<FormData>
-							fieldName="size"
-							min={0}
-							max={1000}
-						/>
-						<HookedForm.NumberInput<FormData>
-							fieldName="rotation"
-							min={0}
-							max={360}
-						/>
-						<HookedForm.NumberInput<FormData>
-							fieldName="opacity"
-							min={0}
-							max={100}
-						/>
-						<HookedForm.SubmitButton label="Link" />
-					</HookedForm.Form>
+					)}
 					<Dialog.Description />
+					<StateSwitch
+						label={"New Location"}
+						state={createBeforeLinkingState}
+						style={{
+							position: "absolute",
+							top: 0,
+							right: 0,
+						}}
+					/>
 				</Dialog.Content>
 			</Dialog.Portal>
 		</Dialog.Root>
