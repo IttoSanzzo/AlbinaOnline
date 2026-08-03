@@ -1,0 +1,39 @@
+.editMiniLinkContainer {
+	position: absolute;
+
+	height: 16px;
+	width: 16px;
+	border-radius: var(--rd-xs);
+
+	animation: 0.35s linear fade-in;
+	background-color: var(--cl-gray-900);
+	transition: 0.25s linear background-color;
+
+	break-inside: avoid;
+	page-break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+
+	&:hover {
+		background-color: var(--cl-gray-100);
+	}
+}
+
+.top-left {
+	top: var(--sp-2);
+	left: var(--sp-2);
+}
+
+.center-right {
+	right: var(--sp-2);
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

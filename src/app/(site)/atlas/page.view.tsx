@@ -18,6 +18,7 @@ export async function PageView() {
 					href="/atlas/orvanis"
 					title="Orvanis"
 					titleAlwaysOpen
+					withEditLink
 				/>
 			</UIBasics.List.Grid>
 			<HiddenLocationList />
@@ -41,6 +42,7 @@ export async function PageView() {
 							href={`/atlas/${location.slug}`}
 							title={location.name}
 							titleAlwaysOpen
+							withEditLink
 						/>
 					))}
 				</UIBasics.List.Grid>

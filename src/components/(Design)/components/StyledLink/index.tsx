@@ -6,6 +6,7 @@ import { LinkPreview } from "@/components/(SPECIAL)";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
 import { AnchorHTMLAttributes, CSSProperties } from "react";
 import clsx from "clsx";
+import { EditMiniLink } from "@/components/(UTILS)/components/EditMiniLink";
 
 export const StyledLinkContainer = newStyledElement.div(
 	styles.styledLinkContainer,
@@ -25,6 +26,7 @@ export interface StyledLinkProps
 	target?: "_blank" | "_parent" | "_self" | "_top";
 	id?: string;
 	containerClassName?: string;
+	withEditLink?: boolean;
 }
 
 export function StyledLink({
@@ -40,6 +42,7 @@ export function StyledLink({
 	target,
 	containerClassName,
 	children,
+	withEditLink = false,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -81,6 +84,7 @@ export function StyledLink({
 				</span>
 				{children}
 			</Link>
+			{withEditLink && <EditMiniLink baseHref={href} />}
 		</StyledLinkContainer>
 	);
 }

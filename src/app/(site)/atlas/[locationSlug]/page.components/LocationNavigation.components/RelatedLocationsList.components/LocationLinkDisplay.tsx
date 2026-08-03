@@ -29,6 +29,7 @@ export async function LocationLinkDisplay({
 				title={targetLocation.name}
 				icon={targetLocation.iconUrl}
 				containerClassName={styles.linkStyle}
+				withEditLink
 			/>
 
 			<IconContainer>

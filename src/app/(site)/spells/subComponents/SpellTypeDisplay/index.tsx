@@ -47,6 +47,7 @@ export default function SpellTypeDisplay({
 										title={spell.name}
 										href={`/spells/${spell.slug}`}
 										icon={spell.iconUrl}
+										withEditLink
 									/>
 								))}
 							/>

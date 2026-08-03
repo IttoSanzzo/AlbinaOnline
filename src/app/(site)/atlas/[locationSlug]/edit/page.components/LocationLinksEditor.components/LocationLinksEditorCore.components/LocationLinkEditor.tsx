@@ -35,6 +35,7 @@ export function LocationLinkEditor({
 				title={targetLocation.name}
 				icon={targetLocation.iconUrl}
 				containerClassName={styles.linkStyle}
+				withEditLink
 			/>
 			<EditorRightContainer>
 				<IconView

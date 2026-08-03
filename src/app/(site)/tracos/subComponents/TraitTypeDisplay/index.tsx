@@ -40,6 +40,7 @@ export default function TraitTypeDisplay({
 								title={trait.name}
 								href={`tracos/${trait.slug}`}
 								icon={trait.iconUrl}
+								withEditLink
 							/>
 						);
 					})}
@@ -71,6 +72,7 @@ export default function TraitTypeDisplay({
 							title={trait.name}
 							href={`traits/${trait.slug}`}
 							icon={trait.iconUrl}
+							withEditLink
 						/>
 					);
 				})}

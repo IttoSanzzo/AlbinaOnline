@@ -33,6 +33,7 @@ export default function ItemTypeDisplay({
 							title={race.name}
 							href={`racas/${race.slug}`}
 							icon={race.iconUrl}
+							withEditLink
 						/>
 					);
 				})}

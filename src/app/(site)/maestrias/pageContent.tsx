@@ -166,6 +166,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 									title={masteryData.name}
 									href={`/maestrias/${masteryData.slug}`}
 									icon={masteryData.iconUrl}
+									withEditLink
 								/>
 							))}
 						</UIBasics.List.Grid>
@@ -266,6 +267,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 									title={masteryData.name}
 									href={`/maestrias/${masteryData.slug}`}
 									icon={masteryData.iconUrl}
+									withEditLink
 								/>
 							))}
 						</UIBasics.List.Grid>
@@ -351,6 +353,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 									title={masteryData.name}
 									href={`/maestrias/${masteryData.slug}`}
 									icon={masteryData.iconUrl}
+									withEditLink
 								/>
 							))}
 						</UIBasics.List.Grid>
@@ -444,6 +447,7 @@ export default function PageContent({ masteries }: PageContentProps) {
 									title={masteryData.name}
 									href={`/maestrias/${masteryData.slug}`}
 									icon={masteryData.iconUrl}
+									withEditLink
 								/>
 							))}
 						</UIBasics.List.Grid>

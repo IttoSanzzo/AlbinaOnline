@@ -38,6 +38,7 @@ export default function SkillTypeDisplay({
 								title={skill.name}
 								href={`skills/${skill.slug}`}
 								icon={skill.iconUrl}
+								withEditLink
 							/>
 						);
 					})}
@@ -69,6 +70,7 @@ export default function SkillTypeDisplay({
 							title={skill.name}
 							href={`skills/${skill.slug}`}
 							icon={skill.iconUrl}
+							withEditLink
 						/>
 					);
 				})}

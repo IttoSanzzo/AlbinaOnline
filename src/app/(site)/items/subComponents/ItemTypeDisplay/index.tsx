@@ -40,6 +40,7 @@ export default function ItemTypeDisplay({
 							artworkUrl={item.iconUrl}
 							size={100}
 							layout="rectangle"
+							withEditLink
 						/>
 					);
 				})}

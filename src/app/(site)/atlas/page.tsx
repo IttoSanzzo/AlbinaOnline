@@ -14,7 +14,7 @@ export const metadata: Metadata = assembleMetadata({
 	route: "/atlas",
 });
 
-const anchorNavigationData = [{ name: "// TODO" }];
+// const anchorNavigationData = [{ name: "" }]; // TODO
 
 export default async function ItemsPageServerShell() {
 	return (
@@ -22,7 +22,8 @@ export default async function ItemsPageServerShell() {
 			title="Todos as Localizações"
 			icon={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/atlas")}>
-			<SetAnchorNavigation anchors={anchorNavigationData} />
+			{/* <SetAnchorNavigation anchors={anchorNavigationData} /> */}
+			<SetAnchorNavigation anchors={[]} />
 			<PageView />
 		</GenericPageContainer>
 	);

@@ -10,6 +10,7 @@ import { LinkPreview } from "@/components/(SPECIAL)";
 import { Tilt } from "../Tilt";
 import { TiltOptions } from "vanilla-tilt";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { EditMiniLink } from "@/components/(UTILS)/components/EditMiniLink";
 
 const StyledLinkCardContainer = newStyledElement.div(
 	styles.styledLinkCardContainer,
@@ -31,6 +32,7 @@ export interface StyledLinkCardProps {
 	usePreview?: boolean;
 	id?: string;
 	titleAlwaysOpen?: boolean;
+	withEditLink?: boolean;
 }
 export function StyledLinkCard({
 	href,
@@ -45,6 +47,7 @@ export function StyledLinkCard({
 	usePreview = true,
 	titleAlwaysOpen = false,
 	id,
+	withEditLink = false,
 }: StyledLinkCardProps) {
 	const tiltOptions: TiltOptions = {
 		reverse: true,
@@ -111,6 +114,12 @@ export function StyledLinkCard({
 							{title}
 						</HoverTitleContainer>
 					</Link>
+					{withEditLink && (
+						<EditMiniLink
+							baseHref={href}
+							position="top-left"
+						/>
+					)}
 				</StyledLinkCardContainer>
 			</Tilt>
 		);
@@ -149,6 +158,12 @@ export function StyledLinkCard({
 						{title}
 					</TitleContainer>
 				</Link>
+				{withEditLink && (
+					<EditMiniLink
+						baseHref={href}
+						position="top-left"
+					/>
+				)}
 			</StyledLinkCardContainer>
 		</Tilt>
 	);
