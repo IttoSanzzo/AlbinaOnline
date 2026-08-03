@@ -22,6 +22,7 @@ interface TwoColumnsProps {
 	withoutPadding?: boolean;
 	withoutGap?: boolean;
 	withoutBorderRadius?: boolean;
+	className?: string;
 }
 
 export function TwoColumns({
@@ -33,6 +34,7 @@ export function TwoColumns({
 	withoutPadding,
 	withoutGap,
 	withoutBorderRadius,
+	className,
 }: TwoColumnsProps) {
 	const containerStyle: CSSProperties = {
 		...(withoutGap && { gap: 0 }),
@@ -51,7 +53,9 @@ export function TwoColumns({
 	};
 
 	return (
-		<TwoColumnsContainer style={containerStyle}>
+		<TwoColumnsContainer
+			style={containerStyle}
+			className={className}>
 			<LeftColumContainer style={colum1Style}>{colum1}</LeftColumContainer>
 			<RightColumContainer style={colum2Style}>{colum2}</RightColumContainer>
 		</TwoColumnsContainer>

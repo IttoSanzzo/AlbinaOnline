@@ -103,6 +103,7 @@ export type LocationLinkExpanded = LocationLink & {
 export type LocationLinkDisplayData = {
 	x: number;
 	y: number;
+	size: number;
 	rotation: number;
 	opacity: number;
 };

@@ -21,6 +21,7 @@ export interface StpIconProps {
 	name: PhosphorKey | "";
 	color?: keyof typeof IconColor;
 	style?: IconWeight;
+	mirror?: boolean;
 }
 
 export type StpIcon = JSX.Element;
@@ -28,6 +29,7 @@ export function StpIcon({
 	name,
 	color = "default",
 	style = "duotone",
+	mirror = false,
 }: StpIconProps): StpIcon {
 	const PhosphorIcon = Phosphor[
 		name !== "" ? name : "Note"
@@ -37,6 +39,7 @@ export function StpIcon({
 		<PhosphorIcon
 			color={IconColor[color]}
 			weight={style}
+			style={mirror ? { transform: "scaleX(-1)" } : undefined}
 		/>
 	);
 }

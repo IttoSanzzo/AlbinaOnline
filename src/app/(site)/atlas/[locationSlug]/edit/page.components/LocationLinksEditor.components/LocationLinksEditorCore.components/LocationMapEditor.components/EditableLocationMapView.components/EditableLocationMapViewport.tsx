@@ -40,6 +40,7 @@ export function EditableLoactionMapViewport({
 						/>
 					</MapImage>
 					<LocationLinkIconsDisplay
+						locationId={locationData.id}
 						relatedLocations={relatedLocationsState[0]}
 					/>
 					<EditableLocationMapEvents

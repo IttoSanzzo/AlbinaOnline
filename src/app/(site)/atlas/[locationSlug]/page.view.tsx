@@ -90,7 +90,7 @@ export default async function LocationPageView({
 						title={LocationSubTypeName[locationData.subType]}
 						href={`/atlas`}
 						icon={getAlbinaApiFullAddress(
-							`/images/atlas/markers/${locationData.subType}`,
+							`/images/atlas/markers/${locationData.subType}?childLocationId=${locationData.id}`,
 						)}
 					/>
 				</div>

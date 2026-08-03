@@ -13,6 +13,7 @@ interface HeaderProps extends StandartColorProps, StandartTextProps {
 	headerType?: "h1" | "h2" | "h3" | "h4" | "h5";
 	withoutMargin?: boolean;
 	title?: string;
+	className?: string;
 }
 
 export function Header({
@@ -26,6 +27,7 @@ export function Header({
 	withUnderline,
 	textAlign,
 	title,
+	className,
 }: HeaderProps) {
 	const style: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -43,6 +45,7 @@ export function Header({
 			id={typeof children === "string" ? idfyString(children) : undefined}
 			style={style}
 			title={title}
+			className={className}
 			children={children}
 		/>
 	);

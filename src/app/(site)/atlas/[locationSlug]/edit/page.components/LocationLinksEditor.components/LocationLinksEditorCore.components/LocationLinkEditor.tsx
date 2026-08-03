@@ -7,7 +7,6 @@ import { StyledLink } from "@/components/(Design)";
 import { LocationLinkDeletionButton } from "./LocationLinkEditor.components/LocationLinkDeletionButton";
 import { EditLocationLinkModal } from "./LocationLinkEditor.components/EditLocationLinkModal";
 import Image from "next/image";
-import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const LocationLinkEditorContainer = newStyledElement.div(
 	styles.locationLinkEditorContainer,
@@ -41,13 +40,11 @@ export function LocationLinkEditor({
 				<IconView
 					title={
 						locationLink.displayData != undefined
-							? `X: ${locationLink.displayData.x}\nY: ${locationLink.displayData.y}\nRotation: ${locationLink.displayData.rotation}\nOpacity: ${locationLink.displayData.opacity}`
+							? `Type: ${locationLink.type}\nIconType: ${locationLink.iconType}\n\nX: ${locationLink.displayData.x}\nY: ${locationLink.displayData.y}\nSize: ${locationLink.displayData.size}\nRotation: ${locationLink.displayData.rotation}\nOpacity: ${locationLink.displayData.opacity}`
 							: "Not Displayed"
 					}>
 					<Image
-						src={getAlbinaApiFullAddress(
-							`/images/atlas/markers/${locationLink.iconType}`,
-						)}
+						src={locationLink.icon}
 						alt=""
 						sizes="100"
 						fill

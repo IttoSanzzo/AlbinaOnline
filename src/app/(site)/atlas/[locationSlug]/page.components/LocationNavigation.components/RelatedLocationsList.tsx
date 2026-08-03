@@ -1,28 +1,96 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./RelatedLocationsList.module.css";
-import { LocationData } from "@/libs/stp@types";
+import { LocationDataWithExpandedLinks } from "@/libs/stp@types";
+import { UIBasics } from "@/components/(UIBasics)";
+import { StpIcon } from "@/libs/stp@icons";
+import { LocationLinkDisplay } from "./RelatedLocationsList.components/LocationLinkDisplay";
+import { LocationLinkExpanded } from "@/libs/stp@types/dataTypes/locationLink";
 
-const RelatedLocationsListContainer = newStyledElement.div(
-	styles.relatedLocationsListContainer,
+const RelatedLocationsListsContainer = newStyledElement.div(
+	styles.relatedLocationsListsContainer,
 );
+const ListContainer = newStyledElement.div(styles.listContainer);
+const LinkList = newStyledElement.div(styles.linkList);
 
 interface RelatedLocationsListProps {
-	locationData: LocationData;
+	locationData: LocationDataWithExpandedLinks;
 }
 export async function RelatedLocationsList({
 	locationData,
 }: RelatedLocationsListProps) {
-	void locationData;
+	const parentLinks = locationData.parentLocationLinks.filter(
+		(link: LocationLinkExpanded) => link.parentLocationId != locationData.id,
+	);
+	const childLinks = locationData.childLocationLinks as LocationLinkExpanded[];
+
 	return (
-		<RelatedLocationsListContainer>
-			{locationData.parentLocationLinks.map((link) => (
-				<div key={link.id}>{link.id}</div>
-			))}
-			<br />
-			<br />
-			{locationData.childLocationLinks.map((link) => (
-				<div key={link.id}>{link.id}</div>
-			))}
-		</RelatedLocationsListContainer>
+		<RelatedLocationsListsContainer>
+			<div>
+				{parentLinks.length > 0 && (
+					<ListContainer>
+						<UIBasics.Header
+							headerType="h3"
+							textAlign="center"
+							textColor="gray"
+							className={styles.title}
+							withoutMargin>
+							<StpIcon
+								name="PaperPlaneRight"
+								style="bold"
+								color="red"
+								mirror
+							/>
+							Externos
+							<StpIcon
+								name="PaperPlaneRight"
+								style="bold"
+								color="red"
+							/>
+						</UIBasics.Header>
+						<LinkList>
+							{parentLinks.map((link) => (
+								<LocationLinkDisplay
+									key={link.id}
+									isChild={false}
+									locationLink={link}
+								/>
+							))}
+						</LinkList>
+					</ListContainer>
+				)}
+				{childLinks.length > 0 && (
+					<ListContainer>
+						<UIBasics.Header
+							headerType="h3"
+							textAlign="center"
+							textColor="gray"
+							className={styles.title}
+							withoutMargin>
+							<StpIcon
+								name="PaperPlaneRight"
+								style="bold"
+								color="blue"
+							/>
+							Internos
+							<StpIcon
+								name="PaperPlaneRight"
+								style="bold"
+								color="blue"
+								mirror
+							/>
+						</UIBasics.Header>
+						<LinkList>
+							{childLinks.map((link) => (
+								<LocationLinkDisplay
+									key={link.id}
+									isChild={true}
+									locationLink={link}
+								/>
+							))}
+						</LinkList>
+					</ListContainer>
+				)}
+			</div>
+		</RelatedLocationsListsContainer>
 	);
 }

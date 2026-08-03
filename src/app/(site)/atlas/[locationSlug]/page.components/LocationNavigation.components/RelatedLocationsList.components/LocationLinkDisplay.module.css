@@ -1,0 +1,34 @@
+.locationLinkDisplayContainer {
+	display: flex;
+	background-color: var(--cl-gray-900);
+	padding: var(--sp-2);
+	height: 54px;
+	width: 100%;
+	justify-content: space-between;
+	gap: var(--sp-1);
+	align-items: center;
+}
+
+.linkStyle {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	& > a {
+		width: 100%;
+	}
+}
+
+.iconContainer {
+	display: flex;
+	height: 100%;
+}
+
+.iconView {
+	position: relative;
+	height: 150%;
+	top: -25%;
+	aspect-ratio: 1 / 1;
+	border-radius: var(--rd-md);
+}

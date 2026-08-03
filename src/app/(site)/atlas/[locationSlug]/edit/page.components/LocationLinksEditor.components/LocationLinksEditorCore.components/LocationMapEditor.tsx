@@ -16,7 +16,6 @@ export function LocationMapEditor({
 	locationData,
 	relatedLocationsState,
 }: LocationMapEditorProps) {
-	console.log("Wa");
 	return (
 		<UIBasics.Box
 			withoutBorder

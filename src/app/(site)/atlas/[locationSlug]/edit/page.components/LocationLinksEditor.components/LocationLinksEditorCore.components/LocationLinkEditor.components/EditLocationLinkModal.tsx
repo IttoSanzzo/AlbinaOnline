@@ -18,12 +18,16 @@ import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { StpIcon } from "@/libs/stp@icons";
 import toast from "react-hot-toast";
+import { UIBasics } from "@/components/(UIBasics)";
 
 const schema = z.object({
 	type: zEnumKey(LocationLinkType),
 	iconType: zEnumKey(LocationLinkIconType),
 	xCoordenate: z.number().min(-1, "Min -1").max(1000, "Max 1000"),
 	yCoordenate: z.number().min(-1, "Min -1").max(1000, "Max 1000"),
+	size: z.number().min(0, "Min 0").max(1000, "Max 1000"),
+	rotation: z.number().min(0, "Min 0").max(360, "Max 360"),
+	opacity: z.number().min(0, "Min 0").max(100, "Max 100"),
 });
 
 type FormInput = z.input<typeof schema>;
@@ -49,6 +53,9 @@ export function EditLocationLinkModal({
 			type: locationLink.type,
 			xCoordenate: locationLink.displayData?.x ?? -1,
 			yCoordenate: locationLink.displayData?.y ?? -1,
+			size: locationLink.displayData?.size ?? 100,
+			rotation: locationLink.displayData?.rotation ?? 0,
+			opacity: locationLink.displayData?.opacity ?? 100,
 		},
 		mode: "all",
 	});
@@ -64,8 +71,9 @@ export function EditLocationLinkModal({
 			body.displayData = {
 				x: formData.xCoordenate,
 				y: formData.yCoordenate,
-				rotation: 0,
-				opacity: 100,
+				size: formData.size,
+				rotation: formData.rotation,
+				opacity: formData.opacity,
 			};
 
 		const response = await authenticatedFetchAsync(
@@ -95,7 +103,7 @@ export function EditLocationLinkModal({
 							iconType: formData.iconType,
 							displayData: body.displayData as LintIgnoredAny,
 							icon: getAlbinaApiFullAddress(
-								`/images/atlas/markers/${formData.iconType}`,
+								`/images/atlas/markers/${formData.iconType}?childLocationId=${locationLink.childLocationId}`,
 							),
 						},
 			),
@@ -114,7 +122,8 @@ export function EditLocationLinkModal({
 			<Dialog.Portal>
 				<Dialog.Overlay onClick={() => setIsOpen(false)} />
 				<Dialog.Content>
-					<Dialog.Title>Edit Link</Dialog.Title>
+					<Dialog.Title textAlign="center">Edit Link</Dialog.Title>
+					<HookedForm.Space />
 					<HookedForm.Form
 						form={form}
 						onSubmit={onSubmit}>
@@ -135,18 +144,41 @@ export function EditLocationLinkModal({
 								undefined,
 								false,
 								(key: string) =>
-									getAlbinaApiFullAddress(`/images/atlas/markers/${key}`),
+									getAlbinaApiFullAddress(
+										`/images/atlas/markers/${key}?childLocationId=${locationLink.childLocationId}`,
+									),
 							)}
 						/>
+						<UIBasics.MultiColumn.Two
+							colum1={
+								<HookedForm.NumberInput<FormData>
+									fieldName="xCoordenate"
+									min={-1}
+									max={1000}
+								/>
+							}
+							colum2={
+								<HookedForm.NumberInput<FormData>
+									fieldName="yCoordenate"
+									min={-1}
+									max={1000}
+								/>
+							}
+						/>
 						<HookedForm.NumberInput<FormData>
-							fieldName="xCoordenate"
-							min={-1}
+							fieldName="size"
+							min={0}
 							max={1000}
 						/>
 						<HookedForm.NumberInput<FormData>
-							fieldName="yCoordenate"
-							min={-1}
-							max={1000}
+							fieldName="rotation"
+							min={0}
+							max={360}
+						/>
+						<HookedForm.NumberInput<FormData>
+							fieldName="opacity"
+							min={0}
+							max={100}
 						/>
 						<HookedForm.SubmitButton label="Save" />
 					</HookedForm.Form>

@@ -1,6 +1,6 @@
 import { GenericInfo, Guid } from "../index";
 import { WorldPlane } from "../otherTypes/WorldPlane";
-import { LocationLink } from "./locationLink";
+import { LocationLink, LocationLinkExpanded } from "./locationLink";
 
 export enum LocationType {
 	Unknown,
@@ -108,6 +108,11 @@ export type LocationData = {
 	createdAt: string;
 	updatedAt?: string;
 	albinaVersion: string;
+};
+
+export type LocationDataWithExpandedLinks = LocationData & {
+	childLocationLinks: LocationLinkExpanded[];
+	parentLocationLinks: LocationLinkExpanded[];
 };
 
 export type LocationRichInfo = {

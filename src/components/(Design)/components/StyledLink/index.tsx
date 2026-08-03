@@ -39,6 +39,7 @@ export function StyledLink({
 	titleStyle,
 	target,
 	containerClassName,
+	children,
 	...rest
 }: StyledLinkProps) {
 	const finalIcon = icon
@@ -78,6 +79,7 @@ export function StyledLink({
 					title={title}>
 					{title}
 				</span>
+				{children}
 			</Link>
 		</StyledLinkContainer>
 	);
