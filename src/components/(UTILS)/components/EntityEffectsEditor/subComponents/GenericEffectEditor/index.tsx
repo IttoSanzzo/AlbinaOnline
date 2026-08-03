@@ -107,7 +107,12 @@ export function GenericEffectEditor({
 				backgroundColor="gray"
 				flexDirection="row"
 				justifyContent="space-between">
-				<div style={{ display: "flex", flexDirection: "column" }}>
+				<div
+					style={{
+						position: "relative",
+						display: "flex",
+						flexDirection: "column",
+					}}>
 					<CopyEffectIdsButton
 						effectId={genericEffect.id}
 						effectLinkId={genericEffect.effectLinkId}

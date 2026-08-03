@@ -2,8 +2,7 @@
 	position: absolute;
 	display: flex;
 	flex-direction: column;
-	left: 5px;
-	top: 23px;
+	left: -20px;
 	z-index: 1;
 }
 
