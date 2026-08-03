@@ -5,7 +5,9 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { HiddenLocationList } from "./subComponents/HiddenLocationList";
 
 export async function PageView() {
-	const response = await fetch(getAlbinaApiFullAddress("/atlas"));
+	const response = await fetch(getAlbinaApiFullAddress("/atlas"), {
+		next: { tags: ["/atlas"] },
+	});
 	const locations: LocationData[] = response.ok ? await response.json() : [];
 
 	return (
