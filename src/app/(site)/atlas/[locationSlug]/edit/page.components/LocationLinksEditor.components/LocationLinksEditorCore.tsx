@@ -1,5 +1,9 @@
 import styles from "./LocationLinksEditorCore.module.css";
-import { LocationData } from "@/libs/stp@types";
+import {
+	LocationData,
+	LocationType,
+	sortLocationLinkExpandedArrayByProximity,
+} from "@/libs/stp@types";
 import { RelatedLocationLink } from "../LocationLinksEditor";
 import { Dispatch, SetStateAction, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -26,8 +30,14 @@ export function LocationLinksEditorCore({
 }: LocationLinksEditorCoreProps) {
 	const modalOpenState = useState<boolean>(false);
 
-	const parentLinks = relatedLocationsState[0].filter((link) => !link.isChild);
-	const childLinks = relatedLocationsState[0].filter((link) => link.isChild);
+	const parentLinks = sortLocationLinkExpandedArrayByProximity(
+		relatedLocationsState[0].filter((link) => !link.isChild),
+		LocationType[locationData.type],
+	);
+	const childLinks = sortLocationLinkExpandedArrayByProximity(
+		relatedLocationsState[0].filter((link) => link.isChild),
+		LocationType[locationData.type],
+	);
 
 	return (
 		<LocationLinksEditorCoreContainer>

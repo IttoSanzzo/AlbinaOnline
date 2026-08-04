@@ -21,12 +21,14 @@
 }
 
 .iconContainer {
+	position: relative;
 	display: flex;
 	height: 100%;
+	width: 45px;
 }
 
 .iconView {
-	position: relative;
+	position: absolute;
 	height: 150%;
 	top: -25%;
 	aspect-ratio: 1 / 1;

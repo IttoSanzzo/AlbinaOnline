@@ -1,9 +1,0 @@
-.twoColumnStyle {
-	gap: var(--sp-2);
-}
-
-@media (max-width: 1340px) {
-	.twoColumnStyle {
-		flex-direction: column;
-	}
-}

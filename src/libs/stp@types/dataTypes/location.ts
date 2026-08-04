@@ -1,3 +1,4 @@
+import { RelatedLocationLink } from "@/app/(site)/atlas/[locationSlug]/edit/page.components/LocationLinksEditor";
 import { GenericInfo, Guid } from "../index";
 import { WorldPlane } from "../otherTypes/WorldPlane";
 import { LocationLink, LocationLinkExpanded } from "./locationLink";
@@ -209,3 +210,21 @@ export const LocationSubTypeName: Record<keyof typeof LocationSubType, string> =
 		Fixed: "Fixo",
 		Unknown: "?",
 	};
+
+export function sortLocationLinkExpandedArrayByProximity<
+	T extends LocationLinkExpanded | RelatedLocationLink,
+>(links: T[], currentType: LocationType): T[] {
+	return links.sort((a, b) => {
+		const aType = LocationType[a.childLocation.type];
+		const bType = LocationType[b.childLocation.type];
+
+		const aDistance = Math.abs(aType - currentType);
+		const bDistance = Math.abs(bType - currentType);
+
+		if (aDistance !== bDistance) return aDistance - bDistance;
+
+		if (aType !== bType) return aType - bType;
+
+		return a.childLocation.name.localeCompare(b.childLocation.name);
+	});
+}

@@ -3,11 +3,15 @@
 	column-width: 200px;
 	column-gap: var(--sp-1);
 
+	/* margin-bottom: calc(-1 * var(--sp-1));
 	& > * {
 		margin-bottom: var(--sp-1);
-		margin-inline: auto;
+	} */
+	& > * {
+		margin-bottom: var(--sp-1);
 	}
 }
+
 .contentContainerRow {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

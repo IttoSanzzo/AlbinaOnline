@@ -4,22 +4,15 @@
 	aspect-ratio: 16 / 9;
 	overflow: hidden;
 	border-radius: var(--rd-md);
+	padding: var(--sp-2);
+	background-color: var(--cl-gray-900);
 }
 
-.subContainer {
-	background-color: var(--cl-gray-900);
-	border-radius: inherit;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: var(--sp-2);
-	height: 100%;
-	width: 100%;
-}
 .coreContainer {
+	display: flex;
 	position: relative;
 	background-color: var(--cl-black-3);
-	border-radius: inherit;
+	border-radius: var(--rd-md);
 	overflow: hidden;
 	height: 100%;
 	width: 100%;

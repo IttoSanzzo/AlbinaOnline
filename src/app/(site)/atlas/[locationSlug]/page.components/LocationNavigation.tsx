@@ -1,4 +1,3 @@
-import styles from "./LocationNavigation.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
 import { RelatedLocationsList } from "./LocationNavigation.components/RelatedLocationsList";
 import { convertEnumsFromResponse } from "@/utils/Data";
@@ -6,10 +5,13 @@ import {
 	loadRelatedLocationLinksFromLocationData,
 	LocationData,
 	LocationDataWithExpandedLinks,
+	LocationType,
+	sortLocationLinkExpandedArrayByProximity,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { getCacheMode } from "@/utils/Cache";
 import { LocationNavigationMap } from "./LocationNavigation.components/LocationNavigationMap";
+import { LocationLinkExpanded } from "@/libs/stp@types/dataTypes/locationLink";
 
 interface LocationNavigationProps {
 	locationSlug: string;
@@ -45,42 +47,43 @@ export async function LocationNavigation({
 		locationData.parentLocationLinks.length == 0
 	)
 		return null;
-	else if (!hasLocationMap)
-		return (
-			<UIBasics.Box backgroundColor="darkGray">
-				<RelatedLocationsList
-					locationData={locationData as LocationDataWithExpandedLinks}
-				/>
-			</UIBasics.Box>
-		);
-	else if (
-		locationData.childLocationLinks.length == 0 &&
-		locationData.parentLocationLinks.length == 0
-	)
-		return (
-			<UIBasics.Box backgroundColor="darkGray">
-				<LocationNavigationMap
-					locationData={locationData as LocationDataWithExpandedLinks}
-				/>
-			</UIBasics.Box>
-		);
+
+	const parentLinks = sortLocationLinkExpandedArrayByProximity(
+		(locationData as LocationDataWithExpandedLinks).parentLocationLinks.filter(
+			(link: LocationLinkExpanded) => link.parentLocationId != locationData.id,
+		),
+		LocationType[locationData.type],
+	);
+	const childLinks = sortLocationLinkExpandedArrayByProximity(
+		locationData.childLocationLinks as LocationLinkExpanded[],
+		LocationType[locationData.type],
+	);
+
 	return (
 		<UIBasics.Box backgroundColor="darkGray">
-			<UIBasics.MultiColumn.Two
-				withoutPadding
-				className={styles.twoColumnStyle}
-				divisionRatio={2}
-				colum1={
-					<LocationNavigationMap
-						locationData={locationData as LocationDataWithExpandedLinks}
-					/>
-				}
-				colum2={
-					<RelatedLocationsList
-						locationData={locationData as LocationDataWithExpandedLinks}
-					/>
-				}
-			/>
+			{parentLinks.length > 0 && (
+				<RelatedLocationsList
+					locationLinks={parentLinks}
+					type="parents"
+					topBorderRadius
+					bottomBorderRadius={!(childLinks.length > 0) && !hasLocationMap}
+				/>
+			)}
+			{hasLocationMap && (
+				<LocationNavigationMap
+					locationData={locationData as LocationDataWithExpandedLinks}
+					topBorderRadius={!(parentLinks.length > 0)}
+					bottomBorderRadius={!(childLinks.length > 0)}
+				/>
+			)}
+			{childLinks.length > 0 && (
+				<RelatedLocationsList
+					locationLinks={childLinks}
+					type="children"
+					topBorderRadius={!(parentLinks.length > 0) && !hasLocationMap}
+					bottomBorderRadius
+				/>
+			)}
 		</UIBasics.Box>
 	);
 }
