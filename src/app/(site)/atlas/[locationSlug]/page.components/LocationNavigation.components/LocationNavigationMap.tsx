@@ -4,6 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { LocationMapIcon } from "./LocationNavigationMap.components/LocationMapIcon";
 import { ImageWithTTL } from "@/components/(UTILS)/components/ImageWithTTL";
+import { CentralizeOnLoad } from "@/components/(UTILS)/components/CentralizeOnLoad";
 
 const LocationNavigationMapContainer = newStyledElement.div(
 	styles.locationNavigationMapContainer,
@@ -33,6 +34,7 @@ export async function LocationNavigationMap({
 					borderBottomRightRadius: "unset",
 				}),
 			}}>
+			<CentralizeOnLoad />
 			<CoreContainer>
 				<MapImage>
 					<ImageWithTTL
