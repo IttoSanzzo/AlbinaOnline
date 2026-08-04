@@ -46,7 +46,7 @@ export function LocationMapIcon({
 								ttlMs={1000 * 60 * 60 * 60}
 								src={link.icon}
 								alt=""
-								sizes=""
+								sizes="100"
 								fill
 							/>
 						</Link>

@@ -41,7 +41,7 @@ export function LocationLinkIconsDisplay({
 							<Image
 								src={`${link.icon}&${Date.now()}`}
 								alt=""
-								sizes=""
+								sizes="100"
 								fill
 							/>
 						</Link>

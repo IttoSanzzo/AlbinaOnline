@@ -35,7 +35,9 @@ export function EditableLoactionMapViewport({
 							src={getAlbinaApiFullAddress(
 								`/images/atlas/${locationData.slug}/location-map?${Date.now()}`,
 							)}
-							alt=""
+							alt="Location Map"
+							sizes="100vw"
+							preload
 							fill
 						/>
 					</MapImage>

@@ -42,7 +42,9 @@ export async function LocationNavigationMap({
 						src={getAlbinaApiFullAddress(
 							`/images/atlas/${locationData.slug}/location-map`,
 						)}
-						alt=""
+						alt="Location Map"
+						sizes="100vw"
+						preload
 						fill
 					/>
 				</MapImage>
