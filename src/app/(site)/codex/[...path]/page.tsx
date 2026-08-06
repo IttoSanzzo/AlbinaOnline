@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { capitalizeAll } from "@/utils/StringUtils";
 import { fetchNotion, getNotionImage, Notion } from "@/libs/stp@notion";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { PageObjectResponse } from "@notionhq/client";
-import PageContent from "./pageContent";
+// import PageContent from "./pageContent";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 
 const getPageName = (page: PageObjectResponse) =>
@@ -43,21 +43,24 @@ export async function generateMetadata({
 	});
 }
 
-export default async function ChangelogPageServerShell({
-	params,
-}: CodexEntryPageServerShellProps) {
-	const { path } = await params;
-	const fullPath = `/${path.join("/")}`;
+export default async function ChangelogPageServerShell() {
+	// {
+	// params,
+	// }: CodexEntryPageServerShellProps,
+	return null;
 
-	const page = await fetchNotion.Codex.PageByPath(fullPath);
-	if (!page) redirect("/codex");
-	const recordMap = await Notion.client.getPage(page.id);
+	// const { path } = await params;
+	// const fullPath = `/${path.join("/")}`;
 
-	return (
-		<PageContent
-			page={page}
-			recordMap={recordMap}
-			path={path}
-		/>
-	);
+	// const page = await fetchNotion.Codex.PageByPath(fullPath);
+	// if (!page) redirect("/codex");
+	// const recordMap = await Notion.client.getPage(page.id);
+
+	// return (
+	// 	<PageContent
+	// 		page={page}
+	// 		recordMap={recordMap}
+	// 		path={path}
+	// 	/>
+	// );
 }

@@ -49,7 +49,7 @@ export default async function PageContent({
 					name: getPageName(crumbPage),
 					icon: getNotionImage.Icon.PageObject(crumbPage),
 				};
-			})
+			}),
 	);
 	const breadcrumbs: Breadcrumb[] = [
 		{
