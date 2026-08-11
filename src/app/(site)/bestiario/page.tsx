@@ -4,6 +4,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import PageView from "./page.view";
 import { GenericPageContainer } from "@/components/(Design)";
 import { SetAnchorNavigation } from "@/libs/stp@hooks";
+import { CreatureData } from "@/libs/stp@types";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Bestiário",
@@ -16,14 +17,19 @@ export const metadata: Metadata = assembleMetadata({
 
 // const anchorNavigationData = [{ name: "" }]; // TODO
 
-export default function BestiaryPage() {
+export default async function BestiaryPage() {
+	const response = await fetch(getAlbinaApiFullAddress("/bestiary"), {
+		next: { tags: ["/bestiary"] },
+	});
+	const entities: CreatureData[] = response.ok ? await response.json() : [];
+
 	return (
 		<GenericPageContainer
 			title="Bestiário"
 			icon={getAlbinaApiFullAddress("/favicon/core-page/bestiary")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/bestiary")}>
 			<SetAnchorNavigation anchors={[]} />
-			<PageView />
+			<PageView entities={entities} />
 		</GenericPageContainer>
 	);
 }

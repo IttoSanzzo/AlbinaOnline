@@ -18,6 +18,7 @@ import * as CreateSkillForm from "../forms/Skills";
 import * as CreateSpellForm from "../forms/Spells";
 import * as CreateTraitForm from "../forms/Traits";
 import * as CreateRaceForm from "../forms/Races";
+import * as CreateCreatureForm from "../forms/Creature";
 import * as CreateLocationForm from "../forms/Location";
 
 function getFormMiscs(type: string): {
@@ -62,6 +63,12 @@ function getFormMiscs(type: string): {
 				apiRoute: "races",
 				siteRoute: "racas",
 			};
+		case "bestiary":
+			return {
+				schema: CreateCreatureForm.schema,
+				apiRoute: "bestiary",
+				siteRoute: "bestiario",
+			};
 		case "atlas":
 			return {
 				schema: CreateLocationForm.schema,
@@ -93,6 +100,8 @@ function getCreationForm(
 			return <CreateTraitForm.CreationForm form={form} />;
 		case "races":
 			return <CreateRaceForm.CreationForm form={form} />;
+		case "bestiary":
+			return <CreateCreatureForm.CreationForm form={form} />;
 		case "atlas":
 			return <CreateLocationForm.CreationForm form={form} />;
 		default:
