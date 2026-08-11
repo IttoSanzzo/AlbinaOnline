@@ -55,6 +55,11 @@ const CoreHubPageGroup = (
 				image: getAlbinaApiFullAddress(`/favicon/races`),
 			},
 			{
+				name: "Bestiário",
+				link: "/bestiario",
+				image: getAlbinaApiFullAddress(`/favicon/bestiary`),
+			},
+			{
 				name: "Atlas",
 				link: "/atlas",
 				image: getAlbinaApiFullAddress(`/favicon/atlas`),
@@ -170,16 +175,6 @@ export default function IndexedPagesGroups() {
 					)}
 				/>
 			)}
-			{favorites.location.length > 0 && (
-				<SortableIndexedPagesGroup
-					groupName="Atlas Fav."
-					groupType="Location"
-					indexedPages={getSluggedFavoriteSortableIndexedPage(
-						"/atlas",
-						favorites.location,
-					)}
-				/>
-			)}
 			{favorites.race.length > 0 && (
 				<SortableIndexedPagesGroup
 					groupName="Raças Fav."
@@ -187,6 +182,26 @@ export default function IndexedPagesGroups() {
 					indexedPages={getSluggedFavoriteSortableIndexedPage(
 						"/racas",
 						favorites.race,
+					)}
+				/>
+			)}
+			{favorites.location.length > 0 && (
+				<SortableIndexedPagesGroup
+					groupName="Criaturas Fav."
+					groupType="Creature"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/bestiario",
+						favorites.creature,
+					)}
+				/>
+			)}
+			{favorites.location.length > 0 && (
+				<SortableIndexedPagesGroup
+					groupName="Atlas Fav."
+					groupType="Location"
+					indexedPages={getSluggedFavoriteSortableIndexedPage(
+						"/atlas",
+						favorites.location,
 					)}
 				/>
 			)}

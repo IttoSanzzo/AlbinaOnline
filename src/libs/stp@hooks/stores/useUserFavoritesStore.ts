@@ -36,8 +36,9 @@ export const useUserFavoritesStore = create<FavoritesState>((set) => ({
 					skill: data.favorites.Skill,
 					spell: data.favorites.Spell,
 					trait: data.favorites.Trait,
-					location: data.favorites.Location,
 					race: data.favorites.Race,
+					creature: data.favorites.Creature,
+					location: data.favorites.Location,
 					character: data.favorites.Character,
 				},
 			});

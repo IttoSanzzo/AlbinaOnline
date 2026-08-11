@@ -1,4 +1,5 @@
 import { CharacterData } from "../dataTypes/Character";
+import { CreatureData } from "../dataTypes/creature";
 import { ItemData } from "../dataTypes/item";
 import { LocationData } from "../dataTypes/location";
 import { MasteryData } from "../dataTypes/mastery";
@@ -16,6 +17,7 @@ export type UserFavoriteType =
 	| "Spell"
 	| "Trait"
 	| "Location"
+	| "Creature"
 	| "Race";
 
 type FavoriteItem = {
@@ -48,17 +50,23 @@ type FavoriteTrait = {
 	type: string;
 	target: TraitData;
 };
-type FavoriteLocation = {
-	id: Guid;
-	order: number;
-	type: string;
-	target: LocationData;
-};
 type FavoriteRace = {
 	id: Guid;
 	order: number;
 	type: string;
 	target: RaceData;
+};
+type FavoriteCreature = {
+	id: Guid;
+	order: number;
+	type: string;
+	target: CreatureData;
+};
+type FavoriteLocation = {
+	id: Guid;
+	order: number;
+	type: string;
+	target: LocationData;
 };
 type FavoriteCharacter = {
 	id: Guid;
@@ -73,7 +81,8 @@ export type UserFavoritesGrouped = {
 	skill: FavoriteSkill[];
 	spell: FavoriteSpell[];
 	trait: FavoriteTrait[];
-	location: FavoriteLocation[];
 	race: FavoriteRace[];
+	creature: FavoriteCreature[];
+	location: FavoriteLocation[];
 	character: FavoriteCharacter[];
 };

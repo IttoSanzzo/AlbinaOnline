@@ -21,6 +21,8 @@ function segmentToApiRoute(segment: string): string {
 			return "traits";
 		case "racas":
 			return "races";
+		case "bestiario":
+			return "bestiary";
 		default:
 			return segment;
 	}

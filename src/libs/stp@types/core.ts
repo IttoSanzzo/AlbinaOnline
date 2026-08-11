@@ -51,8 +51,9 @@ export type SearchEntryEntity =
 	| "Skill"
 	| "Spell"
 	| "Trait"
-	| "Location"
 	| "Race"
+	| "Creature"
+	| "Location"
 	| "User";
 export type SearchEntry = {
 	entity: SearchEntryEntity;
@@ -71,6 +72,7 @@ export type AllSearchEntriesByType = {
 	skill: SearchEntry[];
 	spell: SearchEntry[];
 	trait: SearchEntry[];
+	creature: SearchEntry[];
 	location: SearchEntry[];
 	race: SearchEntry[];
 	user: SearchEntry[];

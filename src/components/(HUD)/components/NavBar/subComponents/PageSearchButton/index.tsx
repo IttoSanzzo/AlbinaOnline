@@ -44,6 +44,7 @@ const emptySearchEntries: AllSearchEntriesByType = {
 	spell: [],
 	trait: [],
 	race: [],
+	creature: [],
 	location: [],
 	user: [],
 };
@@ -67,6 +68,8 @@ function getPageLinkFromSearchEntry(
 			return `/tracos/${route}`;
 		case "Race":
 			return `/racas/${route}`;
+		case "Creature":
+			return `/bestiario/${route}`;
 		case "Location":
 			return `/atlas/${route}`;
 		case "User":
@@ -227,6 +230,7 @@ export function PageSearchButton() {
 		searchEntries.spell.length +
 		searchEntries.trait.length +
 		searchEntries.race.length +
+		searchEntries.creature.length +
 		searchEntries.location.length +
 		searchEntries.user.length;
 	const globalTitleTitleDisable = 1 >= totalEntriesLength;
@@ -533,8 +537,9 @@ interface linkOrTitleEntry {
 		| "Skill"
 		| "Spell"
 		| "Trait"
-		| "Location"
 		| "Race"
+		| "Creature"
+		| "Location"
 		| "User"
 		| SearchEntry;
 }
@@ -585,6 +590,11 @@ function mapSearchEntriesAndTitlesIntoRawList(
 		for (const entry of allOthersByType.race)
 			rawList.push({ type: "entry", value: entry });
 	}
+	if (allOthersByType.creature?.length > 0) {
+		if (showTitles) rawList.push({ type: "title", value: "Creature" });
+		for (const entry of allOthersByType.creature)
+			rawList.push({ type: "entry", value: entry });
+	}
 	if (allOthersByType.location?.length > 0) {
 		if (showTitles) rawList.push({ type: "title", value: "Location" });
 		for (const entry of allOthersByType.location)
@@ -616,7 +626,8 @@ const typeTitles = {
 	Skill: (x: number, y: number) => typeText("Skills", x, y),
 	Spell: (x: number, y: number) => typeText("Spells", x, y),
 	Trait: (x: number, y: number) => typeText("Traços", x, y),
-	Location: (x: number, y: number) => typeText("Localizações", x, y),
 	Race: (x: number, y: number) => typeText("Raças", x, y),
+	Creature: (x: number, y: number) => typeText("Bestiário", x, y),
+	Location: (x: number, y: number) => typeText("Localizações", x, y),
 	User: (x: number, y: number) => typeText("Usuários", x, y),
 };
