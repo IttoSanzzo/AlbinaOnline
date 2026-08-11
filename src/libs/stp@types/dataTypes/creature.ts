@@ -1,4 +1,14 @@
-import { GenericInfo, Guid } from "../index";
+import {
+	Alignment,
+	GenericInfo,
+	GenericSpeedStats,
+	Guid,
+	LanguageType,
+	LifeState,
+	MagicAttribute,
+	MechanicalAbility,
+} from "../index";
+import { GenericAbilityScore } from "../otherTypes/GenericAbilityScore";
 
 export enum CreatureType {
 	Unknown,
@@ -26,18 +36,14 @@ export enum CreatureType {
 }
 export enum CreatureSubType {
 	Unknown,
-
 	Animal,
 	Monster,
 	Person,
-
 	Vermin,
 	Familiar,
 	Companion,
-
 	Guardian,
 	Mount,
-
 	Swarm,
 }
 
@@ -47,14 +53,43 @@ export type CreatureData = {
 	name: string;
 	type: keyof typeof CreatureType;
 	subType: keyof typeof CreatureSubType;
-	info: GenericInfo;
+
+	magicAttributes: (keyof typeof MagicAttribute)[];
+	lifeState: keyof typeof LifeState;
+	alignment: Alignment;
+	level: number;
+	experience: number;
 	isHidden: boolean;
+
+	abilityScore: GenericAbilityScore;
+	coreMetrics: CreatureCoreMetrics;
+	miscMetrics: CreatureMiscMetrics;
+
+	mechanicalAbilities: MechanicalAbility[];
+
 	iconUrl: string;
 	bannerUrl: string;
 	createdAt: string;
 	updatedAt?: string;
+	info: GenericInfo;
 	albinaVersion: string;
 };
+
+export interface CreatureCoreMetrics {
+	SpeedStats: GenericSpeedStats;
+	HealthPoints: number;
+	ArmorClass: number;
+	Initiative: number;
+}
+
+export interface CreatureMiscMetrics {
+	Volume: number;
+	Languages: (keyof typeof LanguageType)[];
+	TestBonuses: Map<string, number>;
+	Senses: Map<string, string>;
+	Resistances: string[];
+	Immunities: string[];
+}
 
 export const CreatureTypeName: Record<keyof typeof CreatureType, string> = {
 	Unknown: "?",

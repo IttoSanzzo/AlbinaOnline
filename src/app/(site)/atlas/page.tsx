@@ -19,7 +19,7 @@ export const metadata: Metadata = assembleMetadata({
 export default async function ItemsPageServerShell() {
 	return (
 		<GenericPageContainer
-			title="Todos as Localizações"
+			title="Todas as Localizações"
 			icon={getAlbinaApiFullAddress("/favicon/core-page/atlas")}
 			banner={getAlbinaApiFullAddress("/banner/core-page/atlas")}>
 			{/* <SetAnchorNavigation anchors={anchorNavigationData} /> */}

@@ -2,6 +2,7 @@
 
 import {
 	CharacterData,
+	CreatureData,
 	ItemData,
 	LocationData,
 	MasteryData,
@@ -21,6 +22,7 @@ export type PageDataType =
 	| "spell"
 	| "trait"
 	| "race"
+	| "creature"
 	| "location"
 	| "character";
 
@@ -32,6 +34,7 @@ export type PageData =
 	| SpellData
 	| TraitData
 	| RaceData
+	| CreatureData
 	| LocationData
 	| CharacterData;
 

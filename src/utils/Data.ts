@@ -26,6 +26,7 @@ const SlugKeyMap = {
 	traits: "traitSlug",
 	spells: "spellSlug",
 	races: "raceSlug",
+	bestiary: "creatureSlug",
 	atlas: "locationSlug",
 } as const;
 type SlugMap = typeof SlugKeyMap;
