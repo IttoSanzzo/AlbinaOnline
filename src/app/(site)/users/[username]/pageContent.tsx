@@ -57,6 +57,7 @@ export default function UserPageContent({ username }: UserPageContentProps) {
 					trait: data.favorites.Trait,
 					location: data.favorites.Location,
 					race: data.favorites.Race,
+					creature: data.favorites.Creature,
 					character: data.favorites.Character,
 				});
 			});
