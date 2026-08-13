@@ -7,6 +7,7 @@ import {
 	LifeState,
 	MagicAttribute,
 	MechanicalAbility,
+	SizeClass,
 } from "../index";
 import { GenericAbilityScore } from "../otherTypes/GenericAbilityScore";
 
@@ -76,19 +77,26 @@ export type CreatureData = {
 };
 
 export interface CreatureCoreMetrics {
-	SpeedStats: GenericSpeedStats;
-	HealthPoints: number;
-	ArmorClass: number;
-	Initiative: number;
+	speedStats: GenericSpeedStats;
+	healthPoints: number;
+	armorClass: number;
+	initiative: number;
 }
 
 export interface CreatureMiscMetrics {
-	Volume: number;
-	Languages: (keyof typeof LanguageType)[];
-	TestBonuses: Map<string, number>;
-	Senses: Map<string, string>;
-	Resistances: string[];
-	Immunities: string[];
+	volume: GenericVolume;
+	languages: (keyof typeof LanguageType)[];
+	testBonuses: Map<string, number>;
+	senses: Map<string, string>;
+	resistances: string[];
+	immunities: string[];
+}
+export interface GenericVolume {
+	length: number;
+	width: number;
+	height: number;
+	volume: number;
+	sizeClass: keyof typeof SizeClass;
 }
 
 export const CreatureTypeName: Record<keyof typeof CreatureType, string> = {

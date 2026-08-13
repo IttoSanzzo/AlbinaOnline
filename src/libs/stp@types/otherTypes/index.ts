@@ -25,3 +25,4 @@ export * from "./LifeState";
 export * from "./Alignment";
 export * from "./GenericAbilityScore";
 export * from "./GenericSpeedStats";
+export * from "./SizeClass";

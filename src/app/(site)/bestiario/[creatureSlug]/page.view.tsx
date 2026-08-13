@@ -13,11 +13,15 @@ import {
 	CreatureData,
 	CreatureSubTypeName,
 	CreatureTypeName,
+	GetAlignmentName,
+	LifeStateName,
+	SizeClassMasculineName,
 } from "@/libs/stp@types";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
 import { GenericInfoMultiColumn } from "@/components/(Design)/components/GenericInfoMultiColumn";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { redirect } from "next/navigation";
+import { CreatureViewer } from "./page.components/CreatureViewer";
 
 interface CreaturePageViewProps {
 	entitySlug: string;
@@ -49,15 +53,33 @@ export default async function CreaturePageView({
 						color: StandartTextColor["darkGray"],
 					}}>
 					<StyledLink
-						title={CreatureTypeName[creatureData.type]}
-						href={`/bestiario#${creatureData.type}`}
-						icon={getAlbinaApiFullAddress(creatureData.iconUrl)}
-					/>
-					{" _ "}
-					<StyledLink
 						title={CreatureSubTypeName[creatureData.subType]}
 						href={`/bestiario#${creatureData.subType}`}
 						icon={getAlbinaApiFullAddress("/favicon/core-page/bestiary")}
+					/>
+					{" _ "}
+					<StyledFalseLink
+						title={CreatureTypeName[creatureData.type]}
+						// href={`/bestiario#${creatureData.type}`}
+						// icon={getAlbinaApiFullAddress(creatureData.iconUrl)}
+						withoutIcon
+					/>
+					{" _ "}
+					<StyledFalseLink
+						title={LifeStateName[creatureData.lifeState]}
+						withoutIcon
+					/>
+					{" _ "}
+					<StyledFalseLink
+						title={
+							SizeClassMasculineName[creatureData.miscMetrics.volume.sizeClass]
+						}
+						withoutIcon
+					/>
+					{" _ "}
+					<StyledFalseLink
+						title={GetAlignmentName(creatureData.alignment)}
+						withoutIcon
 					/>
 				</div>
 			}
@@ -73,10 +95,7 @@ export default async function CreaturePageView({
 			/>
 			<SetNavBarModules favoriteButton={FavoriteButton} />
 
-			<StaticGallery
-				url={getAlbinaApiFullAddress(`/gallery/bestiary/${creatureData.slug}`)}
-				hideIfEmpty
-			/>
+			<CreatureViewer creatureData={creatureData} />
 
 			<UIBasics.Box
 				backgroundColor="darkGray"
@@ -86,10 +105,15 @@ export default async function CreaturePageView({
 					headerType="h1"
 					backgroundColor="gray"
 					textAlign="center"
-					children={"¤ Info ¤"}
+					children={`¤ ${creatureData.name} ¤`}
 				/>
 				<GenericInfoMultiColumn info={creatureData.info} />
 			</UIBasics.Box>
+
+			<StaticGallery
+				url={getAlbinaApiFullAddress(`/gallery/bestiary/${creatureData.slug}`)}
+				hideIfEmpty
+			/>
 
 			<GenericPageFooter
 				version={creatureData.albinaVersion}
