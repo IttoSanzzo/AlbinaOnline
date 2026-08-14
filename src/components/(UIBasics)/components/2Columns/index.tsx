@@ -16,6 +16,8 @@ function getFlexGrowFromDivision(ratio: number, side: 1 | 2): number {
 interface TwoColumnsProps {
 	colum1?: ReactNode;
 	colum2?: ReactNode;
+	withoutColum1?: boolean;
+	withoutColum2?: boolean;
 	justifyContent1?: "left" | "center" | "right";
 	justifyContent2?: "left" | "center" | "right";
 	divisionRatio?: -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4;
@@ -30,6 +32,8 @@ export function TwoColumns({
 	colum2 = null,
 	justifyContent1,
 	justifyContent2,
+	withoutColum1 = false,
+	withoutColum2 = false,
 	divisionRatio = 0,
 	withoutPadding,
 	withoutGap,
@@ -52,6 +56,9 @@ export function TwoColumns({
 		...(withoutBorderRadius && { borderRadius: 0 }),
 	};
 
+	if (withoutColum1 && withoutColum2) return null;
+	if (withoutColum1) return colum2;
+	if (withoutColum2) return colum1;
 	return (
 		<TwoColumnsContainer
 			style={containerStyle}
