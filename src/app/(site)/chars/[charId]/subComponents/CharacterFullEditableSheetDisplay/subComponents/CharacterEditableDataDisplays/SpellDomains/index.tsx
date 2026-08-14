@@ -37,7 +37,8 @@ function FormSpellDomainTablePair(name: string) {
 			href={`/spells/${lowercaseName}`}
 			icon={`${getAlbinaApiFullAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
-		<HookedForm.NumberInputInline
+		<HookedForm.NumberInput
+			inline
 			fieldName={lowercaseName as keyof FormData}
 			max={10}
 			min={-1}

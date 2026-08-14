@@ -2,55 +2,50 @@
 
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { Path } from "react-hook-form";
-import { NumberInputInline } from "../NumberInputInline";
 import clsx from "clsx";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
-import { StandartTextColor } from "@/components/(UIBasics)";
+import styles from "./NumberInput.module.css";
 import { startCase } from "lodash";
+import { BaseNumberInput, BaseNumberInputProps } from "./base/BaseNumberInput";
 
 const NumberInputContainer = newStyledElement.div(styles.numberInputContainer);
 const NumberInputLabel = newStyledElement.label(styles.numberInputLabel);
 
-type NumberInputProps<TFormData> = {
+interface NumberInputProps<TFormData>
+	extends
+		BaseNumberInputProps<TFormData>,
+		Omit<
+			InputHTMLAttributes<HTMLInputElement>,
+			"color" | "min" | "max" | "step"
+		> {
 	fieldName: Path<TFormData>;
 	label?: string;
 	autoLabelFormatting?: boolean;
-	fontSize?:
-		| "xxs"
-		| "xs"
-		| "sm"
-		| "md"
-		| "lg"
-		| "xl"
-		| "2xl"
-		| "3xl"
-		| "4xl"
-		| "5xl"
-		| "6xl"
-		| "7xl"
-		| "8xl"
-		| "9xl";
 	lesserPadding?: boolean;
-	min?: number;
-	max?: number;
-	step?: number;
-	color?: keyof typeof StandartTextColor;
 	width?: CSSProperties["width"];
-} & InputHTMLAttributes<HTMLInputElement>;
+	inline?: boolean;
+	objectIndex?: number | null;
+	objectKey?: string | null;
+}
 
 type NewType<TFormData> = NumberInputProps<TFormData>;
 
 export function NumberInput<TFormData>({
 	fieldName,
+	objectKey = null,
 	autoLabelFormatting = true,
-	label = autoLabelFormatting ? startCase(fieldName) : fieldName,
+	label = autoLabelFormatting
+		? objectKey != null
+			? startCase(objectKey)
+			: startCase(fieldName)
+		: objectKey != null
+			? objectKey
+			: fieldName,
 	lesserPadding = false,
-	fontSize,
 	style,
-	className,
-	color,
 	width,
+	className,
+	inline = false,
 	...rest
 }: NewType<TFormData>) {
 	const inputStyle: CSSProperties = {
@@ -60,15 +55,23 @@ export function NumberInput<TFormData>({
 		...style,
 	};
 
+	if (inline)
+		return (
+			<BaseNumberInput
+				fieldName={fieldName}
+				className={clsx(className, "withButtonPadding")}
+				style={inputStyle}
+				{...rest}
+			/>
+		);
 	return (
 		<NumberInputContainer style={{ width }}>
 			<NumberInputLabel children={label} />
-			<NumberInputInline
-				className={clsx(className, "withButtonPadding")}
+			<BaseNumberInput
 				fieldName={fieldName}
-				fontSize={fontSize}
+				className={clsx(className, "withButtonPadding")}
 				style={inputStyle}
-				color={color}
+				objectKey={objectKey}
 				{...rest}
 			/>
 		</NumberInputContainer>

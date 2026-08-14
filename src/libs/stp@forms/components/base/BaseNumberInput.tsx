@@ -4,23 +4,27 @@ import { StpIcon } from "@/libs/stp@icons";
 import { CSSProperties, InputHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./styles.module.css";
+import styles from "./BaseNumberInput.module.css";
 import { StandartTextColor } from "@/components/(UIBasics)";
 import { useHookedForm } from "../../context/HookedFormContext";
 
-const NumberInputFieldContainer = newStyledElement.div(
-	styles.numberInputFieldContainer,
+const BaseNumberInputFieldContainer = newStyledElement.div(
+	styles.baseNumberInputFieldContainer,
 );
-const NumberInputField = newStyledElement.input(styles.numberInputField);
-const NumberInputDecrementButton = newStyledElement.button(
-	styles.numberInputDecrementButton,
+const BaseNumberInputField = newStyledElement.input(
+	styles.baseNumberInputField,
 );
-const NumberInputIncrementButton = newStyledElement.button(
-	styles.numberInputIncrementButton,
+const BaseNumberInputDecrementButton = newStyledElement.button(
+	styles.baseNumberInputDecrementButton,
+);
+const BaseNumberInputIncrementButton = newStyledElement.button(
+	styles.baseNumberInputIncrementButton,
 );
 
-type NumberInputInlineProps<TFormData> = {
+export type BaseNumberInputProps<TFormData> = {
 	fieldName: Path<TFormData>;
+	objectIndex?: number | null;
+	objectKey?: string | null;
 	fontSize?:
 		| "xxs"
 		| "xs"
@@ -42,8 +46,10 @@ type NumberInputInlineProps<TFormData> = {
 	color?: keyof typeof StandartTextColor;
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function NumberInputInline<TFormData extends FieldValues>({
+export function BaseNumberInput<TFormData extends FieldValues>({
 	fieldName,
+	objectKey = null,
+	objectIndex = null,
 	fontSize,
 	style,
 	min,
@@ -52,7 +58,7 @@ export function NumberInputInline<TFormData extends FieldValues>({
 	className,
 	color,
 	...rest
-}: NumberInputInlineProps<TFormData>) {
+}: BaseNumberInputProps<TFormData>) {
 	const {
 		form: { control },
 		triggerDebounceAction,
@@ -68,56 +74,70 @@ export function NumberInputInline<TFormData extends FieldValues>({
 		...style,
 	};
 
+	const currentValue =
+		objectIndex != null
+			? objectKey != null
+				? field.value[objectIndex][objectKey]
+				: field.value[objectIndex]
+			: field.value;
+
+	function setValue(newValue: number | string) {
+		if (objectIndex != null) {
+			if (objectKey != null) field.value[objectIndex][objectKey] = newValue;
+			else field.value[objectIndex] = newValue;
+			field.onChange(field.value);
+		} else field.onChange(newValue);
+	}
+
 	function handleDecrement() {
-		const currentValue = Number(field.value);
 		const newValue: number =
 			(isNaN(currentValue) ? 0 : currentValue) - (step ?? 1);
-		field.onChange(
-			min != undefined ? (newValue < min ? min : newValue) : newValue,
-		);
+		const finalNewValue =
+			min != undefined ? (newValue < min ? min : newValue) : newValue;
+		setValue(finalNewValue);
 		triggerDebounceAction();
 	}
 	function handleIncrement() {
-		const currentValue = Number(field.value);
 		const newValue: number =
 			(isNaN(currentValue) ? 0 : currentValue) + (step ?? 1);
-		field.onChange(max ? (newValue > max ? max : newValue) : newValue);
+		const finalNewValue = max ? (newValue > max ? max : newValue) : newValue;
+		setValue(finalNewValue);
 		triggerDebounceAction();
 	}
 
 	return (
-		<NumberInputFieldContainer className={className}>
-			<NumberInputDecrementButton
-				disabled={min != undefined && field.value <= min}
+		<BaseNumberInputFieldContainer className={className}>
+			<BaseNumberInputDecrementButton
+				disabled={min != undefined && currentValue <= min}
 				type="button"
 				tabIndex={-1}
 				onClick={handleDecrement}
 				children={StpIcon({ name: "LessThan" })}
 			/>
-			<NumberInputField
+			<BaseNumberInputField
 				type="number"
 				style={inputStyle}
 				max={max}
 				min={min}
 				step={step}
 				{...field}
-				value={field.value ?? ""}
+				value={currentValue ?? ""}
 				{...rest}
 				onChange={(event) => {
 					const value =
 						event.target.value === "" ? 0 : Number(event.target.value);
 					event.target.value = value.toString();
-					field.onChange(value);
+					setValue(value);
 					triggerDebounceAction();
 				}}
 			/>
-			<NumberInputIncrementButton
-				disabled={max != undefined && field.value >= max}
+			<BaseNumberInputIncrementButton
+				disabled={max != undefined && currentValue >= max}
 				type="button"
 				tabIndex={-1}
 				onClick={handleIncrement}
 				children={StpIcon({ name: "GreaterThan" })}
 			/>
-		</NumberInputFieldContainer>
+		</BaseNumberInputFieldContainer>
 	);
 }

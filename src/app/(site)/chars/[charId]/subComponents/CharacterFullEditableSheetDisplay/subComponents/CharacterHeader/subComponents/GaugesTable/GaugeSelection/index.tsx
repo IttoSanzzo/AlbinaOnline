@@ -4,7 +4,7 @@ import { HookedForm } from "@/libs/stp@forms";
 import { StandartTextColor, UIBasics } from "@/components/(UIBasics)";
 
 const GaugeSelectionContainer = newStyledElement.div(
-	styles.gaugeSelectionContainer
+	styles.gaugeSelectionContainer,
 );
 
 interface GaugeSelectionProps {
@@ -19,7 +19,8 @@ export function GaugeSelection({
 }: GaugeSelectionProps) {
 	return (
 		<GaugeSelectionContainer>
-			<HookedForm.NumberInputInline
+			<HookedForm.NumberInput
+				inline
 				fieldName={`current${gauge}`}
 				max={currentMax}
 				color={color}
@@ -29,7 +30,8 @@ export function GaugeSelection({
 				textColor={color}
 				children={`/ ${currentMax} + `}
 			/>
-			<HookedForm.NumberInputInline
+			<HookedForm.NumberInput
+				inline
 				fieldName={`temporary${gauge}`}
 				min={0}
 				color={color}

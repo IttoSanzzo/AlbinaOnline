@@ -59,7 +59,8 @@ export function LevelSelector({ characterId, level }: LevelSelectorProps) {
 		<HookedForm.Form
 			form={form}
 			onChangeAction={onLevelChange}>
-			<HookedForm.NumberInputInline
+			<HookedForm.NumberInput
+				inline
 				fieldName="level"
 				min={-1}
 				max={20}

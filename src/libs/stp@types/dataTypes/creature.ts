@@ -86,8 +86,8 @@ export interface CreatureCoreMetrics {
 export interface CreatureMiscMetrics {
 	volume: GenericVolume;
 	languages: (keyof typeof LanguageType)[];
-	testBonuses: Map<string, number>;
-	senses: Map<string, string>;
+	testBonuses: Record<string, number>;
+	senses: Record<string, string>;
 	resistances: string[];
 	immunities: string[];
 }

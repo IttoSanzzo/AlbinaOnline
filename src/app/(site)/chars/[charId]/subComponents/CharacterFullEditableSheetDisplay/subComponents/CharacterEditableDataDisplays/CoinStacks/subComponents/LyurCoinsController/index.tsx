@@ -22,7 +22,8 @@ function tableParameterEntry(key: keyof FormData, title: string) {
 			title={title}
 			// icon={`${getAlbinaApiAddress()}/favicon/spells/${lowercaseName}`}
 		/>,
-		<HookedForm.NumberInputInline
+		<HookedForm.NumberInput
+			inline
 			fieldName={key}
 			min={0}
 		/>,

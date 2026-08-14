@@ -83,7 +83,8 @@ export function CharacterProfileDisplay({
 						tableLanes: [
 							[
 								<UIBasics.Text textColor="gray">Idade</UIBasics.Text>,
-								<HookedForm.NumberInputInline
+								<HookedForm.NumberInput
+									inline
 									fieldName="age"
 									min={0}
 								/>,
@@ -96,7 +97,8 @@ export function CharacterProfileDisplay({
 							],
 							[
 								<UIBasics.Text textColor="gray">Altura</UIBasics.Text>,
-								<HookedForm.NumberInputInline
+								<HookedForm.NumberInput
+									inline
 									fieldName="stature"
 									min={0}
 								/>,
@@ -109,7 +111,8 @@ export function CharacterProfileDisplay({
 							],
 							[
 								<UIBasics.Text textColor="gray">Peso</UIBasics.Text>,
-								<HookedForm.NumberInputInline
+								<HookedForm.NumberInput
+									inline
 									fieldName="weight"
 									min={0}
 								/>,

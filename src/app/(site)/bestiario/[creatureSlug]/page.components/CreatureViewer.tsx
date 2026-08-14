@@ -9,6 +9,15 @@ interface CreatureViewerProps {
 	creatureData: CreatureData;
 }
 export function CreatureViewer({ creatureData }: CreatureViewerProps) {
+	let testBonusesString = Object.entries(creatureData.miscMetrics.testBonuses)
+		.map((entry) => `${entry[0]}: ${entry[1]}`)
+		.join(", ");
+	if (testBonusesString == "") testBonusesString = "Nenhum";
+	let sensesString = Object.entries(creatureData.miscMetrics.senses)
+		.map((entry) => `${entry[0]}: ${entry[1]}`)
+		.join(", ");
+	if (sensesString == "") sensesString = "Nenhum";
+
 	return (
 		<UIBasics.Box
 			backgroundColor="darkGray"
@@ -197,7 +206,7 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textAlign="flex-center"
 											display="flex"
 											textColor="gray">
-											{"Nenhum"}
+											{sensesString}
 										</UIBasics.Text>,
 									],
 								],
@@ -293,7 +302,7 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textAlign="flex-center"
 											display="flex"
 											textColor="gray">
-											{"Nenhum"}
+											{testBonusesString}
 										</UIBasics.Text>,
 									],
 								],

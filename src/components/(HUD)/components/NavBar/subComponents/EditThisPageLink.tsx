@@ -20,6 +20,7 @@ const editablePageRoot = [
 	"tracos",
 	"racas",
 	"atlas",
+	"bestiario",
 ];
 
 export function EditThisPageLink() {

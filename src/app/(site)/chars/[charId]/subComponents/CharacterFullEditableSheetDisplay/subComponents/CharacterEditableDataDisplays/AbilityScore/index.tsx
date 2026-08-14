@@ -45,7 +45,8 @@ function TableAbilityScoreEntry(
 				`/favicon/default/misc/ability-scores/${key}`,
 			)}
 		/>,
-		<HookedForm.NumberInputInline
+		<HookedForm.NumberInput
+			inline
 			fieldName={key}
 			max={40}
 			min={0}

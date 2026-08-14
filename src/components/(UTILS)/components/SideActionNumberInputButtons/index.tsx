@@ -81,7 +81,8 @@ export function SideActionNumberInputButtons({
 			onChangeAction={handleWatchedAction}
 			actionDebounceMs={debounceMiliseconds}
 			className={className}>
-			<HookedForm.NumberInputInline<FormData>
+			<HookedForm.NumberInput<FormData>
+				inline
 				fieldName={"currentValue"}
 				step={step}
 				style={style}

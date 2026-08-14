@@ -26,7 +26,8 @@ function formTableEntry(title: string, fieldName: keyof FormData) {
 			textColor="gray"
 			children={title}
 		/>,
-		<HookedForm.NumberInputInline
+		<HookedForm.NumberInput
+			inline
 			min={0}
 			fieldName={fieldName}
 		/>,

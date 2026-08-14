@@ -75,7 +75,8 @@ function tableParameterEntry(
 			display="block"
 			children={getParameterGradeSymbol(grade)}
 		/>,
-		<HookedForm.NumberInputInline
+		<HookedForm.NumberInput
+			inline
 			fieldName={key}
 			max={totalLevel >= 6 ? investedPoints : 12}
 			min={0}

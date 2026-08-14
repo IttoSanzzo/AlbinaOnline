@@ -1,3 +1,5 @@
+"use client";
+
 import { HookedForm } from "@/libs/stp@forms";
 import { AlertDialog } from "@/libs/stp@radix";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";

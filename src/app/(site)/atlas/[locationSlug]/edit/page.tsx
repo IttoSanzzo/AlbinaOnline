@@ -10,6 +10,7 @@ export const metadata: Metadata = assembleMetadata({
 	ogImage: {
 		url: getAlbinaApiFullAddress("/banner/core-page/atlas"),
 	},
+	route: "/atlas",
 });
 
 interface EditLocationPageServerShellProps {
