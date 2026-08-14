@@ -154,18 +154,22 @@ export default async function CreaturePageView({
 				url={getAlbinaApiFullAddress(`/gallery/bestiary/${creatureData.slug}`)}
 				hideIfEmpty
 			/>
-			<UIBasics.Box
-				backgroundColor="darkGray"
-				withoutBorder>
-				<UIBasics.Header
-					textColor="orange"
-					headerType="h1"
-					backgroundColor="gray"
-					textAlign="center"
-					children={`¤ ${creatureData.name} ¤`}
-				/>
-				<GenericInfoMultiColumn info={creatureData.info} />
-			</UIBasics.Box>
+			{(creatureData.info.summary.length > 0 ||
+				creatureData.info.description.length > 0 ||
+				creatureData.info.miscellaneous.length > 0) && (
+				<UIBasics.Box
+					backgroundColor="darkGray"
+					withoutBorder>
+					<UIBasics.Header
+						textColor="orange"
+						headerType="h1"
+						backgroundColor="gray"
+						textAlign="center"
+						children={`¤ ${creatureData.name} ¤`}
+					/>
+					<GenericInfoMultiColumn info={creatureData.info} />
+				</UIBasics.Box>
+			)}
 
 			<GenericPageFooter
 				version={creatureData.albinaVersion}
