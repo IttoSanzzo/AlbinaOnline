@@ -45,6 +45,7 @@ export enum CreatureSubType {
 	Companion,
 	Guardian,
 	Mount,
+	Construct,
 	Swarm,
 }
 
@@ -54,6 +55,8 @@ export type CreatureData = {
 	name: string;
 	type: keyof typeof CreatureType;
 	subType: keyof typeof CreatureSubType;
+
+	source: string;
 
 	magicAttributes: (keyof typeof MagicAttribute)[];
 	lifeState: keyof typeof LifeState;
@@ -88,6 +91,7 @@ export interface CreatureMiscMetrics {
 	languages: (keyof typeof LanguageType)[];
 	testBonuses: Record<string, number>;
 	senses: Record<string, string>;
+	vulnerabilities: string[];
 	resistances: string[];
 	immunities: string[];
 }
@@ -152,5 +156,6 @@ export const CreatureSubTypeName: Record<keyof typeof CreatureSubType, string> =
 		Companion: "Companheiro",
 		Guardian: "Guardião",
 		Mount: "Montaria",
+		Construct: "Constructo",
 		Swarm: "Enxame",
 	};

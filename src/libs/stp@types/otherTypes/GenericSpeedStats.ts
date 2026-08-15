@@ -1,6 +1,8 @@
 export interface GenericSpeedStats {
-	walkSpeed: number;
-	combatSpeed: number;
-	swimSpeed: number;
-	flySpeed: number;
+	walk: number;
+	combat: number;
+	swim?: number;
+	fly?: number;
+	burrow?: number;
+	climb?: number;
 }

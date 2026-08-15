@@ -22,6 +22,26 @@ export enum LanguageType {
 	Sylvan,
 	Undercommon,
 
+	// More Standarts
+	Aven,
+	Avolokian,
+	Khenra,
+	Sphinx,
+	Yeti,
+	Eldrazi,
+	Gibbererish,
+	GillMan,
+	Gnoll,
+	Otyugh,
+	Pygmy,
+	Sahuagin,
+	Bullywug,
+	Worg,
+	Gremlin,
+	Mossipede,
+	Seukothi,
+	Squirrel,
+
 	// Primordial
 	Primordial,
 	Aquan,
@@ -33,5 +53,15 @@ export enum LanguageType {
 	Druidic,
 	ThievesCant,
 
+	// StrangeOnes
+	CreatorsLanguage,
+	AllLanguages,
+	AnyOneLanguage,
+	AnyTwoLanguages,
+	AnyThreeLanguages,
+	AnyFourLanguages,
+	LanguagesItKnewInLife,
+
 	// Albina
+	Other,
 }

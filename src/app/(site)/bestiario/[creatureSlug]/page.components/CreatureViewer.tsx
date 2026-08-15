@@ -49,7 +49,7 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 									[
 										<UIBasics.Text textColor="gray">🚶🏻‍➡️WS</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.walkSpeed.toString()}
+											{creatureData.coreMetrics.speedStats.walk.toString()}
 										</UIBasics.Text>,
 										<UIBasics.Text
 											textColor="gray"
@@ -59,13 +59,15 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											🏃🏻‍➡️CS
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.combatSpeed.toString()}
+											{creatureData.coreMetrics.speedStats.combat.toString()}
 										</UIBasics.Text>,
 									],
 									[
 										<UIBasics.Text textColor="gray">🏊🏻‍♂️SS</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.walkSpeed.toString()}
+											{(
+												creatureData.coreMetrics.speedStats.swim ?? 0
+											).toString()}
 										</UIBasics.Text>,
 										<UIBasics.Text
 											textColor="gray"
@@ -75,7 +77,9 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											🪽FS
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.combatSpeed.toString()}
+											{(
+												creatureData.coreMetrics.speedStats.fly ?? 0
+											).toString()}
 										</UIBasics.Text>,
 									],
 									[
@@ -93,7 +97,7 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											{"⏱️Iniciativa"}
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.combatSpeed.toString()}
+											{creatureData.coreMetrics.initiative.toString()}
 										</UIBasics.Text>,
 									],
 								],
