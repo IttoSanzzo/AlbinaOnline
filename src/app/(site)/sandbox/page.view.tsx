@@ -10,15 +10,14 @@ export default function SandboxPageContent() {
 				<button
 					onClick={async (event) => {
 						event.preventDefault();
-						// try {
-						// const text = await translate3("Bordão Mágico", {
-						// to: Language.LATIN,
-						// });
-						// } catch (ex) {
-						// console.error(ex);
-						// }
+
+						const response = await fetch(
+							`https://www.dnd5eapi.co/api/2014/monsters/tarrasque?lang=pt-BR`,
+						);
+						if (!response.ok) return;
+						console.log(await response.json());
 					}}>
-					Translate
+					Test
 				</button>
 			</div>
 		</GenericPageContainer>

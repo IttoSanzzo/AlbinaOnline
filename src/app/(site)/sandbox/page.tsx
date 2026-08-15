@@ -1,7 +1,7 @@
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import SandboxPageContent from "./pageContent";
+import SandboxPageContent from "./page.view";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Sandbox",
