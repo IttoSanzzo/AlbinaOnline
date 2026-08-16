@@ -21,7 +21,9 @@ export default async function BestiaryPage() {
 	const response = await fetch(getAlbinaApiFullAddress("/bestiary"), {
 		next: { tags: ["/bestiary"] },
 	});
-	const entities: CreatureData[] = response.ok ? await response.json() : [];
+	const entities = (
+		(response.ok ? await response.json() : []) as CreatureData[]
+	).sort((a, b) => a.name.localeCompare(b.name));
 
 	return (
 		<GenericPageContainer
