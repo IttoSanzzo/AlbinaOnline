@@ -196,8 +196,8 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 				speedStats: {
 					walkSpeed: formData.speedWalk,
 					combatSpeed: formData.speedCombat,
-					swimSpeed: formData.speedSwim,
-					flySpeed: formData.speedFly,
+					swimSpeed: formData.speedSwim == 0 ? undefined : formData.speedSwim,
+					flySpeed: formData.speedFly == 0 ? undefined : formData.speedFly,
 				},
 			},
 			miscMetrics: {
@@ -650,10 +650,10 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 		wisdom: creature.abilityScore.wisdom,
 		charisma: creature.abilityScore.charisma,
 
-		speedWalk: creature.coreMetrics.speedStats.walkSpeed,
-		speedCombat: creature.coreMetrics.speedStats.combatSpeed,
-		speedSwim: creature.coreMetrics.speedStats.swimSpeed,
-		speedFly: creature.coreMetrics.speedStats.flySpeed,
+		speedWalk: creature.coreMetrics.speedStats.walk,
+		speedCombat: creature.coreMetrics.speedStats.combat,
+		speedSwim: creature.coreMetrics.speedStats.swim ?? 0,
+		speedFly: creature.coreMetrics.speedStats.fly ?? 0,
 		healthPoints: creature.coreMetrics.healthPoints,
 		armorClass: creature.coreMetrics.armorClass,
 		initiative: creature.coreMetrics.initiative,
