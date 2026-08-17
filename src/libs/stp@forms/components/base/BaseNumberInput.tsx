@@ -1,7 +1,7 @@
 "use client";
 
 import { StpIcon } from "@/libs/stp@icons";
-import { CSSProperties, InputHTMLAttributes } from "react";
+import { CSSProperties, InputHTMLAttributes, useRef } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./BaseNumberInput.module.css";
@@ -44,6 +44,7 @@ export type BaseNumberInputProps<TFormData> = {
 	max?: number;
 	step?: number;
 	color?: keyof typeof StandartTextColor;
+	useScrollControl?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function BaseNumberInput<TFormData extends FieldValues>({
@@ -57,8 +58,10 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 	step,
 	className,
 	color,
+	useScrollControl,
 	...rest
 }: BaseNumberInputProps<TFormData>) {
+	const previousScrollTop = useRef(0);
 	const {
 		form: { control },
 		triggerDebounceAction,
@@ -104,6 +107,10 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 		setValue(finalNewValue);
 		triggerDebounceAction();
 	}
+	function handleWheel(event: React.WheelEvent<HTMLInputElement>) {
+		if (event.deltaY < 0) handleIncrement();
+		else if (event.deltaY > 0) handleDecrement();
+	}
 
 	return (
 		<BaseNumberInputFieldContainer className={className}>
@@ -120,6 +127,7 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 				max={max}
 				min={min}
 				step={step}
+				onWheel={useScrollControl ? handleWheel : undefined}
 				{...field}
 				value={currentValue ?? ""}
 				{...rest}

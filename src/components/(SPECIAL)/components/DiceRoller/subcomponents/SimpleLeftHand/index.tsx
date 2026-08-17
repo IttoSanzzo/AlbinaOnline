@@ -140,6 +140,7 @@ export function SimpleLeftHand({
 							style={{ height: 1 }}
 							min={1}
 							max={100}
+							useScrollControl
 						/>
 						<HookedForm.NumberInput<FormData>
 							fieldName={"count"}
@@ -147,6 +148,7 @@ export function SimpleLeftHand({
 							style={{ height: 1 }}
 							min={1}
 							max={100}
+							useScrollControl
 						/>
 					</div>
 					<div>
@@ -156,6 +158,7 @@ export function SimpleLeftHand({
 							style={{ height: 1 }}
 							min={-99}
 							max={99}
+							useScrollControl
 						/>
 						<HookedForm.NumberInput<FormData>
 							fieldName={"modifier"}
@@ -163,6 +166,7 @@ export function SimpleLeftHand({
 							style={{ height: 1 }}
 							min={-100000}
 							max={100000}
+							useScrollControl
 						/>
 					</div>
 					<ResetButton
