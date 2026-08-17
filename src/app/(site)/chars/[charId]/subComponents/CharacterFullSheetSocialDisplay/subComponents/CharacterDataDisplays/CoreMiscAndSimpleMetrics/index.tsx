@@ -48,13 +48,18 @@ export function CoreMiscAndSimpleMetrics({
 						tableLanes: [
 							formTableEntry("Iniciativa", coreMetrics.initiative),
 							formTableEntry("C.A.", coreMetrics.armorClass),
-							formTableEntry("Mov. de Andar", coreMetrics.speedStats.walkSpeed),
+							formTableEntry("Mov. de Andar", coreMetrics.speedStats.walk),
+							formTableEntry("Mov. de Combate", coreMetrics.speedStats.combat),
+							formTableEntry("Mov. de Nado", coreMetrics.speedStats.swim ?? 0),
+							formTableEntry("Mov. de Voo", coreMetrics.speedStats.fly ?? 0),
 							formTableEntry(
-								"Mov. de Combate",
-								coreMetrics.speedStats.combatSpeed,
+								"Mov. de Escalada",
+								coreMetrics.speedStats.climb ?? 0,
 							),
-							formTableEntry("Mov. de Nado", coreMetrics.speedStats.swimSpeed),
-							formTableEntry("Mov. de Voo", coreMetrics.speedStats.flySpeed),
+							formTableEntry(
+								"Mov. de Cavar",
+								coreMetrics.speedStats.burrow ?? 0,
+							),
 							formTableEntry("Carga Máxima", miscMetrics.carryCapacity),
 						],
 					}}

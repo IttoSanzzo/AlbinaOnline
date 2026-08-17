@@ -9,7 +9,7 @@ function calcTotalWeight(characterItems: CharacterItemStackExpanded[]) {
 	return (
 		characterItems.reduce(
 			(acc, current) => acc + current.amount * current.item.properties.weight,
-			0
+			0,
 		) / 1000
 	);
 }
@@ -77,7 +77,7 @@ export function MiscsTable({
 							textColor="gray"
 							display="block"
 							textAlign="center"
-							children={`${coreMetrics.speedStats.walkSpeed}/${coreMetrics.speedStats.combatSpeed}/${coreMetrics.speedStats.swimSpeed}/${coreMetrics.speedStats.flySpeed}`}
+							children={`${coreMetrics.speedStats.walk} / ${coreMetrics.speedStats.combat} / ${coreMetrics.speedStats.swim ?? 0} / ${coreMetrics.speedStats.fly ?? 0} / ${coreMetrics.speedStats.climb ?? 0} / ${coreMetrics.speedStats.burrow ?? 0}`}
 						/>,
 					],
 				],

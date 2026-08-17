@@ -9,10 +9,12 @@ export type Gauge = {
 	effectiveCurrent: number;
 };
 export type SpeedStats = {
-	walkSpeed: number;
-	combatSpeed: number;
-	swimSpeed: number;
-	flySpeed: number;
+	walk: number;
+	combat: number;
+	swim?: number;
+	fly?: number;
+	burrow?: number;
+	climb?: number;
 };
 
 export type CharacterCoreMetrics = {

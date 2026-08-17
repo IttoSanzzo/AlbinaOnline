@@ -106,7 +106,7 @@ export function MiscsTable({ characterId }: MiscsTableProps) {
 							textColor="gray"
 							display="block"
 							textAlign="center"
-							children={`${coreMetrics.speedStats.walkSpeed}/${coreMetrics.speedStats.combatSpeed}/${coreMetrics.speedStats.swimSpeed}/${coreMetrics.speedStats.flySpeed}`}
+							children={`${coreMetrics.speedStats.walk} / ${coreMetrics.speedStats.combat} / ${coreMetrics.speedStats.swim ?? 0} / ${coreMetrics.speedStats.fly ?? 0} / ${coreMetrics.speedStats.climb ?? 0} / ${coreMetrics.speedStats.burrow ?? 0}`}
 						/>,
 					],
 				],
