@@ -29,11 +29,11 @@ export function BestiarySearchWithLevel({
 	});
 
 	function updateFiltered(formData: FormData) {
-		if (formData.query.length < 2) {
+		if (formData.query.length < 2 && formData.query[0] != "$") {
 			setFiltered(groupCreaturesByLevel(creatures));
 			return;
 		}
-		const search = formData.query.trim().toLocaleLowerCase();
+		const search = formData.query.trim().toLocaleLowerCase().replace(/^\$/, "");
 		setFiltered(
 			groupCreaturesByLevel(
 				creatures.filter((creature) => {
@@ -44,6 +44,7 @@ export function BestiarySearchWithLevel({
 						creature.subType,
 						CreatureTypeName[creature.type],
 						CreatureSubTypeName[creature.subType],
+						creature.level,
 						creature.lifeState,
 						creature.alignment?.ethic,
 						creature.alignment?.moral,
