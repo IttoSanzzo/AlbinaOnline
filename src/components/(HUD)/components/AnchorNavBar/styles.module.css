@@ -4,6 +4,9 @@
 	top: 10vh;
 	border-radius: var(--rd-md);
 	transition: 0.1s linear opacity;
+
+	max-height: 90vh;
+	overflow: scroll;
 }
 
 .anchorLines {
@@ -50,6 +53,9 @@
 	border-radius: var(--rd-md);
 	padding: var(--sp-4) var(--sp-3);
 	transition: 0.25s linear right;
+
+	max-height: 80vh;
+	overflow: scroll;
 
 	display: flex;
 	flex-direction: column;

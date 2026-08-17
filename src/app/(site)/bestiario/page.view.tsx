@@ -2,14 +2,19 @@ import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CreatureData } from "@/libs/stp@types";
 import { BestiarySearchWithLevel } from "./page.components/BestiarySearchWithLevel";
+import { BestiarySearchWithHidden } from "./page.components/BestiarySearchWithHidden";
 
 interface BestiaryPageViewProps {
 	entities: CreatureData[];
 }
-export default function BestiaryPageView({ entities }: BestiaryPageViewProps) {
+export default async function BestiaryPageView({
+	entities,
+}: BestiaryPageViewProps) {
+	const letterIds: Set<string> = new Set();
+
 	return (
 		<>
-			<BestiarySearchWithLevel creatures={entities} />
+			<BestiarySearchWithHidden publicCreatures={entities} />
 
 			{/* <HiddenCreatureList /> */}
 
@@ -29,6 +34,7 @@ export default function BestiaryPageView({ entities }: BestiaryPageViewProps) {
 					{entities.map((entity) => (
 						<StyledLinkCard
 							key={entity.id}
+							id={checkLetter(letterIds, (entity.name[0] ?? "").toLowerCase())}
 							artworkUrl={entity.iconUrl}
 							href={`/bestiario/${entity.slug}`}
 							title={entity.name}
@@ -40,4 +46,13 @@ export default function BestiaryPageView({ entities }: BestiaryPageViewProps) {
 			</UIBasics.Box>
 		</>
 	);
+}
+
+function checkLetter(
+	set: Set<string>,
+	letter: string = "",
+): string | undefined {
+	if (set.has(letter)) return undefined;
+	set.add(letter);
+	return `letter-${letter}`;
 }

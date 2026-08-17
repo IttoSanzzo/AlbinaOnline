@@ -83,7 +83,7 @@ function groupCreaturesByLevel(creatures: CreatureData[]): CreatureData[][] {
 	const groups: CreatureData[][] = [];
 
 	for (const creature of creatures) {
-		const level = creature.level;
+		const level = creature.level + 1;
 
 		if (!groups[level]) {
 			groups[level] = [];
