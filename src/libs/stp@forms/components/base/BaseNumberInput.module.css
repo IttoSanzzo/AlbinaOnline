@@ -11,44 +11,19 @@
 	font-size: var(--fs-md);
 	appearance: textField;
 	text-align: center;
+	border-radius: var(--rd-md);
 
 	&:-webkit-autofill {
 		border-radius: var(--rd-sm) !important;
 	}
 }
-.baseNumberInputDecrementButton {
-	position: absolute;
-	background-color: var(--cl-gray-700);
-	border-radius: var(--rd-md);
-	border: none;
-	line-height: 0;
-	left: 0px;
-	top: 50%;
-	transform: translateY(-50%);
-
-	transition:
-		0.2s linear background-color,
-		0.25s linear opacity;
-
-	& svg {
-		font-size: var(--fs-2xl);
-	}
-	&:hover {
-		background-color: var(--cl-gray-600);
-		cursor: pointer;
-	}
-	&:disabled {
-		opacity: 0.25;
-		cursor: not-allowed;
-	}
-}
+.baseNumberInputDecrementButton,
 .baseNumberInputIncrementButton {
 	position: absolute;
 	background-color: var(--cl-gray-700);
 	border-radius: var(--rd-md);
 	border: none;
 	line-height: 0;
-	right: 0px;
 	top: 50%;
 	transform: translateY(-50%);
 
@@ -67,6 +42,13 @@
 		opacity: 0.25;
 		cursor: not-allowed;
 	}
+}
+
+.baseNumberInputDecrementButton {
+	left: 0px;
+}
+.baseNumberInputIncrementButton {
+	right: 0px;
 }
 
 .baseNumberInputFieldContainer:global(.withButtonPadding) {
@@ -76,4 +58,8 @@
 	.baseNumberInputIncrementButton {
 		right: 10px;
 	}
+}
+
+.scrollControlActivated {
+	background-color: var(--cl-gray-500);
 }

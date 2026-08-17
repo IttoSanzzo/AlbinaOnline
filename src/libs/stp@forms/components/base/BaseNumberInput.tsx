@@ -1,7 +1,13 @@
 "use client";
 
 import { StpIcon } from "@/libs/stp@icons";
-import { CSSProperties, InputHTMLAttributes, useRef } from "react";
+import {
+	CSSProperties,
+	InputHTMLAttributes,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./BaseNumberInput.module.css";
@@ -58,10 +64,13 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 	step,
 	className,
 	color,
-	useScrollControl,
+	useScrollControl = true,
 	...rest
 }: BaseNumberInputProps<TFormData>) {
-	const previousScrollTop = useRef(0);
+	const containerRef = useRef<HTMLElement | null>(null);
+	const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const [scrollEnabled, setScrollEnabled] = useState<boolean>(false);
+
 	const {
 		form: { control },
 		triggerDebounceAction,
@@ -103,23 +112,65 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 	function handleIncrement() {
 		const newValue: number =
 			(isNaN(currentValue) ? 0 : currentValue) + (step ?? 1);
-		const finalNewValue = max ? (newValue > max ? max : newValue) : newValue;
+		const finalNewValue =
+			max != undefined ? (newValue > max ? max : newValue) : newValue;
 		setValue(finalNewValue);
 		triggerDebounceAction();
 	}
-	function handleWheel(event: React.WheelEvent<HTMLInputElement>) {
-		if (event.deltaY < 0) handleIncrement();
-		else if (event.deltaY > 0) handleDecrement();
+
+	function handleMouseEnter() {
+		if (!useScrollControl) return;
+		setScrollEnabled(false);
+		if (hoverTimer.current != null) clearTimeout(hoverTimer.current);
+
+		hoverTimer.current = setTimeout(() => {
+			setScrollEnabled(true);
+			hoverTimer.current = null;
+		}, 300);
 	}
 
+	function handleMouseLeave() {
+		setScrollEnabled(false);
+		if (hoverTimer.current != null) {
+			clearTimeout(hoverTimer.current);
+			hoverTimer.current = null;
+		}
+	}
+
+	useEffect(() => {
+		const element = containerRef.current;
+		if (!useScrollControl || !scrollEnabled || !element) return;
+
+		function handleWheel(event: WheelEvent) {
+			event.preventDefault();
+			if (event.deltaY < 0) handleIncrement();
+			else if (event.deltaY > 0) handleDecrement();
+		}
+
+		element.addEventListener("wheel", handleWheel, {
+			passive: false,
+		});
+		return () => {
+			element.removeEventListener("wheel", handleWheel);
+		};
+	}, [useScrollControl, scrollEnabled, currentValue, step, min, max]);
+
+	const activeScrollClassName =
+		useScrollControl && scrollEnabled
+			? styles.scrollControlActivated
+			: undefined;
+
 	return (
-		<BaseNumberInputFieldContainer className={className}>
+		<BaseNumberInputFieldContainer
+			className={className}
+			ref={containerRef}>
 			<BaseNumberInputDecrementButton
 				disabled={min != undefined && currentValue <= min}
 				type="button"
 				tabIndex={-1}
 				onClick={handleDecrement}
 				children={StpIcon({ name: "LessThan" })}
+				className={activeScrollClassName}
 			/>
 			<BaseNumberInputField
 				type="number"
@@ -127,7 +178,8 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 				max={max}
 				min={min}
 				step={step}
-				onWheel={useScrollControl ? handleWheel : undefined}
+				onMouseEnter={handleMouseEnter}
+				onMouseLeave={handleMouseLeave}
 				{...field}
 				value={currentValue ?? ""}
 				{...rest}
@@ -145,6 +197,7 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 				tabIndex={-1}
 				onClick={handleIncrement}
 				children={StpIcon({ name: "GreaterThan" })}
+				className={activeScrollClassName}
 			/>
 		</BaseNumberInputFieldContainer>
 	);
