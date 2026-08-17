@@ -19,6 +19,8 @@ interface AuthState {
 	clearUser: () => void;
 }
 
+let reloadUserPromise: Promise<void> | null = null;
+
 export const useAuthStore = create<AuthState>((set) => ({
 	user: null,
 	externalLogins: null,
@@ -26,23 +28,32 @@ export const useAuthStore = create<AuthState>((set) => ({
 	setUser: (user) => set({ user }),
 	setLoading: (loading) => set({ loading }),
 	reloadUser: async () => {
-		set({ loading: true });
+		if (reloadUserPromise != null) return reloadUserPromise;
+
+		reloadUserPromise = (async () => {
+			set({ loading: true });
+			try {
+				const response = await authenticatedFetchAsync(`/users/me`, {
+					cache: "no-store",
+				});
+				if (!response.ok) throw new Error("Not authenticated");
+				const data: { user: FullUser } = await response.json();
+				set({ user: data.user });
+				await loadExternalLogins(set);
+			} catch {
+				set({ user: null, externalLogins: null });
+			} finally {
+				set({ loading: false });
+			}
+		})();
 		try {
-			const response = await authenticatedFetchAsync(`/users/me`, {
-				cache: "no-store",
-			});
-			if (!response.ok) throw new Error("Not authenticated");
-			const data: { user: FullUser } = await response.json();
-			set({ user: data.user });
-			await loadExternalLogins(set);
-		} catch {
-			set({ user: null, externalLogins: null });
+			await reloadUserPromise;
 		} finally {
-			set({ loading: false });
+			reloadUserPromise = null;
 		}
 	},
 	clearUser: () => {
-		set({ user: null, loading: true });
+		set({ user: null, externalLogins: null, loading: true });
 	},
 }));
 

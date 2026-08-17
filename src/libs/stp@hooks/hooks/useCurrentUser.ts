@@ -8,8 +8,8 @@ export function useCurrentUser() {
 		useAuthStore();
 
 	useEffect(() => {
-		if (user == null && loading) reloadUser();
-	}, []);
+		if (loading && user == null) void reloadUser();
+	}, [loading, user, reloadUser]);
 
 	return { user, externalLogins, loading, reloadUser, clearUser };
 }
