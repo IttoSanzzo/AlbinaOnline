@@ -15,6 +15,7 @@ import {
 	CreatureTypeName,
 	GetAlignmentName,
 	LifeStateName,
+	MechanicalAbilityCategory,
 	SizeClassMasculineName,
 } from "@/libs/stp@types";
 import StaticGallery from "@/components/(SPECIAL)/components/Gallery/StaticGallery";
@@ -42,12 +43,22 @@ export default async function CreaturePageView({
 		await response.json(),
 	);
 
-	const passiveMechanicalAbilities = creatureData.mechanicalAbilities
-		.filter((x) => x.trigger == "Passive")
-		.sort((a, b) => a.order - b.order);
-	const nonPassiveMechanicalAbilities = creatureData.mechanicalAbilities
-		.filter((x) => x.trigger != "Passive")
-		.sort((a, b) => a.order - b.order);
+	const sortedMechanicalAbilities = [...creatureData.mechanicalAbilities].sort(
+		(a, b) => {
+			const categoryDifference =
+				MechanicalAbilityCategory[a.category] -
+				MechanicalAbilityCategory[b.category];
+			if (categoryDifference != 0) return categoryDifference;
+			return a.order - b.order;
+		},
+	);
+
+	const passiveMechanicalAbilities = sortedMechanicalAbilities.filter(
+		(x) => x.trigger == "Passive",
+	);
+	const nonPassiveMechanicalAbilities = sortedMechanicalAbilities.filter(
+		(x) => x.trigger != "Passive",
+	);
 
 	return (
 		<GenericPageContainer

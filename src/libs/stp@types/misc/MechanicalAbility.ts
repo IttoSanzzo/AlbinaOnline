@@ -13,8 +13,8 @@ export type MechanicalAbility = {
 export enum MechanicalAbilityCategory {
 	Unknown,
 
-	Legendary,
 	Mythic,
+	Legendary,
 	Lair,
 	Free,
 	Common,

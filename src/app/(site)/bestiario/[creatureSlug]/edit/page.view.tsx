@@ -42,6 +42,14 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import z from "zod";
 
+const mechanicalAbilityZObject = z.object({
+	id: zGuid(),
+	name: z.string(),
+	definition: z.string(),
+	category: zEnumKey(MechanicalAbilityCategory),
+	trigger: zEnumKey(MechanicalAbilityTrigger),
+});
+
 const schema = z.object({
 	slug: zSlug(),
 	name: z.string().min(1, "Min 1 lenght"),
@@ -52,36 +60,39 @@ const schema = z.object({
 	lifeState: zEnumKey(LifeState),
 	ethicAlignment: zEnumKey(EthicAlignment),
 	moralAlignment: zEnumKey(MoralAlignment),
-	level: z.number(),
-	experience: z.number(),
+	level: z.number().min(-1, "Min -1").max(35, "Max of 35"),
+	experience: z.number().min(-1, "Min -1"),
 	isHidden: z.boolean(),
 
-	strength: z.number(),
-	agility: z.number(),
-	technique: z.number(),
-	constitution: z.number(),
-	intelligence: z.number(),
-	wisdom: z.number(),
-	charisma: z.number(),
+	strength: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	agility: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	technique: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	constitution: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	intelligence: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	wisdom: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
+	charisma: z.number().min(-1, "Min of -1.").max(99, "Max of 99"),
 
-	speedWalk: z.number(),
-	speedCombat: z.number(),
-	speedSwim: z.number(),
-	speedFly: z.number(),
-	healthPoints: z.number(),
-	armorClass: z.number(),
-	initiative: z.number(),
+	speedWalk: z.number().min(0, "Min of 0"),
+	speedCombat: z.number().min(0, "Min of 0"),
+	speedSwim: z.number().min(-1, "Min of -1"),
+	speedFly: z.number().min(-1, "Min of -1"),
+	speedClimb: z.number().min(-1, "Min of -1"),
+	speedBurrow: z.number().min(-1, "Min of -1"),
+	healthPoints: z.number().min(-1, "Min of -1"),
+	armorClass: z.number().min(0, "Min of 0"),
+	initiative: z.number().min(-99, "Min of -99").max(99, "Max of +99"),
 
-	length: z.number(),
-	width: z.number(),
-	height: z.number(),
+	length: z.number().min(0, "Min of 0 cm").max(100000, "Max of 100000 cm"),
+	width: z.number().min(0, "Min of 0 cm").max(100000, "Max of 100000 cm"),
+	height: z.number().min(0, "Min of 0 cm").max(100000, "Max of 100000 cm"),
 	languages: zEnumKeyArray(LanguageType),
+	vulnerabilities: z.array(z.string()),
 	resistances: z.array(z.string()),
 	immunities: z.array(z.string()),
 	testBonuses: z.array(
 		z.object({
 			key: z.string(),
-			value: z.number(),
+			value: z.number().min(-20, "Min of -20").max(20, "Max of +20"),
 		}),
 	),
 	senses: z.array(
@@ -91,15 +102,10 @@ const schema = z.object({
 		}),
 	),
 
-	mechanicalAbilities: z.array(
-		z.object({
-			id: zGuid(),
-			name: z.string(),
-			definition: z.string(),
-			category: zEnumKey(MechanicalAbilityCategory),
-			trigger: zEnumKey(MechanicalAbilityTrigger),
-		}),
-	),
+	mechanicalAbilitiesPassive: z.array(mechanicalAbilityZObject),
+	mechanicalAbilitiesActive: z.array(mechanicalAbilityZObject),
+
+	source: z.string(),
 
 	summary: z.array(z.string()),
 	description: z.array(z.string()),
@@ -148,7 +154,7 @@ const mechanicalAbilityCategoryOptions = enumToSelectOptions(
 );
 const mechanicalAbilityTriggerOptions = enumToSelectOptions(
 	MechanicalAbilityTrigger,
-	[],
+	["Passive"],
 	undefined,
 	false,
 );
@@ -175,6 +181,7 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 			name: formData.name,
 			type: formData.type,
 			subType: formData.subType,
+			source: formData.source,
 			abilityScore: {
 				strength: formData.strength,
 				agility: formData.agility,
@@ -194,16 +201,19 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 				healthPoints: formData.healthPoints,
 				initiative: formData.initiative,
 				speedStats: {
-					walkSpeed: formData.speedWalk,
-					combatSpeed: formData.speedCombat,
-					swimSpeed: formData.speedSwim == 0 ? undefined : formData.speedSwim,
-					flySpeed: formData.speedFly == 0 ? undefined : formData.speedFly,
+					walk: formData.speedWalk,
+					combat: formData.speedCombat,
+					swim: formData.speedSwim > -1 ? formData.speedSwim : undefined,
+					fly: formData.speedFly > -1 ? formData.speedFly : undefined,
+					climb: formData.speedClimb > -1 ? formData.speedClimb : undefined,
+					burrow: formData.speedBurrow > -1 ? formData.speedBurrow : undefined,
 				},
 			},
 			miscMetrics: {
+				vulnerabilities: formData.vulnerabilities,
+				resistances: formData.resistances,
 				immunities: formData.immunities,
 				languages: formData.languages,
-				resistances: formData.resistances,
 				senses: Object.fromEntries(
 					formData.senses.map(({ key, value }) => [key, value]),
 				),
@@ -219,10 +229,23 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 			experience: formData.experience,
 			level: formData.level,
 			lifeState: formData.lifeState,
-			mechanicalAbilities: formData.mechanicalAbilities.map((x, index) => ({
-				...x,
-				order: index,
-			})),
+			mechanicalAbilities: [
+				...formData.mechanicalAbilitiesPassive,
+				...formData.mechanicalAbilitiesActive,
+			]
+				.sort((a, b) => {
+					const aPassive = a.trigger === "Passive";
+					const bPassive = b.trigger === "Passive";
+					if (aPassive !== bPassive) return aPassive ? -1 : 1;
+					return (
+						MechanicalAbilityCategory[a.category] -
+						MechanicalAbilityCategory[b.category]
+					);
+				})
+				.map((x, index) => ({
+					...x,
+					order: index,
+				})),
 			isHidden: formData.isHidden,
 			info: {
 				summary: formData.summary,
@@ -251,7 +274,7 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 		await revalidatePathByClientSide("/bestiary");
 		if (formData.slug != creature.slug)
 			redirect(`/bestiario/${formData.slug}/edit`);
-		form.reset(await response.json());
+		form.reset(creatureDataToFormData(await response.json()));
 	}
 
 	const breadcrumbs: Breadcrumb[] = [
@@ -340,8 +363,15 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 								fieldName="lifeState"
 								options={lifeStateOptions}
 							/>
-							<HookedForm.NumberInput<FormData> fieldName="level" />
-							<HookedForm.NumberInput<FormData> fieldName="experience" />
+							<HookedForm.NumberInput<FormData>
+								fieldName="level"
+								min={-1}
+								max={35}
+							/>
+							<HookedForm.NumberInput<FormData>
+								fieldName="experience"
+								min={-1}
+							/>
 						</UIBasics.Box>
 					}
 					colum2={
@@ -349,9 +379,19 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 							backgroundColor="darkGray"
 							withoutPadding
 							withoutMargin>
-							<HookedForm.NumberInput<FormData> fieldName="healthPoints" />
-							<HookedForm.NumberInput<FormData> fieldName="armorClass" />
-							<HookedForm.NumberInput<FormData> fieldName="initiative" />
+							<HookedForm.NumberInput<FormData>
+								fieldName="healthPoints"
+								min={-1}
+							/>
+							<HookedForm.NumberInput<FormData>
+								fieldName="armorClass"
+								min={0}
+							/>
+							<HookedForm.NumberInput<FormData>
+								fieldName="initiative"
+								min={-99}
+								max={99}
+							/>
 						</UIBasics.Box>
 					}
 					colum3={
@@ -359,9 +399,21 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 							backgroundColor="gray"
 							withoutPadding
 							withoutMargin>
-							<HookedForm.NumberInput<FormData> fieldName="width" />
-							<HookedForm.NumberInput<FormData> fieldName="height" />
-							<HookedForm.NumberInput<FormData> fieldName="length" />
+							<HookedForm.NumberInput<FormData>
+								fieldName="width"
+								min={0}
+								max={100000}
+							/>
+							<HookedForm.NumberInput<FormData>
+								fieldName="height"
+								min={0}
+								max={100000}
+							/>
+							<HookedForm.NumberInput<FormData>
+								fieldName="length"
+								min={0}
+								max={100000}
+							/>
 						</UIBasics.Box>
 					}
 				/>
@@ -379,18 +431,33 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 									fieldName="magicAttributes"
 									options={magicAttributeOptions}
 								/>
-								<HookedForm.Select<FormData>
-									fieldName="ethicAlignment"
-									options={ethicAlignmentOptions}
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedWalk"
+									min={0}
 								/>
-								<HookedForm.Select<FormData>
-									fieldName="moralAlignment"
-									options={moralAlignmentOptions}
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedCombat"
+									min={0}
 								/>
-								<HookedForm.NumberInput<FormData> fieldName="speedWalk" />
-								<HookedForm.NumberInput<FormData> fieldName="speedCombat" />
-								<HookedForm.NumberInput<FormData> fieldName="speedSwim" />
-								<HookedForm.NumberInput<FormData> fieldName="speedFly" />
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedSwim"
+									min={-1}
+								/>
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedFly"
+									min={-1}
+								/>
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedClimb"
+									min={-1}
+								/>
+								<HookedForm.NumberInput<FormData>
+									fieldName="speedBurrow"
+									min={-1}
+								/>
+
+								<HookedForm.TextArrayInput<FormData> fieldName="vulnerabilities" />
+								<HookedForm.TextArrayInput<FormData> fieldName="resistances" />
 							</UIBasics.Box>
 						}
 						colum2={
@@ -400,11 +467,19 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 									flexDirection: "column",
 									flex: 1,
 								}}>
+								<HookedForm.TextInput<FormData> fieldName="source" />
+								<HookedForm.Select<FormData>
+									fieldName="ethicAlignment"
+									options={ethicAlignmentOptions}
+								/>
+								<HookedForm.Select<FormData>
+									fieldName="moralAlignment"
+									options={moralAlignmentOptions}
+								/>
 								<HookedForm.MultiSelect<FormData>
 									fieldName="languages"
 									options={languageOptions}
 								/>
-								<HookedForm.TextArrayInput<FormData> fieldName="resistances" />
 								<HookedForm.TextArrayInput<FormData> fieldName="immunities" />
 							</div>
 						}
@@ -416,106 +491,45 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 								<HookedForm.NumberInput<FormData>
 									fieldName="strength"
 									color="red"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="agility"
 									color="blue"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="technique"
 									color="gray"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="constitution"
 									color="green"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="intelligence"
 									color="yellow"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="wisdom"
 									color="purple"
+									min={-1}
+									max={99}
 								/>
 								<HookedForm.NumberInput<FormData>
 									fieldName="charisma"
 									color="pink"
+									min={-1}
+									max={99}
 								/>
-							</UIBasics.Box>
-						}
-					/>
-				</UIBasics.Box>
-
-				{/* //////////////////////////////////////////////////////////////////////////////////////////// */}
-				<UIBasics.Box
-					backgroundColor="darkGray"
-					withoutMargin>
-					<UIBasics.MultiColumn.Two
-						withoutPadding
-						colum1={
-							<div
-								style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-								<HookedForm.ObjectArrayInput<FormData>
-									fieldName="mechanicalAbilities"
-									isReorderable
-									defaultObject={{
-										id: Guid.Empty,
-										name: "",
-										definition: "",
-										category:
-											MechanicalAbilityCategory[MechanicalAbilityCategory.Free],
-										trigger:
-											MechanicalAbilityTrigger[MechanicalAbilityTrigger.Action],
-									}}
-									childrenGenerator={({ index, lastRef }) => {
-										return (
-											<UIBasics.Box
-												backgroundColor="gray"
-												withoutPadding
-												withoutMargin>
-												<UIBasics.MultiColumn.Three
-													withoutPadding
-													colum1={
-														<HookedForm.ObjectArrayTextInput<FormInput>
-															fieldName="mechanicalAbilities"
-															objectKey="name"
-															index={index}
-															ref={lastRef}
-														/>
-													}
-													colum2={
-														<HookedForm.ObjectArraySelectInput<FormInput>
-															fieldName="mechanicalAbilities"
-															objectKey="category"
-															index={index}
-															options={mechanicalAbilityCategoryOptions}
-														/>
-													}
-													colum3={
-														<HookedForm.ObjectArraySelectInput<FormInput>
-															fieldName="mechanicalAbilities"
-															objectKey="trigger"
-															index={index}
-															options={mechanicalAbilityTriggerOptions}
-														/>
-													}
-												/>
-												<HookedForm.ObjectArrayTextInput<FormInput>
-													fieldName="mechanicalAbilities"
-													objectKey="definition"
-													index={index}
-													ref={lastRef}
-													useTextArea
-												/>
-											</UIBasics.Box>
-										);
-									}}
-								/>
-							</div>
-						}
-						colum2={
-							<div
-								style={{ display: "flex", flexDirection: "column", flex: 1 }}>
 								<HookedForm.ObjectArrayInput<FormData>
 									fieldName="testBonuses"
 									defaultObject={{
@@ -540,6 +554,8 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 														fieldName="testBonuses"
 														objectIndex={index}
 														objectKey="value"
+														min={-20}
+														max={20}
 													/>
 												}
 											/>
@@ -575,6 +591,27 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 										);
 									}}
 								/>
+							</UIBasics.Box>
+						}
+					/>
+				</UIBasics.Box>
+
+				{/* //////////////////////////////////////////////////////////////////////////////////////////// */}
+				<UIBasics.Box
+					backgroundColor="darkGray"
+					withoutMargin>
+					<UIBasics.MultiColumn.Two
+						withoutPadding
+						colum1={
+							<div
+								style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+								<MechanicalAbilityArrayForm fieldName="mechanicalAbilitiesPassive" />
+							</div>
+						}
+						colum2={
+							<div
+								style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+								<MechanicalAbilityArrayForm fieldName="mechanicalAbilitiesActive" />
 							</div>
 						}
 					/>
@@ -634,6 +671,8 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 		type: creature.type,
 		subType: creature.subType,
 
+		source: creature.source,
+
 		magicAttributes: creature.magicAttributes,
 		lifeState: creature.lifeState,
 		ethicAlignment: creature.alignment.ethic,
@@ -652,8 +691,10 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 
 		speedWalk: creature.coreMetrics.speedStats.walk,
 		speedCombat: creature.coreMetrics.speedStats.combat,
-		speedSwim: creature.coreMetrics.speedStats.swim ?? 0,
-		speedFly: creature.coreMetrics.speedStats.fly ?? 0,
+		speedSwim: creature.coreMetrics.speedStats.swim ?? -1,
+		speedFly: creature.coreMetrics.speedStats.fly ?? -1,
+		speedClimb: creature.coreMetrics.speedStats.climb ?? -1,
+		speedBurrow: creature.coreMetrics.speedStats.burrow ?? -1,
 		healthPoints: creature.coreMetrics.healthPoints,
 		armorClass: creature.coreMetrics.armorClass,
 		initiative: creature.coreMetrics.initiative,
@@ -662,6 +703,7 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 		width: creature.miscMetrics.volume.width,
 		height: creature.miscMetrics.volume.height,
 		languages: creature.miscMetrics.languages,
+		vulnerabilities: creature.miscMetrics.vulnerabilities,
 		resistances: creature.miscMetrics.resistances,
 		immunities: creature.miscMetrics.immunities,
 		testBonuses: Object.entries(creature.miscMetrics.testBonuses).map(
@@ -675,8 +717,16 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 			value: entry[1],
 		})),
 
-		mechanicalAbilities: creature.mechanicalAbilities
-			.sort((a, b) => a.order - b.order)
+		mechanicalAbilitiesPassive: creature.mechanicalAbilities
+			.filter((x) => x.trigger == "Passive")
+			.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+			.map((x) => ({
+				...x,
+				order: undefined,
+			})),
+		mechanicalAbilitiesActive: creature.mechanicalAbilities
+			.filter((x) => x.trigger != "Passive")
+			.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 			.map((x) => ({
 				...x,
 				order: undefined,
@@ -686,4 +736,72 @@ function creatureDataToFormData(creature: CreatureData): FormData {
 		description: creature.info.description,
 		miscellaneous: creature.info.miscellaneous,
 	};
+}
+
+function MechanicalAbilityArrayForm({
+	fieldName,
+}: {
+	fieldName: "mechanicalAbilitiesPassive" | "mechanicalAbilitiesActive";
+}) {
+	return (
+		<HookedForm.ObjectArrayInput<FormData>
+			fieldName={fieldName}
+			isReorderable
+			defaultObject={{
+				id: Guid.Empty,
+				name: "",
+				definition: "",
+				category: MechanicalAbilityCategory[MechanicalAbilityCategory.Common],
+				trigger:
+					fieldName == "mechanicalAbilitiesPassive"
+						? MechanicalAbilityTrigger[MechanicalAbilityTrigger.Passive]
+						: MechanicalAbilityTrigger[MechanicalAbilityTrigger.Action],
+			}}
+			childrenGenerator={({ index, lastRef }) => {
+				return (
+					<UIBasics.Box
+						backgroundColor="gray"
+						withoutPadding
+						withoutMargin>
+						<UIBasics.MultiColumn.Three
+							withoutPadding
+							colum1={
+								<HookedForm.ObjectArrayTextInput<FormInput>
+									fieldName={fieldName}
+									objectKey="name"
+									index={index}
+									ref={lastRef}
+								/>
+							}
+							colum2={
+								<HookedForm.ObjectArraySelectInput<FormInput>
+									fieldName={fieldName}
+									objectKey="category"
+									index={index}
+									options={mechanicalAbilityCategoryOptions}
+								/>
+							}
+							colum3={
+								fieldName != "mechanicalAbilitiesPassive" && (
+									<HookedForm.ObjectArraySelectInput<FormInput>
+										fieldName={fieldName}
+										objectKey="trigger"
+										index={index}
+										options={mechanicalAbilityTriggerOptions}
+									/>
+								)
+							}
+						/>
+						<HookedForm.ObjectArrayTextInput<FormInput>
+							fieldName={fieldName}
+							objectKey="definition"
+							index={index}
+							ref={lastRef}
+							useTextArea
+						/>
+					</UIBasics.Box>
+				);
+			}}
+		/>
+	);
 }
