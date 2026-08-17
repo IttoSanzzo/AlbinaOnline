@@ -32,6 +32,7 @@ export default function BestiaryPageView({ entities }: BestiaryPageViewProps) {
 							artworkUrl={entity.iconUrl}
 							href={`/bestiario/${entity.slug}`}
 							title={entity.name}
+							prefetch={false}
 							titleAlwaysOpen
 							withEditLink
 						/>

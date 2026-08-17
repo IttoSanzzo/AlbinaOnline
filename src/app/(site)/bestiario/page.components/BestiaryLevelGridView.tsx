@@ -32,6 +32,7 @@ export function BestiaryLevelGridView({
 						title={entity.name}
 						titleAlwaysOpen
 						withEditLink
+						prefetch={false}
 					/>
 				))}
 			</UIBasics.List.Grid>

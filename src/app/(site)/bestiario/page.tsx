@@ -18,7 +18,7 @@ export const metadata: Metadata = assembleMetadata({
 // const anchorNavigationData = [{ name: "" }]; // TODO
 
 export default async function BestiaryPage() {
-	const response = await fetch(getAlbinaApiFullAddress("/bestiary"), {
+	const response = await fetch(getAlbinaApiFullAddress("/bestiary?mode=lite"), {
 		next: { tags: ["/bestiary"] },
 	});
 	const entities = (

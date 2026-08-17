@@ -33,6 +33,7 @@ export interface StyledLinkCardProps {
 	id?: string;
 	titleAlwaysOpen?: boolean;
 	withEditLink?: boolean;
+	prefetch?: boolean;
 }
 export function StyledLinkCard({
 	href,
@@ -48,6 +49,7 @@ export function StyledLinkCard({
 	titleAlwaysOpen = false,
 	id,
 	withEditLink = false,
+	prefetch = true,
 }: StyledLinkCardProps) {
 	const tiltOptions: TiltOptions = {
 		reverse: true,
@@ -99,7 +101,9 @@ export function StyledLinkCard({
 							left={(size - 260) / 2}
 						/>
 					)}
-					<Link href={href}>
+					<Link
+						href={href}
+						prefetch={prefetch}>
 						<ArtworkContainer style={artworkContainerStyle}>
 							<ImageWithTTL
 								src={artworkUrl}
@@ -137,7 +141,9 @@ export function StyledLinkCard({
 						left={(size - 260) / 2}
 					/>
 				)}
-				<Link href={href}>
+				<Link
+					href={href}
+					prefetch={prefetch}>
 					<ArtworkContainer style={artworkContainerStyle}>
 						<ImageWithTTL
 							src={artworkUrl}

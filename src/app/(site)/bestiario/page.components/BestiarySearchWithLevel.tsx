@@ -59,7 +59,7 @@ export function BestiarySearchWithLevel({
 	return (
 		<HookedForm.Form<FormData>
 			form={form}
-			actionDebounceMs={100}
+			actionDebounceMs={350}
 			onChangeAction={updateFiltered}>
 			<UIBasics.Box backgroundColor="darkGray">
 				<HookedForm.TextInput<FormData>
