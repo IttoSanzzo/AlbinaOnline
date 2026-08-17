@@ -48,19 +48,12 @@ export function NumberInput<TFormData>({
 	inline = false,
 	...rest
 }: NewType<TFormData>) {
-	const inputStyle: CSSProperties = {
-		padding: lesserPadding
-			? "var(--sp-4) var(--sp-4)"
-			: "var(--sp-5) var(--sp-4)",
-		...style,
-	};
-
 	if (inline)
 		return (
 			<BaseNumberInput
 				fieldName={fieldName}
 				className={clsx(className, "withButtonPadding")}
-				style={inputStyle}
+				style={style}
 				{...rest}
 			/>
 		);
@@ -70,7 +63,12 @@ export function NumberInput<TFormData>({
 			<BaseNumberInput
 				fieldName={fieldName}
 				className={clsx(className, "withButtonPadding")}
-				style={inputStyle}
+				style={{
+					padding: lesserPadding
+						? "var(--sp-4) var(--sp-4)"
+						: "var(--sp-5) var(--sp-4)",
+					...style,
+				}}
 				objectKey={objectKey}
 				{...rest}
 			/>
