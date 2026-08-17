@@ -1,7 +1,6 @@
 import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CreatureData } from "@/libs/stp@types";
-import { BestiarySearchWithLevel } from "./page.components/BestiarySearchWithLevel";
 import { BestiarySearchWithHidden } from "./page.components/BestiarySearchWithHidden";
 
 interface BestiaryPageViewProps {
@@ -15,9 +14,6 @@ export default async function BestiaryPageView({
 	return (
 		<>
 			<BestiarySearchWithHidden publicCreatures={entities} />
-
-			{/* <HiddenCreatureList /> */}
-
 			<UIBasics.Box
 				backgroundColor="gray"
 				withoutPadding>

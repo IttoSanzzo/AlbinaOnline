@@ -1,10 +1,9 @@
 "use client";
 
 import { CreatureData, RoleHierarchy } from "@/libs/stp@types";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { BestiarySearchWithLevel } from "./BestiarySearchWithLevel";
 import { useCurrentUser } from "@/libs/stp@hooks";
-import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 interface BestiarySearchWithHiddenProps {
