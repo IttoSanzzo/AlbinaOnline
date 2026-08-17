@@ -540,7 +540,7 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 										return (
 											<UIBasics.MultiColumn.Two
 												withoutPadding
-												divisionRatio={-3}
+												divisionRatio={2}
 												colum1={
 													<HookedForm.ObjectArrayTextInput<FormInput>
 														fieldName="testBonuses"
@@ -571,7 +571,7 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 									childrenGenerator={({ index, lastRef }) => {
 										return (
 											<UIBasics.MultiColumn.Two
-												divisionRatio={-3}
+												divisionRatio={-1}
 												colum1={
 													<HookedForm.ObjectArrayTextInput<FormInput>
 														fieldName="senses"

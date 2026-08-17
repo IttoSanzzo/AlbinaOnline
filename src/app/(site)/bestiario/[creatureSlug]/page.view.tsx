@@ -60,6 +60,11 @@ export default async function CreaturePageView({
 		(x) => x.trigger != "Passive",
 	);
 
+	creatureData.info.miscellaneous = [
+		`Fonte: ${creatureData.source}`,
+		...creatureData.info.miscellaneous,
+	];
+
 	return (
 		<GenericPageContainer
 			title={creatureData.name}

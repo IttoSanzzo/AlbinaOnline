@@ -22,6 +22,7 @@ interface TextProps extends StandartColorProps {
 	style?: CSSProperties;
 	onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 	className?: string;
+	preventWordBreak?: boolean;
 }
 export function Text({
 	children,
@@ -37,6 +38,7 @@ export function Text({
 	style,
 	onClick,
 	className,
+	preventWordBreak = true,
 }: TextProps) {
 	const newStyle: CSSProperties = {
 		color: StandartTextColorKeyToProperty(textColor),
@@ -49,6 +51,7 @@ export function Text({
 			? { display: "flex", justifyContent: "center" }
 			: { textAlign: textAlign }),
 		display: display,
+		...(preventWordBreak && { wordBreak: "normal", overflowWrap: "normal" }),
 		...style,
 	};
 

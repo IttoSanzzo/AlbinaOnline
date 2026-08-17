@@ -3,14 +3,14 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { CreatureData } from "@/libs/stp@types";
 import { bonusValueText } from "@/utils/AlbinaAesthetic";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { abilityScoreBonusValue } from "@/utils/AlbinaMath";
+import { creatureAbilityScoreBonusValue } from "@/utils/AlbinaMath";
 
 interface CreatureViewerProps {
 	creatureData: CreatureData;
 }
 export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 	let testBonusesString = Object.entries(creatureData.miscMetrics.testBonuses)
-		.map((entry) => `${entry[0]}: ${entry[1]}`)
+		.map((entry) => `${entry[0]}: ${entry[1] > 0 ? `+${entry[1]}` : entry[1]}`)
 		.join(", ");
 	if (testBonusesString == "") testBonusesString = "Nenhum";
 	let sensesString = Object.entries(creatureData.miscMetrics.senses)
@@ -27,11 +27,40 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 					<div>
 						<UIBasics.Table
 							withHeaderColumn={false}
+							direction="row"
+							withHeaderRow
+							tableData={{
+								tableLanes: [
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="orange">
+											Atributos
+										</UIBasics.Text>,
+									],
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="gray">
+											{creatureData.magicAttributes.length == 0
+												? "Nenhum"
+												: creatureData.magicAttributes.join(", ")}
+										</UIBasics.Text>,
+									],
+								],
+							}}
+						/>
+						<UIBasics.Table
+							withHeaderColumn={false}
 							columnBackgroundColors={["darkGray", undefined, "darkGray"]}
 							tableData={{
 								tableLanes: [
 									[
-										<UIBasics.Text textColor="red">🩸HP</UIBasics.Text>,
+										<UIBasics.Text textColor="red">🩸 HP</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
 											{creatureData.coreMetrics.healthPoints.toString()}
 										</UIBasics.Text>,
@@ -40,51 +69,77 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textAlign="flex-center"
 											display="flex"
 											withBold>
-											🛡️CA
+											🛡️ CA
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
 											{creatureData.coreMetrics.armorClass.toString()}
 										</UIBasics.Text>,
 									],
 									[
-										<UIBasics.Text textColor="gray">🚶🏻‍➡️WS</UIBasics.Text>,
+										<UIBasics.Text textColor="gray">
+											🚶🏻‍➡️ Caminhada
+										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.walk.toString()}
+											{`${creatureData.coreMetrics.speedStats.walk}m`}
 										</UIBasics.Text>,
 										<UIBasics.Text
 											textColor="gray"
 											textAlign="flex-center"
 											display="flex"
 											withBold>
-											🏃🏻‍➡️CS
+											🏊🏻‍♂️ Nado
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.speedStats.combat.toString()}
+											{`${creatureData.coreMetrics.speedStats.swim ?? 0}m`}
 										</UIBasics.Text>,
 									],
 									[
-										<UIBasics.Text textColor="gray">🏊🏻‍♂️SS</UIBasics.Text>,
+										<UIBasics.Text
+											textColor="gray"
+											textAlign="flex-center"
+											display="flex"
+											withBold>
+											🏃🏻‍➡️ Combate
+										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{(
-												creatureData.coreMetrics.speedStats.swim ?? 0
-											).toString()}
+											{`${creatureData.coreMetrics.speedStats.combat}m`}
 										</UIBasics.Text>,
 										<UIBasics.Text
 											textColor="gray"
 											textAlign="flex-center"
 											display="flex"
 											withBold>
-											🪽FS
+											🪽 Voo
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{(
-												creatureData.coreMetrics.speedStats.fly ?? 0
-											).toString()}
+											{`${creatureData.coreMetrics.speedStats.fly ?? 0}m`}
+										</UIBasics.Text>,
+									],
+									[
+										<UIBasics.Text
+											textColor="gray"
+											textAlign="flex-center"
+											display="flex"
+											withBold>
+											🧗🏻‍♂️ Escalada
+										</UIBasics.Text>,
+										<UIBasics.Text textColor="yellow">
+											{`${creatureData.coreMetrics.speedStats.climb ?? 0}m`}
+										</UIBasics.Text>,
+										<UIBasics.Text
+											textColor="gray"
+											textAlign="flex-center"
+											display="flex"
+											withBold>
+											🪏 Cavar
+										</UIBasics.Text>,
+										<UIBasics.Text textColor="yellow">
+											{`${creatureData.coreMetrics.speedStats.burrow ?? 0}m`}
 										</UIBasics.Text>,
 									],
 									[
 										<UIBasics.Text textColor="orange">
-											{"🌟Nível de Desafio"}
+											{"🌟 Nível de Desafio"}
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
 											{`${creatureData.level} (${creatureData.experience} XP)`}
@@ -94,10 +149,39 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textAlign="flex-center"
 											display="flex"
 											withBold>
-											{"⏱️Iniciativa"}
+											{"⏱️ Iniciativa"}
 										</UIBasics.Text>,
 										<UIBasics.Text textColor="yellow">
-											{creatureData.coreMetrics.initiative.toString()}
+											{`${creatureData.coreMetrics.initiative}`}
+										</UIBasics.Text>,
+									],
+								],
+							}}
+						/>
+						<UIBasics.Table
+							withHeaderColumn={false}
+							direction="row"
+							withHeaderRow
+							tableData={{
+								tableLanes: [
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="orange">
+											Vulnerabilidades
+										</UIBasics.Text>,
+									],
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="gray">
+											{creatureData.miscMetrics.vulnerabilities.length == 0
+												? "Nenhuma"
+												: creatureData.miscMetrics.vulnerabilities.join(", ")}
 										</UIBasics.Text>,
 									],
 								],
@@ -117,13 +201,6 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textColor="orange">
 											Resistências
 										</UIBasics.Text>,
-										<UIBasics.Text
-											withBold
-											textAlign="flex-center"
-											display="flex"
-											textColor="orange">
-											Atributos
-										</UIBasics.Text>,
 									],
 									[
 										<UIBasics.Text
@@ -134,15 +211,6 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											{creatureData.miscMetrics.resistances.length == 0
 												? "Nenhuma"
 												: creatureData.miscMetrics.resistances.join(", ")}
-										</UIBasics.Text>,
-										<UIBasics.Text
-											withBold
-											textAlign="flex-center"
-											display="flex"
-											textColor="gray">
-											{creatureData.magicAttributes.length == 0
-												? "Nenhum"
-												: creatureData.magicAttributes.join(", ")}
 										</UIBasics.Text>,
 									],
 								],
@@ -162,13 +230,6 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											textColor="orange">
 											Imunidades
 										</UIBasics.Text>,
-										<UIBasics.Text
-											withBold
-											textAlign="flex-center"
-											display="flex"
-											textColor="orange">
-											Linguas
-										</UIBasics.Text>,
 									],
 									[
 										<UIBasics.Text
@@ -179,38 +240,6 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 											{creatureData.miscMetrics.immunities.length == 0
 												? "Nenhuma"
 												: creatureData.miscMetrics.immunities.join(", ")}
-										</UIBasics.Text>,
-										<UIBasics.Text
-											withBold
-											textAlign="flex-center"
-											display="flex"
-											textColor="gray">
-											{creatureData.miscMetrics.languages.length == 0
-												? "Nenhuma"
-												: creatureData.miscMetrics.languages.join(", ")}
-										</UIBasics.Text>,
-									],
-								],
-							}}
-						/>
-						<UIBasics.Table
-							fixedLinePositions={[1]}
-							fixedLineWidths={[15]}
-							tableData={{
-								tableLanes: [
-									[
-										<UIBasics.Text
-											withBold
-											textAlign="flex-center"
-											display="flex"
-											textColor="orange">
-											Sentidos
-										</UIBasics.Text>,
-										<UIBasics.Text
-											textAlign="flex-center"
-											display="flex"
-											textColor="gray">
-											{sensesString}
 										</UIBasics.Text>,
 									],
 								],
@@ -312,6 +341,58 @@ export function CreatureViewer({ creatureData }: CreatureViewerProps) {
 								],
 							}}
 						/>
+						<UIBasics.Table
+							fixedLinePositions={[1]}
+							fixedLineWidths={[15]}
+							tableData={{
+								tableLanes: [
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="orange">
+											Sentidos
+										</UIBasics.Text>,
+										<UIBasics.Text
+											textAlign="flex-center"
+											display="flex"
+											textColor="gray">
+											{sensesString}
+										</UIBasics.Text>,
+									],
+								],
+							}}
+						/>
+						<UIBasics.Table
+							withHeaderColumn={false}
+							direction="row"
+							withHeaderRow
+							tableData={{
+								tableLanes: [
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="orange">
+											Línguas
+										</UIBasics.Text>,
+									],
+									[
+										<UIBasics.Text
+											withBold
+											textAlign="flex-center"
+											display="flex"
+											textColor="gray">
+											{creatureData.miscMetrics.languages.length == 0
+												? "Nenhuma"
+												: creatureData.miscMetrics.languages.join(", ")}
+										</UIBasics.Text>,
+									],
+								],
+							}}
+						/>
 					</div>
 				}
 			/>
@@ -334,6 +415,6 @@ function TableAbilityScoreEntry(key: string, title: string, value: number) {
 			textColor="blue"
 			children={value.toString()}
 		/>,
-		bonusValueText(abilityScoreBonusValue(value)),
+		bonusValueText(creatureAbilityScoreBonusValue(value)),
 	];
 }
