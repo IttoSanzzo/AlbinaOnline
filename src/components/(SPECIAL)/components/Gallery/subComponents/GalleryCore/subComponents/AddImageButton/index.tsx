@@ -115,6 +115,7 @@ export const AddImageButton = forwardRef<
 				return;
 			}
 		}
+		setError(null);
 		setOpen(false);
 		await revalidateTagByClientSide(url);
 		toast.success("Salvo", { id: toastId });

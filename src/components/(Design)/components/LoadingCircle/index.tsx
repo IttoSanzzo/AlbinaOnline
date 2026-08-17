@@ -14,6 +14,7 @@ interface LoadingCircleProps {
 	color?: keyof typeof StandartTextColor;
 	backColor?: keyof typeof StandartTextColor;
 	centralize?: boolean;
+	centralizeVertical?: number;
 }
 export function LoadingCircle({
 	size = 150,
@@ -22,12 +23,14 @@ export function LoadingCircle({
 	backColor,
 	color,
 	centralize = true,
+	centralizeVertical = 50,
 }: LoadingCircleProps) {
 	return (
 		<LoadingCircleContainer
 			style={{
 				width: `${size}px`,
-				...(centralize && { margin: "auto", marginTop: "50%" }),
+				...(centralize && { margin: "auto" }),
+				marginTop: `${centralizeVertical}%`,
 			}}>
 			<LoadingCircleSpan
 				style={{
