@@ -165,6 +165,7 @@ export function GenericEffectEditor({
 				<HookedForm.ObjectArrayInput<FormData>
 					fieldName="contents"
 					label="Contents"
+					isReorderable
 					defaultObject={{
 						type: "Text",
 						color: "Default",
