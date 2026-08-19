@@ -23,6 +23,8 @@ function segmentToApiRoute(segment: string): string {
 			return "races";
 		case "bestiario":
 			return "bestiary";
+		case "campanhas":
+			return "campaigns";
 		default:
 			return segment;
 	}

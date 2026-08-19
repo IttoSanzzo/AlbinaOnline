@@ -222,7 +222,7 @@ export function EditLocationPageView({ location }: EditLocationPageViewProps) {
 					options={worldPlaneOptions}
 				/>
 
-				<HookedForm.BoolInput<FormInput>
+				<HookedForm.BooleanInput<FormInput>
 					fieldName="isHidden"
 					trueBackgroundColor="purple"
 					falseBackgroundColor="blue"

@@ -69,6 +69,11 @@ const CoreHubPageGroup = (
 				link: "/users",
 				image: getAlbinaApiFullAddress(`/favicon/users`),
 			},
+			{
+				name: "Campanhas",
+				link: "/campanhas",
+				image: getAlbinaApiFullAddress(`/favicon/campaigns`),
+			},
 			{ name: "Codex", link: "/codex" },
 			...(process.env.NODE_ENV === "development"
 				? [{ name: "Sandbox", link: "/sandbox" }]

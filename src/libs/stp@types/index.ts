@@ -48,3 +48,5 @@ export * from "./otherTypes";
 export * from "./misc";
 export * from "./dataTypes/galleryData";
 export * from "./utils/LocationLinkUtils";
+export * from "./dataTypes/campaign";
+export * from "./dataTypes/campaignMember";

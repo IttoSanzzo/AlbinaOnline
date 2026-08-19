@@ -25,6 +25,11 @@
 	&:-webkit-autofill {
 		border-radius: var(--rd-sm) !important;
 	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
 }
 .baseTextAreaInputField {
 	resize: vertical;

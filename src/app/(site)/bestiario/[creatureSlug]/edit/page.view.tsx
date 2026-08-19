@@ -346,7 +346,7 @@ export default function EditPageView({ creature }: EditPageViewProps) {
 					}
 				/>
 
-				<HookedForm.BoolInput<FormInput>
+				<HookedForm.BooleanInput<FormInput>
 					fieldName="isHidden"
 					trueBackgroundColor="purple"
 					falseBackgroundColor="blue"

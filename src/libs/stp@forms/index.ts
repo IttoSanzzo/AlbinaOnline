@@ -29,7 +29,7 @@ export * from "./types";
 export const HookedForm = {
 	Form: Form,
 	SubmitButton: SubmitButton,
-	BoolInput: BoolInput,
+	BooleanInput: BoolInput,
 	TextInput: TextInput,
 	TextArrayInput: TextArrayInput,
 	TextAreaInput: TextAreaInput,
