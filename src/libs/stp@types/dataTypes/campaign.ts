@@ -4,10 +4,10 @@ import { Guid } from "../misc";
 export enum CampaignType {
 	Unknown,
 
-	OneShot,
-	Short,
-	Long,
 	Indefinite,
+	Long,
+	Short,
+	OneShot,
 }
 export enum CampaignSubType {
 	Unknown,
@@ -28,4 +28,14 @@ export type Campaign = {
 	createdAt: string;
 	updatedAt?: string;
 	albinaVersion: string;
+	iconUrl: string;
+	bannerUrl: string;
+};
+
+export const CampaignTypeName: Record<keyof typeof CampaignType, string> = {
+	Unknown: "Desconhecido",
+	Indefinite: "Sem Fim",
+	Long: "Longa",
+	Short: "Curta",
+	OneShot: "One Shot",
 };

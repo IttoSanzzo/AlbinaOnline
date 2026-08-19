@@ -1,0 +1,83 @@
+.campaignCardContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 350px;
+	height: 200px;
+	background-color: var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.campaignBannerContainer {
+	position: relative;
+	background-color: var(--cl-gray-600);
+	overflow: hidden;
+	height: 150px;
+	width: 100%;
+
+	& img {
+		object-fit: fill;
+	}
+}
+
+.campaignIconContainer {
+	position: absolute;
+	background-color: var(--cl-gray-500);
+	overflow: hidden;
+	height: 70px;
+	width: 70px;
+	border-radius: inherit;
+	top: 45px;
+	left: 15px;
+
+	& img {
+		object-fit: fill;
+	}
+}
+
+.campaignFootContainer {
+	display: flex;
+	flex-direction: row;
+	height: 50px;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.masterCounter {
+	display: flex;
+	gap: var(--sp-2);
+	line-height: 100%;
+	font-size: var(--fs-lg);
+}
+.playerCounter {
+	display: flex;
+	gap: var(--sp-2);
+	line-height: 100%;
+	font-size: var(--fs-lg);
+}
+.typeDisplay {
+	display: flex;
+	gap: var(--sp-1);
+	line-height: 100%;
+}
+
+.titleContainer {
+	position: absolute;
+	top: 30px;
+	left: 90px;
+	width: 255px;
+	height: 100px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > h4 {
+		font-size: var(--fs-5xl);
+		color: var(--cl-gray-100);
+
+		text-shadow: 0 0px 15px var(--cl-black-3);
+	}
+}

@@ -15,7 +15,7 @@ enum IconColor {
 	"red" = "#D44C47",
 }
 
-type PhosphorKey = keyof typeof Phosphor;
+export type PhosphorKey = keyof typeof Phosphor;
 
 export interface StpIconProps {
 	name: PhosphorKey | "";

@@ -1,9 +1,10 @@
 "use client";
 
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
+import { CampaignCard } from "@/components/(SPECIAL)/components/CampaignCard";
 import { UIBasics } from "@/components/(UIBasics)";
 import { useCurrentUser } from "@/libs/stp@hooks";
-import { Campaign } from "@/libs/stp@types";
+import { Campaign, Guid } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useEffect, useState } from "react";
@@ -22,19 +23,39 @@ export default function CampaignsPageView() {
 		(async () => {
 			const response = await fetch(getAlbinaApiFullAddress(`/campaigns`));
 			if (!response.ok) return;
-			setlAlListedCampaigns(await response.json());
+			setlAlListedCampaigns(
+				((await response.json()) as Campaign[]).sort(
+					(a, b) =>
+						new Date(b.updatedAt ?? b.createdAt).getTime() -
+						new Date(a.updatedAt ?? a.createdAt).getTime(),
+				),
+			);
 		})();
 		(async () => {
 			const response = await authenticatedFetchAsync(
 				getAlbinaApiFullAddress(`/users/me/campaigns`),
 			);
 			if (!response.ok) return;
-			setUserCampaigns(await response.json());
+			setUserCampaigns(
+				((await response.json()) as Campaign[]).sort(
+					(a, b) =>
+						new Date(b.updatedAt ?? b.createdAt).getTime() -
+						new Date(a.updatedAt ?? a.createdAt).getTime(),
+				),
+			);
 		})();
 	}, [user]);
 
 	if (user == null || userCampaigns == null || allListedCampaigns == null)
 		return <LoadingCircle centralizeVertical={23} />;
+
+	const participatingCampaignsIds = new Set<Guid>(
+		userCampaigns.map((x) => x.id),
+	);
+
+	const notParticipatingCampaigns = allListedCampaigns.filter(
+		(campaign) => !participatingCampaignsIds.has(campaign.id),
+	);
 
 	return (
 		<>
@@ -44,12 +65,17 @@ export default function CampaignsPageView() {
 					textColor="yellow">
 					Suas Campanhas
 				</UIBasics.Header>
-				<div>
+				<UIBasics.List.Grid
+					columnWidth={350}
+					direction="row">
 					{userCampaigns.map((campaign) => (
-						<UIBasics.Box key={campaign.id}>{campaign.name}</UIBasics.Box>
+						<CampaignCard
+							key={campaign.id}
+							campaign={campaign}
+							isMember={true}
+						/>
 					))}
-				</div>
-				<div>a,b,c</div>
+				</UIBasics.List.Grid>
 			</UIBasics.Box>
 			<UIBasics.Box backgroundColor="darkGray">
 				<UIBasics.Header
@@ -58,11 +84,10 @@ export default function CampaignsPageView() {
 					Outras Campanhas
 				</UIBasics.Header>
 				<div>
-					{userCampaigns.map((campaign) => (
+					{notParticipatingCampaigns.map((campaign) => (
 						<div key={campaign.id}>{campaign.name}</div>
 					))}
 				</div>
-				<div>a,b,c</div>
 			</UIBasics.Box>
 		</>
 	);
