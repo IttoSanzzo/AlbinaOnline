@@ -23,15 +23,13 @@ const PlayerCounter = newStyledElement.div(styles.playerCounter);
 const MasterCounter = newStyledElement.div(styles.masterCounter);
 const TypeDisplay = newStyledElement.div(styles.typeDisplay);
 const TitleContainer = newStyledElement.div(styles.titleContainer);
+const HoverWithShadowBox = newStyledElement.div(styles.hoverWithShadowBox);
 
 interface CampaignCardProps {
 	campaign: Campaign;
 	isMember?: boolean;
 }
-export function CampaignCard({
-	campaign,
-	isMember = false,
-}: CampaignCardProps) {
+export function CampaignCard({ campaign }: CampaignCardProps) {
 	const playerCountColor: keyof typeof StandartTextColor =
 		campaign.maxPlayers == 0 || campaign.playerCount < campaign.maxPlayers
 			? "green"
@@ -71,6 +69,7 @@ export function CampaignCard({
 							width={70}
 							height={70}
 						/>
+						<HoverWithShadowBox />
 					</CampaignIconContainer>
 					<TitleContainer>
 						<h4>{campaign.name}</h4>
@@ -113,6 +112,7 @@ export function CampaignCard({
 							</UIBasics.Text>
 						</TypeDisplay>
 					</CampaignFootContainer>
+					<HoverWithShadowBox />
 				</CampaignCardContainer>
 			</Link>
 		</Tilt>

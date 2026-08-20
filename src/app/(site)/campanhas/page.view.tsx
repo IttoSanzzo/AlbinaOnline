@@ -67,15 +67,16 @@ export default function CampaignsPageView() {
 				</UIBasics.Box>
 			)}
 			{userCampaigns.length > 0 && (
-				<UIBasics.Box backgroundColor="darkGray">
+				<UIBasics.Box backgroundColor="purple">
 					<UIBasics.Header
 						textAlign="center"
-						textColor="yellow">
+						textColor="purple">
 						Suas Campanhas
 					</UIBasics.Header>
 					<UIBasics.List.Grid
 						columnWidth={350}
-						direction="row">
+						direction="row"
+						backgroundColor="darkGray">
 						{userCampaigns.map((campaign) => (
 							<CampaignCard
 								key={campaign.id}
@@ -87,17 +88,24 @@ export default function CampaignsPageView() {
 				</UIBasics.Box>
 			)}
 			{notParticipatingCampaigns.length > 0 && (
-				<UIBasics.Box backgroundColor="darkGray">
+				<UIBasics.Box backgroundColor="gray">
 					<UIBasics.Header
 						textAlign="center"
-						textColor="darkGray">
+						textColor="gray">
 						Outras Campanhas
 					</UIBasics.Header>
-					<div>
+					<UIBasics.List.Grid
+						columnWidth={350}
+						direction="row"
+						backgroundColor="darkGray">
 						{notParticipatingCampaigns.map((campaign) => (
-							<div key={campaign.id}>{campaign.name}</div>
+							<CampaignCard
+								key={campaign.id}
+								campaign={campaign}
+								isMember={true}
+							/>
 						))}
-					</div>
+					</UIBasics.List.Grid>
 				</UIBasics.Box>
 			)}
 		</>

@@ -16,9 +16,11 @@
 	overflow: hidden;
 	height: 150px;
 	width: 100%;
+	transition: 0.5s ease-in-out height;
 
-	& img {
-		object-fit: fill;
+	& > img {
+		object-fit: cover;
+		transition: 0.5s ease-in-out height;
 	}
 }
 
@@ -31,18 +33,30 @@
 	border-radius: inherit;
 	top: 45px;
 	left: 15px;
+	transition:
+		0.5s ease-in-out left,
+		0.5s ease-in-out top,
+		0.5s ease-in-out width,
+		0.5s ease-in-out height;
 
-	& img {
+	& > img {
 		object-fit: fill;
+		transition:
+			0.5s ease-in-out width,
+			0.5s ease-in-out height;
 	}
 }
 
 .campaignFootContainer {
+	position: absolute;
+	top: 150px;
 	display: flex;
 	flex-direction: row;
 	height: 50px;
+	width: 100%;
 	justify-content: space-around;
 	align-items: center;
+	transition: 0.5s ease-in-out top;
 }
 
 .masterCounter {
@@ -73,11 +87,81 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	transition: 0.5s ease-in-out left;
 
 	& > h4 {
 		font-size: var(--fs-5xl);
 		color: var(--cl-gray-100);
 
 		text-shadow: 0 0px 15px var(--cl-black-3);
+	}
+}
+
+.hoverWithShadowBox {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transition: 0.5s ease-in-out box-shadow;
+}
+
+.campaignCardContainer:hover {
+	& > .hoverWithShadowBox {
+		box-shadow: inset 0 0 60px rgba(0, 0, 0, 1);
+	}
+
+	& > .campaignBannerContainer {
+		height: 200px;
+
+		& > img {
+			height: 200px;
+		}
+		& > .hoverWithShadowBox {
+			box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
+		}
+	}
+
+	& > .campaignIconContainer {
+		left: 85px;
+		top: 10px;
+		width: 180px;
+		height: 180px;
+		animation: subtle-shake 0.7s ease-in-out infinite;
+
+		& > img {
+			width: 180px;
+			height: 180px;
+		}
+	}
+	& > .titleContainer {
+		left: 100%;
+	}
+
+	& > .campaignFootContainer {
+		top: 200px;
+	}
+}
+
+@keyframes subtle-shake {
+	0%,
+	100% {
+		transform: translate(0, 0) rotate(0deg);
+	}
+
+	20% {
+		transform: translate(-0.8px, 0.5px) rotate(-0.3deg);
+	}
+
+	40% {
+		transform: translate(0.7px, -0.6px) rotate(0.16deg);
+	}
+
+	60% {
+		transform: translate(-0.6px, 0.5px) rotate(0.19deg);
+	}
+
+	80% {
+		transform: translate(0.8px, -0.4px) rotate(-0.13deg);
 	}
 }

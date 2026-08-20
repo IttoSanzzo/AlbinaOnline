@@ -5,10 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { HookedForm, toSlug, zEnumKey, zSlug } from "@/libs/stp@forms";
+import {
+	HookedForm,
+	SelectOption,
+	toSlug,
+	zEnumKey,
+	zSlug,
+} from "@/libs/stp@forms";
 import { CampaignSubType, CampaignType } from "@/libs/stp@types";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { enumToSelectOptions } from "@/utils/Data";
 import toast from "react-hot-toast";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 
@@ -28,13 +33,12 @@ const schema = z.object({
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-const typeOptions = enumToSelectOptions(
-	CampaignType,
-	["Unknown"],
-	false,
-	false,
-);
-// const subTypeOptions = enumToSelectOptions(CampaignSubType, [], false, false);
+const typeOptions: SelectOption[] = [
+	{ name: "Sem Fim", value: "Indefinite" },
+	{ name: "Longa", value: "Long" },
+	{ name: "Curta", value: "Short" },
+	{ name: "OneShot", value: "OneShot" },
+];
 
 export function CreateCampaignForm() {
 	const router = useRouter();
