@@ -42,7 +42,13 @@ export function StyledFalseLink({
 						alt=""
 					/>
 				)}
-				<span title={title}>{title}</span>
+				<span
+					style={{
+						color: rest.color,
+					}}
+					title={title}>
+					{title}
+				</span>
 			</button>
 		</StyledFalseLinkContainer>
 	);

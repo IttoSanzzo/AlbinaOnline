@@ -57,7 +57,7 @@ export default function CharsPageContent() {
 		}
 		loadCharacters();
 	}, [setCharacters]);
-	if (characters === null) return <LoadingCircle />;
+	if (characters === null) return <LoadingCircle centralizeVertical={18} />;
 
 	if (characters.length === 0) {
 		return (

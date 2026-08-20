@@ -8,3 +8,4 @@ export * from "./useCurrentNpcAccessLevelStore";
 export * from "./useBreadcrumbsStore";
 export * from "./useDiscordWidgetStore";
 export * from "./useCurrentNpcAccessLevelStore";
+export * from "./useCurrentCampaignMemberStore";

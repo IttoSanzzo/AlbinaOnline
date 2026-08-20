@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { useCurrentCampaignMember, useCurrentUser } from "@/libs/stp@hooks";
 import { LogoutButton } from "./subComponents/LogoutItem";
 import { DropdownMenu } from "@/libs/stp@radix";
 import { YourProfileItem } from "./subComponents/YourProfileItem";
@@ -11,14 +11,16 @@ import styles from "./styles.module.css";
 import { AllUsersItem } from "./subComponents/AllUsersItem";
 
 const ProfileButtonContainer = newStyledElement.div(
-	styles.profileButtonContainer
+	styles.profileButtonContainer,
 );
 const ProfileMenuTriggerButton = newStyledElement.div(
-	styles.profileMenuTriggerButton
+	styles.profileMenuTriggerButton,
 );
 
 export function ProfileButton() {
 	const { user } = useCurrentUser();
+	const { member } = useCurrentCampaignMember();
+	void member;
 
 	if (!user) return <ProfileButtonContainer />;
 	return (

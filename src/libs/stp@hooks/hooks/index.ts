@@ -11,3 +11,4 @@ export * from "./useCharacterUpdated";
 export * from "./useNpcUpdatedPolling";
 export * from "./useNpcUpdated";
 export * from "./useDiscordWidget";
+export * from "./useCurrentCampaignMember";

@@ -86,7 +86,7 @@ export default function CharPageContent({ characterId }: CharPageContentProps) {
 				return <>Unknown</>;
 		}
 	}
-	if (characterData == null) return <LoadingCircle centralizeVertical={10} />;
+	if (characterData == null) return <LoadingCircle centralizeVertical={23} />;
 
 	const breadcrumbs: Breadcrumb[] = [
 		{
