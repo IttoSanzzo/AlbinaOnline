@@ -76,6 +76,11 @@
 	gap: var(--sp-1);
 	line-height: 100%;
 }
+.openDisplay {
+	display: flex;
+	gap: var(--sp-1);
+	line-height: 100%;
+}
 
 .titleContainer {
 	position: absolute;

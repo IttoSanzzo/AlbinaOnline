@@ -5,6 +5,9 @@ import { memo } from "react";
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 import { useCurrentCampaignMember } from "@/libs/stp@hooks";
 import { Campaign, CampaignMember } from "@/libs/stp@types";
+import { NotAMemberPageContent } from "./page.components/NotAMemberPageContent";
+import { MemberPageContent } from "./page.components/MemberPageContent";
+import { MasterPageContent } from "./page.components/MasterPageContent";
 
 interface CampaignPageViewProps {
 	campaign: Campaign;
@@ -39,8 +42,19 @@ const CampaignPageContent = memo(function CampaignPageContent({
 	if (loading === true || isMember === null)
 		return <LoadingCircle centralizeVertical={18} />;
 
-	if (isMember === false) return <>NotMember</>;
+	if (isMember === false) return <NotAMemberPageContent campaign={campaign} />;
 	if (member === null) return <LoadingCircle centralizeVertical={18} />;
-	if (member.isMaster === true) return <div>Mestre</div>;
-	return <div>Jogador</div>;
+	if (member.isMaster === true)
+		return (
+			<MasterPageContent
+				campaign={campaign}
+				member={member}
+			/>
+		);
+	return (
+		<MemberPageContent
+			campaign={campaign}
+			member={member}
+		/>
+	);
 });

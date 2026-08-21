@@ -1,0 +1,28 @@
+.joinButton {
+	padding: var(--sp-3);
+	border: none;
+	border-radius: var(--rd-md);
+	margin-top: var(--sp-4);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+}
+
+.direct {
+	color: var(--cl-green-100);
+	background-color: var(--cl-green-500);
+
+	&:hover {
+		background-color: var(--cl-green-300);
+		color: var(--cl-green-100);
+	}
+}
+.indirect {
+	color: var(--cl-blue-100);
+	transition: 0.25s linear backgroung-color;
+	background-color: var(--cl-blue-500);
+
+	&:hover {
+		background-color: var(--cl-blue-300);
+		color: var(--cl-blue-100);
+	}
+}

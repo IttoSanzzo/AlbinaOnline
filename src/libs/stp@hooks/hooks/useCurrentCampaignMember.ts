@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 import { useCurrentCampaignMemberStore } from "../stores/useCurrentCampaignMemberStore";
@@ -9,36 +9,36 @@ export function useCurrentCampaignMember() {
 	const pathname = usePathname();
 
 	const {
-		clear,
 		isMember,
-		loading,
+		loadedCampaignSlug,
 		member,
+		loading,
 		reloadMember,
+		setMember,
 		setIsMember,
 		setLoading,
-		setMember,
+		clear,
 	} = useCurrentCampaignMemberStore();
 	const campaignSlug = pathname.match(/^\/campanhas\/([^/]+)/)?.[1] ?? null;
-	const loadedSlug = useRef<string | null>(null);
 
 	useEffect(() => {
 		if (campaignSlug == null) {
 			clear();
 			return;
 		}
-		if (loadedSlug.current === campaignSlug) return;
-		loadedSlug.current = campaignSlug;
-		void reloadMember(campaignSlug);
-	}, [campaignSlug, reloadMember]);
+		if (loadedCampaignSlug === campaignSlug) return;
+		reloadMember(campaignSlug);
+	}, [campaignSlug, reloadMember, loadedCampaignSlug]);
 
 	return {
-		clear,
 		isMember,
-		loading,
+		loadedCampaignSlug,
 		member,
+		loading,
 		reloadMember,
+		setMember,
 		setIsMember,
 		setLoading,
-		setMember,
+		clear,
 	};
 }

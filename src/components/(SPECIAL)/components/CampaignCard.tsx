@@ -22,6 +22,7 @@ const CampaignFootContainer = newStyledElement.div(
 const PlayerCounter = newStyledElement.div(styles.playerCounter);
 const MasterCounter = newStyledElement.div(styles.masterCounter);
 const TypeDisplay = newStyledElement.div(styles.typeDisplay);
+const OpenDisplay = newStyledElement.div(styles.openDisplay);
 const TitleContainer = newStyledElement.div(styles.titleContainer);
 const HoverWithShadowBox = newStyledElement.div(styles.hoverWithShadowBox);
 
@@ -96,7 +97,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 							<UIBasics.Text
 								textColor={playerCountColor}
 								withBold>
-								{`${campaign.playerCount}${campaign.maxPlayers == 0 ? "" : ` / ${campaign.masterCount}`}`}
+								{`${campaign.playerCount}${campaign.maxPlayers == 0 ? "" : ` / ${campaign.maxPlayers}`}`}
 							</UIBasics.Text>
 						</PlayerCounter>
 						<TypeDisplay>
@@ -111,6 +112,13 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
 								{CampaignTypeName[campaign.type]}
 							</UIBasics.Text>
 						</TypeDisplay>
+						<OpenDisplay>
+							<StpIcon
+								name={campaign.isOpen ? "LockOpen" : "Lock"}
+								style="bold"
+								color={campaign.isOpen ? "green" : "red"}
+							/>
+						</OpenDisplay>
 					</CampaignFootContainer>
 					<HoverWithShadowBox />
 				</CampaignCardContainer>

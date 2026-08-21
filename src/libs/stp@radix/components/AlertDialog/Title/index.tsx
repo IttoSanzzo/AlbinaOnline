@@ -8,12 +8,20 @@ import { CSSProperties } from "react";
 
 interface TitleProps extends AlertDialogTitleProps {
 	width?: number;
+	textAlign?: CSSProperties["textAlign"];
 }
-export function Title({ className, style, width, ...rest }: TitleProps) {
+export function Title({
+	className,
+	style,
+	width,
+	textAlign,
+	...rest
+}: TitleProps) {
 	const titleStyle: CSSProperties = {
 		...(width && {
 			width: `${width}px`,
 		}),
+		textAlign: textAlign,
 		...style,
 	};
 	return (
