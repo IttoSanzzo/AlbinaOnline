@@ -12,6 +12,8 @@ export enum StandartTextColor {
 	"brown" = "#9F6B53",
 	"gray" = "#989898",
 	"darkGray" = "#37352F",
+	"white" = "#FFFFFF",
+	"black" = "#000000",
 }
 
 export enum StandartBackgroundColor {
@@ -26,6 +28,8 @@ export enum StandartBackgroundColor {
 	"brown" = "#2D2622",
 	"gray" = "#272624",
 	"darkGray" = "#1E1E1D",
+	"white" = "#FFFFFF",
+	"black" = "#000000",
 }
 
 export interface StandartColorProps {
