@@ -1,0 +1,81 @@
+.inviteContainer {
+	position: relative;
+	width: 500px;
+	height: 500px;
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-md);
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--sp-1);
+}
+
+.bannerContainer {
+	position: relative;
+	width: 490px;
+	height: 200px;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-800);
+	overflow: hidden;
+}
+.iconContainer {
+	position: absolute;
+	top: 125px;
+	width: 150px;
+	height: 150px;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-900);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	& > img {
+		border-radius: inherit;
+	}
+}
+.inviteMessageBox {
+	display: block;
+	text-align: center;
+	& * {
+		display: inline;
+	}
+}
+.acceptButton {
+	width: 90%;
+	background-color: var(--cl-green-600);
+	height: 50px;
+	border-radius: var(--rd-md);
+	border: none;
+	margin: var(--sp-5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition:
+		0.25s linear background-color,
+		0.25s linear opacity;
+	cursor: pointer;
+
+	& svg {
+		transition:
+			0.25s linear width,
+			0.25s linear height;
+		width: 25px;
+		height: 25px;
+	}
+
+	&:hover {
+		background-color: var(--cl-green-400);
+
+		& svg {
+			width: 30px;
+			height: 30px;
+		}
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}

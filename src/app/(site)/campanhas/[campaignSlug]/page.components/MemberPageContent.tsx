@@ -18,7 +18,7 @@ export function MemberPageContent({
 	return (
 		<>
 			<SetNavBarModules contextMenuButton={PageContextMenu} />
-			Member EHE
+			Member
 		</>
 	);
 }

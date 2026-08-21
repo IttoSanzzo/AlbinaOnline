@@ -20,7 +20,7 @@ export function MasterPageContent({
 		<>
 			<SetNavBarModules contextMenuButton={PageContextMenu} />
 			<CampaingJoinRequests campaignSlug={campaign.slug} />
-			Master KIWI
+			Master
 		</>
 	);
 }

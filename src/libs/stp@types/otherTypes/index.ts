@@ -27,3 +27,4 @@ export * from "./GenericAbilityScore";
 export * from "./GenericSpeedStats";
 export * from "./SizeClass";
 export * from "./CampaignJoinRequest";
+export * from "./CampaignInvite";

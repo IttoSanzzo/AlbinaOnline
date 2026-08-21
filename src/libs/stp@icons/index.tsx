@@ -13,6 +13,8 @@ enum IconColor {
 	"purple" = "#9065B0",
 	"pink" = "#C14C8A",
 	"red" = "#D44C47",
+	"white" = "#FFFFFF",
+	"black" = "#000000",
 }
 
 export type PhosphorKey = keyof typeof Phosphor;

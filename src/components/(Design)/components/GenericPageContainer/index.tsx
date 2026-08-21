@@ -12,7 +12,7 @@ const GenericPageContainerContainer = newStyledElement.div(
 const ContentsContainer = newStyledElement.div(styles.contentsContainer);
 
 interface GenericPageContainerProps {
-	children: ReactNode;
+	children?: ReactNode;
 	banner?: string;
 	icon?: string;
 	borderColor?: string;

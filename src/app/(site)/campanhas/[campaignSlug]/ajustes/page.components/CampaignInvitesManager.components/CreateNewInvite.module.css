@@ -1,0 +1,20 @@
+.trigger {
+	width: 100%;
+	padding: var(--sp-3);
+	font-size: var(--fs-md);
+	font-weight: var(--fw-bold);
+	background-color: var(--cl-gray-600);
+	color: var(--cl-gray-300);
+	border: none;
+	border-bottom-left-radius: var(--rd-md);
+	border-bottom-right-radius: var(--rd-md);
+	cursor: pointer;
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+
+	&:hover {
+		background-color: var(--cl-gray-400);
+		color: var(--cl-gray-100);
+	}
+}

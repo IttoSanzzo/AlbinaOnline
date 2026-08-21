@@ -63,6 +63,7 @@ export function ExitCampaignForm() {
 				fontSize="lg"
 				textCentered
 				placeholder="Eu sei o que estou fazendo"
+				autoFocus
 			/>
 			<HookedForm.Space height={3} />
 

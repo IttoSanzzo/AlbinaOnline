@@ -1,0 +1,70 @@
+.inviteEntryContainer {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 50px;
+	background-color: var(--cl-gray-800);
+	padding: 0 var(--sp-2);
+}
+.inviteEntryContainer:first-child {
+	border-top-left-radius: var(--rd-md);
+	border-top-right-radius: var(--rd-md);
+}
+.subContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sp-1);
+}
+
+.iconContainer {
+	position: relative;
+	width: 44px;
+	height: 44px;
+	border-radius: var(--rd-md);
+	overflow: hidden;
+}
+.deleteButton {
+	width: 40px;
+	height: 40px;
+	background-color: var(--cl-red-900);
+	border: none;
+	border-radius: var(--rd-sm);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	&:hover {
+		background-color: var(--cl-red-700);
+	}
+}
+.shareButton {
+	width: 40px;
+	height: 40px;
+	background-color: var(--cl-gray-900);
+	border: none;
+	border-radius: var(--rd-sm);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& svg {
+		width: 20px;
+		height: 20px;
+	}
+
+	&:hover {
+		background-color: var(--cl-gray-700);
+	}
+}

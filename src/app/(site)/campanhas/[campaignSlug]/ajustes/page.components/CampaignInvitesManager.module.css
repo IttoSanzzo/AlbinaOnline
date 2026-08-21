@@ -1,0 +1,32 @@
+.campaignInvitesManagerContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 500px;
+
+	gap: var(--sp-1);
+
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-md);
+	padding: var(--sp-4);
+}
+
+.invitesList {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: var(--sp-1);
+	max-height: 300px;
+	overflow-y: scroll;
+}
+.noInvites {
+	display: flex;
+	width: 100%;
+	background-color: var(--cl-gray-800);
+	justify-content: center;
+	align-items: center;
+	padding: var(--sp-3);
+	border-top-left-radius: var(--rd-md);
+	border-top-right-radius: var(--rd-md);
+}
