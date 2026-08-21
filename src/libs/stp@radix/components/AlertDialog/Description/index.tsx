@@ -8,16 +8,21 @@ import { CSSProperties } from "react";
 
 interface DescriptionProps extends AlertDialogDescriptionProps {
 	width?: number;
+	justForOrnament?: boolean;
 }
 export function Description({
 	className,
 	style,
 	width,
+	justForOrnament = false,
 	...rest
 }: DescriptionProps) {
 	const descriptionsStyle: CSSProperties = {
 		...(width && {
 			width: `${width}px`,
+		}),
+		...(justForOrnament && {
+			display: "none",
 		}),
 		...style,
 	};

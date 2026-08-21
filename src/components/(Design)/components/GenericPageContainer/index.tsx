@@ -23,6 +23,7 @@ interface GenericPageContainerProps {
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
+	onTitleChange?: (title: string) => Promise<void>;
 	subTitle?: ReactNode;
 	subTitle2?: ReactNode;
 	metadataTag?: string;
@@ -42,6 +43,7 @@ export function GenericPageContainer({
 	iconChangeRoute,
 	titleChangeRoute,
 	titleChangeBodyPropName,
+	onTitleChange,
 	subTitle,
 	subTitle2,
 	metadataTag,
@@ -67,6 +69,7 @@ export function GenericPageContainer({
 					iconChangeRoute={iconChangeRoute}
 					titleChangeRoute={titleChangeRoute}
 					titleChangeBodyPropName={titleChangeBodyPropName}
+					onTitleChange={onTitleChange}
 					title={title}
 					icon={icon ? icon : "/Mock/AlbinaLogo.png"}
 					borderColor={borderColor}

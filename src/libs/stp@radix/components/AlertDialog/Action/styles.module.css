@@ -4,8 +4,9 @@
 	align-items: center;
 	justify-content: center;
 	border-radius: var(--rd-md);
-	padding: 3px 15px;
+	padding: var(--sp-3) var(--sp-5);
 	user-select: none;
+	cursor: pointer;
 
 	&:focus:not(:focus-visible) {
 		outline: 0;

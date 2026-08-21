@@ -3,11 +3,11 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
 const AlertDialogButtonsContainer = newStyledElement.div(
-	styles.alertDialogButtonsContainer
+	styles.alertDialogButtonsContainer,
 );
 
 interface ButtonsContainerProps {
-	alignment?: "start" | "center" | "end";
+	alignment?: "start" | "center" | "end" | "space-between" | "space-around";
 	children: ReactNode;
 }
 export function ButtonsContainer({
@@ -15,9 +15,13 @@ export function ButtonsContainer({
 	children,
 }: ButtonsContainerProps) {
 	const containerStyle: CSSProperties = {
-		...(alignment != "center" && {
-			justifyContent: `flex-${alignment}`,
-		}),
+		...(alignment != "center" && (alignment == "start" || alignment == "end")
+			? {
+					justifyContent: `flex-${alignment}`,
+				}
+			: {
+					justifyContent: alignment,
+				}),
 	};
 	return (
 		<AlertDialogButtonsContainer

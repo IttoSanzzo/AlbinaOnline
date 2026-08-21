@@ -20,6 +20,7 @@ interface PageHeaderProps {
 	iconChangeRoute?: string;
 	titleChangeRoute?: string;
 	titleChangeBodyPropName?: string;
+	onTitleChange?: (title: string) => Promise<void>;
 	subTitle?: ReactNode;
 	subTitle2?: ReactNode;
 	metadataTag?: string;
@@ -35,6 +36,7 @@ export function PageHeader({
 	iconChangeRoute,
 	titleChangeRoute,
 	titleChangeBodyPropName,
+	onTitleChange,
 	subTitle,
 	subTitle2,
 	metadataTag,
@@ -65,6 +67,7 @@ export function PageHeader({
 						originalTitle={title}
 						route={titleChangeRoute}
 						titleChangeBodyPropName={titleChangeBodyPropName}
+						onTitleChange={onTitleChange}
 						metadataTag={metadataTag}
 						cachePaths={cachePaths}
 						cacheTags={cacheTags}

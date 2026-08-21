@@ -1,0 +1,27 @@
+.trigger {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: var(--fs-2xl);
+	font-weight: var(--fw-bold);
+	color: var(--cl-black-2);
+	border-radius: var(--rd-md);
+	width: 100%;
+	padding: var(--sp-3);
+	border: 3px solid var(--cl-gray-900);
+	background-color: var(--cl-red-900);
+	cursor: pointer;
+	transition:
+		0.25s linear background-color,
+		0.25s linear border-color;
+
+	&:hover {
+		border: 3px solid var(--cl-gray-700);
+		background-color: var(--cl-red-700);
+	}
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}

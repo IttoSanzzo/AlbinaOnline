@@ -35,6 +35,7 @@ interface ChangeTitleButtonProps {
 	title: string;
 	route: string;
 	titleChangeBodyPropName?: string;
+	onTitleChange?: (title: string) => Promise<void>;
 	metadataTag?: string;
 	cacheTags?: string[];
 	cachePaths?: string[];
@@ -44,6 +45,7 @@ export function ChangeTitleButton({
 	title,
 	route,
 	titleChangeBodyPropName,
+	onTitleChange,
 	metadataTag,
 	cachePaths,
 	cacheTags,
@@ -86,6 +88,7 @@ export function ChangeTitleButton({
 			for (const tag of cacheTags) await revalidateTagByClientSide(tag);
 		if (cachePaths)
 			for (const path of cachePaths) await revalidatePathByClientSide(path);
+		if (onTitleChange) await onTitleChange(data.newName);
 	}
 
 	return (
