@@ -89,11 +89,6 @@ export function NotAMemberPageContent({
 
 	return (
 		<>
-			<DynamicGallery
-				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}
-				hideIfEmpty
-			/>
-			<GenericInfoMultiColumn info={campaign.info} />
 			<UIBasics.Box backgroundColor="darkGray">
 				<UIBasics.Header
 					textAlign="center"
@@ -123,6 +118,11 @@ export function NotAMemberPageContent({
 					</>
 				)}
 			</UIBasics.Box>
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}
+				hideIfEmpty
+			/>
+			<GenericInfoMultiColumn info={campaign.info} />
 		</>
 	);
 }

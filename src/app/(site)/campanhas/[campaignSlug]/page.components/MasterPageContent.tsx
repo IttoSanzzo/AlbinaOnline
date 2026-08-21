@@ -3,6 +3,7 @@
 import { SetNavBarModules } from "@/libs/stp@hooks";
 import { Campaign, CampaignMember } from "@/libs/stp@types";
 import { PageContextMenu } from "./MasterPageContent.components/PageContextMenu";
+import { CampaingJoinRequests } from "./MasterPageContent.components/CampaingJoinRequests";
 
 interface MasterPageContentProps {
 	campaign: Campaign;
@@ -18,6 +19,7 @@ export function MasterPageContent({
 	return (
 		<>
 			<SetNavBarModules contextMenuButton={PageContextMenu} />
+			<CampaingJoinRequests campaignSlug={campaign.slug} />
 			Master KIWI
 		</>
 	);
