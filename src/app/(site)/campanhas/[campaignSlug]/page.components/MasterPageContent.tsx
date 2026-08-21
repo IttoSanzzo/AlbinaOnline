@@ -18,7 +18,11 @@ export function MasterPageContent({
 
 	return (
 		<>
-			<SetNavBarModules contextMenuButton={PageContextMenu} />
+			<SetNavBarModules
+				contextMenuButton={() => (
+					<PageContextMenu campaignSlug={campaign.slug} />
+				)}
+			/>
 			<CampaingJoinRequests campaignSlug={campaign.slug} />
 			Master
 		</>

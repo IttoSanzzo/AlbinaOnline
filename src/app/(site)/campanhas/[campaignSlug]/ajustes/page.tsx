@@ -2,38 +2,24 @@ import { Metadata } from "next";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import PageView from "./page.view";
-import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
 import { getCacheMode } from "@/utils/Cache";
 import { Campaign } from "@/libs/stp@types";
 import { redirect } from "next/navigation";
+import { SetBreadcrumbs } from "@/libs/stp@hooks";
 
 export async function generateMetadata({
 	params,
 }: CampaignEditPageProps): Promise<Metadata> {
 	const { campaignSlug } = await params;
 
-	const response = await fetch(
-		getAlbinaApiFullAddress(`/campaign/${campaignSlug}/metadata`),
-		{
-			cache: "force-cache",
-			method: "GET",
-			next: { tags: [`/campaigns`] },
-		},
-	);
-	if (!response.ok) {
-		return assembleMetadata({
-			title: "Campaign Not Found",
-		});
-	}
-	const data: MetadataData = await response.json();
 	return assembleMetadata({
-		title: data.title,
-		description: data.description,
-		icon: data.icon,
+		title: "Ajustes",
+		description: `Página de ajustas da campanha`,
+		icon: getAlbinaApiFullAddress("/favicon/default/configuration"),
 		ogImage: {
-			url: data.ogImage,
+			url: getAlbinaApiFullAddress("/banner/default/configuration"),
 		},
-		route: `/campanhas/${campaignSlug}`,
+		route: `/campanhas/${campaignSlug}/ajustes`,
 	});
 }
 
@@ -55,5 +41,28 @@ export default async function CampaignEditPage({
 	if (!response.ok) return redirect(`/campanhas/${campaignSlug}`);
 	const data: Campaign = await response.json();
 
-	return <PageView campaign={data} />;
+	return (
+		<>
+			<SetBreadcrumbs
+				breadcrumbs={[
+					{
+						href: "/campanhas",
+						name: "Campanhas",
+						icon: getAlbinaApiFullAddress(`/favicon/campaigns`),
+					},
+					{
+						href: `/campanhas/${data.slug}`,
+						name: data.name,
+						icon: getAlbinaApiFullAddress(`/favicon/campaigns/${data.slug}`),
+					},
+					{
+						href: `/campanhas/${data.slug}/ajustes`,
+						name: "Ajustes",
+						icon: getAlbinaApiFullAddress(`/favicon/default/configuration`),
+					},
+				]}
+			/>
+			<PageView campaign={data} />
+		</>
+	);
 }

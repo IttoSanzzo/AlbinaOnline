@@ -16,7 +16,7 @@ export async function generateMetadata({
 	const { campaignSlug } = await params;
 
 	const response = await fetch(
-		getAlbinaApiFullAddress(`/campaign/${campaignSlug}/metadata`),
+		getAlbinaApiFullAddress(`/campaigns/${campaignSlug}/metadata`),
 		{
 			cache: "force-cache",
 			method: "GET",
