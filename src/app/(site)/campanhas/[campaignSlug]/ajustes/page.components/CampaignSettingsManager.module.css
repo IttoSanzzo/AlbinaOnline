@@ -1,0 +1,14 @@
+.campaignSettingsManagerContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 300px;
+	height: 440px;
+	width: 100%;
+
+	gap: var(--sp-1);
+
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-md);
+	padding: var(--sp-4);
+}

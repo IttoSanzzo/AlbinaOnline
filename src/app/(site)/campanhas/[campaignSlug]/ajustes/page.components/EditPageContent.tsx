@@ -11,6 +11,8 @@ import { UIBasics } from "@/components/(UIBasics)";
 import { CampaignInfoEditor } from "./CampaignInfoEditor";
 import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { CampaignMembersManager } from "./CampaignMembersManager";
+import { CampaignSettingsManager } from "./CampaignSettingsManager";
+import { CampaingJoinRequests } from "../../page.components/MasterPageContent.components/CampaingJoinRequests";
 
 interface EditPageContentProps {
 	campaign: Campaign;
@@ -40,9 +42,11 @@ export function EditPageContent({ campaign, member }: EditPageContentProps) {
 			}}
 			cacheTags={["/campaigns"]}
 			cachePaths={["/campanhas", `/campanhas/${campaign.slug}`]}>
+			<CampaingJoinRequests campaignSlug={campaign.slug} />
+
 			<UIBasics.Box backgroundColor="darkGray">
 				<UIBasics.MultiColumn.Three
-					colum1={<div />}
+					colum1={<CampaignSettingsManager campaign={campaign} />}
 					colum2={
 						<CampaignMembersManager
 							campaign={campaign}

@@ -33,7 +33,7 @@ const schema = z.object({
 type FormInput = z.input<typeof schema>;
 type FormData = z.infer<typeof schema>;
 
-const typeOptions: SelectOption[] = [
+export const campaignTypeOptions: SelectOption[] = [
 	{ name: "Sem Fim", value: "Indefinite" },
 	{ name: "Longa", value: "Long" },
 	{ name: "Curta", value: "Short" },
