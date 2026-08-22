@@ -101,7 +101,7 @@ export function CreateCampaignForm() {
 				fieldName="type"
 				label="Tipo"
 				placeholder="Selecione um tipo"
-				options={typeOptions}
+				options={campaignTypeOptions}
 			/>
 			{/* <HookedForm.Select<FormData>
 				fieldName="subType"
