@@ -33,7 +33,9 @@ export function CampaignInvitesManager({
 
 	return (
 		<CampaignInvitesManagerContainer>
-			<UIBasics.Header textColor="gray">Convites</UIBasics.Header>
+			<UIBasics.Header textColor="gray">
+				Convites {`(${invites.length})`}
+			</UIBasics.Header>
 			{invites.length == 0 ? (
 				<NoInvites>
 					<UIBasics.Text

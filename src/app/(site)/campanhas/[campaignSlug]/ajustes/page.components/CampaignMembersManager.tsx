@@ -39,7 +39,10 @@ export function CampaignMembersManager({
 
 	return (
 		<CampaignMembersManagerContainer>
-			<UIBasics.Header textColor="gray">Membros</UIBasics.Header>
+			<UIBasics.Header textColor="gray">
+				Membros{" "}
+				{`${campaign.masterCount} (${campaign.playerCount}${campaign.maxPlayers > 0 ? ` / ${campaign.maxPlayers}` : ""})`}
+			</UIBasics.Header>
 			<MembersList>
 				{members
 					.sort((a, b) => {
