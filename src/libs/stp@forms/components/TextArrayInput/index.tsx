@@ -36,6 +36,7 @@ type TextArrayInputProps<TFormInput> = {
 	fieldMinHeight?: CSSProperties["minHeight"];
 	fieldHeight?: CSSProperties["height"];
 	width?: CSSProperties["width"];
+	isReorderable?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 export function TextArrayInput<TFormInput extends FieldValues>({

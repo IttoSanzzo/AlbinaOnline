@@ -1,7 +1,10 @@
+.threeColumnsWrapper {
+	container-type: inline-size;
+}
 .threeColumnsContainer {
 	display: flex;
 	flex: 1;
-	flex-direction: row;
+	flex-direction: column;
 	gap: var(--sp-1);
 }
 
@@ -32,9 +35,10 @@
 	border-radius: var(--rd-md);
 }
 
-/* @media (max-width: 480px) { */
-@media (max-width: 830px) {
-	.threeColumnsContainer {
-		flex-direction: column;
+.threeColumnsWrapper {
+	@container (min-width: 1080) {
+		.threeColumnsContainer {
+			flex-direction: row;
+		}
 	}
 }

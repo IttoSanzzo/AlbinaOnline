@@ -122,7 +122,10 @@ export function NotAMemberPageContent({
 				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}
 				hideIfEmpty
 			/>
-			<GenericInfoMultiColumn info={campaign.info} />
+			<GenericInfoMultiColumn
+				info={campaign.info}
+				hideIfEmpty
+			/>
 		</>
 	);
 }

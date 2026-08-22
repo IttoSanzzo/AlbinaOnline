@@ -115,10 +115,11 @@ export const AddImageButton = forwardRef<
 				return;
 			}
 		}
+		toast.success("Salvo", { id: toastId });
 		setError(null);
 		setOpen(false);
+		form.reset();
 		await revalidateTagByClientSide(url);
-		toast.success("Salvo", { id: toastId });
 		if (reloadGalleryData) await reloadGalleryData();
 	}
 
@@ -127,7 +128,11 @@ export const AddImageButton = forwardRef<
 			className={withoutMargin ? styles.withoutMargin : undefined}>
 			<Dialog.Root
 				open={open}
-				onOpenChange={setOpen}>
+				onOpenChange={(state) => {
+					form.reset();
+					setError(null);
+					setOpen(state);
+				}}>
 				<Dialog.Trigger asChild>
 					<ButtonTrigger>
 						<StpIcon
@@ -138,47 +143,46 @@ export const AddImageButton = forwardRef<
 					</ButtonTrigger>
 				</Dialog.Trigger>
 				<Dialog.Portal>
-					<Dialog.Overlay>
-						<Dialog.Content>
-							<Dialog.Title textAlign="center">Enviar Imagem</Dialog.Title>
-							<Dialog.Description />
-							<HookedForm.Form
-								form={form}
-								onSubmit={onSubmit}>
-								<StateSwitch
-									label={"Bulk"}
-									state={[inBulkMode, setInBulkMode]}
-									style={{
-										position: "absolute",
-										top: 0,
-										right: 0,
-										borderTop: "none",
-										borderRight: "none",
-									}}
-									onClickCheck={async (event) => {
-										event.preventDefault();
-										return true;
-									}}
+					<Dialog.Overlay />
+					<Dialog.Content>
+						<Dialog.Title textAlign="center">Enviar Imagem</Dialog.Title>
+						<Dialog.Description />
+						<HookedForm.Form
+							form={form}
+							onSubmit={onSubmit}>
+							<StateSwitch
+								label={"Bulk"}
+								state={[inBulkMode, setInBulkMode]}
+								style={{
+									position: "absolute",
+									top: 0,
+									right: 0,
+									borderTop: "none",
+									borderRight: "none",
+								}}
+								onClickCheck={async (event) => {
+									event.preventDefault();
+									return true;
+								}}
+							/>
+							<HookedForm.ImageInput<FormData>
+								ref={handleImageInputRef}
+								label="Insira nova imagem"
+								fieldName="images"
+								multiple={inBulkMode}
+								minWidth={50}
+								minHeight={50}
+								maxSize={4_194_304}
+							/>
+							<HookedForm.SubmitButton label="Salvar" />
+							{error && (
+								<HookedForm.SimpleMessage
+									color="red"
+									message={error}
 								/>
-								<HookedForm.ImageInput<FormData>
-									ref={handleImageInputRef}
-									label="Insira nova imagem"
-									fieldName="images"
-									multiple={inBulkMode}
-									minWidth={50}
-									minHeight={50}
-									maxSize={4_194_304}
-								/>
-								<HookedForm.SubmitButton label="Salvar" />
-								{error && (
-									<HookedForm.SimpleMessage
-										color="red"
-										message={error}
-									/>
-								)}
-							</HookedForm.Form>
-						</Dialog.Content>
-					</Dialog.Overlay>
+							)}
+						</HookedForm.Form>
+					</Dialog.Content>
 				</Dialog.Portal>
 			</Dialog.Root>
 		</AddImageButtonContainer>

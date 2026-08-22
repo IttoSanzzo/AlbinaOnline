@@ -116,7 +116,7 @@ export function ObjectArrayInput<TFormInput extends FieldValues>({
 	width,
 	fieldMinHeight,
 	fieldHeight,
-	isReorderable = false,
+	isReorderable = true,
 	...rest
 }: ObjectArrayInputProps<TFormInput>) {
 	const lastInputRef = useRef<HTMLInputElement | null>(null);

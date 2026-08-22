@@ -13,9 +13,11 @@ import { StpIcon } from "@/libs/stp@icons";
 import toast from "react-hot-toast";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 
+const InviteEntryWrapper = newStyledElement.div(styles.inviteEntryWrapper);
 const InviteEntryContainer = newStyledElement.div(styles.inviteEntryContainer);
 const IconContainer = newStyledElement.div(styles.iconContainer);
 const SubContainer = newStyledElement.div(styles.subContainer);
+const ButtonsContainer = newStyledElement.div(styles.buttonsContainer);
 const DeleteButton = newStyledElement.button(styles.deleteButton);
 const ShareButton = newStyledElement.button(styles.shareButton);
 
@@ -78,54 +80,58 @@ export function InviteEntry({
 	}
 
 	return (
-		<InviteEntryContainer>
-			<IconContainer>
-				<Link
-					href={`/users/${user?.username ?? ""}`}
-					target="_blank"
-					prefetch={false}>
-					<Image
-						src={user?.iconUrl ?? getAlbinaApiFullAddress(`/favicon/not-found`)}
-						alt=""
-						height={44}
-						width={44}
-					/>
-				</Link>
-			</IconContainer>
-			<SubContainer
-				title={new Date(invite.createdAt).toLocaleString("pt-BR", {
-					day: "2-digit",
-					month: "2-digit",
-					year: "numeric",
-					hour: "2-digit",
-					minute: "2-digit",
-					second: "2-digit",
-				})}>
-				<UIBasics.Text textColor="gray">{`Criado:`}</UIBasics.Text>
-				<UIBasics.Text textColor="blue">
-					{new Date(invite.createdAt).toLocaleString("pt-BR", {
-						dateStyle: "short",
-					})}
-				</UIBasics.Text>
-			</SubContainer>
-			<SubContainer>
-				<UIBasics.Text textColor="gray">{`Usos:`}</UIBasics.Text>
-				<UIBasics.Text textColor="green">{`${invite.usedCount} / ${invite.maxUses}`}</UIBasics.Text>
-			</SubContainer>
-			<SubContainer>
-				<DeleteButton onClick={handleDeleteInvite}>
-					<StpIcon
-						name="Trash"
-						color="black"
-					/>
-				</DeleteButton>
-				<ShareButton onClick={handleShareInvite}>
-					<StpIcon
-						name="ShareFat"
-						color="white"
-					/>
-				</ShareButton>
-			</SubContainer>
-		</InviteEntryContainer>
+		<InviteEntryWrapper>
+			<InviteEntryContainer>
+				<IconContainer>
+					<Link
+						href={`/users/${user?.username ?? ""}`}
+						target="_blank"
+						prefetch={false}>
+						<Image
+							src={
+								user?.iconUrl ?? getAlbinaApiFullAddress(`/favicon/not-found`)
+							}
+							alt=""
+							height={44}
+							width={44}
+						/>
+					</Link>
+				</IconContainer>
+				<SubContainer
+					title={new Date(invite.createdAt).toLocaleString("pt-BR", {
+						day: "2-digit",
+						month: "2-digit",
+						year: "numeric",
+						hour: "2-digit",
+						minute: "2-digit",
+						second: "2-digit",
+					})}>
+					<UIBasics.Text textColor="gray">{`Criado:`}</UIBasics.Text>
+					<UIBasics.Text textColor="blue">
+						{new Date(invite.createdAt).toLocaleString("pt-BR", {
+							dateStyle: "short",
+						})}
+					</UIBasics.Text>
+				</SubContainer>
+				<SubContainer>
+					<UIBasics.Text textColor="gray">{`Usos:`}</UIBasics.Text>
+					<UIBasics.Text textColor="green">{`${invite.usedCount} / ${invite.maxUses}`}</UIBasics.Text>
+				</SubContainer>
+				<ButtonsContainer>
+					<DeleteButton onClick={handleDeleteInvite}>
+						<StpIcon
+							name="Trash"
+							color="black"
+						/>
+					</DeleteButton>
+					<ShareButton onClick={handleShareInvite}>
+						<StpIcon
+							name="ShareFat"
+							color="white"
+						/>
+					</ShareButton>
+				</ButtonsContainer>
+			</InviteEntryContainer>
+		</InviteEntryWrapper>
 	);
 }

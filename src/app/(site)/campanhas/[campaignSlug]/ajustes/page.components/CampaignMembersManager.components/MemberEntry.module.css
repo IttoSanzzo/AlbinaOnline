@@ -1,9 +1,9 @@
-.inviteEntryWrapper:first-child {
+.memberEntryWrapper:first-child {
 	border-top-left-radius: var(--rd-md);
 	border-top-right-radius: var(--rd-md);
 	overflow: hidden;
 }
-.inviteEntryContainer {
+.memberEntryContainer {
 	position: relative;
 	display: flex;
 	justify-content: space-between;
@@ -33,10 +33,11 @@
 	border-radius: var(--rd-md);
 	overflow: hidden;
 }
-.deleteButton {
+.demoteButton,
+.promoteButton,
+.removeButton {
 	width: 40px;
 	height: 40px;
-	background-color: var(--cl-red-900);
 	border: none;
 	border-radius: var(--rd-sm);
 	cursor: pointer;
@@ -49,34 +50,31 @@
 		width: 20px;
 		height: 20px;
 	}
-
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+.demoteButton {
+	background-color: var(--cl-gray-900);
+	&:hover {
+		background-color: var(--cl-gray-500);
+	}
+}
+.promoteButton {
+	background-color: var(--cl-yellow-600);
+	&:hover {
+		background-color: var(--cl-yellow-400);
+	}
+}
+.removeButton {
+	background-color: var(--cl-red-900);
 	&:hover {
 		background-color: var(--cl-red-700);
 	}
 }
-.shareButton {
-	width: 40px;
-	height: 40px;
-	background-color: var(--cl-gray-900);
-	border: none;
-	border-radius: var(--rd-sm);
-	cursor: pointer;
-	transition: 0.25s linear background-color;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 
-	& svg {
-		width: 20px;
-		height: 20px;
-	}
-
-	&:hover {
-		background-color: var(--cl-gray-700);
-	}
-}
-
-.inviteEntryWrapper {
+.memberEntryWrapper {
 	container-type: inline-size;
 
 	@container (max-width: 385px) {

@@ -2,6 +2,7 @@ import { CSSProperties, ReactNode } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 
+const ThreeColumnsWrapper = newStyledElement.div(styles.threeColumnsWrapper);
 const ThreeColumnsContainer = newStyledElement.div(
 	styles.threeColumnsContainer,
 );
@@ -52,10 +53,14 @@ export function ThreeColumns({
 	};
 
 	return (
-		<ThreeColumnsContainer style={containerStyle}>
-			<LeftColumContainer style={colum1Style}>{colum1}</LeftColumContainer>
-			<MiddleColumContainer style={colum2Style}>{colum2}</MiddleColumContainer>
-			<RightColumContainer style={colum3Style}>{colum3}</RightColumContainer>
-		</ThreeColumnsContainer>
+		<ThreeColumnsWrapper>
+			<ThreeColumnsContainer style={containerStyle}>
+				<LeftColumContainer style={colum1Style}>{colum1}</LeftColumContainer>
+				<MiddleColumContainer style={colum2Style}>
+					{colum2}
+				</MiddleColumContainer>
+				<RightColumContainer style={colum3Style}>{colum3}</RightColumContainer>
+			</ThreeColumnsContainer>
+		</ThreeColumnsWrapper>
 	);
 }
