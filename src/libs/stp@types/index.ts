@@ -50,3 +50,4 @@ export * from "./dataTypes/galleryData";
 export * from "./utils/LocationLinkUtils";
 export * from "./dataTypes/campaign";
 export * from "./dataTypes/campaignMember";
+export * from "./dataTypes/campaignSessionDay";

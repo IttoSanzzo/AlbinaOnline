@@ -1,0 +1,99 @@
+.campaignPlaytimeGraphContainer {
+	container-type: inline-size;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	max-width: 1250px;
+	height: 205px;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-900);
+}
+
+.yearSelectorContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+	height: 100%;
+	max-height: 100%;
+	overflow-y: scroll;
+	min-width: 95px;
+	width: 95px;
+	padding: var(--sp-1);
+}
+
+.yearSelector {
+	width: 100%;
+	background-color: var(--cl-gray-800);
+	border: none;
+	border-radius: var(--rd-md);
+	padding: var(--sp-2);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+	color: var(--cl-gray-500);
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+	&:hover {
+		background-color: var(--cl-gray-700);
+	}
+
+	&:disabled {
+		background-color: var(--cl-gray-800);
+		color: var(--cl-gray-200);
+		cursor: default;
+	}
+}
+
+.leftContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+	width: 100%;
+	height: 100%;
+	padding: var(--sp-1);
+	min-width: 0;
+	max-width: max-content;
+}
+
+.headerContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	color: var(--cl-gray-200);
+	width: 100%;
+	height: 18px;
+	overflow: hidden;
+}
+
+.timeP,
+.sessionsP,
+.yearP {
+	display: inline;
+}
+
+.timeP {
+	color: color-mix(in srgb, var(--playtime-color) 85%, white);
+}
+
+.sessionsP {
+	color: color-mix(in srgb, var(--playtime-color) 65%, white);
+}
+
+.yearP {
+	color: color-mix(in srgb, var(--playtime-color) 45%, white);
+}
+
+.leftHeader {
+	text-align: left;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.rightHeader {
+	text-align: right;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+@container (max-width: 500px) {
+	.yearSelectorContainer {
+		display: none;
+	}
+}

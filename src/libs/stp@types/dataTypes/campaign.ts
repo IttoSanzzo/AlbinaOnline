@@ -24,6 +24,7 @@ export type Campaign = {
 	maxPlayers: number;
 	masterCount: number;
 	playerCount: number;
+	totalPlaytimeSeconds: number;
 	info: GenericInfo;
 	createdAt: string;
 	updatedAt?: string;

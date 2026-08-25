@@ -7,6 +7,7 @@ export type CampaignMember = {
 	userId: Guid;
 	campaignId: Guid;
 	isMaster: boolean;
+	totalPlaytimeSeconds: number;
 	createdAt: string;
 	updatedAt?: string;
 	user: FullUser;

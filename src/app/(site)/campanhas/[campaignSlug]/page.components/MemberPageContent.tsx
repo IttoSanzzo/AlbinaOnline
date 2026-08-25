@@ -8,6 +8,8 @@ import { CampaingJoinRequests } from "./MasterPageContent.components/CampaingJoi
 import { GenericInfoMultiColumn } from "@/components/(Design)/components/GenericInfoMultiColumn";
 import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
+import { UIBasics } from "@/components/(UIBasics)";
+import { CampaignPlaytimeGraph } from "@/app/embeds/campaigns/[campaignSlug]/playtime-graph/page.components/CampaignPlaytimeGraph";
 
 interface MemberPageContentProps {
 	campaign: Campaign;
@@ -30,14 +32,44 @@ export function MemberPageContent({
 						)}
 					/>
 					<CampaingJoinRequests campaignSlug={campaign.slug} />
-					Master
+					{/* Master */}
 				</>
 			) : (
 				<>
 					<SetNavBarModules contextMenuButton={NotMasterPageContextMenu} />
-					Member
+					{/* Member */}
 				</>
 			)}
+
+			<UIBasics.Divisor />
+
+			<UIBasics.Box
+				backgroundColor="darkerGray"
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					justifyContent: "center",
+					alignItems: "center",
+				}}>
+				<UIBasics.Header textColor="darkTeal">
+					Tempo de Campanha
+				</UIBasics.Header>
+				<CampaignPlaytimeGraph
+					campaignSlug={campaign.slug}
+					headerColor="yellow"
+					graphColor="yellow"
+				/>
+				<UIBasics.Header textColor="darkTeal">Tempo do Jogador</UIBasics.Header>
+				<CampaignPlaytimeGraph
+					campaignSlug={campaign.slug}
+					targetUserId={member.userId}
+					headerColor="blue"
+					graphColor="purple"
+				/>
+				<UIBasics.Box style={{ opacity: 0 }} />
+			</UIBasics.Box>
+
+			<UIBasics.Divisor />
 
 			<DynamicGallery
 				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}
