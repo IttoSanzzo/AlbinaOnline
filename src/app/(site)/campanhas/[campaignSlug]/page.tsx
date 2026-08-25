@@ -79,7 +79,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
 								? StandartTextColor["green"]
 								: StandartTextColor["red"]
 						}
-						title={`${data.playerCount}${data.maxPlayers > 0 ? ` / ${data.maxPlayers}` : ""} Jogares`}
+						title={`${data.playerCount}${data.maxPlayers > 0 ? ` / ${data.maxPlayers}` : ""} Jogador${data.playerCount <= 1 && data.maxPlayers <= 1 ? "" : "es"}`}
 						withoutIcon
 					/>
 					{" _ "}

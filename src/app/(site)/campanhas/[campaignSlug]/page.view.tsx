@@ -7,7 +7,6 @@ import { useCurrentCampaignMember } from "@/libs/stp@hooks";
 import { Campaign, CampaignMember } from "@/libs/stp@types";
 import { NotAMemberPageContent } from "./page.components/NotAMemberPageContent";
 import { MemberPageContent } from "./page.components/MemberPageContent";
-import { MasterPageContent } from "./page.components/MasterPageContent";
 
 interface CampaignPageViewProps {
 	campaign: Campaign;
@@ -44,13 +43,6 @@ const CampaignPageContent = memo(function CampaignPageContent({
 
 	if (isMember === false) return <NotAMemberPageContent campaign={campaign} />;
 	if (member === null) return <LoadingCircle centralizeVertical={18} />;
-	if (member.isMaster === true)
-		return (
-			<MasterPageContent
-				campaign={campaign}
-				member={member}
-			/>
-		);
 	return (
 		<MemberPageContent
 			campaign={campaign}

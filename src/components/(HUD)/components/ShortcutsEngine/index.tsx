@@ -15,7 +15,14 @@ export function ShortcutsEngine() {
 		event.preventDefault();
 		if (pathName.endsWith("/edit"))
 			router.push(pathName.substring(0, pathName.length - 5));
-		else if (pathName.split("/").length == 3) router.push(`${pathName}/edit`);
+		else if (pathName.endsWith("/ajustes"))
+			router.push(pathName.substring(0, pathName.length - 8));
+		else {
+			const splittedPathname = pathName.split("/");
+			if (splittedPathname.length == 3 && splittedPathname[1] == "campanhas") {
+				router.push(`${pathName}/ajustes`);
+			} else if (splittedPathname.length == 3) router.push(`${pathName}/edit`);
+		}
 	}
 	async function pushCreatePage(event: KeyboardEvent) {
 		event.preventDefault();

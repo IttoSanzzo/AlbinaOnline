@@ -5,7 +5,11 @@ import { DropdownMenu } from "@/libs/stp@radix";
 import { ExitCampaignButton } from "../ExitCampaignButton";
 import Link from "next/link";
 
-export function PageContextMenu({ campaignSlug }: { campaignSlug: string }) {
+export function MasterPageContextMenu({
+	campaignSlug,
+}: {
+	campaignSlug: string;
+}) {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>

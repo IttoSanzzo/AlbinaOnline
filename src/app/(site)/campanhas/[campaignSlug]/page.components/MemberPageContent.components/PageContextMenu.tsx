@@ -4,7 +4,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { DropdownMenu } from "@/libs/stp@radix";
 import { ExitCampaignButton } from "../ExitCampaignButton";
 
-export function PageContextMenu() {
+export function NotMasterPageContextMenu() {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>

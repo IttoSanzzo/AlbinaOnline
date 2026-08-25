@@ -2,7 +2,12 @@
 
 import { SetNavBarModules } from "@/libs/stp@hooks";
 import { Campaign, CampaignMember } from "@/libs/stp@types";
-import { PageContextMenu } from "./MemberPageContent.components/PageContextMenu";
+import { MasterPageContextMenu } from "./MasterPageContent.components/PageContextMenu";
+import { NotMasterPageContextMenu } from "./MemberPageContent.components/PageContextMenu";
+import { CampaingJoinRequests } from "./MasterPageContent.components/CampaingJoinRequests";
+import { GenericInfoMultiColumn } from "@/components/(Design)/components/GenericInfoMultiColumn";
+import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGallery";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 interface MemberPageContentProps {
 	campaign: Campaign;
@@ -17,8 +22,31 @@ export function MemberPageContent({
 
 	return (
 		<>
-			<SetNavBarModules contextMenuButton={PageContextMenu} />
-			Member
+			{member.isMaster ? (
+				<>
+					<SetNavBarModules
+						contextMenuButton={() => (
+							<MasterPageContextMenu campaignSlug={campaign.slug} />
+						)}
+					/>
+					<CampaingJoinRequests campaignSlug={campaign.slug} />
+					Master
+				</>
+			) : (
+				<>
+					<SetNavBarModules contextMenuButton={NotMasterPageContextMenu} />
+					Member
+				</>
+			)}
+
+			<DynamicGallery
+				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}
+				hideIfEmpty
+			/>
+			<GenericInfoMultiColumn
+				info={campaign.info}
+				hideIfEmpty
+			/>
 		</>
 	);
 }
