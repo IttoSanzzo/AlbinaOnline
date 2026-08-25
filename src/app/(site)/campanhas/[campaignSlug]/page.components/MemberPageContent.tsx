@@ -58,6 +58,7 @@ export function MemberPageContent({
 					campaignSlug={campaign.slug}
 					headerColor="yellow"
 					graphColor="yellow"
+					tootipColor="yellow"
 				/>
 				<UIBasics.Header textColor="darkTeal">Tempo do Jogador</UIBasics.Header>
 				<CampaignPlaytimeGraph
@@ -65,6 +66,7 @@ export function MemberPageContent({
 					targetUserId={member.userId}
 					headerColor="blue"
 					graphColor="purple"
+					tootipColor="purple"
 				/>
 				<UIBasics.Box style={{ opacity: 0 }} />
 			</UIBasics.Box>

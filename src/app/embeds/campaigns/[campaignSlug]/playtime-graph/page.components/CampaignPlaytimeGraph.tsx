@@ -26,7 +26,7 @@ const PLAYTIME_COLORS = {
 	teal: "#2dd4bf",
 	purple: "#c084fc",
 	blue: "#60a5fa",
-	darkBlue: "#18556F",
+	darkBlue: "#1F5F7A",
 	green: "#4ade80",
 	yellow: "#facc15",
 	red: "#f87171",
@@ -46,13 +46,15 @@ export interface CampaignPlaytimeGraphProps {
 	targetUserId?: Guid;
 	headerColor?: PlaytimeColor;
 	graphColor?: PlaytimeColor;
+	tootipColor?: PlaytimeColor;
 }
 export function CampaignPlaytimeGraph({
 	campaignSlug,
 	year: defaultYear,
 	targetUserId,
 	headerColor = "teal",
-	graphColor = "teal",
+	graphColor = headerColor,
+	tootipColor = graphColor,
 }: CampaignPlaytimeGraphProps) {
 	const [year, setYear] = useState<number>(
 		defaultYear ?? new Date().getFullYear(),
@@ -167,7 +169,8 @@ export function CampaignPlaytimeGraph({
 					members={members}
 					sessionDays={filteredSessionDays}
 					targetUserId={targetUserId}
-					color={graphColor}
+					graphColor={graphColor}
+					tootipColor={tootipColor}
 				/>
 			</LeftContainer>
 

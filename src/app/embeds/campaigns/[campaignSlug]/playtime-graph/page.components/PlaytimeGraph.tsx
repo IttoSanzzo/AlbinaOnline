@@ -68,14 +68,16 @@ interface PlaytimeGraphProps {
 	sessionDays: CampaignSessionDay[];
 	members: CampaignMember[];
 	targetUserId?: Guid;
-	color: PlaytimeColor;
+	graphColor: PlaytimeColor;
+	tootipColor?: PlaytimeColor;
 }
 export function PlaytimeGraph({
 	campaign,
 	sessionDays,
 	members,
 	targetUserId,
-	color = "teal",
+	graphColor = "teal",
+	tootipColor = graphColor,
 }: PlaytimeGraphProps) {
 	const [tooltip, setTooltip] = useState<{
 		content: React.ReactNode;
@@ -131,7 +133,7 @@ export function PlaytimeGraph({
 
 	return (
 		<>
-			<GraphContainer data-color={color}>
+			<GraphContainer data-color={graphColor}>
 				<CalendarContainer>
 					<WeekdayContainer>
 						<div />
@@ -235,6 +237,7 @@ export function PlaytimeGraph({
 						style={{
 							left: tooltip.x,
 							top: tooltip.y,
+							color: tootipColor,
 						}}>
 						{tooltip.content}
 					</Tooltip>,
