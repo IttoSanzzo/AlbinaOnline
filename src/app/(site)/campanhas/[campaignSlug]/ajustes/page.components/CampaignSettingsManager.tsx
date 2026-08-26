@@ -44,12 +44,16 @@ export function CampaignSettingsManager({
 	});
 
 	async function onSubmit(formData: FormData) {
+		const body = {
+			...campaign,
+			...formData,
+		};
 		const toastId = toast.loading("Salvando...");
 		const response = await authenticatedFetchAsync(
 			`/campaigns/${campaign.slug}`,
 			{
 				method: "Put",
-				body: JSON.stringify(formData),
+				body: JSON.stringify(body),
 				headers: { "Content-Type": "application/json" },
 			},
 		);

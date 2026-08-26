@@ -13,6 +13,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { CampaignMembersManager } from "./CampaignMembersManager";
 import { CampaignSettingsManager } from "./CampaignSettingsManager";
 import { CampaingJoinRequests } from "../../page.components/MasterPageContent.components/CampaingJoinRequests";
+import { CampaignDiscordSettingsManager } from "./CampaignDiscordSettingsManager";
 
 interface EditPageContentProps {
 	campaign: Campaign;
@@ -56,6 +57,11 @@ export function EditPageContent({ campaign, member }: EditPageContentProps) {
 					colum3={<CampaignInvitesManager campaignSlug={campaign.slug} />}
 				/>
 			</UIBasics.Box>
+			<UIBasics.Divisor />
+
+			<CampaignDiscordSettingsManager campaign={campaign} />
+
+			<UIBasics.Divisor />
 
 			<DynamicGallery
 				url={getAlbinaApiFullAddress(`/gallery/campaigns/${campaign.slug}`)}

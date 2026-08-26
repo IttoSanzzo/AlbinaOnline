@@ -1,0 +1,12 @@
+.campaignDiscordSettingsManagerContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+
+	gap: var(--sp-1);
+
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-md);
+	padding: var(--sp-4);
+}

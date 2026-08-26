@@ -25,6 +25,8 @@ export type Campaign = {
 	masterCount: number;
 	playerCount: number;
 	totalPlaytimeSeconds: number;
+	isInSession: boolean;
+	discordSettings?: CampaignDiscordSettings;
 	info: GenericInfo;
 	createdAt: string;
 	updatedAt?: string;
@@ -32,6 +34,13 @@ export type Campaign = {
 	iconUrl: string;
 	bannerUrl: string;
 };
+
+export interface CampaignDiscordSettings {
+	serverId: string;
+	chatChannelId?: string;
+	diceChannelId?: string;
+	voiceChannelIds?: string[];
+}
 
 export const CampaignTypeName: Record<keyof typeof CampaignType, string> = {
 	Unknown: "Desconhecido",
