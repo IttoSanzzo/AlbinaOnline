@@ -35,6 +35,7 @@ export function CampaignSessionManager({
 		}
 		toast.success("Sessão Iniciada", { id: toastId });
 		await revalidateTagByClientSide("/campaigns");
+		await new Promise((resolve) => setTimeout(resolve, 500));
 		window.location.reload();
 	}
 	async function handleEndSession() {
@@ -49,6 +50,7 @@ export function CampaignSessionManager({
 		}
 		toast.success("Sessão Terminada", { id: toastId });
 		await revalidateTagByClientSide("/campaigns");
+		await new Promise((resolve) => setTimeout(resolve, 500));
 		window.location.reload();
 	}
 
