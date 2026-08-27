@@ -8,6 +8,10 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import clsx from "clsx";
 import toast from "react-hot-toast";
+import {
+	revalidatePathByClientSide,
+	revalidateTagByClientSide,
+} from "@/utils/ServerActions";
 
 const SessionSwitchButton = newStyledElement.button(styles.sessionSwitchButton);
 
@@ -30,6 +34,7 @@ export function CampaignSessionManager({
 			return;
 		}
 		toast.success("Sessão Iniciada", { id: toastId });
+		await revalidateTagByClientSide("/campaigns");
 		window.location.reload();
 	}
 	async function handleEndSession() {
@@ -43,6 +48,7 @@ export function CampaignSessionManager({
 			return;
 		}
 		toast.success("Sessão Terminada", { id: toastId });
+		await revalidateTagByClientSide("/campaigns");
 		window.location.reload();
 	}
 
