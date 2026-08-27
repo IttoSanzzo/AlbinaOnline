@@ -48,10 +48,6 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
 
 	const response = await fetch(
 		getAlbinaApiFullAddress(`/campaigns/${campaignSlug}`),
-		{
-			cache: getCacheMode(),
-			next: { tags: [`/campaigns`] },
-		},
 	);
 	if (!response.ok) return redirect("/campanhas");
 	const data: Campaign = await response.json();

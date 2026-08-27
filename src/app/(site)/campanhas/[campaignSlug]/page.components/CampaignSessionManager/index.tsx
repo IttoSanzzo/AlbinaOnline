@@ -12,6 +12,7 @@ import {
 	revalidatePathByClientSide,
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
+import { useRouter } from "next/navigation";
 
 const SessionSwitchButton = newStyledElement.button(styles.sessionSwitchButton);
 
@@ -23,6 +24,8 @@ export function CampaignSessionManager({
 	campaign,
 	member,
 }: CampaignSessionManagerProps) {
+	const router = useRouter();
+
 	async function handleStartSession() {
 		const toastId = toast.loading("Iniciando Sessão...");
 		const response = await authenticatedFetchAsync(
@@ -35,8 +38,7 @@ export function CampaignSessionManager({
 		}
 		toast.success("Sessão Iniciada", { id: toastId });
 		await revalidateTagByClientSide("/campaigns");
-		await new Promise((resolve) => setTimeout(resolve, 500));
-		window.location.reload();
+		router.refresh();
 	}
 	async function handleEndSession() {
 		const toastId = toast.loading("Terminando Sessão...");
@@ -50,8 +52,7 @@ export function CampaignSessionManager({
 		}
 		toast.success("Sessão Terminada", { id: toastId });
 		await revalidateTagByClientSide("/campaigns");
-		await new Promise((resolve) => setTimeout(resolve, 500));
-		window.location.reload();
+		router.refresh();
 	}
 
 	const activeStateStyle = campaign.isInSession
