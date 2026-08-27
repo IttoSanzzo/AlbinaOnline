@@ -10,6 +10,7 @@ import DynamicGallery from "@/components/(SPECIAL)/components/Gallery/DynamicGal
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { UIBasics } from "@/components/(UIBasics)";
 import { CampaignPlaytimeGraph } from "@/app/embeds/campaigns/[campaignSlug]/playtime-graph/page.components/CampaignPlaytimeGraph";
+import { CampaignSessionManager } from "./CampaignSessionManager";
 
 interface MemberPageContentProps {
 	campaign: Campaign;
@@ -32,15 +33,17 @@ export function MemberPageContent({
 						)}
 					/>
 					<CampaingJoinRequests campaignSlug={campaign.slug} />
-					{/* Master */}
 				</>
 			) : (
 				<>
 					<SetNavBarModules contextMenuButton={NotMasterPageContextMenu} />
-					{/* Member */}
 				</>
 			)}
-
+			<UIBasics.Divisor />
+			<CampaignSessionManager
+				campaign={campaign}
+				member={member}
+			/>
 			<UIBasics.Divisor />
 
 			<UIBasics.Box

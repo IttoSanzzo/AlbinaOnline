@@ -1,0 +1,56 @@
+.indexContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: var(--sp-4);
+
+	font-size: var(--fs-4xl);
+
+	--cl-1: var(--cl-gray-900);
+	&.active {
+		--cl-2: var(--cl-green-900);
+	}
+	&.inactive {
+		--cl-2: var(--cl-gray-800);
+	}
+	position: relative;
+	overflow: hidden;
+	background: linear-gradient(110deg, var(--cl-1), var(--cl-2), var(--cl-1));
+	background-size: 100% 100%;
+
+	& > p {
+		font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	}
+
+	&.active > p {
+		color: var(--cl-green-500);
+	}
+	&.inactive > p {
+		color: var(--cl-gray-500);
+	}
+}
+
+.sessionSwitchButton {
+	position: absolute;
+	right: 15px;
+	width: 40px;
+	height: 40px;
+	border-radius: var(--rd-md);
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+
+	& > svg {
+		width: 30px;
+		height: 30px;
+	}
+
+	&.active {
+		background-color: var(--cl-green-800);
+	}
+	&.inactive {
+		background-color: var(--cl-gray-800);
+	}
+}
