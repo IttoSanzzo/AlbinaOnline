@@ -30,6 +30,11 @@ function getDateKey(date: Date) {
 	)}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
+function parseDateOnly(date: string) {
+	const [year, month, day] = date.split("-").map(Number);
+	return new Date(year, month - 1, day);
+}
+
 function getPlaytimeLevel(seconds: number) {
 	if (seconds < 0) return -1;
 	if (seconds == 0) return 0;
@@ -114,7 +119,7 @@ export function PlaytimeGraph({
 
 	const sessionDaysByDate = new Map(
 		sessionDays.map((sessionDay) => [
-			getDateKey(new Date(sessionDay.date)),
+			getDateKey(parseDateOnly(sessionDay.date)),
 			sessionDay,
 		]),
 	);
@@ -190,7 +195,9 @@ export function PlaytimeGraph({
 														content: (
 															<>
 																{playtime >= 0
-																	? `${date.toLocaleDateString("pt-BR")}: ${formatPlaytimeClock(playtime)}${
+																	? `${date.toLocaleDateString(
+																			"pt-BR",
+																		)}: ${formatPlaytimeClock(playtime)}${
 																			!targetUserId ? "\n" : ""
 																		}${
 																			targetUserId
