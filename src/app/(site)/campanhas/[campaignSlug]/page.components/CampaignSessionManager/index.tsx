@@ -8,10 +8,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import clsx from "clsx";
 import toast from "react-hot-toast";
-import {
-	revalidatePathByClientSide,
-	revalidateTagByClientSide,
-} from "@/utils/ServerActions";
+import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { useRouter } from "next/navigation";
 
 const SessionSwitchButton = newStyledElement.button(styles.sessionSwitchButton);

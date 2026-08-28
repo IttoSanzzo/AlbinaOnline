@@ -3,7 +3,6 @@ import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import PageView from "./page.view";
 import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
-import { getCacheMode } from "@/utils/Cache";
 import { redirect } from "next/navigation";
 import { GenericPageContainer } from "@/components/(Design)";
 import { Campaign, CampaignTypeName } from "@/libs/stp@types";

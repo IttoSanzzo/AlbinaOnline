@@ -120,12 +120,16 @@
 	visibility: hidden;
 }
 
-.day[data-level="0"] {
+.day[data-level="-1"] {
 	background: color-mix(in srgb, var(--playtime-color) 2%, transparent);
 }
 
+.day[data-level="0"] {
+	background: color-mix(in srgb, var(--playtime-color) 4%, transparent);
+}
+
 .day[data-level="1"] {
-	background: color-mix(in srgb, var(--playtime-color) 13%, transparent);
+	background: color-mix(in srgb, var(--playtime-color) 10%, transparent);
 }
 
 .day[data-level="2"] {

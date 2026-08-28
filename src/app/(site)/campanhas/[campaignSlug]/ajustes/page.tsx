@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import PageView from "./page.view";
-import { getCacheMode } from "@/utils/Cache";
 import { Campaign } from "@/libs/stp@types";
 import { redirect } from "next/navigation";
 import { SetBreadcrumbs } from "@/libs/stp@hooks";

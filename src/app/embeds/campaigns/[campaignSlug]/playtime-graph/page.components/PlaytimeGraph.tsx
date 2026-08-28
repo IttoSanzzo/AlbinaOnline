@@ -31,7 +31,8 @@ function getDateKey(date: Date) {
 }
 
 function getPlaytimeLevel(seconds: number) {
-	if (seconds <= 0) return 0;
+	if (seconds < 0) return -1;
+	if (seconds == 0) return 0;
 	if (seconds < 30 * 60) return 1;
 	if (seconds < 60 * 60) return 2;
 	if (seconds < 2 * 60 * 60) return 3;
@@ -70,6 +71,7 @@ interface PlaytimeGraphProps {
 	targetUserId?: Guid;
 	graphColor: PlaytimeColor;
 	tootipColor?: PlaytimeColor;
+	year?: number;
 }
 export function PlaytimeGraph({
 	campaign,
@@ -78,6 +80,7 @@ export function PlaytimeGraph({
 	targetUserId,
 	graphColor = "teal",
 	tootipColor = graphColor,
+	year = new Date().getFullYear(),
 }: PlaytimeGraphProps) {
 	const [tooltip, setTooltip] = useState<{
 		content: React.ReactNode;
@@ -89,9 +92,6 @@ export function PlaytimeGraph({
 	const memberNameMap = new Map<Guid, string>(
 		members.map((x) => [x.userId, x.user.nickname]),
 	);
-	const year = new Date(
-		sessionDays[0]?.date ?? campaign.createdAt,
-	).getFullYear();
 
 	const firstWeekStart = getFirstWeekStart(year);
 	const lastWeekStart = getLastWeekStart(year);
@@ -176,7 +176,7 @@ export function PlaytimeGraph({
 										const sessionDay = sessionDaysByDate.get(dateKey);
 										const playtime = sessionDay
 											? getDayPlaytime(sessionDay, targetUserId)
-											: 0;
+											: -1;
 										const level = getPlaytimeLevel(playtime);
 
 										return (
@@ -189,7 +189,7 @@ export function PlaytimeGraph({
 													setTooltip({
 														content: (
 															<>
-																{playtime > 0
+																{playtime >= 0
 																	? `${date.toLocaleDateString("pt-BR")}: ${formatPlaytimeClock(playtime)}${
 																			!targetUserId ? "\n" : ""
 																		}${

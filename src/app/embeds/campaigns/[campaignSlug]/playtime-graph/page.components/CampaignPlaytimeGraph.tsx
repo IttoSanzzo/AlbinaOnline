@@ -171,6 +171,7 @@ export function CampaignPlaytimeGraph({
 					targetUserId={targetUserId}
 					graphColor={graphColor}
 					tootipColor={tootipColor}
+					year={year}
 				/>
 			</LeftContainer>
 
