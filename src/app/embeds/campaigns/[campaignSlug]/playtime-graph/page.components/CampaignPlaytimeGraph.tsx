@@ -141,7 +141,9 @@ export function CampaignPlaytimeGraph({
 			<LeftContainer>
 				<HeaderContainer>
 					<div className={styles.leftHeader}>
-						<p className={styles.timeP}>
+						<p
+							className={styles.timeP}
+							title={formatPlaytimeClock(secondsThisYear)}>
 							{`${formatPlaytime(secondsThisYear)} `}
 						</p>
 						em
@@ -153,7 +155,13 @@ export function CampaignPlaytimeGraph({
 					</div>
 
 					<div className={styles.rightHeader}>
-						<p className={styles.yearP}>
+						<p
+							className={styles.yearP}
+							title={formatPlaytimeClock(
+								targetMember
+									? targetMember.totalPlaytimeSeconds
+									: campaign.totalPlaytimeSeconds,
+							)}>
 							{`${formatPlaytime(
 								targetMember
 									? targetMember.totalPlaytimeSeconds
@@ -213,7 +221,10 @@ export function formatPlaytimeClock(seconds: number) {
 	const hours = Math.floor(seconds / 3600);
 	const minutes = Math.floor((seconds % 3600) / 60);
 	const remainingSeconds = Math.floor(seconds % 60);
-	return [hours, minutes, remainingSeconds]
-		.map((value) => String(value).padStart(2, "0"))
-		.join(":");
+
+	return hours > 0
+		? `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`
+		: minutes > 0
+			? `${minutes}:${String(remainingSeconds).padStart(2, "0")}`
+			: String(remainingSeconds);
 }

@@ -93,7 +93,7 @@ export function PlaytimeGraph({
 		y: number;
 	} | null>(null);
 
-	const campaignCreationDate = new Date(campaign.createdAt);
+	const campaignCreationDate = parseDateOnly(campaign.createdAt.split("T")[0]);
 	const memberNameMap = new Map<Guid, string>(
 		members.map((x) => [x.userId, x.user.nickname]),
 	);
@@ -217,6 +217,7 @@ export function PlaytimeGraph({
 																									memberPlaytime.totalPlaytimeSeconds,
 																								)}`,
 																						)
+																						.join("")
 																		}`
 																	: `${date.toLocaleDateString(
 																			"pt-BR",
