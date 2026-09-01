@@ -1,0 +1,35 @@
+.errorContainer {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.alreadyConnectedContainer {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: var(--sp-1);
+	font-size: var(--fs-xl);
+}
+
+.alreadyConnectedButton {
+	margin-top: var(--sp-3);
+	font-size: var(--fs-2xl);
+	padding: var(--sp-3) var(--sp-4);
+	background-color: var(--cl-blue-300);
+	border: none;
+	border-radius: var(--rd-md);
+	color: var(--cl-black-3);
+	color: var(--cl-white);
+	font-weight: var(--fw-bold);
+	cursor: pointer;
+
+	transition: 0.25s linear background-color;
+
+	&:hover {
+		background-color: var(--cl-blue-600);
+	}
+}

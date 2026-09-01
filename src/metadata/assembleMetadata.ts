@@ -13,6 +13,7 @@ interface AssembleMetadataProps {
 	icon?: string;
 	route?: string;
 	ogImage?: OGImage | OGImage[];
+	userDefaultTitlePrefix?: boolean;
 }
 export function assembleMetadata({
 	title,
@@ -24,8 +25,11 @@ export function assembleMetadata({
 		width: 1200,
 		height: 630,
 	},
+	userDefaultTitlePrefix = true,
 }: AssembleMetadataProps): Metadata {
-	const finalTitle = title ? `Albina | ${title}` : "Albina RPG";
+	const finalTitle = title
+		? `${userDefaultTitlePrefix ? "Albina | " : ""}${title}`
+		: "Albina RPG";
 	const finalDescription = description
 		? `Albina | ${description} | SetsuTeaPartys's Tabletop RPG system`
 		: "Albina | SetsuTeaPartys's Tabletop RPG system";
