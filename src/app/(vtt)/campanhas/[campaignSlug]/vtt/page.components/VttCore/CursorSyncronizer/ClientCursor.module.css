@@ -1,0 +1,23 @@
+.clientCursorContainer {
+	display: block;
+	position: absolute;
+	height: 24px;
+	width: 24px;
+	transition:
+		0.1s linear left,
+		0.1s linear top;
+}
+
+.cursorUserName {
+	position: relative;
+	padding: 2px 5px;
+	height: fit-content;
+	width: max-content;
+	background-color: var(--cl-gray-800);
+	top: -4px;
+	left: 20px;
+	border: 1px solid var(--cl-gray-600);
+	color: var(--cl-gray-200);
+	border-radius: var(--rd-sm);
+	font-size: var(--fs-xxs);
+}

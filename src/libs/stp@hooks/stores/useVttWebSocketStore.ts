@@ -122,9 +122,9 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 					});
 				};
 
-				socket.onmessage = (event) => {
-					console.log("VTT WebSocket message:", event.data);
-				};
+				// socket.onmessage = (event) => {
+				// console.log("VTT WebSocket message:", event.data);
+				// };
 			});
 		})();
 

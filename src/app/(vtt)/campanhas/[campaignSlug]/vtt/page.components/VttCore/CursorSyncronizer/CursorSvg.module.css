@@ -1,0 +1,11 @@
+.cursorSvgContainer {
+	position: relative;
+	width: 24px;
+	height: 24px;
+
+	& > img,
+	& > svg {
+		width: 24px;
+		height: 24px;
+	}
+}

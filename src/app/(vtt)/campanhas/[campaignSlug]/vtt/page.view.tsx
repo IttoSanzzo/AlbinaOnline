@@ -10,6 +10,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { VttCore } from "./page.components/VttCore";
 
 interface VttPageViewProps {
 	campaign: Campaign;
@@ -21,7 +22,7 @@ export default function VttPageView({ campaign }: VttPageViewProps) {
 	if (connecting || closeMessage === undefined) return <VttLoadingView />;
 	switch (closeMessage ?? "None") {
 		case "None":
-			return <>Conectado</>;
+			return <VttCore campaign={campaign} />;
 		case "Already Connected":
 		case "Disconnected By Other Client":
 			return <VttAlreadyConnectedView vttId={vttId!} />;
