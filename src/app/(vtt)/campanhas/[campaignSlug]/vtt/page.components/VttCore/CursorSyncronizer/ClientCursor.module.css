@@ -6,6 +6,9 @@
 	transition:
 		0.1s linear left,
 		0.1s linear top;
+	pointer-events: none;
+
+	animation: 0.75s ease-out fade-in;
 }
 
 .cursorUserName {
@@ -20,4 +23,14 @@
 	color: var(--cl-gray-200);
 	border-radius: var(--rd-sm);
 	font-size: var(--fs-xxs);
+	pointer-events: none;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

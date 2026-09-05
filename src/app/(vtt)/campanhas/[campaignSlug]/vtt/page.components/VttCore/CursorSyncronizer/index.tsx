@@ -6,6 +6,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttMouseState } from "../../Types/VttMouseState";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ClientCursor } from "./ClientCursor";
+import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
 
 const ClientCursorsRenderer = newStyledElement.div(
 	styles.clientCursorsRenderer,
@@ -14,24 +15,11 @@ const ClientCursorsRenderer = newStyledElement.div(
 export function CursorSyncronizer() {
 	const { vttId, subscribe, send } = useVttContext();
 	const { loading, user } = useCurrentUser();
+	const { screenToWorld, worldToScreen } = useVttViewportContext();
 	const [cursorsState, setCursorsState] = useState<Map<Guid, VttMouseState>>(
 		new Map<Guid, VttMouseState>(),
 	);
 	if (!vttId) return null;
-
-	const handleMouseMove = (event: MouseEvent) => {
-		send({
-			id: Guid.NewGuid(),
-			type: "PostMouseState",
-			data: {
-				type: "Default",
-				color1: "#00FF00",
-				color2: "#000000",
-				x: event.clientX,
-				y: event.clientY,
-			},
-		});
-	};
 
 	useEffect(() => {
 		if (!vttId) return;
@@ -45,26 +33,51 @@ export function CursorSyncronizer() {
 
 	useEffect(() => {
 		if (!vttId) return;
+		function handleMouseMove(event: MouseEvent) {
+			const worldPosition = screenToWorld({
+				x: event.clientX,
+				y: event.clientY,
+			});
+			send({
+				id: Guid.NewGuid(),
+				type: "PostMouseState",
+				data: {
+					type: "Default",
+					color1: "#00FF00",
+					color2: "#000000",
+					x: Math.round(worldPosition.x),
+					y: Math.round(worldPosition.y),
+				},
+			});
+		}
 		window.addEventListener("mousemove", handleMouseMove);
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [vttId, send]);
+	}, [vttId, send, screenToWorld]);
 
 	if (!vttId || loading || !user) return null;
 	return (
 		<ClientCursorsRenderer>
-			<br />
-			<br />
 			{Array.from(cursorsState.entries())
-				// .filter(([userId, _]) => userId != user.id)
-				.map(([userId, mouseState]) => (
-					<ClientCursor
-						key={userId}
-						userId={userId}
-						mouseState={mouseState}
-					/>
-				))}
+				.filter(([userId]) => userId != user.id)
+				.map(([userId, mouseState]) => {
+					const screenPosition = worldToScreen({
+						x: mouseState.x,
+						y: mouseState.y,
+					});
+					return (
+						<ClientCursor
+							key={userId}
+							userId={userId}
+							mouseState={mouseState}
+							screenPosition={{
+								x: screenPosition.x,
+								y: screenPosition.y,
+							}}
+						/>
+					);
+				})}
 		</ClientCursorsRenderer>
 	);
 }

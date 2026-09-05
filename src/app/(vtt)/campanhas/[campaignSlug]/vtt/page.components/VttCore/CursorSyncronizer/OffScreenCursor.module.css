@@ -1,0 +1,76 @@
+.offScreenCursorContainer {
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	pointer-events: none;
+	user-select: none;
+	animation: 0.75s ease-out fade-in;
+}
+
+.cursorArrowContainer {
+	position: absolute;
+	width: 32px;
+	height: 32px;
+	margin-left: -16px;
+	margin-top: -16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: auto;
+	cursor: pointer;
+	transition:
+		0.1s linear left,
+		0.1s linear top,
+		0.1s linear transform;
+	opacity: 0.75;
+}
+
+.cursorArrowContainer svg {
+	width: 32px;
+	height: 32px;
+	display: block;
+}
+
+.cursorInfo {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	width: max-content;
+	max-width: 150px;
+	padding: 4px 6px;
+	background-color: var(--cl-gray-800);
+	border: 1px solid var(--cl-gray-600);
+	border-radius: var(--rd-sm);
+	font-size: var(--fs-xxs);
+	pointer-events: none;
+	transition:
+		0.1s linear left,
+		0.1s linear top,
+		0.1s linear transform;
+	opacity: 0.75;
+}
+
+.cursorUserName {
+	width: 100%;
+	overflow: hidden;
+	font-weight: 500;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.cursorDistance {
+	color: var(--cl-gray-200);
+	white-space: nowrap;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
