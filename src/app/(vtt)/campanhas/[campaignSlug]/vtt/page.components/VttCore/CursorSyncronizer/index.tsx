@@ -1,12 +1,13 @@
 import styles from "./index.module.css";
 import { Guid } from "@/libs/stp@types";
 import { useVttContext } from "../../Contexts/VttContextProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttMouseState } from "../../Types/VttMouseState";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ClientCursor } from "./ClientCursor";
 import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
 
 const ClientCursorsRenderer = newStyledElement.div(
 	styles.clientCursorsRenderer,
@@ -16,10 +17,31 @@ export function CursorSyncronizer() {
 	const { vttId, subscribe, send } = useVttContext();
 	const { loading, user } = useCurrentUser();
 	const { screenToWorld, worldToScreen } = useVttViewportContext();
+	const { interaction } = useVttInteractionContext();
 	const [cursorsState, setCursorsState] = useState<Map<Guid, VttMouseState>>(
 		new Map<Guid, VttMouseState>(),
 	);
+	const mousePosition = useRef({
+		x: 0,
+		y: 0,
+	});
+
 	if (!vttId) return null;
+	function sendMouseState() {
+		const worldPosition = screenToWorld(mousePosition.current);
+
+		send({
+			id: Guid.NewGuid(),
+			type: "PostMouseState",
+			data: {
+				type: interaction.type,
+				color1: "#00FF00",
+				color2: "#000000",
+				x: Math.round(worldPosition.x),
+				y: Math.round(worldPosition.y),
+			},
+		});
+	}
 
 	useEffect(() => {
 		if (!vttId) return;
@@ -34,27 +56,22 @@ export function CursorSyncronizer() {
 	useEffect(() => {
 		if (!vttId) return;
 		function handleMouseMove(event: MouseEvent) {
-			const worldPosition = screenToWorld({
+			mousePosition.current = {
 				x: event.clientX,
 				y: event.clientY,
-			});
-			send({
-				id: Guid.NewGuid(),
-				type: "PostMouseState",
-				data: {
-					type: "Default",
-					color1: "#00FF00",
-					color2: "#000000",
-					x: Math.round(worldPosition.x),
-					y: Math.round(worldPosition.y),
-				},
-			});
+			};
+			sendMouseState();
 		}
 		window.addEventListener("mousemove", handleMouseMove);
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [vttId, send, screenToWorld]);
+	}, [vttId, send, screenToWorld, interaction]);
+
+	useEffect(() => {
+		if (!vttId) return;
+		sendMouseState();
+	}, [vttId, interaction]);
 
 	if (!vttId || loading || !user) return null;
 	return (

@@ -11,6 +11,11 @@ import {
 	useVttViewportContext,
 	VttViewportContextProvider,
 } from "../Contexts/VttViewportContextProvider";
+import {
+	useVttInteractionContext,
+	VttInteractionContextProvider,
+} from "../Contexts/VttInteractionContextProvider";
+import { VirtualUserCursor } from "./VirtualUserCursor";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -28,12 +33,15 @@ export function VttCore({ campaign }: VttCoreProps) {
 			<VttContextProvider campaign={campaign}>
 				<VttMembersContextProvider>
 					<VttViewportContextProvider>
-						{`Connected to VttId: ${vttId}`}
-						<VttCoreContainer>
-							<TestZone />
-							<CenterPointer />
-							<CursorSyncronizer />
-						</VttCoreContainer>
+						<VttInteractionContextProvider>
+							{`Connected to VttId: ${vttId}`}
+							<VttCoreContainer>
+								<TestZone />
+								<CenterPointer />
+								<CursorSyncronizer />
+								<VirtualUserCursor />
+							</VttCoreContainer>
+						</VttInteractionContextProvider>
 					</VttViewportContextProvider>
 				</VttMembersContextProvider>
 			</VttContextProvider>
@@ -48,6 +56,7 @@ const CenterPointer = newStyledElement.div(styles.centerPointer);
 function TestZone() {
 	const { camera, setCameraPosition, setZoom, worldToScreen, resetCamera } =
 		useVttViewportContext();
+	const { setInteraction } = useVttInteractionContext();
 
 	const squarePosition = worldToScreen({
 		x: 0,
@@ -56,6 +65,109 @@ function TestZone() {
 
 	return (
 		<TestContainer>
+			<br />
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Default",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Mouse Default
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Brush",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Brush
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Chat",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Chat
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Menu",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Menu
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Move",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Move
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Eraser",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Eraser
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Hand",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Hand
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Measuring",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Measuring
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "DefaultUp",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				DefaultUp
+			</button>
+			<button
+				onClick={() => {
+					setInteraction({
+						type: "Pointer",
+						allowMiddlePan: true,
+						allowEdgeScroll: false,
+					});
+				}}>
+				Pointer
+			</button>
+			{/* <button onClick={() => document.exitPointerLock()}>Unlock Mouse</button> */}
+			<br />
 			<br />
 			Viewport: {camera.x} {camera.y} {camera.zoom}
 			<br />
