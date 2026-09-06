@@ -17,6 +17,9 @@ import {
 } from "../Contexts/VttInteractionContextProvider";
 import { VirtualUserCursor } from "./VirtualUserCursor";
 import { useCursorHoverInteraction } from "../Utils/InteractionUtils";
+import { useMiddleButtonCameraPan } from "../Utils/CameraUtils/CameraMiddleButtonPanUtils";
+import { useWheelCameraZoom } from "../Utils/CameraUtils/CameraZoomUtils";
+import { useEdgeCameraPan } from "../Utils/CameraUtils/CameraEdgePanUtils";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -49,6 +52,10 @@ export function VttCore({ campaign }: VttCoreProps) {
 
 function VttCoreEngine() {
 	useCursorHoverInteraction();
+	useMiddleButtonCameraPan();
+	useEdgeCameraPan();
+	useWheelCameraZoom();
+
 	return (
 		<VttCoreEngineContainer>
 			<TestZone />

@@ -5,6 +5,7 @@ import { Guid } from "@/libs/stp@types";
 import {
 	createContext,
 	ReactNode,
+	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
@@ -15,7 +16,7 @@ const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 5;
 const DEFAULT_ZOOM = 1;
 const GRID_CELL_SIZE = 100;
-const PIXELS_PER_CENTIMETER = 1;
+export const PIXELS_PER_CENTIMETER = 1;
 
 interface VttPosition {
 	x: number;
@@ -152,13 +153,16 @@ export function VttViewportContextProvider({
 		}));
 	};
 
-	const moveCamera = (deltaX: number, deltaY: number) => {
-		setCamera((current) => ({
-			...current,
-			x: current.x + deltaX,
-			y: current.y + deltaY,
-		}));
-	};
+	const moveCamera = useCallback(
+		(deltaX: number, deltaY: number) => {
+			setCamera((current) => ({
+				...current,
+				x: current.x + deltaX,
+				y: current.y + deltaY,
+			}));
+		},
+		[setCamera],
+	);
 
 	const setZoom = (zoom: number) => {
 		setCamera((current) => ({
@@ -168,27 +172,34 @@ export function VttViewportContextProvider({
 	};
 
 	const zoomAt = (screenPosition: VttPosition, zoom: number) => {
-		const nextZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
+		const nextZoom = Math.round(zoom * 10) / 10;
+		if (nextZoom < MIN_ZOOM || nextZoom > MAX_ZOOM) return;
+
 		setCamera((current) => {
 			const worldPosition = {
-				x:
+				x: Math.round(
 					current.x +
-					(screenPosition.x - viewport.width / 2) /
-						(PIXELS_PER_CENTIMETER * current.zoom),
-				y:
+						(screenPosition.x - viewport.width / 2) /
+							(PIXELS_PER_CENTIMETER * current.zoom),
+				),
+				y: Math.round(
 					current.y +
-					(screenPosition.y - viewport.height / 2) /
-						(PIXELS_PER_CENTIMETER * current.zoom),
+						(screenPosition.y - viewport.height / 2) /
+							(PIXELS_PER_CENTIMETER * current.zoom),
+				),
 			};
+
 			return {
-				x:
+				x: Math.round(
 					worldPosition.x -
-					(screenPosition.x - viewport.width / 2) /
-						(PIXELS_PER_CENTIMETER * nextZoom),
-				y:
+						(screenPosition.x - viewport.width / 2) /
+							(PIXELS_PER_CENTIMETER * nextZoom),
+				),
+				y: Math.round(
 					worldPosition.y -
-					(screenPosition.y - viewport.height / 2) /
-						(PIXELS_PER_CENTIMETER * nextZoom),
+						(screenPosition.y - viewport.height / 2) /
+							(PIXELS_PER_CENTIMETER * nextZoom),
+				),
 				zoom: nextZoom,
 			};
 		});
