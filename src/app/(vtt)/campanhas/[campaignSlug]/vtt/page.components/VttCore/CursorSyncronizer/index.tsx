@@ -17,7 +17,7 @@ export function CursorSyncronizer() {
 	const { vttId, subscribe, send } = useVttContext();
 	const { loading, user } = useCurrentUser();
 	const { screenToWorld, worldToScreen } = useVttViewportContext();
-	const { interaction } = useVttInteractionContext();
+	const { interaction, hoverInteractionType } = useVttInteractionContext();
 	const [cursorsState, setCursorsState] = useState<Map<Guid, VttMouseState>>(
 		new Map<Guid, VttMouseState>(),
 	);
@@ -34,7 +34,7 @@ export function CursorSyncronizer() {
 			id: Guid.NewGuid(),
 			type: "PostMouseState",
 			data: {
-				type: interaction.type,
+				type: hoverInteractionType ?? interaction.type,
 				color1: "#00FF00",
 				color2: "#000000",
 				x: Math.round(worldPosition.x),
@@ -66,7 +66,7 @@ export function CursorSyncronizer() {
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [vttId, send, screenToWorld, interaction]);
+	}, [vttId, send, screenToWorld, interaction, hoverInteractionType]);
 
 	useEffect(() => {
 		if (!vttId) return;

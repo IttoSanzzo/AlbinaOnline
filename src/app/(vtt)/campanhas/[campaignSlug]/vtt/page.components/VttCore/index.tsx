@@ -16,11 +16,14 @@ import {
 	VttInteractionContextProvider,
 } from "../Contexts/VttInteractionContextProvider";
 import { VirtualUserCursor } from "./VirtualUserCursor";
+import { useCursorHoverInteraction } from "../Utils/InteractionUtils";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
 );
-const VttCoreContainer = newStyledElement.div(styles.vttCoreContainer);
+const VttCoreEngineContainer = newStyledElement.div(
+	styles.vttCoreEngineContainer,
+);
 
 interface VttCoreProps {
 	campaign: Campaign;
@@ -35,17 +38,24 @@ export function VttCore({ campaign }: VttCoreProps) {
 					<VttViewportContextProvider>
 						<VttInteractionContextProvider>
 							{`Connected to VttId: ${vttId}`}
-							<VttCoreContainer>
-								<TestZone />
-								<CenterPointer />
-								<CursorSyncronizer />
-								<VirtualUserCursor />
-							</VttCoreContainer>
+							<VttCoreEngine />
 						</VttInteractionContextProvider>
 					</VttViewportContextProvider>
 				</VttMembersContextProvider>
 			</VttContextProvider>
 		</VttCoreProvidersContainer>
+	);
+}
+
+function VttCoreEngine() {
+	useCursorHoverInteraction();
+	return (
+		<VttCoreEngineContainer>
+			<TestZone />
+			<CenterPointer />
+			<CursorSyncronizer />
+			<VirtualUserCursor />
+		</VttCoreEngineContainer>
 	);
 }
 

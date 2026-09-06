@@ -24,6 +24,16 @@
 		0.1s linear top,
 		0.1s linear transform;
 	opacity: 0.75;
+	border-radius: var(--rd-full);
+
+	& > svg:last-child {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		border-radius: var(--rd-full);
+		bottom: 4px;
+		right: 6px;
+	}
 }
 
 .cursorArrowContainer svg {

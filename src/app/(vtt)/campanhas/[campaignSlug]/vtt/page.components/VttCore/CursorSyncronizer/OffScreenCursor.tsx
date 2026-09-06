@@ -4,6 +4,7 @@ import { VttMouseState } from "../../Types/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
 import { useRef } from "react";
+import { CursorSvg } from "./CursorSvg";
 
 const OffScreenCursorContainer = newStyledElement.div(
 	styles.offScreenCursorContainer,
@@ -149,7 +150,8 @@ export function OffScreenCursor({
 					top: arrowY,
 					transform: `rotate(${angle + Math.PI / 2}rad)`,
 				}}
-				onClick={onClick}>
+				onClick={onClick}
+				data-cursor-hover-interaction-type="Pointer">
 				<svg
 					viewBox="0 0 24 24"
 					fill="none"
@@ -166,6 +168,7 @@ export function OffScreenCursor({
 						strokeLinejoin="round"
 					/>
 				</svg>
+				<CursorSvg type={mouseState.type} />
 			</CursorArrowContainer>
 
 			<CursorInfo

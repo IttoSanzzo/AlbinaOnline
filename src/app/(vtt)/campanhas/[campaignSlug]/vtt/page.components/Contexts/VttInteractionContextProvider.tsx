@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { VttInteractionType } from "../Types/VttMouseState";
 
-interface VttInteraction {
+export interface VttInteraction {
 	type: VttInteractionType;
 	allowMiddlePan: boolean;
 	allowEdgeScroll: boolean;
@@ -11,8 +11,12 @@ interface VttInteraction {
 
 interface VttInteractionContext {
 	interaction: VttInteraction;
+	hoverInteractionType: VttInteractionType | null;
 
 	setInteraction: (interaction: VttInteraction) => void;
+	setHoverInteractionType: (
+		hoverInteractionType: VttInteractionType | null,
+	) => void;
 	clearInteraction: () => void;
 }
 const DEFAULT_INTERACTION: VttInteraction = {
@@ -31,9 +35,8 @@ export function VttInteractionContextProvider({
 }: VttInteractionContextProviderProps) {
 	const [interaction, setInteractionState] =
 		useState<VttInteraction>(DEFAULT_INTERACTION);
-	const setInteraction = (newInteraction: VttInteraction) => {
-		setInteractionState(newInteraction);
-	};
+	const [hoverInteractionType, setHoverInteractionType] =
+		useState<VttInteractionType | null>(null);
 
 	const clearInteraction = () => {
 		setInteractionState(DEFAULT_INTERACTION);
@@ -41,7 +44,9 @@ export function VttInteractionContextProvider({
 
 	const contextValue: VttInteractionContext = {
 		interaction,
-		setInteraction,
+		hoverInteractionType,
+		setInteraction: setInteractionState,
+		setHoverInteractionType: setHoverInteractionType,
 		clearInteraction,
 	};
 

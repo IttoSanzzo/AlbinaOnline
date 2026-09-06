@@ -7,19 +7,37 @@ import { useVttMembersContext } from "../../Contexts/VttMembersProvider";
 import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
 import { useMemo } from "react";
 import { OffScreenCursor } from "./OffScreenCursor";
+import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
 
 const ClientCursorContainer = newStyledElement.div(
 	styles.clientCursorContainer,
 );
 const CursorUserName = newStyledElement.div(styles.cursorUserName);
 
-const centralizedHorizontalCursorTypes: VttInteractionType[] = [
-	"Move",
-	"Hand",
-	"DefaultUp",
-	"Pointer",
-];
-const centralizedVertivalCursorTypes: VttInteractionType[] = ["Move", "Hand"];
+const horizontalCursorOffset: Record<VttInteractionType, number> = {
+	Default: 3,
+	DefaultUp: 11,
+	Pointer: 9,
+	Brush: 1,
+	Menu: 3,
+	Chat: 3,
+	Hand: 11,
+	Move: 12,
+	Eraser: 3,
+	Measuring: 4,
+};
+const verticalCursorOffset: Record<VttInteractionType, number> = {
+	Default: 3,
+	DefaultUp: 2,
+	Pointer: 2,
+	Brush: 1,
+	Menu: 3,
+	Chat: 3,
+	Hand: 11,
+	Move: 12,
+	Eraser: 3,
+	Measuring: 4,
+};
 
 interface ClientCursorProps {
 	userId: Guid;
@@ -39,6 +57,7 @@ export function ClientCursor({
 	const { members } = useVttMembersContext();
 	const { isVisible, viewport, camera, setCameraPosition } =
 		useVttViewportContext();
+	const { hoverInteractionType } = useVttInteractionContext();
 	const isInScreen = isVisible(
 		{
 			x: mouseState.x,
@@ -52,19 +71,15 @@ export function ClientCursor({
 		[userId, members],
 	);
 
-	const shouldVerticallyCentralizeCursor =
-		centralizedVertivalCursorTypes.includes(mouseState.type);
-	const shouldHorizontallyCentralizeCursor =
-		centralizedHorizontalCursorTypes.includes(mouseState.type);
-
-	if (isInScreen || isActiveUser)
+	if (isInScreen || isActiveUser) {
+		if (isActiveUser && hoverInteractionType)
+			mouseState.type = hoverInteractionType;
 		return (
 			<ClientCursorContainer
 				style={{
 					transition: isActiveUser ? "none" : undefined,
-					left:
-						screenPosition.x - (shouldHorizontallyCentralizeCursor ? 12 : 0),
-					top: screenPosition.y - (shouldVerticallyCentralizeCursor ? 12 : 0),
+					left: screenPosition.x - horizontalCursorOffset[mouseState.type],
+					top: screenPosition.y - verticalCursorOffset[mouseState.type],
 				}}>
 				<CursorSvg
 					type={mouseState.type}
@@ -81,6 +96,7 @@ export function ClientCursor({
 				)}
 			</ClientCursorContainer>
 		);
+	}
 	const center = {
 		x: viewport.width / 2,
 		y: viewport.height / 2,
