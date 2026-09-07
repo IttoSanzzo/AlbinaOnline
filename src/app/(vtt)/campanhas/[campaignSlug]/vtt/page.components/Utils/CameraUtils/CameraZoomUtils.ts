@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
 
 export function useWheelCameraZoom() {
-	const { zoomAt, camera } = useVttViewportContext();
+	const { zoomAt, resetCamera, resetZoom, camera } = useVttViewportContext();
 	const zoomRef = useRef(camera.zoom);
 	zoomRef.current = camera.zoom;
 
@@ -25,10 +25,19 @@ export function useWheelCameraZoom() {
 			);
 		};
 
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.ctrlKey && event.code === "Digit0") {
+				event.preventDefault();
+				if (event.shiftKey) resetCamera();
+				else resetZoom();
+			}
+		};
 		window.addEventListener("wheel", handleWheel, { passive: false });
+		window.addEventListener("keydown", handleKeyDown);
 
 		return () => {
 			window.removeEventListener("wheel", handleWheel);
+			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [zoomAt]);
+	}, [zoomAt, resetCamera]);
 }

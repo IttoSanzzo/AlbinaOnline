@@ -72,6 +72,8 @@ interface VttViewportContext {
 	setZoom: (zoom: number) => void;
 	zoomAt: (screenPosition: VttPosition, zoom: number) => void;
 	resetCamera: () => void;
+	resetPosition: () => void;
+	resetZoom: () => void;
 }
 
 const VttViewportContext = createContext<VttViewportContext | null>(null);
@@ -212,6 +214,20 @@ export function VttViewportContextProvider({
 			zoom: DEFAULT_ZOOM,
 		});
 	};
+	const resetZoom = () => {
+		setCamera({
+			x: camera.x,
+			y: camera.y,
+			zoom: DEFAULT_ZOOM,
+		});
+	};
+	const resetPosition = () => {
+		setCamera({
+			x: 0,
+			y: 0,
+			zoom: camera.zoom,
+		});
+	};
 
 	const worldToScreen = (position: VttPosition): VttPosition => {
 		return {
@@ -321,6 +337,8 @@ export function VttViewportContextProvider({
 			setZoom,
 			zoomAt,
 			resetCamera,
+			resetZoom,
+			resetPosition,
 		}),
 		[vttId, sceneId, viewport, camera, visibleWorld],
 	);
