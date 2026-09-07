@@ -1,0 +1,18 @@
+.radialMenuOverlay {
+	--overlay-color: #00000088;
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: var(--overlay-color);
+	animation: 0.25s linear background-fade-in;
+}
+
+@keyframes background-fade-in {
+	0% {
+		background-color: #00000000;
+	}
+	100% {
+		background-color: var(--overlay-color);
+	}
+}

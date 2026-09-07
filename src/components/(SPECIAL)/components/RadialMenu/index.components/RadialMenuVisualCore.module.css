@@ -1,0 +1,91 @@
+.radialMenuContainer {
+	position: fixed;
+	transform: translate(-50%, -50%);
+	z-index: 10000;
+	pointer-events: auto;
+	user-select: none;
+	animation: 0.15s linear fade-in;
+}
+
+.radialMenuSvg {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	overflow: visible;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+
+.radialMenuSvg g[data-radial-depth] {
+	pointer-events: none;
+}
+
+.radialMenuSvg g[data-option-id] {
+	pointer-events: none;
+}
+
+.radialMenuSvg path {
+	transition:
+		fill 0.12s linear,
+		stroke 0.12s linear,
+		filter 0.12s linear;
+}
+
+.radialMenuSvg g[data-active="true"] path,
+.radialMenuSvg g[data-path-selected="true"] path {
+	stroke: var(--cl-gray-200);
+	stroke-width: 2px;
+	filter: brightness(1.15);
+}
+
+.radialMenuOptionContent {
+	width: 120px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 4px;
+	text-align: center;
+	color: var(--cl-gray-100);
+	white-space: nowrap;
+	pointer-events: none;
+}
+
+.radialMenuOptionContent small {
+	font-size: var(--fs-xxs);
+	color: var(--cl-gray-300);
+	opacity: 0.8;
+}
+
+.radialMenuCore {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: radial-gradient(circle, var(--cl-gray-900), var(--cl-gray-700));
+	border: 2px solid var(--cl-gray-500);
+	text-align: center;
+	pointer-events: auto;
+}
+
+.radialMenuCoreContent {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	pointer-events: none;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
