@@ -8,6 +8,7 @@ import { CursorSyncronizer } from "./CursorSyncronizer";
 import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
 import {
+	PIXELS_PER_CENTIMETER,
 	useVttViewportContext,
 	VttViewportContextProvider,
 } from "../Contexts/VttViewportContextProvider";
@@ -20,6 +21,8 @@ import { useCursorHoverInteraction } from "../Utils/InteractionUtils";
 import { useMiddleButtonCameraPan } from "../Utils/CameraUtils/CameraMiddleButtonPanUtils";
 import { useWheelCameraZoom } from "../Utils/CameraUtils/CameraZoomUtils";
 import { useEdgeCameraPan } from "../Utils/CameraUtils/CameraEdgePanUtils";
+import { VttGridContextProvider } from "../Contexts/VttGridProvider";
+import { VirtualGridView } from "./VirtualGridView";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -39,10 +42,12 @@ export function VttCore({ campaign }: VttCoreProps) {
 			<VttContextProvider campaign={campaign}>
 				<VttMembersContextProvider>
 					<VttViewportContextProvider>
-						<VttInteractionContextProvider>
-							{`Connected to VttId: ${vttId}`}
-							<VttCoreEngine />
-						</VttInteractionContextProvider>
+						<VttGridContextProvider>
+							<VttInteractionContextProvider>
+								{`Connected to VttId: ${vttId}`}
+								<VttCoreEngine />
+							</VttInteractionContextProvider>
+						</VttGridContextProvider>
 					</VttViewportContextProvider>
 				</VttMembersContextProvider>
 			</VttContextProvider>
@@ -58,6 +63,7 @@ function VttCoreEngine() {
 
 	return (
 		<VttCoreEngineContainer>
+			<VirtualGridView />
 			<TestZone />
 			<CenterPointer />
 			<CursorSyncronizer />
@@ -75,9 +81,13 @@ function TestZone() {
 		useVttViewportContext();
 	const { setInteraction } = useVttInteractionContext();
 
-	const squarePosition = worldToScreen({
+	const square1Position = worldToScreen({
 		x: 0,
 		y: 0,
+	});
+	const square2Position = worldToScreen({
+		x: 100,
+		y: 100,
 	});
 
 	return (
@@ -240,10 +250,19 @@ function TestZone() {
 			<span
 				style={{
 					position: "absolute",
-					left: squarePosition.x - 50 * camera.zoom,
-					top: squarePosition.y - 50 * camera.zoom,
-					width: 100 * camera.zoom,
-					height: 100 * camera.zoom,
+					left: square1Position.x,
+					top: square1Position.y,
+					width: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
+					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
+				}}
+			/>
+			<span
+				style={{
+					position: "absolute",
+					left: square2Position.x,
+					top: square2Position.y,
+					width: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
+					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
 			/>
 		</TestContainer>
