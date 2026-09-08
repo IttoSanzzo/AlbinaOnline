@@ -94,7 +94,8 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 					resolve();
 				};
 
-				socket.onerror = () => {
+				socket.onerror = (error) => {
+					console.error(error);
 					const closeMessage = "VTT WebSocket connection failed.";
 
 					set({
@@ -108,7 +109,7 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 
 				socket.onclose = (event) => {
 					if (get().socket !== socket) return;
-					console.log(event.code);
+					console.warn(`WebSocket closed. Code: ${event.code}`);
 
 					const closeMessage =
 						event.reason ||
@@ -121,10 +122,6 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 						closeMessage: closeMessage,
 					});
 				};
-
-				// socket.onmessage = (event) => {
-				// console.log("VTT WebSocket message:", event.data);
-				// };
 			});
 		})();
 

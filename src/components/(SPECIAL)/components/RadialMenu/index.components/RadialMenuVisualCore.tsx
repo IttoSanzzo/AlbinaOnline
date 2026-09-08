@@ -4,10 +4,11 @@ import { ReactNode } from "react";
 import styles from "./RadialMenuVisualCore.module.css";
 import {
 	ACTIVE_EXPANSION,
+	RADIAL_START_ANGLE,
 	RadialMenuOption,
 	RadialMenuRingGeometry,
 } from "../types";
-import { CoordinatesPair } from "@/libs/stp@types/utils/CoordinatesPair";
+import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { createSectorPath } from "../utils";
 
@@ -20,9 +21,11 @@ interface RadialMenuVisualCoreProps {
 	activeOption: RadialMenuOption | undefined;
 	core: ReactNode;
 	id: string;
-	screenPosition: CoordinatesPair;
+	screenPosition: CoordinatePair;
 	coreDiameter: number;
 	mode: "fast" | "switch";
+	nameColor?: string;
+	showNames?: boolean;
 }
 
 export function RadialMenuVisualCore({
@@ -35,6 +38,8 @@ export function RadialMenuVisualCore({
 	activeDepth,
 	activeOption,
 	core,
+	nameColor,
+	showNames = true,
 }: RadialMenuVisualCoreProps) {
 	return (
 		<RadialMenuContainer
@@ -50,7 +55,10 @@ export function RadialMenuVisualCore({
 				className={styles.radialMenuSvg}
 				width={maxRadius * 2}
 				height={maxRadius * 2}
-				viewBox={`${-maxRadius} ${-maxRadius} ${maxRadius * 2} ${maxRadius * 2}`}>
+				viewBox={`${-maxRadius} ${-maxRadius} ${
+					maxRadius * 2
+				} ${maxRadius * 2}`}>
+				{" "}
 				<defs>
 					{ringGeometry.map((ring) =>
 						ring.options.map((option, index) => {
@@ -74,7 +82,7 @@ export function RadialMenuVisualCore({
 										<stop
 											offset="100%"
 											stopColor={color}
-											stopOpacity={1.0}
+											stopOpacity={1}
 										/>
 									</radialGradient>
 
@@ -131,6 +139,7 @@ export function RadialMenuVisualCore({
 				</defs>
 				{ringGeometry.map((ring, ringIndex) => {
 					const sectorSize = (Math.PI * 2) / ring.options.length;
+
 					const childRing =
 						ringIndex < ringGeometry.length - 1
 							? ringGeometry[ringIndex + 1]
@@ -166,13 +175,19 @@ export function RadialMenuVisualCore({
 							data-ring-width={ring.width}
 							className={styles.radialMenuRing}>
 							{orderedOptions.map(({ option, index }) => {
-								const startAngle = index * sectorSize;
-								const endAngle = (index + 1) * sectorSize;
+								const startAngle = RADIAL_START_ANGLE + index * sectorSize;
+
+								const endAngle = RADIAL_START_ANGLE + (index + 1) * sectorSize;
+
 								const centerAngle = startAngle + sectorSize / 2;
+
 								const isPathSelected = childRing?.parentOptionId === option.id;
+
 								const isActive =
 									activeDepth === ring.depth && activeOption?.id === option.id;
+
 								const isSelected = isPathSelected || isActive;
+
 								const outerRadius =
 									ring.outerRadius + (isSelected ? ACTIVE_EXPANSION : 0);
 
@@ -187,13 +202,19 @@ export function RadialMenuVisualCore({
 								);
 
 								const outerStartX = Math.cos(startAngle) * outerRadius;
+
 								const outerStartY = Math.sin(startAngle) * outerRadius;
+
 								const outerEndX = Math.cos(endAngle) * outerRadius;
+
 								const outerEndY = Math.sin(endAngle) * outerRadius;
 
 								const innerStartX = Math.cos(startAngle) * ring.innerRadius;
+
 								const innerStartY = Math.sin(startAngle) * ring.innerRadius;
+
 								const innerEndX = Math.cos(endAngle) * ring.innerRadius;
+
 								const innerEndY = Math.sin(endAngle) * ring.innerRadius;
 
 								const innerArcPath = [
@@ -213,15 +234,20 @@ export function RadialMenuVisualCore({
 
 								const outerIndicatorPadding = 5;
 								const indicatorRadius = outerRadius - outerIndicatorPadding;
+
 								const indicatorStartAngle = startAngle + sectorSize * 0.2;
+
 								const indicatorEndAngle = endAngle - sectorSize * 0.2;
 
 								const indicatorStartX =
 									Math.cos(indicatorStartAngle) * indicatorRadius;
+
 								const indicatorStartY =
 									Math.sin(indicatorStartAngle) * indicatorRadius;
+
 								const indicatorEndX =
 									Math.cos(indicatorEndAngle) * indicatorRadius;
+
 								const indicatorEndY =
 									Math.sin(indicatorEndAngle) * indicatorRadius;
 
@@ -231,8 +257,16 @@ export function RadialMenuVisualCore({
 								].join(" ");
 
 								const contentRadius = (ring.innerRadius + ring.outerRadius) / 2;
+
 								const contentX = Math.cos(centerAngle) * contentRadius;
+
 								const contentY = Math.sin(centerAngle) * contentRadius;
+
+								const shouldShowName =
+									option.name !== undefined && (option.showName ?? showNames);
+
+								const resolvedNameColor =
+									option.nameColor ?? nameColor ?? "currentColor";
 
 								return (
 									<g
@@ -296,7 +330,16 @@ export function RadialMenuVisualCore({
 											pointerEvents="none">
 											<div className={styles.radialMenuOptionContent}>
 												{option.icon}
-												<span>{option.name}</span>
+
+												{shouldShowName && (
+													<span
+														style={{
+															color: resolvedNameColor,
+														}}>
+														{option.name}
+													</span>
+												)}
+
 												{option.fastKey && (
 													<small>{option.fastKey.toUpperCase()}</small>
 												)}

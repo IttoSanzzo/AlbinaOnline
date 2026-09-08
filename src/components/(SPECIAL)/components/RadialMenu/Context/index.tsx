@@ -7,7 +7,7 @@ import {
 	useContext,
 	useState,
 } from "react";
-import { CoordinatesPair } from "@/libs/stp@types/utils/CoordinatesPair";
+import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { ReactNode as ReactContent } from "react";
 import { RadialMenu } from "../index";
 import {
@@ -20,12 +20,15 @@ export interface RadialMenuData {
 	id: string;
 	name: string;
 	mode?: "fast" | "switch";
-	overlay: boolean;
-	screenPosition: CoordinatesPair;
-	actionPosition: CoordinatesPair;
+	overlay?: boolean;
+	screenPosition: CoordinatePair;
+	actionPosition: CoordinatePair;
 	coreDiameter?: number;
 	ringWidths?: number[];
 	options: RadialMenuOption[];
+	nameColor?: string;
+	showNames?: boolean;
+	submitKeys?: string[];
 	coreGenerator?: (props: RadialMenuCoreGeneratorProps) => ReactContent;
 	onSubmit: (props: RadialMenuSubmitProps) => void;
 }
@@ -46,6 +49,7 @@ export function RadialMenuProvider({ children }: { children: ReactNode }) {
 			...props,
 			mode: props.mode ?? "fast",
 			overlay: props.overlay ?? false,
+			showNames: props.showNames ?? true,
 		});
 	}, []);
 

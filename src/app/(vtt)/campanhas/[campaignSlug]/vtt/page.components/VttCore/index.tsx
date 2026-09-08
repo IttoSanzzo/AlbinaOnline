@@ -23,6 +23,8 @@ import { useWheelCameraZoom } from "../Utils/CameraUtils/CameraZoomUtils";
 import { useEdgeCameraPan } from "../Utils/CameraUtils/CameraEdgePanUtils";
 import { VttGridContextProvider } from "../Contexts/VttGridProvider";
 import { VirtualGridView } from "./VirtualGridView";
+import { RadialMenuProvider } from "@/components/(SPECIAL)/components/RadialMenu/Context";
+import { PingEngine } from "./Other/PingEngine";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -44,8 +46,10 @@ export function VttCore({ campaign }: VttCoreProps) {
 					<VttViewportContextProvider>
 						<VttGridContextProvider>
 							<VttInteractionContextProvider>
-								{`Connected to VttId: ${vttId}`}
-								<VttCoreEngine />
+								<RadialMenuProvider>
+									{`Connected to VttId: ${vttId}`}
+									<VttCoreEngine />
+								</RadialMenuProvider>
 							</VttInteractionContextProvider>
 						</VttGridContextProvider>
 					</VttViewportContextProvider>
@@ -66,6 +70,7 @@ function VttCoreEngine() {
 			<VirtualGridView />
 			<TestZone />
 			<CenterPointer />
+			<PingEngine />
 			<CursorSyncronizer />
 			<VirtualUserCursor />
 		</VttCoreEngineContainer>

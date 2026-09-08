@@ -7,6 +7,7 @@ import {
 	ACTIVE_EXPANSION,
 	DEFAULT_CORE_DIAMETER,
 	DEFAULT_RING_WIDTH,
+	RADIAL_START_ANGLE,
 	RING_GAP,
 	RadialMenuOption,
 	RadialMenuRing,
@@ -18,6 +19,7 @@ import { RadialMenuData } from "./Context";
 import { validateRing } from "./utils";
 
 const RadialMenuContainer = newStyledElement.div(styles.radialMenuContainer);
+
 const DEFAULT_RING_WIDTHS: number[] = [];
 
 interface RadialMenuProps extends RadialMenuData {
@@ -30,6 +32,9 @@ export function RadialMenu({
 	screenPosition,
 	actionPosition,
 	options,
+	nameColor,
+	showNames,
+	submitKeys,
 	coreDiameter = DEFAULT_CORE_DIAMETER,
 	ringWidths = DEFAULT_RING_WIDTHS,
 	mode = "fast",
@@ -84,6 +89,7 @@ export function RadialMenu({
 
 			const dx = event.clientX - screenPosition.x;
 			const dy = event.clientY - screenPosition.y;
+
 			const distance = Math.sqrt(dx * dx + dy * dy);
 			const coreRadius = coreDiameter / 2;
 
@@ -113,8 +119,9 @@ export function RadialMenu({
 			}
 
 			const ring = ringGeometry[targetRingIndex];
-			const angle = Math.atan2(dy, dx);
-			const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
+			const angle = Math.atan2(dy, dx) - RADIAL_START_ANGLE;
+			const normalizedAngle =
+				((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
 			const sectorSize = (Math.PI * 2) / ring.options.length;
 			const optionIndex = Math.floor(normalizedAngle / sectorSize);
 
@@ -135,12 +142,10 @@ export function RadialMenu({
 	useEffect(() => {
 		if (!activeOption) {
 			setActiveDepth(0);
-
 			setRings((current) => {
 				if (current.length === 1) return current;
 				return current.slice(0, 1);
 			});
-
 			return;
 		}
 
@@ -157,10 +162,8 @@ export function RadialMenu({
 					existingRing &&
 					existingRing.parentOptionId === activeOption.id &&
 					existingRing.options === childOptions
-				) {
+				)
 					return [...baseRings, existingRing];
-				}
-
 				return [
 					...baseRings,
 					{
@@ -227,10 +230,30 @@ export function RadialMenu({
 
 		setActiveDepth(resolved.depth);
 		setActiveOption(resolved.option);
+
 		submitOption(resolved.option, resolved.depth);
 	}, [activeOption, activeDepth, rings, resolveFastOption, submitOption]);
 
+	const handleSubmit = useCallback(() => {
+		if (mode === "fast") {
+			submitFast();
+			return;
+		}
+
+		if (!activeOption) return;
+
+		if (activeOption.options && validateRing(activeOption.options)) {
+			return;
+		}
+
+		submit();
+	}, [mode, activeOption, submit, submitFast]);
+
 	useEffect(() => {
+		const normalizedSubmitKeys = new Set(
+			(submitKeys ?? []).map((key) => key.toLowerCase()),
+		);
+
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "Escape") {
 				event.preventDefault();
@@ -260,17 +283,27 @@ export function RadialMenu({
 			if (!matchedOption) return;
 
 			event.preventDefault();
-
 			setActiveDepth(matchedDepth);
 			setActiveOption(matchedOption);
 		};
 
+		const handleKeyUp = (event: KeyboardEvent) => {
+			const key = event.key.toLowerCase();
+
+			if (!normalizedSubmitKeys.has(key)) return;
+
+			event.preventDefault();
+			handleSubmit();
+		};
+
 		window.addEventListener("keydown", handleKeyDown);
+		window.addEventListener("keyup", handleKeyUp);
 
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
+			window.removeEventListener("keyup", handleKeyUp);
 		};
-	}, [rings, onClose]);
+	}, [rings, onClose, submitKeys, handleSubmit]);
 
 	useEffect(() => {
 		const consumeNextContextMenu = () => {
@@ -300,19 +333,7 @@ export function RadialMenu({
 			if (event.button !== 0) return;
 
 			event.preventDefault();
-
-			if (mode === "fast") {
-				submitFast();
-				return;
-			}
-
-			if (!activeOption) return;
-
-			if (activeOption.options && validateRing(activeOption.options)) {
-				return;
-			}
-
-			submit();
+			handleSubmit();
 		};
 
 		const handleContextMenu = (event: MouseEvent) => {
@@ -328,7 +349,7 @@ export function RadialMenu({
 			window.removeEventListener("mouseup", handleMouseUp);
 			window.removeEventListener("contextmenu", handleContextMenu);
 		};
-	}, [mode, submit, submitFast, activeOption, onClose]);
+	}, [handleSubmit, onClose]);
 
 	const core = coreGenerator ? (
 		coreGenerator({
@@ -356,6 +377,8 @@ export function RadialMenu({
 				activeDepth={activeDepth}
 				activeOption={activeOption}
 				core={core}
+				nameColor={nameColor}
+				showNames={showNames}
 			/>{" "}
 		</RadialMenuContainer>
 	);

@@ -78,6 +78,7 @@ export function ClientCursor({
 			<ClientCursorContainer
 				style={{
 					transition: isActiveUser ? "none" : undefined,
+					zIndex: isActiveUser ? 10000 : undefined,
 					left: screenPosition.x - horizontalCursorOffset[mouseState.type],
 					top: screenPosition.y - verticalCursorOffset[mouseState.type],
 				}}>

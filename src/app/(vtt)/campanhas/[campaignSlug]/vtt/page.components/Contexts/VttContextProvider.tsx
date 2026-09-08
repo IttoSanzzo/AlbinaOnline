@@ -31,20 +31,24 @@ export function VttContextProvider({
 
 	useEffect(() => {
 		if (!socket) return;
-		const handleMessage = (event: MessageEvent) => {
-			let message: VttOutputMessage;
+		function handleMessage(event: MessageEvent) {
 			try {
-				message = JSON.parse(event.data);
-			} catch {
-				console.error("Failed to parse VTT WebSocket message.", event.data);
-				return;
+				let message: VttOutputMessage;
+				try {
+					message = JSON.parse(event.data);
+				} catch {
+					console.error("Failed to parse VTT WebSocket message.", event.data);
+					return;
+				}
+				const handlers = subscriptions.current.get(message.type);
+				if (!handlers) return;
+				handlers.forEach((handler) => {
+					handler(message);
+				});
+			} catch (ex) {
+				console.error(`Exception on HandleMessage: ${ex}`);
 			}
-			const handlers = subscriptions.current.get(message.type);
-			if (!handlers) return;
-			handlers.forEach((handler) => {
-				handler(message);
-			});
-		};
+		}
 
 		socket.addEventListener("message", handleMessage);
 
@@ -54,8 +58,12 @@ export function VttContextProvider({
 	}, [socket]);
 
 	const send = (message: VttInputMessage) => {
-		if (socket?.readyState !== WebSocket.OPEN) return;
-		socket.send(JSON.stringify(message));
+		try {
+			if (socket?.readyState !== WebSocket.OPEN) return;
+			socket.send(JSON.stringify(message));
+		} catch (ex) {
+			console.error(ex);
+		}
 	};
 
 	const subscribe = (type: string, handler: VttMessageHandler) => {

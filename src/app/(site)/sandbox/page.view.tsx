@@ -12,11 +12,9 @@ import { StpIcon } from "@/libs/stp@icons";
 export default function SandboxPageContent() {
 	return (
 		<GenericPageContainer title="Sandobox">
-			{" "}
 			<RadialMenuProvider>
-				{" "}
-				<SandboxContent />{" "}
-			</RadialMenuProvider>{" "}
+				<SandboxContent />
+			</RadialMenuProvider>
 		</GenericPageContainer>
 	);
 }
@@ -99,7 +97,6 @@ function SandboxContent() {
 							},
 						],
 						onSubmit: function (props: RadialMenuSubmitProps): void {
-							console.log("Radial Menu Submit:", props);
 							props.close();
 						},
 					});
