@@ -1,3 +1,5 @@
+import { MIN_OPTIONS_PER_RING, RadialMenuOption } from "./types";
+
 export function createSectorPath(
 	innerRadius: number,
 	outerRadius: number,
@@ -19,4 +21,8 @@ export function createSectorPath(
 		`A ${innerRadius} ${innerRadius} 0 0 0 ${innerStartX} ${innerStartY}`,
 		"Z",
 	].join(" ");
+}
+
+export function validateRing(options: RadialMenuOption[]) {
+	return options.length >= MIN_OPTIONS_PER_RING;
 }

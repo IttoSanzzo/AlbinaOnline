@@ -6,13 +6,17 @@ import {
 	useRadialMenu,
 } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { RadialMenuSubmitProps } from "@/components/(SPECIAL)/components/RadialMenu/types";
+import { StandartBackgroundColor } from "@/components/(UIBasics)";
+import { StpIcon } from "@/libs/stp@icons";
 
 export default function SandboxPageContent() {
 	return (
 		<GenericPageContainer title="Sandobox">
+			{" "}
 			<RadialMenuProvider>
-				<SandboxContent />
-			</RadialMenuProvider>
+				{" "}
+				<SandboxContent />{" "}
+			</RadialMenuProvider>{" "}
 		</GenericPageContainer>
 	);
 }
@@ -23,69 +27,79 @@ function SandboxContent() {
 	return (
 		<div>
 			<button
-				onClick={(event) => {
+				onMouseDown={(event) => {
+					if (event.button !== 0) return;
+
 					event.preventDefault();
 
 					radialMenu.openNew({
+						mode: "switch",
 						id: "teste",
+						name: "Testador",
 						overlay: true,
-						screenPosition: { x: 960, y: 540 },
-						actionPosition: { x: 960, y: 540 },
+						screenPosition: {
+							x: event.clientX,
+							y: event.clientY,
+						},
+						actionPosition: {
+							x: event.clientX,
+							y: event.clientY,
+						},
 						options: [
 							{
 								id: "1",
 								name: "Test 1",
-								data: {},
 								icon: "A",
+								fastKey: "a",
+								backgroundColor: StandartBackgroundColor["blue"],
 							},
 							{
 								id: "2",
 								name: "Test 2",
-								data: {},
 								options: [
 									{
 										id: "2-1",
 										name: "Test 2 1",
-										data: {},
 										icon: "Z",
+										fastKey: "P",
+										description: "Bananada",
 									},
 									{
 										id: "2-2",
 										name: "Test 2 2",
-										data: {},
 										icon: "ZZ",
 									},
 								],
 								icon: "B",
+								fastKey: "b",
 							},
 							{
 								id: "3",
 								name: "Test 3",
-								data: {},
 								icon: "C",
 							},
 							{
 								id: "4",
 								name: "Test 4",
-								data: {},
-								icon: "D",
+								icon: <StpIcon name="Acorn" />,
+								fastKey: "F",
+								backgroundColor: StandartBackgroundColor["blue"],
 								options: [
 									{
 										id: "4-1",
 										name: "Test 4-1",
-										data: {},
 										icon: "F",
 									},
 									{
 										id: "4-2",
 										name: "Test 4-2",
-										data: {},
 										icon: "H",
 									},
 								],
 							},
 						],
 						onSubmit: function (props: RadialMenuSubmitProps): void {
+							console.log("Radial Menu Submit:", props);
 							props.close();
 						},
 					});

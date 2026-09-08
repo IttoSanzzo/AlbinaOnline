@@ -1,66 +1,53 @@
 "use client";
 
-import { CoordinatesPair } from "@/libs/stp@types/utils/CoordinatesPair";
-import styles from "./index.module.css";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { ReactNode, useEffect, useMemo, useState } from "react";
-import React from "react";
+import styles from "./index.module.css";
 import {
 	ACTIVE_EXPANSION,
 	DEFAULT_CORE_DIAMETER,
 	DEFAULT_RING_WIDTH,
-	MIN_OPTIONS_PER_RING,
-	RadialMenuCoreGeneratorProps,
+	RING_GAP,
 	RadialMenuOption,
 	RadialMenuRing,
 	RadialMenuRingGeometry,
-	RadialMenuSubmitProps,
-	RING_GAP,
 } from "./types";
 import { RadialMenuVisualCore } from "./index.components/RadialMenuVisualCore";
+import { DefaultRadialMenuCore } from "./index.components/DefaultRadialMenuCore";
+import { RadialMenuData } from "./Context";
+import { validateRing } from "./utils";
 
-const RadialMenuOverlay = newStyledElement.div(styles.radialMenuOverlay);
+const RadialMenuContainer = newStyledElement.div(styles.radialMenuContainer);
+const DEFAULT_RING_WIDTHS: number[] = [];
 
-interface RadialMenuProps {
-	id: string;
-	mode?: "fast" | "switch";
-	overlay?: boolean;
-	screenPosition: CoordinatesPair;
-	actionPosition: CoordinatesPair;
-	coreDiameter?: number;
-	ringWidths?: number[];
-	options: RadialMenuOption[];
-	coreGenerator?: (props: RadialMenuCoreGeneratorProps) => ReactNode;
-	onSubmit: (props: RadialMenuSubmitProps) => void;
+interface RadialMenuProps extends RadialMenuData {
 	onClose: () => void;
 }
+
 export function RadialMenu({
 	id,
-	mode = "fast",
-	overlay = false,
-	actionPosition,
+	name,
 	screenPosition,
+	actionPosition,
 	options,
-	coreGenerator,
 	coreDiameter = DEFAULT_CORE_DIAMETER,
-	ringWidths = [],
+	ringWidths = DEFAULT_RING_WIDTHS,
+	mode = "fast",
+	coreGenerator,
 	onSubmit,
 	onClose,
 }: RadialMenuProps) {
-	const [cursorPosition, setCursorPosition] =
-		useState<CoordinatesPair>(screenPosition);
-	const [rings, setRings] = useState<RadialMenuRing[]>([
+	const [rings, setRings] = useState<RadialMenuRing[]>(() => [
 		{
 			options,
 			depth: 0,
 		},
 	]);
-	const [activeOption, setActiveOption] = useState<RadialMenuOption>();
-	const [activeDepth, setActiveDepth] = useState<number>(0);
 
-	const validateRing = (ringOptions: RadialMenuOption[]) => {
-		return ringOptions.length >= MIN_OPTIONS_PER_RING;
-	};
+	const [activeDepth, setActiveDepth] = useState(0);
+	const [activeOption, setActiveOption] = useState<
+		RadialMenuOption | undefined
+	>(undefined);
 
 	const ringGeometry = useMemo<RadialMenuRingGeometry[]>(() => {
 		let previousOuterRadius = coreDiameter / 2;
@@ -70,7 +57,9 @@ export function RadialMenu({
 			const innerRadius = previousOuterRadius + RING_GAP;
 			const outerRadius = innerRadius + width;
 			const hasChildRing = index < rings.length - 1;
+
 			previousOuterRadius = outerRadius + (hasChildRing ? ACTIVE_EXPANSION : 0);
+
 			return {
 				...ring,
 				width,
@@ -80,71 +69,84 @@ export function RadialMenu({
 		});
 	}, [rings, coreDiameter, ringWidths]);
 
+	const maxRadius = useMemo(() => {
+		if (ringGeometry.length === 0) return coreDiameter / 2;
+
+		return Math.max(
+			coreDiameter / 2,
+			...ringGeometry.map((ring) => ring.outerRadius),
+		);
+	}, [ringGeometry, coreDiameter]);
+
+	const handleMouseMove = useCallback(
+		(event: MouseEvent) => {
+			if (ringGeometry.length === 0) return;
+
+			const dx = event.clientX - screenPosition.x;
+			const dy = event.clientY - screenPosition.y;
+			const distance = Math.sqrt(dx * dx + dy * dy);
+			const coreRadius = coreDiameter / 2;
+
+			if (distance <= coreRadius) {
+				setActiveOption(undefined);
+				setActiveDepth(0);
+				return;
+			}
+
+			let targetRingIndex = -1;
+
+			for (let index = 0; index < ringGeometry.length; index++) {
+				const ring = ringGeometry[index];
+
+				if (distance >= ring.innerRadius && distance <= ring.outerRadius) {
+					targetRingIndex = index;
+					break;
+				}
+			}
+
+			if (targetRingIndex === -1) {
+				if (distance > ringGeometry[ringGeometry.length - 1].outerRadius) {
+					targetRingIndex = ringGeometry.length - 1;
+				} else {
+					return;
+				}
+			}
+
+			const ring = ringGeometry[targetRingIndex];
+			const angle = Math.atan2(dy, dx);
+			const normalizedAngle = angle < 0 ? angle + Math.PI * 2 : angle;
+			const sectorSize = (Math.PI * 2) / ring.options.length;
+			const optionIndex = Math.floor(normalizedAngle / sectorSize);
+
+			setActiveDepth(targetRingIndex);
+			setActiveOption(ring.options[optionIndex]);
+		},
+		[ringGeometry, screenPosition, coreDiameter],
+	);
+
 	useEffect(() => {
-		const handleMouseMove = (event: MouseEvent) => {
-			setCursorPosition({
-				x: event.clientX,
-				y: event.clientY,
-			});
-		};
 		window.addEventListener("mousemove", handleMouseMove);
+
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, []);
+	}, [handleMouseMove]);
 
 	useEffect(() => {
-		if (!ringGeometry.length) {
-			setActiveOption(undefined);
+		if (!activeOption) {
+			setActiveDepth(0);
+
+			setRings((current) => {
+				if (current.length === 1) return current;
+				return current.slice(0, 1);
+			});
+
 			return;
 		}
-		const deltaX = cursorPosition.x - screenPosition.x;
-		const deltaY = cursorPosition.y - screenPosition.y;
-		const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-		const coreRadius = coreDiameter / 2;
-		if (distance <= coreRadius) {
-			setActiveOption(undefined);
-			return;
-		}
-		let targetRingIndex = -1;
-		for (let index = 0; index < ringGeometry.length; index++) {
-			const ring = ringGeometry[index];
-			if (distance >= ring.innerRadius && distance <= ring.outerRadius) {
-				targetRingIndex = index;
-				break;
-			}
-		}
-
-		if (targetRingIndex === -1) {
-			if (distance > ringGeometry[ringGeometry.length - 1].outerRadius)
-				targetRingIndex = ringGeometry.length - 1;
-			else {
-				setActiveOption(undefined);
-				return;
-			}
-		}
-
-		const ring = ringGeometry[targetRingIndex];
-		if (!ring.options.length) {
-			setActiveOption(undefined);
-			return;
-		}
-
-		let angle = Math.atan2(deltaY, deltaX);
-		if (angle < 0) angle += Math.PI * 2;
-
-		const sectorSize = (Math.PI * 2) / ring.options.length;
-		const index = Math.floor(angle / sectorSize);
-
-		setActiveDepth(targetRingIndex);
-		setActiveOption(ring.options[index]);
-	}, [cursorPosition, screenPosition, coreDiameter, ringGeometry]);
-
-	useEffect(() => {
-		if (!activeOption) return;
 
 		const childOptions = activeOption.options;
 		const nextDepth = activeDepth + 1;
+
 		setRings((current) => {
 			const baseRings = current.slice(0, nextDepth);
 
@@ -155,8 +157,9 @@ export function RadialMenu({
 					existingRing &&
 					existingRing.parentOptionId === activeOption.id &&
 					existingRing.options === childOptions
-				)
+				) {
 					return [...baseRings, existingRing];
+				}
 
 				return [
 					...baseRings,
@@ -167,26 +170,114 @@ export function RadialMenu({
 					},
 				];
 			}
+
 			return baseRings;
 		});
 	}, [activeOption, activeDepth]);
 
-	const submit = () => {
+	const submitOption = useCallback(
+		(option: RadialMenuOption, depth: number) => {
+			if (!onSubmit) return;
+
+			onSubmit({
+				option,
+				depth,
+				timestamp: Date.now(),
+				cursorPosition: actionPosition,
+				close: onClose,
+			});
+		},
+		[actionPosition, onSubmit, onClose],
+	);
+
+	const submit = useCallback(() => {
 		if (!activeOption) return;
-		onSubmit({
-			option: activeOption,
-			depth: activeDepth,
-			timestamp: Date.now(),
-			cursorPosition: actionPosition,
-			close: onClose,
-		});
-	};
+
+		submitOption(activeOption, activeDepth);
+	}, [activeOption, activeDepth, submitOption]);
+
+	const resolveFastOption = useCallback(
+		(
+			option: RadialMenuOption | undefined,
+			depth: number,
+		): { option: RadialMenuOption; depth: number } | undefined => {
+			if (!option) return undefined;
+
+			if (option.options && validateRing(option.options)) {
+				return resolveFastOption(option.options[0], depth + 1);
+			}
+
+			return {
+				option,
+				depth,
+			};
+		},
+		[],
+	);
+
+	const submitFast = useCallback(() => {
+		const startingOption = activeOption ?? rings[0]?.options[0];
+
+		const resolved = resolveFastOption(
+			startingOption,
+			activeOption ? activeDepth : 0,
+		);
+
+		if (!resolved) return;
+
+		setActiveDepth(resolved.depth);
+		setActiveOption(resolved.option);
+		submitOption(resolved.option, resolved.depth);
+	}, [activeOption, activeDepth, rings, resolveFastOption, submitOption]);
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				event.preventDefault();
+				onClose();
+				return;
+			}
+
+			if (event.repeat) return;
+
+			const key = event.key.toLowerCase();
+
+			let matchedOption: RadialMenuOption | undefined;
+			let matchedDepth = -1;
+
+			for (const ring of rings) {
+				const option = ring.options.find(
+					(currentOption) => currentOption.fastKey?.toLowerCase() === key,
+				);
+
+				if (!option) continue;
+
+				matchedOption = option;
+				matchedDepth = ring.depth;
+				break;
+			}
+
+			if (!matchedOption) return;
+
+			event.preventDefault();
+
+			setActiveDepth(matchedDepth);
+			setActiveOption(matchedOption);
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [rings, onClose]);
 
 	useEffect(() => {
 		const consumeNextContextMenu = () => {
 			const handleContextMenu = (event: MouseEvent) => {
 				event.preventDefault();
 			};
+
 			window.addEventListener("contextmenu", handleContextMenu, {
 				once: true,
 			});
@@ -202,60 +293,70 @@ export function RadialMenu({
 
 			if (event.button === 0) {
 				event.preventDefault();
-				submit();
 			}
+		};
+
+		const handleMouseUp = (event: MouseEvent) => {
+			if (event.button !== 0) return;
+
+			event.preventDefault();
+
+			if (mode === "fast") {
+				submitFast();
+				return;
+			}
+
+			if (!activeOption) return;
+
+			if (activeOption.options && validateRing(activeOption.options)) {
+				return;
+			}
+
+			submit();
 		};
 
 		const handleContextMenu = (event: MouseEvent) => {
 			event.preventDefault();
 		};
+
 		window.addEventListener("mousedown", handleMouseDown);
+		window.addEventListener("mouseup", handleMouseUp);
 		window.addEventListener("contextmenu", handleContextMenu);
+
 		return () => {
 			window.removeEventListener("mousedown", handleMouseDown);
+			window.removeEventListener("mouseup", handleMouseUp);
 			window.removeEventListener("contextmenu", handleContextMenu);
 		};
-	}, [activeOption, activeDepth, onClose]);
+	}, [mode, submit, submitFast, activeOption, onClose]);
 
-	const core = useMemo(() => {
-		if (coreGenerator) {
-			return coreGenerator({
-				cursorPosition,
-				option: activeOption,
-			});
-		}
-
-		return (
-			<div className={styles.radialMenuCoreContent}>
-				{activeOption?.icon}
-				<div>{activeOption?.name}</div>
-				{activeOption?.description && <div>{activeOption.description}</div>}
-				<div>Right click to cancel</div>
-			</div>
-		);
-	}, [coreGenerator, cursorPosition, activeOption]);
-
-	const maxRadius =
-		ringGeometry.length > 0
-			? ringGeometry[ringGeometry.length - 1].outerRadius + ACTIVE_EXPANSION
-			: coreDiameter / 2;
-
-	const Overlay = overlay ? RadialMenuOverlay : React.Fragment;
+	const core = coreGenerator ? (
+		coreGenerator({
+			cursorPosition: actionPosition,
+			option: activeOption,
+		})
+	) : (
+		<DefaultRadialMenuCore
+			name={name}
+			option={activeOption}
+		/>
+	);
 
 	return (
-		<Overlay>
+		<RadialMenuContainer>
+			{" "}
 			<RadialMenuVisualCore
 				key={id}
 				id={id}
 				screenPosition={screenPosition}
 				coreDiameter={coreDiameter}
 				mode={mode}
+				maxRadius={maxRadius}
+				ringGeometry={ringGeometry}
 				activeDepth={activeDepth}
 				activeOption={activeOption}
 				core={core}
-				maxRadius={maxRadius}
-				ringGeometry={ringGeometry}
-			/>
-		</Overlay>
+			/>{" "}
+		</RadialMenuContainer>
 	);
 }

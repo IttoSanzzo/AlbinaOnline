@@ -16,9 +16,10 @@ import {
 	RadialMenuSubmitProps,
 } from "../types";
 
-interface RadialMenuSession {
+export interface RadialMenuData {
 	id: string;
-	mode: "fast" | "switch";
+	name: string;
+	mode?: "fast" | "switch";
 	overlay: boolean;
 	screenPosition: CoordinatesPair;
 	actionPosition: CoordinatesPair;
@@ -29,21 +30,8 @@ interface RadialMenuSession {
 	onSubmit: (props: RadialMenuSubmitProps) => void;
 }
 
-export interface RadialMenuOpenProps {
-	id: string;
-	mode?: "fast" | "switch";
-	overlay?: boolean;
-	screenPosition: CoordinatesPair;
-	actionPosition: CoordinatesPair;
-	coreDiameter?: number;
-	ringWidths?: number[];
-	options: RadialMenuOption[];
-	coreGenerator?: (props: RadialMenuCoreGeneratorProps) => ReactContent;
-	onSubmit: (props: RadialMenuSubmitProps) => void;
-}
-
 interface RadialMenuContext {
-	openNew: (props: RadialMenuOpenProps) => void;
+	openNew: (props: RadialMenuData) => void;
 	close: () => void;
 	id: string | null;
 }
@@ -51,9 +39,9 @@ interface RadialMenuContext {
 const RadialMenuContext = createContext<RadialMenuContext | null>(null);
 
 export function RadialMenuProvider({ children }: { children: ReactNode }) {
-	const [session, setSession] = useState<RadialMenuSession | null>(null);
+	const [session, setSession] = useState<RadialMenuData | null>(null);
 
-	const openNew = useCallback((props: RadialMenuOpenProps) => {
+	const openNew = useCallback((props: RadialMenuData) => {
 		setSession({
 			...props,
 			mode: props.mode ?? "fast",
