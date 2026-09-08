@@ -19,13 +19,11 @@ import { RadialMenuData } from "./Context";
 import { validateRing } from "./utils";
 
 const RadialMenuContainer = newStyledElement.div(styles.radialMenuContainer);
-
 const DEFAULT_RING_WIDTHS: number[] = [];
 
 interface RadialMenuProps extends RadialMenuData {
 	onClose: () => void;
 }
-
 export function RadialMenu({
 	id,
 	name,
@@ -76,7 +74,6 @@ export function RadialMenu({
 
 	const maxRadius = useMemo(() => {
 		if (ringGeometry.length === 0) return coreDiameter / 2;
-
 		return Math.max(
 			coreDiameter / 2,
 			...ringGeometry.map((ring) => ring.outerRadius),
@@ -86,10 +83,8 @@ export function RadialMenu({
 	const handleMouseMove = useCallback(
 		(event: MouseEvent) => {
 			if (ringGeometry.length === 0) return;
-
 			const dx = event.clientX - screenPosition.x;
 			const dy = event.clientY - screenPosition.y;
-
 			const distance = Math.sqrt(dx * dx + dy * dy);
 			const coreRadius = coreDiameter / 2;
 
@@ -98,33 +93,26 @@ export function RadialMenu({
 				setActiveDepth(0);
 				return;
 			}
-
 			let targetRingIndex = -1;
 
 			for (let index = 0; index < ringGeometry.length; index++) {
 				const ring = ringGeometry[index];
-
 				if (distance >= ring.innerRadius && distance <= ring.outerRadius) {
 					targetRingIndex = index;
 					break;
 				}
 			}
-
 			if (targetRingIndex === -1) {
 				if (distance > ringGeometry[ringGeometry.length - 1].outerRadius) {
 					targetRingIndex = ringGeometry.length - 1;
-				} else {
-					return;
-				}
+				} else return;
 			}
-
 			const ring = ringGeometry[targetRingIndex];
 			const angle = Math.atan2(dy, dx) - RADIAL_START_ANGLE;
 			const normalizedAngle =
 				((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
 			const sectorSize = (Math.PI * 2) / ring.options.length;
 			const optionIndex = Math.floor(normalizedAngle / sectorSize);
-
 			setActiveDepth(targetRingIndex);
 			setActiveOption(ring.options[optionIndex]);
 		},
@@ -133,7 +121,6 @@ export function RadialMenu({
 
 	useEffect(() => {
 		window.addEventListener("mousemove", handleMouseMove);
-
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
@@ -154,10 +141,8 @@ export function RadialMenu({
 
 		setRings((current) => {
 			const baseRings = current.slice(0, nextDepth);
-
 			if (childOptions && validateRing(childOptions)) {
 				const existingRing = current[nextDepth];
-
 				if (
 					existingRing &&
 					existingRing.parentOptionId === activeOption.id &&
@@ -173,7 +158,6 @@ export function RadialMenu({
 					},
 				];
 			}
-
 			return baseRings;
 		});
 	}, [activeOption, activeDepth]);
@@ -181,7 +165,6 @@ export function RadialMenu({
 	const submitOption = useCallback(
 		(option: RadialMenuOption, depth: number) => {
 			if (!onSubmit) return;
-
 			onSubmit({
 				option,
 				depth,
@@ -195,7 +178,6 @@ export function RadialMenu({
 
 	const submit = useCallback(() => {
 		if (!activeOption) return;
-
 		submitOption(activeOption, activeDepth);
 	}, [activeOption, activeDepth, submitOption]);
 
@@ -205,11 +187,8 @@ export function RadialMenu({
 			depth: number,
 		): { option: RadialMenuOption; depth: number } | undefined => {
 			if (!option) return undefined;
-
-			if (option.options && validateRing(option.options)) {
+			if (option.options && validateRing(option.options))
 				return resolveFastOption(option.options[0], depth + 1);
-			}
-
 			return {
 				option,
 				depth,
@@ -220,17 +199,13 @@ export function RadialMenu({
 
 	const submitFast = useCallback(() => {
 		const startingOption = activeOption ?? rings[0]?.options[0];
-
 		const resolved = resolveFastOption(
 			startingOption,
 			activeOption ? activeDepth : 0,
 		);
-
 		if (!resolved) return;
-
 		setActiveDepth(resolved.depth);
 		setActiveOption(resolved.option);
-
 		submitOption(resolved.option, resolved.depth);
 	}, [activeOption, activeDepth, rings, resolveFastOption, submitOption]);
 
@@ -239,13 +214,8 @@ export function RadialMenu({
 			submitFast();
 			return;
 		}
-
 		if (!activeOption) return;
-
-		if (activeOption.options && validateRing(activeOption.options)) {
-			return;
-		}
-
+		if (activeOption.options && validateRing(activeOption.options)) return;
 		submit();
 	}, [mode, activeOption, submit, submitFast]);
 
@@ -260,11 +230,9 @@ export function RadialMenu({
 				onClose();
 				return;
 			}
-
 			if (event.repeat) return;
 
 			const key = event.key.toLowerCase();
-
 			let matchedOption: RadialMenuOption | undefined;
 			let matchedDepth = -1;
 
@@ -272,14 +240,11 @@ export function RadialMenu({
 				const option = ring.options.find(
 					(currentOption) => currentOption.fastKey?.toLowerCase() === key,
 				);
-
 				if (!option) continue;
-
 				matchedOption = option;
 				matchedDepth = ring.depth;
 				break;
 			}
-
 			if (!matchedOption) return;
 
 			event.preventDefault();
@@ -289,16 +254,12 @@ export function RadialMenu({
 
 		const handleKeyUp = (event: KeyboardEvent) => {
 			const key = event.key.toLowerCase();
-
 			if (!normalizedSubmitKeys.has(key)) return;
-
 			event.preventDefault();
 			handleSubmit();
 		};
-
 		window.addEventListener("keydown", handleKeyDown);
 		window.addEventListener("keyup", handleKeyUp);
-
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 			window.removeEventListener("keyup", handleKeyUp);
@@ -310,7 +271,6 @@ export function RadialMenu({
 			const handleContextMenu = (event: MouseEvent) => {
 				event.preventDefault();
 			};
-
 			window.addEventListener("contextmenu", handleContextMenu, {
 				once: true,
 			});
@@ -323,15 +283,11 @@ export function RadialMenu({
 				onClose();
 				return;
 			}
-
-			if (event.button === 0) {
-				event.preventDefault();
-			}
+			if (event.button === 0) event.preventDefault();
 		};
 
 		const handleMouseUp = (event: MouseEvent) => {
 			if (event.button !== 0) return;
-
 			event.preventDefault();
 			handleSubmit();
 		};
@@ -339,11 +295,9 @@ export function RadialMenu({
 		const handleContextMenu = (event: MouseEvent) => {
 			event.preventDefault();
 		};
-
 		window.addEventListener("mousedown", handleMouseDown);
 		window.addEventListener("mouseup", handleMouseUp);
 		window.addEventListener("contextmenu", handleContextMenu);
-
 		return () => {
 			window.removeEventListener("mousedown", handleMouseDown);
 			window.removeEventListener("mouseup", handleMouseUp);

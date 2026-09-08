@@ -11,7 +11,7 @@ import {
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { Guid } from "@/libs/stp@types";
-import { StpIcon } from "@/libs/stp@icons";
+import { StpIcon, StpIconColor } from "@/libs/stp@icons";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { roundCoordinate } from "../../../Utils/coodinateUtils";
 import {
@@ -25,7 +25,8 @@ const PING_MESSAGE_TYPE = "PostPing";
 const PING_DURATION = 4000;
 const PING_MARKER_SIZE = 42;
 const PING_MARKER_MARGIN = PING_MARKER_SIZE / 2;
-const PING_KEY = "p";
+const PING_KEY = "x";
+const PING_VOLUME = 100;
 
 interface Ping {
 	id: string;
@@ -45,7 +46,6 @@ enum PingType {
 	Fight,
 	Attack,
 	Defend,
-	Charge,
 	Help,
 	Target,
 	Question,
@@ -53,19 +53,27 @@ enum PingType {
 	Enemy,
 	Ally,
 	Observe,
+	Wait,
+	Yes,
+	No,
+	Rock,
+	Paper,
+	Scissor,
+	Victory,
+	Defeat,
+	Suspicious,
 }
 
-const PING_COLORS: Record<PingType, string> = {
+const PING_COLORS: Record<PingType, keyof typeof StpIconColor> = {
 	[PingType.Default]: "blue",
 	[PingType.Safe]: "green",
 	[PingType.Danger]: "red",
 	[PingType.Push]: "green",
-	[PingType.Retreat]: "yellow",
+	[PingType.Retreat]: "red",
 	[PingType.Going]: "blue",
 	[PingType.Fight]: "yellow",
 	[PingType.Attack]: "red",
 	[PingType.Defend]: "green",
-	[PingType.Charge]: "red",
 	[PingType.Help]: "green",
 	[PingType.Target]: "red",
 	[PingType.Question]: "yellow",
@@ -73,8 +81,16 @@ const PING_COLORS: Record<PingType, string> = {
 	[PingType.Enemy]: "red",
 	[PingType.Ally]: "green",
 	[PingType.Observe]: "yellow",
+	[PingType.Wait]: "blue",
+	[PingType.Yes]: "green",
+	[PingType.No]: "red",
+	[PingType.Rock]: "red",
+	[PingType.Paper]: "blue",
+	[PingType.Scissor]: "yellow",
+	[PingType.Victory]: "yellow",
+	[PingType.Defeat]: "red",
+	[PingType.Suspicious]: "purple",
 };
-
 const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Default]: "/sounds/vtt/pings/default.mp3",
 	[PingType.Safe]: "/sounds/vtt/pings/safe.mp3",
@@ -85,7 +101,6 @@ const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Fight]: "/sounds/vtt/pings/fight.mp3",
 	[PingType.Attack]: "/sounds/vtt/pings/attack.mp3",
 	[PingType.Defend]: "/sounds/vtt/pings/defend.mp3",
-	[PingType.Charge]: "/sounds/vtt/pings/charge.mp3",
 	[PingType.Help]: "/sounds/vtt/pings/help.mp3",
 	[PingType.Target]: "/sounds/vtt/pings/target.mp3",
 	[PingType.Question]: "/sounds/vtt/pings/question.mp3",
@@ -93,8 +108,295 @@ const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Enemy]: "/sounds/vtt/pings/enemy.mp3",
 	[PingType.Ally]: "/sounds/vtt/pings/ally.mp3",
 	[PingType.Observe]: "/sounds/vtt/pings/observe.mp3",
+	[PingType.Wait]: "/sounds/vtt/pings/wait.mp3",
+	[PingType.Yes]: "/sounds/vtt/pings/yes.mp3",
+	[PingType.No]: "/sounds/vtt/pings/no.mp3",
+	[PingType.Rock]: "/sounds/vtt/pings/rock.mp3",
+	[PingType.Paper]: "/sounds/vtt/pings/paper.mp3",
+	[PingType.Scissor]: "/sounds/vtt/pings/scissor.mp3",
+	[PingType.Victory]: "/sounds/vtt/pings/victory.mp3",
+	[PingType.Defeat]: "/sounds/vtt/pings/defeat.mp3",
+	[PingType.Suspicious]: "/sounds/vtt/pings/suspicious.mp3",
 };
 
+const PING_OPTIONS_MOVEMENT: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.Going],
+		name: "Indo",
+		icon: (
+			<StpIcon
+				name="TelegramLogo"
+				color={PING_COLORS[PingType.Going]}
+			/>
+		),
+		description: "Estou indo para aqui!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Push],
+		name: "Avançar",
+		icon: (
+			<StpIcon
+				name="FastForward"
+				color={PING_COLORS[PingType.Push]}
+			/>
+		),
+		description: "Avançar aqui!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Retreat],
+		name: "Recuar",
+		icon: (
+			<StpIcon
+				name="Rewind"
+				color={PING_COLORS[PingType.Retreat]}
+			/>
+		),
+		description: "Recuar para aqui!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Move],
+		name: "Mover",
+		icon: (
+			<StpIcon
+				name="Signpost"
+				color={PING_COLORS[PingType.Move]}
+			/>
+		),
+		description: "Mova-se para aqui!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+];
+const PING_OPTIONS_COMBAT: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.Fight],
+		name: "Lutar",
+		icon: (
+			<StpIcon
+				name="Sword"
+				color={PING_COLORS[PingType.Fight]}
+			/>
+		),
+		description: "Lutar aqui!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Attack],
+		name: "Atacar",
+		icon: (
+			<StpIcon
+				name="Sword"
+				color={PING_COLORS[PingType.Attack]}
+			/>
+		),
+		description: "Ataque este alvo!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Defend],
+		name: "Defender",
+		icon: (
+			<StpIcon
+				name="ShieldCheckered"
+				color={PING_COLORS[PingType.Defend]}
+			/>
+		),
+		description: "Defenda aqui!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Wait],
+		name: "Espere",
+		icon: (
+			<StpIcon
+				name="HourglassHigh"
+				color={PING_COLORS[PingType.Wait]}
+			/>
+		),
+		description: "Espere!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Victory],
+		name: "Vitória",
+		icon: (
+			<StpIcon
+				name="Trophy"
+				color={PING_COLORS[PingType.Victory]}
+			/>
+		),
+		description: "Vitória em combate!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Defeat],
+		name: "Derrota",
+		icon: (
+			<StpIcon
+				name="Cross"
+				color={PING_COLORS[PingType.Defeat]}
+			/>
+		),
+		description: "Derrota em combate!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+];
+const PING_OPTIONS_PEOPLE: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.Observe],
+		name: "Observar",
+		icon: (
+			<StpIcon
+				name="Eye"
+				color={PING_COLORS[PingType.Observe]}
+			/>
+		),
+		description: "Observe esta pessoa!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Ally],
+		name: "Aliado",
+		icon: (
+			<StpIcon
+				name="UserCircle"
+				color={PING_COLORS[PingType.Ally]}
+			/>
+		),
+		description: "Aliado aqui!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Enemy],
+		name: "Inimigo",
+		icon: (
+			<StpIcon
+				name="UserCircle"
+				color={PING_COLORS[PingType.Enemy]}
+			/>
+		),
+		description: "Inimigo aqui!",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Target],
+		name: "Alvo",
+		icon: (
+			<StpIcon
+				name="Crosshair"
+				color={PING_COLORS[PingType.Target]}
+			/>
+		),
+		description: "Este é o alvo!",
+		backgroundColor: StandartBackgroundColor["gray"],
+	},
+	{
+		id: PingType[PingType.Suspicious],
+		name: "Suspeito",
+		icon: (
+			<StpIcon
+				name="SealQuestion"
+				color={PING_COLORS[PingType.Suspicious]}
+			/>
+		),
+		description: "Suspeito...",
+		backgroundColor: StandartBackgroundColor["darkGray"],
+	},
+];
+const PING_OPTIONS_OTHERS_RESPONSES: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.Yes],
+		name: "Sim",
+		icon: (
+			<StpIcon
+				name="ThumbsUp"
+				color={PING_COLORS[PingType.Yes]}
+			/>
+		),
+		description: "Sim!",
+		backgroundColor: StandartBackgroundColor["darkGreen"],
+	},
+	{
+		id: PingType[PingType.No],
+		name: "Não",
+		icon: (
+			<StpIcon
+				name="ThumbsDown"
+				color={PING_COLORS[PingType.No]}
+			/>
+		),
+		description: "Não!",
+		backgroundColor: StandartBackgroundColor["darkRed"],
+	},
+];
+const PING_OPTIONS_OTHERS_JANKENPON: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.Rock],
+		name: "Pedra",
+		icon: (
+			<StpIcon
+				name="HandFist"
+				color={PING_COLORS[PingType.Rock]}
+			/>
+		),
+		description: "Pedra!",
+		backgroundColor: StandartBackgroundColor["darkRed"],
+	},
+	{
+		id: PingType[PingType.Paper],
+		name: "Papel",
+		icon: (
+			<StpIcon
+				name="HandPalm"
+				color={PING_COLORS[PingType.Paper]}
+			/>
+		),
+		description: "Papel!",
+		backgroundColor: StandartBackgroundColor["darkBlue"],
+	},
+	{
+		id: PingType[PingType.Scissor],
+		name: "Tesoura",
+		icon: (
+			<StpIcon
+				name="HandPeace"
+				color={PING_COLORS[PingType.Scissor]}
+			/>
+		),
+		description: "Tesoura!",
+		backgroundColor: StandartBackgroundColor["darkYellow"],
+	},
+];
+const PING_OPTIONS_OTHERS: RadialMenuOption[] = [
+	{
+		id: "Responses",
+		name: "Respostas",
+		icon: (
+			<StpIcon
+				name="ChatsCircle"
+				color="blue"
+			/>
+		),
+		description: "Respostas simples.",
+		backgroundColor: StandartBackgroundColor["lightGray"],
+		options: PING_OPTIONS_OTHERS_RESPONSES,
+	},
+	{
+		id: "Jankenpon",
+		name: "Jankenpon",
+		icon: (
+			<StpIcon
+				name="Hand"
+				color="purple"
+			/>
+		),
+		description: "Jogo de Pedra, Papel ou Tesoura.",
+		backgroundColor: StandartBackgroundColor["gray"],
+		options: PING_OPTIONS_OTHERS_JANKENPON,
+	},
+];
 const PING_OPTIONS: RadialMenuOption[] = [
 	{
 		id: PingType[PingType.Default],
@@ -167,56 +469,7 @@ const PING_OPTIONS: RadialMenuOption[] = [
 		),
 		description: "Comandos relacionados a movimento.",
 		backgroundColor: StandartBackgroundColor["lightGray"],
-		options: [
-			{
-				id: PingType[PingType.Going],
-				name: "Indo",
-				icon: (
-					<StpIcon
-						name="TelegramLogo"
-						color="blue"
-					/>
-				),
-				description: "Estou indo para aqui!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-			{
-				id: PingType[PingType.Push],
-				name: "Avançar",
-				icon: (
-					<StpIcon
-						name="FastForward"
-						color="green"
-					/>
-				),
-				description: "Avançar aqui!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-			{
-				id: PingType[PingType.Retreat],
-				name: "Recuar",
-				icon: (
-					<StpIcon
-						name="Rewind"
-						color="yellow"
-					/>
-				),
-				description: "Recuar para aqui!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-			{
-				id: PingType[PingType.Move],
-				name: "Mover",
-				icon: (
-					<StpIcon
-						name="Signpost"
-						color="blue"
-					/>
-				),
-				description: "Mova-se para aqui!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-		],
+		options: PING_OPTIONS_MOVEMENT,
 	},
 	{
 		id: "Combat",
@@ -229,56 +482,7 @@ const PING_OPTIONS: RadialMenuOption[] = [
 		),
 		description: "Comandos relacionados a combate.",
 		backgroundColor: StandartBackgroundColor["gray"],
-		options: [
-			{
-				id: PingType[PingType.Fight],
-				name: "Lutar",
-				icon: (
-					<StpIcon
-						name="Sword"
-						color="yellow"
-					/>
-				),
-				description: "Lutar aqui!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-			{
-				id: PingType[PingType.Attack],
-				name: "Atacar",
-				icon: (
-					<StpIcon
-						name="Sword"
-						color="red"
-					/>
-				),
-				description: "Ataque este alvo!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-			{
-				id: PingType[PingType.Defend],
-				name: "Defender",
-				icon: (
-					<StpIcon
-						name="ShieldCheckered"
-						color="green"
-					/>
-				),
-				description: "Defenda aqui!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-			{
-				id: PingType[PingType.Charge],
-				name: "Investir",
-				icon: (
-					<StpIcon
-						name="Lightning"
-						color="red"
-					/>
-				),
-				description: "Invista contra este alvo!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-		],
+		options: PING_OPTIONS_COMBAT,
 	},
 	{
 		id: "People",
@@ -291,56 +495,20 @@ const PING_OPTIONS: RadialMenuOption[] = [
 		),
 		description: "Identificação de pessoas e alvos.",
 		backgroundColor: StandartBackgroundColor["lightGray"],
-		options: [
-			{
-				id: PingType[PingType.Observe],
-				name: "Observar",
-				icon: (
-					<StpIcon
-						name="Eye"
-						color="yellow"
-					/>
-				),
-				description: "Observe esta pessoa!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-			{
-				id: PingType[PingType.Ally],
-				name: "Aliado",
-				icon: (
-					<StpIcon
-						name="UserCircle"
-						color="green"
-					/>
-				),
-				description: "Aliado aqui!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-			{
-				id: PingType[PingType.Enemy],
-				name: "Inimigo",
-				icon: (
-					<StpIcon
-						name="UserCircle"
-						color="red"
-					/>
-				),
-				description: "Inimigo aqui!",
-				backgroundColor: StandartBackgroundColor["lightGray"],
-			},
-			{
-				id: PingType[PingType.Target],
-				name: "Alvo",
-				icon: (
-					<StpIcon
-						name="Crosshair"
-						color="red"
-					/>
-				),
-				description: "Este é o alvo!",
-				backgroundColor: StandartBackgroundColor["gray"],
-			},
-		],
+		options: PING_OPTIONS_PEOPLE,
+	},
+	{
+		id: "Others",
+		name: "Outros",
+		icon: (
+			<StpIcon
+				name="List"
+				color="gray"
+			/>
+		),
+		description: "Outros Pings.",
+		backgroundColor: StandartBackgroundColor["darkGray"],
+		options: PING_OPTIONS_OTHERS,
 	},
 ];
 
@@ -367,10 +535,8 @@ function getPingScreenPosition(
 	offscreen: boolean;
 } {
 	const screenPosition = worldToScreen(worldPosition);
-
 	const viewportWidth = window.innerWidth;
 	const viewportHeight = window.innerHeight;
-
 	const centerX = viewportWidth / 2;
 	const centerY = viewportHeight / 2;
 
@@ -380,17 +546,15 @@ function getPingScreenPosition(
 		screenPosition.y >= PING_MARKER_MARGIN &&
 		screenPosition.y <= viewportHeight - PING_MARKER_MARGIN;
 
-	if (isInside) {
+	if (isInside)
 		return {
 			position: screenPosition,
 			offscreen: false,
 		};
-	}
 
 	const directionX = screenPosition.x - centerX;
 	const directionY = screenPosition.y - centerY;
-
-	if (directionX === 0 && directionY === 0) {
+	if (directionX === 0 && directionY === 0)
 		return {
 			position: {
 				x: centerX,
@@ -398,21 +562,17 @@ function getPingScreenPosition(
 			},
 			offscreen: true,
 		};
-	}
 
 	const halfWidth = viewportWidth / 2 - PING_MARKER_MARGIN;
 	const halfHeight = viewportHeight / 2 - PING_MARKER_MARGIN;
-
 	const scaleX =
 		directionX === 0
 			? Number.POSITIVE_INFINITY
 			: halfWidth / Math.abs(directionX);
-
 	const scaleY =
 		directionY === 0
 			? Number.POSITIVE_INFINITY
 			: halfHeight / Math.abs(directionY);
-
 	const scale = Math.min(scaleX, scaleY);
 
 	return {
@@ -426,11 +586,9 @@ function getPingScreenPosition(
 
 function playPingSound(type: PingType) {
 	const source = PING_SOUNDS[type];
-
 	if (!source) return;
-
 	const audio = new Audio(source);
-	audio.volume = 1;
+	audio.volume = PING_VOLUME / 100;
 	void audio.play().catch(() => {});
 }
 
@@ -455,9 +613,7 @@ export function PingEngine() {
 				y: event.clientY,
 			};
 		};
-
 		window.addEventListener("mousemove", handleMouseMove);
-
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
@@ -475,7 +631,7 @@ export function PingEngine() {
 			screenPosition,
 			actionPosition: worldPosition,
 			options: PING_OPTIONS,
-			ringWidths: [110],
+			ringWidths: [100, 80, 65],
 			submitKeys: [PING_KEY],
 			nameColor: StandartTextColor["gray"],
 			onSubmit: (props: RadialMenuSubmitProps) => {
@@ -510,7 +666,7 @@ export function PingEngine() {
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (event.repeat) return;
-			if (event.key.toLowerCase() !== PING_KEY) return;
+			if (!(event.ctrlKey && event.key.toLowerCase() === PING_KEY)) return;
 			event.preventDefault();
 			openPingMenu();
 		};

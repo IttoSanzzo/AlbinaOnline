@@ -21,7 +21,6 @@ interface DefaultRadialMenuCoreProps {
 	name: string;
 	option?: RadialMenuOption;
 }
-
 export function DefaultRadialMenuCore({
 	name = "Radial Menu",
 	option,

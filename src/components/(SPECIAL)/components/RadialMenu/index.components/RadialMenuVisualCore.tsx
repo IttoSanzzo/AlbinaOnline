@@ -27,7 +27,6 @@ interface RadialMenuVisualCoreProps {
 	nameColor?: string;
 	showNames?: boolean;
 }
-
 export function RadialMenuVisualCore({
 	id,
 	screenPosition,
