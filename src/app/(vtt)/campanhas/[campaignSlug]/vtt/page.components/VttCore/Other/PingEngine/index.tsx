@@ -27,6 +27,8 @@ const PING_MARKER_SIZE = 42;
 const PING_MARKER_MARGIN = PING_MARKER_SIZE / 2;
 const PING_KEY = "x";
 const PING_VOLUME = 100;
+const MAX_PING_TIMEOUT_MS = 5000;
+const MAX_PING_COUNT_PER_TIMEOUT = 6;
 
 interface Ping {
 	id: string;
@@ -662,6 +664,7 @@ export function PingEngine() {
 	const { members } = useVttMembersContext();
 	const [pings, setPings] = useState<Ping[]>([]);
 	const pingTimestampsRef = useRef<number[]>([]);
+	const lastPingType = useRef<keyof typeof PingType>("Default");
 
 	const mousePositionRef = useRef({
 		x: 0,
@@ -681,6 +684,25 @@ export function PingEngine() {
 		};
 	}, []);
 
+	function sendPing(type: keyof typeof PingType, position: CoordinatePair) {
+		const now = Date.now();
+		const windowStart = now - MAX_PING_TIMEOUT_MS;
+		lastPingType.current = type;
+		pingTimestampsRef.current = pingTimestampsRef.current.filter(
+			(timestamp) => timestamp > windowStart,
+		);
+		if (pingTimestampsRef.current.length >= MAX_PING_COUNT_PER_TIMEOUT) return;
+		pingTimestampsRef.current.push(now);
+		send({
+			id: Guid.NewGuid(),
+			type: PING_MESSAGE_TYPE,
+			data: {
+				type: type,
+				position: position,
+			},
+		});
+	}
+
 	const openPingMenu = useCallback(
 		(mode: "fast" | "switch") => {
 			const screenPosition = mousePositionRef.current;
@@ -698,25 +720,10 @@ export function PingEngine() {
 				submitKeys: [PING_KEY],
 				nameColor: StandartTextColor["gray"],
 				onSubmit: (props: RadialMenuSubmitProps) => {
-					const now = Date.now();
-					const windowStart = now - 5000;
-
-					pingTimestampsRef.current = pingTimestampsRef.current.filter(
-						(timestamp) => timestamp > windowStart,
+					sendPing(
+						props.option.id as keyof typeof PingType,
+						props.cursorPosition,
 					);
-					if (pingTimestampsRef.current.length >= 6) {
-						props.close();
-						return;
-					}
-					pingTimestampsRef.current.push(now);
-					send({
-						id: Guid.NewGuid(),
-						type: PING_MESSAGE_TYPE,
-						data: {
-							type: props.option.id,
-							position: props.cursorPosition,
-						},
-					});
 					props.close();
 				},
 			});
@@ -732,14 +739,20 @@ export function PingEngine() {
 			)
 				return;
 			event.preventDefault();
-			openPingMenu(event.shiftKey ? "switch" : "fast");
+			if (event.shiftKey) {
+				if (event.altKey) {
+					sendPing(
+						lastPingType.current,
+						roundCoordinate(screenToWorld(mousePositionRef.current)),
+					);
+				} else openPingMenu("switch");
+			} else openPingMenu("fast");
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [openPingMenu]);
-
 	useEffect(() => {
 		return subscribe(PING_MESSAGE_TYPE, (message) => {
 			const data = message.data as {
