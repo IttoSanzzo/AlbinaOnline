@@ -11,6 +11,7 @@ import {
 	useMemo,
 	useState,
 } from "react";
+import { useVttContext } from "./VttContextProvider";
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 5;
@@ -54,7 +55,7 @@ interface VttCamera {
 
 interface VttViewportContext {
 	vttId: Guid | null;
-	sceneId: Guid;
+	sceneId: Guid | null;
 	viewport: VttViewportSize;
 	camera: VttCamera;
 	pixelsPerCentimeter: number;
@@ -84,8 +85,7 @@ interface VttViewportContextProviderProps {
 export function VttViewportContextProvider({
 	children,
 }: VttViewportContextProviderProps) {
-	const { vttId } = useVttWebSocket();
-	const sceneId = Guid.Empty; // TODO: Real SceneId
+	const { vttId, activeSceneId } = useVttContext();
 	const [viewport, setViewport] = useState<VttViewportSize>({
 		width: typeof window === "undefined" ? 0 : window.innerWidth,
 		height: typeof window === "undefined" ? 0 : window.innerHeight,
@@ -114,8 +114,8 @@ export function VttViewportContextProvider({
 
 	const storageKey = useMemo(() => {
 		if (!vttId) return null;
-		return `vttId=${vttId}|scene=${sceneId}|camera`;
-	}, [vttId, sceneId]);
+		return `vttId=${vttId}|scene=${activeSceneId}|camera`;
+	}, [vttId, activeSceneId]);
 
 	useEffect(() => {
 		if (!storageKey) return;
@@ -323,7 +323,7 @@ export function VttViewportContextProvider({
 	const contextValue = useMemo<VttViewportContext>(
 		() => ({
 			vttId,
-			sceneId,
+			sceneId: activeSceneId,
 			viewport,
 			camera,
 			pixelsPerCentimeter: PIXELS_PER_CENTIMETER,
@@ -340,7 +340,7 @@ export function VttViewportContextProvider({
 			resetZoom,
 			resetPosition,
 		}),
-		[vttId, sceneId, viewport, camera, visibleWorld],
+		[vttId, activeSceneId, viewport, camera, visibleWorld],
 	);
 
 	return (

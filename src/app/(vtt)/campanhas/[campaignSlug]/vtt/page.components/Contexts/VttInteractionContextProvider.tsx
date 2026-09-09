@@ -1,7 +1,14 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 import { VttInteractionType } from "../Types/VttMouseState";
+import { useVttContext } from "./VttContextProvider";
 
 export interface VttInteraction {
 	type: VttInteractionType;
@@ -33,6 +40,8 @@ interface VttInteractionContextProviderProps {
 export function VttInteractionContextProvider({
 	children,
 }: VttInteractionContextProviderProps) {
+	const { activeSceneId } = useVttContext();
+
 	const [interaction, setInteractionState] =
 		useState<VttInteraction>(DEFAULT_INTERACTION);
 	const [hoverInteractionType, setHoverInteractionType] =
@@ -41,6 +50,10 @@ export function VttInteractionContextProvider({
 	const clearInteraction = () => {
 		setInteractionState(DEFAULT_INTERACTION);
 	};
+
+	useEffect(() => {
+		clearInteraction();
+	}, [activeSceneId]);
 
 	const contextValue: VttInteractionContext = {
 		interaction,

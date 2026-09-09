@@ -1,7 +1,14 @@
 "use client";
 
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
-import { createContext, ReactNode, useContext, useEffect, useRef } from "react";
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { VttInputMessage } from "../Types/VttInputMessage";
 import { VttOutputMessage } from "../Types/VttOutputtMessage";
 import { Campaign, Guid } from "@/libs/stp@types";
@@ -10,6 +17,7 @@ type VttMessageHandler = (message: VttOutputMessage) => void;
 
 interface VttBasicContext {
 	vttId: Guid | null;
+	activeSceneId: Guid | null;
 	campaign: Campaign;
 	send: (message: VttInputMessage) => void;
 	subscribe: (type: string, handler: VttMessageHandler) => () => void;
@@ -27,6 +35,7 @@ export function VttContextProvider({
 	children,
 }: VttContextProviderProps) {
 	const { vttId, socket } = useVttWebSocket();
+	const [activeSceneId, setActiveSceneId] = useState<Guid | null>(null);
 	const subscriptions = useRef<Map<string, Set<VttMessageHandler>>>(new Map());
 	const ignoredMessages = useRef<Set<Guid>>(new Set());
 
@@ -42,6 +51,10 @@ export function VttContextProvider({
 					return;
 				}
 				if (ignoredMessages.current.delete(message.id)) return;
+
+				if (message.type === "VttSceneSnapshot")
+					setActiveSceneId((message.data as { sceneId: Guid }).sceneId);
+
 				const handlers = subscriptions.current.get(message.type);
 				if (!handlers) return;
 				handlers.forEach((handler) => {
@@ -89,6 +102,7 @@ export function VttContextProvider({
 
 	const contextValue: VttBasicContext = {
 		vttId,
+		activeSceneId,
 		campaign,
 		send,
 		subscribe,
