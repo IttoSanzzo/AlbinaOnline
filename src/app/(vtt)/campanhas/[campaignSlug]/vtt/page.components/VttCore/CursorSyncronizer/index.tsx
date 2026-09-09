@@ -16,14 +16,14 @@ const ClientCursorsRenderer = newStyledElement.div(
 export function CursorSyncronizer() {
 	const { vttId, subscribe, send } = useVttContext();
 	const { loading, user } = useCurrentUser();
-	const { screenToWorld, worldToScreen } = useVttViewportContext();
+	const { screenToWorld, worldToScreen, viewport } = useVttViewportContext();
 	const { interaction, hoverInteractionType } = useVttInteractionContext();
 	const [cursorsState, setCursorsState] = useState<Map<Guid, VttMouseState>>(
 		new Map<Guid, VttMouseState>(),
 	);
 	const mousePosition = useRef({
-		x: 0,
-		y: 0,
+		x: viewport.width / 2,
+		y: viewport.height / 2,
 	});
 
 	if (!vttId) return null;

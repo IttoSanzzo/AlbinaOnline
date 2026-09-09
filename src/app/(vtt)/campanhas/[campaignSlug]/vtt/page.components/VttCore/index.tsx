@@ -25,6 +25,7 @@ import { VttGridContextProvider } from "../Contexts/VttGridProvider";
 import { VirtualGridView } from "./VirtualGridView";
 import { RadialMenuProvider } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { PingEngine } from "./Other/PingEngine";
+import { PlayerConnectionChange } from "./Other/PureEventHandlers/PlayerConnectionChange";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -72,6 +73,7 @@ function VttCoreEngine() {
 			<CenterPointer />
 			<PingEngine />
 			<CursorSyncronizer />
+			<PlayerConnectionChange />
 			<VirtualUserCursor />
 		</VttCoreEngineContainer>
 	);

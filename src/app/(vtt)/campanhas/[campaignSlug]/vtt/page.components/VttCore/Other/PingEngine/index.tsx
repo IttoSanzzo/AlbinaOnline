@@ -659,7 +659,7 @@ function playPingSound(type: PingType) {
 export function PingEngine() {
 	const radialMenu = useRadialMenu();
 	const { send, subscribe } = useVttContext();
-	const { screenToWorld, worldToScreen, setCameraPosition } =
+	const { viewport, screenToWorld, worldToScreen, setCameraPosition } =
 		useVttViewportContext();
 	const { members } = useVttMembersContext();
 	const [pings, setPings] = useState<Ping[]>([]);
@@ -667,8 +667,8 @@ export function PingEngine() {
 	const lastPingType = useRef<keyof typeof PingType>("Default");
 
 	const mousePositionRef = useRef({
-		x: 0,
-		y: 0,
+		x: viewport.width / 2,
+		y: viewport.height / 2,
 	});
 
 	useEffect(() => {
