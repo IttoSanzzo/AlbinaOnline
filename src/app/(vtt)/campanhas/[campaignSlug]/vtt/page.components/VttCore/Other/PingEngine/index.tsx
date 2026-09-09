@@ -19,6 +19,7 @@ import {
 	StandartTextColor,
 } from "@/components/(UIBasics)";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
+import { useAudioManager } from "../../../Contexts/AudioManager/AudioManagerContext";
 
 const PingEngineContainer = newStyledElement.div(styles.pingEngineContainer);
 const PING_MESSAGE_TYPE = "PostPing";
@@ -26,7 +27,6 @@ const PING_DURATION = 4000;
 const PING_MARKER_SIZE = 42;
 const PING_MARKER_MARGIN = PING_MARKER_SIZE / 2;
 const PING_KEY = "x";
-const PING_VOLUME = 100;
 const MAX_PING_TIMEOUT_MS = 5000;
 const MAX_PING_COUNT_PER_TIMEOUT = 6;
 
@@ -648,20 +648,13 @@ function getPingScreenPosition(
 	};
 }
 
-function playPingSound(type: PingType) {
-	const source = PING_SOUNDS[type];
-	if (!source) return;
-	const audio = new Audio(source);
-	audio.volume = PING_VOLUME / 100;
-	void audio.play().catch(() => {});
-}
-
 export function PingEngine() {
 	const radialMenu = useRadialMenu();
 	const { send, subscribe } = useVttContext();
 	const { viewport, screenToWorld, worldToScreen, setCameraPosition } =
 		useVttViewportContext();
 	const { members } = useVttMembersContext();
+	const { play } = useAudioManager();
 	const [pings, setPings] = useState<Ping[]>([]);
 	const pingTimestampsRef = useRef<number[]>([]);
 	const lastPingType = useRef<keyof typeof PingType>("Default");
@@ -670,6 +663,16 @@ export function PingEngine() {
 		x: viewport.width / 2,
 		y: viewport.height / 2,
 	});
+
+	function playPingSound(type: PingType, userId: Guid) {
+		const source = PING_SOUNDS[type];
+		if (!source) return;
+		play({
+			path: source,
+			type: "vtt.pings",
+			sourceId: userId,
+		});
+	}
 
 	useEffect(() => {
 		const handleMouseMove = (event: MouseEvent) => {
@@ -774,14 +777,14 @@ export function PingEngine() {
 				timestamp: Date.now(),
 			};
 			setPings((current) => [...current, ping]);
-			playPingSound(PingType[data.type]);
+			playPingSound(PingType[data.type], data.userId);
 			window.setTimeout(() => {
 				setPings((current) =>
 					current.filter((currentPing) => currentPing.id !== ping.id),
 				);
 			}, PING_DURATION);
 		});
-	}, [subscribe, members]);
+	}, [subscribe, members, playPingSound]);
 
 	return (
 		<PingEngineContainer>

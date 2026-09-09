@@ -26,6 +26,7 @@ import { VirtualGridView } from "./VirtualGridView";
 import { RadialMenuProvider } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { PingEngine } from "./Other/PingEngine";
 import { PlayerConnectionChange } from "./Other/PureEventHandlers/PlayerConnectionChange";
+import { AudioManagerProvider } from "../Contexts/AudioManager/AudioManagerContext";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -42,20 +43,22 @@ export function VttCore({ campaign }: VttCoreProps) {
 
 	return (
 		<VttCoreProvidersContainer>
-			<VttContextProvider campaign={campaign}>
-				<VttMembersContextProvider>
-					<VttViewportContextProvider>
-						<VttGridContextProvider>
-							<VttInteractionContextProvider>
-								<RadialMenuProvider>
-									{`Connected to VttId: ${vttId}`}
-									<VttCoreEngine />
-								</RadialMenuProvider>
-							</VttInteractionContextProvider>
-						</VttGridContextProvider>
-					</VttViewportContextProvider>
-				</VttMembersContextProvider>
-			</VttContextProvider>
+			<AudioManagerProvider>
+				<VttContextProvider campaign={campaign}>
+					<VttMembersContextProvider>
+						<VttViewportContextProvider>
+							<VttGridContextProvider>
+								<VttInteractionContextProvider>
+									<RadialMenuProvider>
+										{`Connected to VttId: ${vttId}`}
+										<VttCoreEngine />
+									</RadialMenuProvider>
+								</VttInteractionContextProvider>
+							</VttGridContextProvider>
+						</VttViewportContextProvider>
+					</VttMembersContextProvider>
+				</VttContextProvider>
+			</AudioManagerProvider>
 		</VttCoreProvidersContainer>
 	);
 }
