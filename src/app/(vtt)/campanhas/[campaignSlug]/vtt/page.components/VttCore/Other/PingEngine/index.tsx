@@ -62,6 +62,8 @@ enum PingType {
 	Victory,
 	Defeat,
 	Suspicious,
+	Stop,
+	HeeHee,
 }
 
 const PING_COLORS: Record<PingType, keyof typeof StpIconColor> = {
@@ -90,6 +92,8 @@ const PING_COLORS: Record<PingType, keyof typeof StpIconColor> = {
 	[PingType.Victory]: "yellow",
 	[PingType.Defeat]: "red",
 	[PingType.Suspicious]: "purple",
+	[PingType.Stop]: "red",
+	[PingType.HeeHee]: "pink",
 };
 const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Default]: "/sounds/vtt/pings/default.mp3",
@@ -117,6 +121,8 @@ const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Victory]: "/sounds/vtt/pings/victory.mp3",
 	[PingType.Defeat]: "/sounds/vtt/pings/defeat.mp3",
 	[PingType.Suspicious]: "/sounds/vtt/pings/suspicious.mp3",
+	[PingType.Stop]: "/sounds/vtt/pings/stop.mp3",
+	[PingType.HeeHee]: "/sounds/vtt/pings/heehee.mp3",
 };
 
 const PING_OPTIONS_MOVEMENT: RadialMenuOption[] = [
@@ -167,6 +173,18 @@ const PING_OPTIONS_MOVEMENT: RadialMenuOption[] = [
 		),
 		description: "Mova-se para aqui!",
 		backgroundColor: StandartBackgroundColor["lightGray"],
+	},
+	{
+		id: PingType[PingType.Stop],
+		name: "Pare",
+		icon: (
+			<StpIcon
+				name="Prohibit"
+				color={PING_COLORS[PingType.Stop]}
+			/>
+		),
+		description: "Pare!",
+		backgroundColor: StandartBackgroundColor["darkGray"],
 	},
 ];
 const PING_OPTIONS_COMBAT: RadialMenuOption[] = [
@@ -317,6 +335,7 @@ const PING_OPTIONS_OTHERS_RESPONSES: RadialMenuOption[] = [
 		),
 		description: "Sim!",
 		backgroundColor: StandartBackgroundColor["darkGreen"],
+		fastKey: "s",
 	},
 	{
 		id: PingType[PingType.No],
@@ -329,9 +348,36 @@ const PING_OPTIONS_OTHERS_RESPONSES: RadialMenuOption[] = [
 		),
 		description: "Não!",
 		backgroundColor: StandartBackgroundColor["darkRed"],
+		fastKey: "n",
 	},
 ];
-const PING_OPTIONS_OTHERS_JANKENPON: RadialMenuOption[] = [
+const PING_OPTIONS_OTHERS_MEMES: RadialMenuOption[] = [
+	{
+		id: PingType[PingType.HeeHee],
+		name: "Hee Hee",
+		icon: (
+			<StpIcon
+				name="MicrophoneStage"
+				color={PING_COLORS[PingType.HeeHee]}
+			/>
+		),
+		description: "Hee hee!",
+		backgroundColor: StandartBackgroundColor["darkPink"],
+	},
+	{
+		id: PingType[PingType.Stop],
+		name: "Pare",
+		icon: (
+			<StpIcon
+				name="Prohibit"
+				color={PING_COLORS[PingType.Stop]}
+			/>
+		),
+		description: "Pare!",
+		backgroundColor: StandartBackgroundColor["darkRed"],
+	},
+];
+const PING_OPTIONS_OTHERS_JANKEN: RadialMenuOption[] = [
 	{
 		id: PingType[PingType.Rock],
 		name: "Pedra",
@@ -343,6 +389,7 @@ const PING_OPTIONS_OTHERS_JANKENPON: RadialMenuOption[] = [
 		),
 		description: "Pedra!",
 		backgroundColor: StandartBackgroundColor["darkRed"],
+		fastKey: "j",
 	},
 	{
 		id: PingType[PingType.Paper],
@@ -355,6 +402,7 @@ const PING_OPTIONS_OTHERS_JANKENPON: RadialMenuOption[] = [
 		),
 		description: "Papel!",
 		backgroundColor: StandartBackgroundColor["darkBlue"],
+		fastKey: "k",
 	},
 	{
 		id: PingType[PingType.Scissor],
@@ -367,6 +415,7 @@ const PING_OPTIONS_OTHERS_JANKENPON: RadialMenuOption[] = [
 		),
 		description: "Tesoura!",
 		backgroundColor: StandartBackgroundColor["darkYellow"],
+		fastKey: "p",
 	},
 ];
 const PING_OPTIONS_OTHERS: RadialMenuOption[] = [
@@ -384,8 +433,21 @@ const PING_OPTIONS_OTHERS: RadialMenuOption[] = [
 		options: PING_OPTIONS_OTHERS_RESPONSES,
 	},
 	{
-		id: "Jankenpon",
-		name: "Jankenpon",
+		id: "Memes",
+		name: "Memes",
+		icon: (
+			<StpIcon
+				name="Cheers"
+				color="pink"
+			/>
+		),
+		description: "Memes e outros aleatórios.",
+		backgroundColor: StandartBackgroundColor["darkBlue"],
+		options: PING_OPTIONS_OTHERS_MEMES,
+	},
+	{
+		id: "Janken",
+		name: "Janken",
 		icon: (
 			<StpIcon
 				name="Hand"
@@ -394,7 +456,7 @@ const PING_OPTIONS_OTHERS: RadialMenuOption[] = [
 		),
 		description: "Jogo de Pedra, Papel ou Tesoura.",
 		backgroundColor: StandartBackgroundColor["gray"],
-		options: PING_OPTIONS_OTHERS_JANKENPON,
+		options: PING_OPTIONS_OTHERS_JANKEN,
 	},
 ];
 const PING_OPTIONS: RadialMenuOption[] = [
@@ -619,56 +681,58 @@ export function PingEngine() {
 		};
 	}, []);
 
-	const openPingMenu = useCallback(() => {
-		const screenPosition = mousePositionRef.current;
-		const worldPosition = roundCoordinate(screenToWorld(screenPosition));
+	const openPingMenu = useCallback(
+		(mode: "fast" | "switch") => {
+			const screenPosition = mousePositionRef.current;
+			const worldPosition = roundCoordinate(screenToWorld(screenPosition));
 
-		radialMenu.openNew({
-			mode: "fast",
-			id: "ping",
-			name: "Ping",
-			overlay: false,
-			screenPosition,
-			actionPosition: worldPosition,
-			options: PING_OPTIONS,
-			ringWidths: [100, 80, 65],
-			submitKeys: [PING_KEY],
-			nameColor: StandartTextColor["gray"],
-			onSubmit: (props: RadialMenuSubmitProps) => {
-				const now = Date.now();
-				const windowStart = now - 5000;
+			radialMenu.openNew({
+				mode,
+				id: "ping",
+				name: "Ping",
+				overlay: false,
+				screenPosition,
+				actionPosition: worldPosition,
+				options: PING_OPTIONS,
+				ringWidths: [100, 80, 65],
+				submitKeys: [PING_KEY],
+				nameColor: StandartTextColor["gray"],
+				onSubmit: (props: RadialMenuSubmitProps) => {
+					const now = Date.now();
+					const windowStart = now - 5000;
 
-				pingTimestampsRef.current = pingTimestampsRef.current.filter(
-					(timestamp) => timestamp > windowStart,
-				);
-
-				if (pingTimestampsRef.current.length >= 6) {
+					pingTimestampsRef.current = pingTimestampsRef.current.filter(
+						(timestamp) => timestamp > windowStart,
+					);
+					if (pingTimestampsRef.current.length >= 6) {
+						props.close();
+						return;
+					}
+					pingTimestampsRef.current.push(now);
+					send({
+						id: Guid.NewGuid(),
+						type: PING_MESSAGE_TYPE,
+						data: {
+							type: props.option.id,
+							position: props.cursorPosition,
+						},
+					});
 					props.close();
-					return;
-				}
-
-				pingTimestampsRef.current.push(now);
-
-				send({
-					id: Guid.NewGuid(),
-					type: PING_MESSAGE_TYPE,
-					data: {
-						type: props.option.id,
-						position: props.cursorPosition,
-					},
-				});
-
-				props.close();
-			},
-		});
-	}, [radialMenu, screenToWorld, send]);
+				},
+			});
+		},
+		[radialMenu, screenToWorld, send],
+	);
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.repeat) return;
-			if (!(event.ctrlKey && event.key.toLowerCase() === PING_KEY)) return;
+			if (
+				event.repeat ||
+				!(event.ctrlKey && event.key.toLowerCase() === PING_KEY)
+			)
+				return;
 			event.preventDefault();
-			openPingMenu();
+			openPingMenu(event.shiftKey ? "switch" : "fast");
 		};
 		window.addEventListener("keydown", handleKeyDown);
 		return () => {

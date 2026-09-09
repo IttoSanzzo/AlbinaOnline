@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { newStyledElement } from "@setsu-tp/styled-components";
+
 import styles from "./index.module.css";
+
 import {
 	ACTIVE_EXPANSION,
 	DEFAULT_CORE_DIAMETER,
@@ -13,8 +16,10 @@ import {
 	RadialMenuRing,
 	RadialMenuRingGeometry,
 } from "./types";
+
 import { RadialMenuVisualCore } from "./index.components/RadialMenuVisualCore";
 import { DefaultRadialMenuCore } from "./index.components/DefaultRadialMenuCore";
+
 import { RadialMenuData } from "./Context";
 import { validateRing } from "./utils";
 
@@ -105,7 +110,9 @@ export function RadialMenu({
 			if (targetRingIndex === -1) {
 				if (distance > ringGeometry[ringGeometry.length - 1].outerRadius) {
 					targetRingIndex = ringGeometry.length - 1;
-				} else return;
+				} else {
+					return;
+				}
 			}
 			const ring = ringGeometry[targetRingIndex];
 			const angle = Math.atan2(dy, dx) - RADIAL_START_ANGLE;
@@ -141,14 +148,18 @@ export function RadialMenu({
 
 		setRings((current) => {
 			const baseRings = current.slice(0, nextDepth);
+
 			if (childOptions && validateRing(childOptions)) {
 				const existingRing = current[nextDepth];
+
 				if (
 					existingRing &&
 					existingRing.parentOptionId === activeOption.id &&
 					existingRing.options === childOptions
-				)
+				) {
 					return [...baseRings, existingRing];
+				}
+
 				return [
 					...baseRings,
 					{
@@ -158,6 +169,7 @@ export function RadialMenu({
 					},
 				];
 			}
+
 			return baseRings;
 		});
 	}, [activeOption, activeDepth]);
@@ -189,6 +201,7 @@ export function RadialMenu({
 			if (!option) return undefined;
 			if (option.options && validateRing(option.options))
 				return resolveFastOption(option.options[0], depth + 1);
+
 			return {
 				option,
 				depth,
@@ -250,6 +263,9 @@ export function RadialMenu({
 			event.preventDefault();
 			setActiveDepth(matchedDepth);
 			setActiveOption(matchedOption);
+			if (!matchedOption.options || !validateRing(matchedOption.options)) {
+				submitOption(matchedOption, matchedDepth);
+			}
 		};
 
 		const handleKeyUp = (event: KeyboardEvent) => {
@@ -264,7 +280,7 @@ export function RadialMenu({
 			window.removeEventListener("keydown", handleKeyDown);
 			window.removeEventListener("keyup", handleKeyUp);
 		};
-	}, [rings, onClose, submitKeys, handleSubmit]);
+	}, [rings, onClose, submitKeys, handleSubmit, submitOption]);
 
 	useEffect(() => {
 		const consumeNextContextMenu = () => {
@@ -288,6 +304,7 @@ export function RadialMenu({
 
 		const handleMouseUp = (event: MouseEvent) => {
 			if (event.button !== 0) return;
+
 			event.preventDefault();
 			handleSubmit();
 		};
@@ -298,6 +315,7 @@ export function RadialMenu({
 		window.addEventListener("mousedown", handleMouseDown);
 		window.addEventListener("mouseup", handleMouseUp);
 		window.addEventListener("contextmenu", handleContextMenu);
+
 		return () => {
 			window.removeEventListener("mousedown", handleMouseDown);
 			window.removeEventListener("mouseup", handleMouseUp);
