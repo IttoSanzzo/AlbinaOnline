@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
 import Image from "next/image";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { useAudioManager } from "../../../Contexts/AudioManager/AudioManagerContext";
+import { useVttAudioController } from "../../../Contexts/AudioManager/VttAudioControllerContext";
 
 const PLAYER_JOINING = "/sounds/vtt/player-events/joining.mp3";
 const PLAYER_JOIN_SOUND = "/sounds/vtt/player-events/connected.mp3";
@@ -15,7 +15,7 @@ const PLAYER_LEAVE_SOUND = "/sounds/vtt/player-events/disconnected.mp3";
 
 export function PlayerConnectionChange() {
 	const { connectedUserIds, members } = useVttMembersContext();
-	const { play } = useAudioManager();
+	const { play } = useVttAudioController();
 	const previousUserIds = useRef<Set<Guid> | null>(null);
 
 	useEffect(() => {

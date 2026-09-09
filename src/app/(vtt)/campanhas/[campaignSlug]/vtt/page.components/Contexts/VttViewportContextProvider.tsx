@@ -1,6 +1,5 @@
 "use client";
 
-import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
 import { Guid } from "@/libs/stp@types";
 import {
 	createContext,
