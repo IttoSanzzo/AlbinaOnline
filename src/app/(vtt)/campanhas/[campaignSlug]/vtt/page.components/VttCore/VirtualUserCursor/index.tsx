@@ -6,6 +6,7 @@ import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider
 import { ClientCursor } from "../CursorSyncronizer/ClientCursor";
 import { useEffect, useState } from "react";
 import { VttMouseState } from "../../Types/VttMouseState";
+import { createPortal } from "react-dom";
 
 export function VirtualUserCursor() {
 	const { user, loading } = useCurrentUser();
@@ -61,12 +62,21 @@ export function VirtualUserCursor() {
 
 	if (loading || !user) return null;
 
-	return (
+	return createPortal(
 		<ClientCursor
 			mouseState={mouseState}
 			screenPosition={screenPosition}
 			userId={user.id}
 			isActiveUser
-		/>
+		/>,
+		document.body,
 	);
+	// return (
+	// 	<ClientCursor
+	// 		mouseState={mouseState}
+	// 		screenPosition={screenPosition}
+	// 		userId={user.id}
+	// 		isActiveUser
+	// 	/>
+	// );
 }
