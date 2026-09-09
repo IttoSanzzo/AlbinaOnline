@@ -2,7 +2,6 @@
 
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
 import { createContext, ReactNode, useContext, useEffect, useRef } from "react";
-
 import { VttInputMessage } from "../Types/VttInputMessage";
 import { VttOutputMessage } from "../Types/VttOutputtMessage";
 import { Campaign, Guid } from "@/libs/stp@types";
@@ -14,6 +13,7 @@ interface VttBasicContext {
 	campaign: Campaign;
 	send: (message: VttInputMessage) => void;
 	subscribe: (type: string, handler: VttMessageHandler) => () => void;
+	ignoreMessage: (id: Guid) => void;
 }
 
 const VttContext = createContext<VttBasicContext | null>(null);
@@ -28,6 +28,7 @@ export function VttContextProvider({
 }: VttContextProviderProps) {
 	const { vttId, socket } = useVttWebSocket();
 	const subscriptions = useRef<Map<string, Set<VttMessageHandler>>>(new Map());
+	const ignoredMessages = useRef<Set<Guid>>(new Set());
 
 	useEffect(() => {
 		if (!socket) return;
@@ -40,6 +41,7 @@ export function VttContextProvider({
 					console.error("Failed to parse VTT WebSocket message.", event.data);
 					return;
 				}
+				if (ignoredMessages.current.delete(message.id)) return;
 				const handlers = subscriptions.current.get(message.type);
 				if (!handlers) return;
 				handlers.forEach((handler) => {
@@ -75,8 +77,14 @@ export function VttContextProvider({
 		handlers.add(handler);
 		return () => {
 			handlers?.delete(handler);
-			if (handlers?.size === 0) subscriptions.current.delete(type);
+			if (handlers?.size === 0) {
+				subscriptions.current.delete(type);
+			}
 		};
+	};
+
+	const ignoreMessage = (id: Guid) => {
+		ignoredMessages.current.add(id);
 	};
 
 	const contextValue: VttBasicContext = {
@@ -84,6 +92,7 @@ export function VttContextProvider({
 		campaign,
 		send,
 		subscribe,
+		ignoreMessage,
 	};
 
 	return (
