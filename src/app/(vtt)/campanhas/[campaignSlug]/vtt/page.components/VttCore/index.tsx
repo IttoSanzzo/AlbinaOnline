@@ -29,6 +29,8 @@ import { PlayerConnectionChange } from "./Other/PureEventHandlers/PlayerConnecti
 import { AudioManagerProvider } from "../Contexts/AudioManager/AudioManagerContext";
 import { VttLocalSettingsProvider } from "../Contexts/VttLocalSettings/VttLocalSettingsProvider";
 import { VttAudioControllerProvider } from "../Contexts/AudioManager/VttAudioControllerContext";
+import { VttHud } from "./VttHud";
+import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -77,12 +79,13 @@ function VttCoreEngine() {
 
 	return (
 		<VttCoreEngineContainer>
+			<GeneralShortcutsEngine />
 			<VirtualGridView />
 			<TestZone />
-			<CenterPointer />
 			<PingEngine />
 			<CursorSyncronizer />
 			<PlayerConnectionChange />
+			<VttHud />
 			<VirtualUserCursor />
 		</VttCoreEngineContainer>
 	);
@@ -90,11 +93,9 @@ function VttCoreEngine() {
 
 // Test ////////////////////////////////////////////////////////////////////////
 const TestContainer = newStyledElement.div(styles.testContainer);
-const CenterPointer = newStyledElement.div(styles.centerPointer);
 
 function TestZone() {
-	const { camera, setCameraPosition, setZoom, worldToScreen, resetCamera } =
-		useVttViewportContext();
+	const { camera, worldToScreen } = useVttViewportContext();
 	const { setInteraction } = useVttInteractionContext();
 
 	const square1Position = worldToScreen({
@@ -115,6 +116,7 @@ function TestZone() {
 						type: "Default",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Mouse Default
@@ -125,6 +127,7 @@ function TestZone() {
 						type: "Brush",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Brush
@@ -135,6 +138,7 @@ function TestZone() {
 						type: "Chat",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Chat
@@ -145,6 +149,7 @@ function TestZone() {
 						type: "Menu",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Menu
@@ -155,6 +160,7 @@ function TestZone() {
 						type: "Move",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Move
@@ -165,6 +171,7 @@ function TestZone() {
 						type: "Eraser",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Eraser
@@ -175,6 +182,7 @@ function TestZone() {
 						type: "Hand",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Hand
@@ -185,6 +193,7 @@ function TestZone() {
 						type: "Measuring",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Measuring
@@ -195,6 +204,7 @@ function TestZone() {
 						type: "DefaultUp",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				DefaultUp
@@ -205,64 +215,12 @@ function TestZone() {
 						type: "Pointer",
 						allowMiddlePan: true,
 						allowEdgeScroll: false,
+						edgeScrollOverride: null,
 					});
 				}}>
 				Pointer
 			</button>
-			{/* <button onClick={() => document.exitPointerLock()}>Unlock Mouse</button> */}
-			<br />
-			<br />
-			Viewport: {camera.x} {camera.y} {camera.zoom}
-			<br />
-			<button
-				onClick={() => {
-					setZoom(1);
-				}}>
-				Reset Zoom
-			</button>
-			<button
-				onClick={() => {
-					setZoom(Math.round((camera.zoom - 0.1) * 10) / 10);
-				}}>
-				Zoom Out
-			</button>
-			<button
-				onClick={() => {
-					setZoom(Math.round((camera.zoom + 0.1) * 10) / 10);
-				}}>
-				Zoom In
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					resetCamera();
-				}}>
-				Reset Cam
-			</button>
-			<button
-				onClick={() => {
-					setCameraPosition(camera.x, camera.y - 10);
-				}}>
-				Up
-			</button>
-			<button
-				onClick={() => {
-					setCameraPosition(camera.x - 10, camera.y);
-				}}>
-				Left
-			</button>
-			<button
-				onClick={() => {
-					setCameraPosition(camera.x + 10, camera.y);
-				}}>
-				Right
-			</button>
-			<button
-				onClick={() => {
-					setCameraPosition(camera.x, camera.y + 10);
-				}}>
-				Down
-			</button>
+
 			<span
 				style={{
 					position: "absolute",

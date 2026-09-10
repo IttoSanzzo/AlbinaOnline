@@ -36,7 +36,12 @@ export default function VttPageView({ campaign }: VttPageViewProps) {
 }
 
 function VttLoadingView() {
-	return <LoadingCircle centralizeVertical={23} />;
+	return (
+		<LoadingCircle
+			centralizeVertical={23}
+			fixedHeight
+		/>
+	);
 }
 
 // Already Connected ///////////////////////////////////////////////////////////

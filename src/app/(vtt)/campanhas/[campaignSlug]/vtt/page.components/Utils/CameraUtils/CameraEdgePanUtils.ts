@@ -13,18 +13,20 @@ const UPDATE_INTERVAL = 33;
 
 export function useEdgeCameraPan() {
 	const { interaction } = useVttInteractionContext();
-	const { moveCamera, camera } = useVttViewportContext();
+	const { moveCamera, camera, viewport } = useVttViewportContext();
 
 	const mousePosition = useRef({
-		x: 0,
-		y: 0,
+		x: viewport.width / 2,
+		y: viewport.height / 2,
 	});
 
 	const zoomRef = useRef(camera.zoom);
 	zoomRef.current = camera.zoom;
 
 	useEffect(() => {
-		if (!interaction.allowEdgeScroll) return;
+		const edgePanEnabled =
+			interaction.edgeScrollOverride ?? interaction.allowEdgeScroll;
+		if (!edgePanEnabled) return;
 
 		const handleMouseMove = (event: MouseEvent) => {
 			mousePosition.current = {
