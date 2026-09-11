@@ -2,7 +2,7 @@ import { StyledLinkCard } from "@/components/(Design)";
 import { UIBasics } from "@/components/(UIBasics)";
 import { LocationData } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { HiddenLocationList } from "./subComponents/HiddenLocationList";
+import { HiddenLocationList } from "./page.components/HiddenLocationList";
 
 export async function PageView() {
 	const response = await fetch(getAlbinaApiFullAddress("/atlas"), {

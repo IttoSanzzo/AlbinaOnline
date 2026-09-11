@@ -4,6 +4,7 @@ import { GenericPageContainer } from "@/components/(Design)";
 import { SetAnchorNavigation } from "@/libs/stp@hooks";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
 import { PageView } from "./page.view";
+import { GridMapsModal } from "./page.components/GridMapsModal";
 
 export const metadata: Metadata = assembleMetadata({
 	title: "Atlas",
@@ -25,6 +26,7 @@ export default async function ItemsPageServerShell() {
 			{/* <SetAnchorNavigation anchors={anchorNavigationData} /> */}
 			<SetAnchorNavigation anchors={[]} />
 			<PageView />
+			<GridMapsModal triggerButton="typeOne" />
 		</GenericPageContainer>
 	);
 }
