@@ -19,21 +19,30 @@ export function GridMapsModal({ isInVtt = false }: GridMapsModalProps) {
 	const [editingGridMapId, setEditingGridMapId] = useState<Guid | null>(null);
 
 	function handleOpenStateChange(newState: boolean) {
-		if (editingGridMapId != null) setEditingGridMapId(null);
+		if (editingGridMapId != null) {
+			setEditingGridMapId(null);
+			return;
+		}
 		setOpenState(newState);
 	}
 
 	return (
-		<Dialog.Root
-			onOpenChange={handleOpenStateChange}
-			open={openState}>
-			<Dialog.Trigger asChild>
+		<Dialog.Root open={openState}>
+			<Dialog.Trigger
+				asChild
+				onClick={() => setOpenState(true)}>
 				<Trigger className={isInVtt ? styles.insideVtt : styles.outsideVtt}>
 					<StpIcon name="MapTrifold" />
 				</Trigger>
 			</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay onClick={() => handleOpenStateChange(false)} />
+				<Dialog.Overlay
+					onClick={(event) => {
+						event.preventDefault();
+						event.stopPropagation();
+						handleOpenStateChange(false);
+					}}
+				/>
 				<Dialog.Content className={styles.content}>
 					<Dialog.Title />
 					<Dialog.Description />
