@@ -29,6 +29,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { LocationLinksEditor } from "./page.components/LocationLinksEditor";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
+import { GridMapsModal } from "../../page.components/GridMapsModal";
 
 const schema = z.object({
 	slug: zSlug(),
@@ -293,6 +294,8 @@ export function EditLocationPageView({ location }: EditLocationPageViewProps) {
 			<UIBasics.Divisor />
 
 			<LocationLinksEditor locationData={location} />
+
+			<GridMapsModal isInVtt={false} />
 		</GenericPageContainer>
 	);
 }

@@ -7,7 +7,7 @@
 	left: 0;
 
 	& * {
-		cursor: none;
+		cursor: none !important;
 	}
 }
 

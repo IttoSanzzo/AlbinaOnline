@@ -5,10 +5,10 @@ export type GridMap = {
 	id: Guid;
 	locationId?: Guid;
 	name: string;
-	Width: number;
-	Height: number;
-	OffsetX: number;
-	OffsetY: number;
+	width: number;
+	height: number;
+	offsetX: number;
+	offsetY: number;
 	tags: string[];
 	imageUrl: string;
 	createdAt: string;

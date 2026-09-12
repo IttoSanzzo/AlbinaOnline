@@ -9,40 +9,44 @@ import { Guid } from "@/libs/stp@types";
 import { AllGridMapsViewer } from "./AllGridMapsViewer";
 import { GridMapsEditor } from "./GridMapsEditor";
 
-const TriggerTypeOne = newStyledElement.div(styles.triggerTypeOne);
-const TriggerTypeTwo = newStyledElement.div(styles.triggerTypeTwo);
+const Trigger = newStyledElement.div(styles.trigger);
 
 interface GridMapsModalProps {
-	triggerButton?: "typeOne" | "typeTwo";
+	isInVtt?: boolean;
 }
-export function GridMapsModal({
-	triggerButton = "typeOne",
-}: GridMapsModalProps) {
+export function GridMapsModal({ isInVtt = false }: GridMapsModalProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 	const [editingGridMapId, setEditingGridMapId] = useState<Guid | null>(null);
 
+	function handleOpenStateChange(newState: boolean) {
+		if (editingGridMapId != null) setEditingGridMapId(null);
+		setOpenState(newState);
+	}
+
 	return (
 		<Dialog.Root
-			onOpenChange={setOpenState}
+			onOpenChange={handleOpenStateChange}
 			open={openState}>
 			<Dialog.Trigger asChild>
-				{triggerButton == "typeOne" ? (
-					<TriggerTypeOne>
-						<StpIcon name="MapTrifold" />
-					</TriggerTypeOne>
-				) : (
-					<TriggerTypeTwo></TriggerTypeTwo>
-				)}
+				<Trigger className={isInVtt ? styles.insideVtt : styles.outsideVtt}>
+					<StpIcon name="MapTrifold" />
+				</Trigger>
 			</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay onClick={() => setOpenState(false)} />
+				<Dialog.Overlay onClick={() => handleOpenStateChange(false)} />
 				<Dialog.Content className={styles.content}>
 					<Dialog.Title />
 					<Dialog.Description />
 					{editingGridMapId == null ? (
-						<AllGridMapsViewer setEditingGridMapId={setEditingGridMapId} />
+						<AllGridMapsViewer
+							isInVtt={isInVtt}
+							setEditingGridMapId={setEditingGridMapId}
+						/>
 					) : (
-						<GridMapsEditor setEditingGridMapId={setEditingGridMapId} />
+						<GridMapsEditor
+							gridMapId={editingGridMapId}
+							setEditingGridMapId={setEditingGridMapId}
+						/>
 					)}
 				</Dialog.Content>
 			</Dialog.Portal>

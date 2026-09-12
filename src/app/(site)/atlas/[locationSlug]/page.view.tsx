@@ -21,6 +21,7 @@ import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLin
 import { redirect } from "next/navigation";
 import { toSlug } from "@/libs/stp@forms";
 import { LocationNavigation } from "./page.components/LocationNavigation";
+import { LocationGridMapsCarousel } from "./page.components/LocationGridMapsCarousel";
 
 interface LocationPageViewProps {
 	locationSlug: string;
@@ -113,6 +114,8 @@ export default async function LocationPageView({
 				url={getAlbinaApiFullAddress(`/gallery/atlas/${locationData.slug}`)}
 				hideIfEmpty
 			/>
+
+			<LocationGridMapsCarousel locationSlug={locationSlug} />
 
 			<UIBasics.Box
 				backgroundColor="darkGray"

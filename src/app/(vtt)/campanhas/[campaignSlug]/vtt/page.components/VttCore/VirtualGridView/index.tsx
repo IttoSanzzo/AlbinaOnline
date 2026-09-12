@@ -7,6 +7,7 @@ import {
 	DEFAULT_GRID_CELL_SIZE,
 	useVttGridContext,
 } from "../../Contexts/VttGridProvider";
+import { useId } from "react";
 
 const VttGridContainer = newStyledElement.div(styles.vttGridContainer);
 
@@ -18,28 +19,75 @@ export function VirtualGridView() {
 		viewport.width / 2 - camera.x * pixelsPerCentimeter * camera.zoom;
 	const originY =
 		viewport.height / 2 - camera.y * pixelsPerCentimeter * camera.zoom;
-	const primaryWidth = grid.primaryBorderWidth;
-	const secondaryWidth = grid.secondaryBorderWidth;
+
+	return (
+		<VttGridContainer>
+			<Grid
+				viewportWidth={viewport.width}
+				viewportHeight={viewport.height}
+				originX={originX}
+				originY={originY}
+				cellSize={cellSize}
+				primaryWidth={grid.primaryBorderWidth}
+				secondaryWidth={grid.secondaryBorderWidth}
+				primaryColor={grid.primaryColor}
+				secondaryColor={grid.secondaryColor}
+				primaryOpacity={grid.primaryOpacity}
+				secondaryOpacity={grid.secondaryOpacity}
+			/>
+		</VttGridContainer>
+	);
+}
+
+interface GridProps {
+	viewportWidth: number;
+	viewportHeight: number;
+	originX: number;
+	originY: number;
+	cellSize: number;
+
+	primaryWidth: number;
+	secondaryWidth: number;
+
+	primaryColor: string;
+	secondaryColor: string;
+	primaryOpacity: number;
+	secondaryOpacity: number;
+}
+export function Grid({
+	viewportWidth,
+	viewportHeight,
+	originX,
+	originY,
+	cellSize,
+	primaryWidth,
+	secondaryWidth,
+	primaryColor,
+	secondaryColor,
+	primaryOpacity,
+	secondaryOpacity,
+}: GridProps) {
+	const patternId = `vtt-grid-pattern-${useId()}`;
 	const secondaryOffset = primaryWidth;
 	const innerOffset = primaryWidth + secondaryWidth;
 
 	return (
-		<VttGridContainer>
-			<svg
-				width="100%"
-				height="100%"
-				viewBox={`0 0 ${viewport.width} ${viewport.height}`}
-				xmlns="http://www.w3.org/2000/svg">
-				<defs>
-					<pattern
-						id="vtt-grid-pattern"
-						x={originX}
-						y={originY}
-						width={cellSize}
-						height={cellSize}
-						patternUnits="userSpaceOnUse">
-						<path
-							d={`
+		<svg
+			className={styles.gridSvg}
+			width="100%"
+			height="100%"
+			viewBox={`0 0 ${viewportWidth} ${viewportHeight}`}
+			xmlns="http://www.w3.org/2000/svg">
+			<defs>
+				<pattern
+					id={patternId}
+					x={originX - cellSize}
+					y={originY - cellSize}
+					width={cellSize}
+					height={cellSize}
+					patternUnits="userSpaceOnUse">
+					<path
+						d={`
                 M 0 0
                 H ${cellSize}
                 V ${cellSize}
@@ -52,13 +100,13 @@ export function VirtualGridView() {
                 V ${primaryWidth}
                 Z
               `}
-							fill={grid.primaryColor}
-							fillRule="evenodd"
-							opacity={grid.primaryOpacity}
-						/>
+						fill={primaryColor}
+						fillRule="evenodd"
+						opacity={primaryOpacity}
+					/>
 
-						<path
-							d={`
+					<path
+						d={`
                 M ${secondaryOffset} ${secondaryOffset}
                 H ${cellSize - secondaryOffset}
                 V ${cellSize - secondaryOffset}
@@ -71,20 +119,19 @@ export function VirtualGridView() {
                 V ${innerOffset}
                 Z
               `}
-							fill={grid.secondaryColor}
-							fillRule="evenodd"
-							opacity={grid.secondaryOpacity}
-						/>
-					</pattern>
-				</defs>
+						fill={secondaryColor}
+						fillRule="evenodd"
+						opacity={secondaryOpacity}
+					/>
+				</pattern>
+			</defs>
 
-				<rect
-					width="100%"
-					height="100%"
-					fill="url(#vtt-grid-pattern)"
-					// opacity={grid.opacity}
-				/>
-			</svg>
-		</VttGridContainer>
+			<rect
+				width="100%"
+				height="100%"
+				fill={`url(#${patternId})`}
+				// opacity={grid.opacity}
+			/>
+		</svg>
 	);
 }

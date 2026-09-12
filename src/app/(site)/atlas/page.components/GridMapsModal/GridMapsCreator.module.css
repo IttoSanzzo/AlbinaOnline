@@ -1,0 +1,28 @@
+.gridMapsCreatorTrigger {
+	height: 60px;
+	width: 60px;
+	border-radius: var(--rd-full);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--cl-gray-800);
+	margin: auto var(--sp-2);
+	cursor: pointer;
+	transition: 0.25s linear background-color;
+
+	& svg {
+		width: 40px;
+		height: 40px;
+	}
+
+	&:hover {
+		background-color: var(--cl-gray-600);
+	}
+}
+
+.content {
+	width: 87vw;
+	max-width: 1670px;
+	height: 87vw;
+	max-height: 839px;
+}

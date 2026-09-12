@@ -10,19 +10,25 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { GridMapsCreator } from "./GridMapsCreator";
+import { UIBasics } from "@/components/(UIBasics)";
+import { GridMapInteractionModal } from "./GridMapInteractionModal";
 
 const AllGridMapsViewerContainer = newStyledElement.div(
 	styles.allGridMapsViewerContainer,
 );
+const HeaderContainer = newStyledElement.div(styles.headerContainer);
 
 type FormData = {
 	query: string;
 };
 
 interface AllGridMapsViewerProps {
+	isInVtt: boolean;
 	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
 }
 export function AllGridMapsViewer({
+	isInVtt,
 	setEditingGridMapId,
 }: AllGridMapsViewerProps) {
 	const { user } = useCurrentUser();
@@ -40,38 +46,50 @@ export function AllGridMapsViewer({
 			const response = await fetch(
 				query.length >= 2
 					? getAlbinaApiFullAddress(`/search/gridmaps?query=${query}`)
-					: getAlbinaApiFullAddress(`/search/gridmaps`),
+					: getAlbinaApiFullAddress(`/gridmaps`),
 			);
 			if (!response.ok) return;
 			setAllGridMaps(await response.json());
 		})();
 	}, [query]);
 
-	void setEditingGridMapId;
-
 	if (!user) return <LoadingCircle centralizeVertical={23} />;
 	return (
 		<AllGridMapsViewerContainer>
-			<HookedForm.Form<FormData>
-				form={form}
-				onChangeAction={(data) => {
-					const query = data.query
-						.trim()
-						.replace(/\s*,\s*/g, ",")
-						.replace(/,{2,}/g, ",")
-						.replace(/^,|,$/g, "");
-					setQuery(query);
-				}}>
-				<HookedForm.TextInput<FormData>
-					fieldName={"query"}
-					placeholder={"Pesquisar"}
-					label={"Filtro"}
-				/>
-			</HookedForm.Form>
+			<HeaderContainer>
+				<HookedForm.Form<FormData>
+					form={form}
+					onChangeAction={(data) => {
+						const query = data.query
+							.trim()
+							.replace(/\s*,\s*/g, ",")
+							.replace(/,{2,}/g, ",")
+							.replace(/^,|,$/g, "");
+						setQuery(query);
+					}}>
+					<HookedForm.TextInput<FormData>
+						fieldName={"query"}
+						placeholder={"Pesquisar"}
+						label={"Filtro"}
+					/>
+				</HookedForm.Form>
+				{isInVtt && (
+					<GridMapsCreator setEditingGridMapId={setEditingGridMapId} />
+				)}
+			</HeaderContainer>
 			<HookedForm.Space />
-			{allGridMaps.map((map) => (
-				<div key={map.id}>{map.id}</div>
-			))}
+			<UIBasics.List.Grid
+				withoutBorder={true}
+				columnWidth={250}>
+				{allGridMaps.map((map) => (
+					<GridMapInteractionModal
+						key={map.id}
+						gridMap={map}
+						setEditingGridMapId={setEditingGridMapId}
+						isInVtt={isInVtt}
+					/>
+				))}
+			</UIBasics.List.Grid>
 		</AllGridMapsViewerContainer>
 	);
 }

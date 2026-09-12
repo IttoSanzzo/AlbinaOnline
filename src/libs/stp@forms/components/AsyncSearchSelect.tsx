@@ -141,9 +141,18 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 							<p>{option.name}</p>
 						</SelectOptionButton>
 					))}
-					{options.length == 0 && (
-						<div className={styles.noOptions}>No Options</div>
-					)}
+					{options.length == 0 &&
+						(field.value ? (
+							<button
+								className={styles.clearSelectionButton}
+								onClick={() => {
+									field.onChange(null);
+								}}>
+								Clear Selection
+							</button>
+						) : (
+							<div className={styles.noOptions}>No Options</div>
+						))}
 				</DropdownContainer>
 			)}
 			<AsyncSearchSelectLabel

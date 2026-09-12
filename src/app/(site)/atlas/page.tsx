@@ -26,7 +26,7 @@ export default async function ItemsPageServerShell() {
 			{/* <SetAnchorNavigation anchors={anchorNavigationData} /> */}
 			<SetAnchorNavigation anchors={[]} />
 			<PageView />
-			<GridMapsModal triggerButton="typeOne" />
+			<GridMapsModal isInVtt={true} />
 		</GenericPageContainer>
 	);
 }

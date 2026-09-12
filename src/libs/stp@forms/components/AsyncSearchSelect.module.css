@@ -92,12 +92,23 @@
 	}
 }
 
+.clearSelectionButton,
 .noOptions {
 	background-color: var(--cl-gray-900);
 	width: 100%;
 	padding: var(--sp-2);
 	text-align: center;
 	color: var(--cl-gray-300);
+	border: none;
+}
+
+.clearSelectionButton {
+	transition: 0.25s ease-in-out background-color;
+	&:hover,
+	:focus {
+		background-color: var(--cl-gray-600);
+		outline: none;
+	}
 }
 
 @keyframes fade-in {

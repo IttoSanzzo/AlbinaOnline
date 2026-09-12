@@ -1,0 +1,25 @@
+.imageGridContainer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border-radius: var(--rd-md);
+	overflow: hidden;
+	background-color: var(--cl-gray-900);
+
+	& > img {
+		object-fit: contain;
+	}
+}
+
+.mockGridContainer {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+.grid {
+	position: absolute;
+	pointer-events: none;
+}

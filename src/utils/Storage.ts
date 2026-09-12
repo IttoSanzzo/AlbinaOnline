@@ -49,3 +49,54 @@ export function useRouteScopedStorage<T>(key: string, defaultValue: T) {
 
 	return [value, setValue] as const;
 }
+
+export function useLocalStorageState<T>(
+	key: string,
+	defaultValue: T,
+): [T, React.Dispatch<React.SetStateAction<T>>] {
+	const [value, setValue] = useState<T>(defaultValue);
+	const [loadedKey, setLoadedKey] = useState<string | null>(null);
+	useEffect(() => {
+		let nextValue = defaultValue;
+		const stored = localStorage.getItem(key);
+		if (stored !== null) {
+			try {
+				nextValue = JSON.parse(stored) as T;
+			} catch {
+				localStorage.removeItem(key);
+			}
+		}
+		setValue(nextValue);
+		setLoadedKey(key);
+	}, [key]);
+	useEffect(() => {
+		if (loadedKey !== key) return;
+		localStorage.setItem(key, JSON.stringify(value));
+	}, [key, value, loadedKey]);
+	return [value, setValue];
+}
+export function useSessionStorageState<T>(
+	key: string,
+	defaultValue: T,
+): [T, React.Dispatch<React.SetStateAction<T>>] {
+	const [value, setValue] = useState<T>(defaultValue);
+	const [loadedKey, setLoadedKey] = useState<string | null>(null);
+	useEffect(() => {
+		let nextValue = defaultValue;
+		const stored = sessionStorage.getItem(key);
+		if (stored !== null) {
+			try {
+				nextValue = JSON.parse(stored) as T;
+			} catch {
+				sessionStorage.removeItem(key);
+			}
+		}
+		setValue(nextValue);
+		setLoadedKey(key);
+	}, [key]);
+	useEffect(() => {
+		if (loadedKey !== key) return;
+		sessionStorage.setItem(key, JSON.stringify(value));
+	}, [key, value, loadedKey]);
+	return [value, setValue];
+}
