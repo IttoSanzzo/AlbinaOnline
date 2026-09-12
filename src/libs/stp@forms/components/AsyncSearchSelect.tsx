@@ -92,6 +92,10 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 		return () => clearTimeout(timeout);
 	}, [inputText, debounceMs, queryMinLength]);
 
+	useEffect(() => {
+		setInputText(field.value ?? "");
+	}, [setInputText]);
+
 	return (
 		<AsyncSearchSelectContainer
 			style={{ width }}
@@ -112,7 +116,18 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 					setIsOpen(true);
 				}}
 				onKeyDown={(event) => {
-					if (event.key != "Escape") return;
+					if (event.code == "Enter") {
+						event.preventDefault();
+						if (options.length == 0) {
+							setInputText("");
+							field.onChange(null);
+						} else {
+							setInputText(options[0].name);
+							field.onChange(options[0].value);
+						}
+						triggerDebounceAction();
+						setIsOpen(false);
+					} else if (event.code != "Escape") return;
 					event.preventDefault();
 					setIsOpen(false);
 				}}

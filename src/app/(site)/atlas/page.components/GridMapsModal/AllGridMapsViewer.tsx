@@ -4,7 +4,7 @@ import styles from "./AllGridMapsViewer.module.css";
 import { LoadingCircle } from "@/components/(Design)/components/LoadingCircle";
 import { HookedForm } from "@/libs/stp@forms";
 import { useCurrentUser } from "@/libs/stp@hooks";
-import { Guid } from "@/libs/stp@types";
+import { Guid, RoleHierarchy } from "@/libs/stp@types";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -73,7 +73,7 @@ export function AllGridMapsViewer({
 						label={"Filtro"}
 					/>
 				</HookedForm.Form>
-				{isInVtt && (
+				{user != null && RoleHierarchy[user.role] >= RoleHierarchy.Admin && (
 					<GridMapsCreator setEditingGridMapId={setEditingGridMapId} />
 				)}
 			</HeaderContainer>
