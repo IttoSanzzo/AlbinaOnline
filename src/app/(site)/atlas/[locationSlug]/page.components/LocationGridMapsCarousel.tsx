@@ -1,7 +1,7 @@
 import { UIBasics } from "@/components/(UIBasics)";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { GridMapCard } from "../../page.components/GridMapsModal/GridMapCard";
+import { GridMapInteractionModal } from "../../page.components/GridMapsModal/GridMapInteractionModal";
 
 interface LocationGridMapsCarouselProps {
 	locationSlug: string;
@@ -25,9 +25,10 @@ export async function LocationGridMapsCarousel({
 		<UIBasics.Box backgroundColor={"darkerGray"}>
 			<UIBasics.Carousel
 				slideChilds={gridMaps.map((map) => (
-					<GridMapCard
+					<GridMapInteractionModal
 						key={map.id}
 						gridMap={map}
+						isInVtt={false}
 					/>
 				))}
 			/>

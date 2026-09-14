@@ -16,7 +16,7 @@ const Footer = newStyledElement.div(styles.footer);
 const EditButton = newStyledElement.div(styles.editButton);
 
 interface GridMapInteractionModalProps {
-	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
+	setEditingGridMapId?: Dispatch<SetStateAction<Guid | null>>;
 	gridMap: GridMap;
 	isInVtt: boolean;
 }
@@ -52,14 +52,16 @@ export function GridMapInteractionModal({
 						secondaryColor={gridColors.secondary}
 					/>
 
-					{((user != null && RoleHierarchy[user.role] >= RoleHierarchy.Admin) ||
+					{((setEditingGridMapId &&
+						user != null &&
+						RoleHierarchy[user.role] >= RoleHierarchy.Admin) ||
 						isInVtt) && (
 						<Footer>
 							{user != null && RoleHierarchy[user.role] && (
 								<EditButton
 									data-cursor-hover-interaction-type="Pointer"
 									onClick={() => {
-										setEditingGridMapId(gridMap.id);
+										if (setEditingGridMapId) setEditingGridMapId(gridMap.id);
 									}}>
 									Editar
 								</EditButton>
