@@ -207,6 +207,7 @@ function EditorCore({
 									label={"Largura (cm)"}
 									min={100}
 									max={20000}
+									step={50}
 									color={
 										sizesAreExact.x == 0
 											? "gray"
@@ -220,6 +221,7 @@ function EditorCore({
 									label={"Offset X (cm)"}
 									min={0}
 									max={99}
+									step={1}
 								/>
 							</div>
 						}
@@ -230,6 +232,7 @@ function EditorCore({
 									label={"Altura (cm)"}
 									min={100}
 									max={20000}
+									step={50}
 									color={
 										sizesAreExact.y == 0
 											? "gray"
@@ -243,6 +246,7 @@ function EditorCore({
 									label={"Offset Y (cm)"}
 									min={0}
 									max={99}
+									step={1}
 								/>
 							</div>
 						}
