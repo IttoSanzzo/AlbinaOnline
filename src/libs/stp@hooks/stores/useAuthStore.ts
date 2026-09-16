@@ -1,8 +1,8 @@
 "use client";
 
 import {
-	ExternalLoginProviders,
-	ExternalLogins,
+	ExternalConnectionProviders,
+	ExternalConnections,
 	FullUser,
 } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
@@ -11,7 +11,7 @@ import { create } from "zustand";
 
 interface AuthState {
 	user: FullUser | null;
-	externalLogins: ExternalLogins | null;
+	externalConnections: ExternalConnections | null;
 	loading: boolean;
 	setUser: (user: FullUser | null) => void;
 	setLoading: (loading: boolean) => void;
@@ -23,7 +23,7 @@ let reloadUserPromise: Promise<void> | null = null;
 
 export const useAuthStore = create<AuthState>((set) => ({
 	user: null,
-	externalLogins: null,
+	externalConnections: null,
 	loading: true,
 	setUser: (user) => set({ user }),
 	setLoading: (loading) => set({ loading }),
@@ -41,7 +41,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 				set({ user: data.user });
 				await loadExternalLogins(set);
 			} catch {
-				set({ user: null, externalLogins: null });
+				set({ user: null, externalConnections: null });
 			} finally {
 				set({ loading: false });
 			}
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		}
 	},
 	clearUser: () => {
-		set({ user: null, externalLogins: null, loading: true });
+		set({ user: null, externalConnections: null, loading: true });
 	},
 }));
 
@@ -67,9 +67,9 @@ async function loadExternalLogins(set: {
 	): void;
 	(state: AuthState | ((state: AuthState) => AuthState), replace: true): void;
 }) {
-	const results: ExternalLogins = {};
+	const results: ExternalConnections = {};
 
-	for (const provider of ExternalLoginProviders) {
+	for (const provider of ExternalConnectionProviders) {
 		const response = await authenticatedFetchAsync(
 			getAlbinaApiFullAddress(`/auth/me/external-logins/${provider}`),
 			{ method: "GET" },
@@ -82,6 +82,6 @@ async function loadExternalLogins(set: {
 	}
 
 	set({
-		externalLogins: results,
+		externalConnections: results,
 	});
 }

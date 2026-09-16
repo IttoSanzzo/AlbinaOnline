@@ -1,8 +1,8 @@
 import { UIBasics } from "@/components/(UIBasics)";
-import { ExternalLogins } from "@/libs/stp@types";
+import { ExternalConnections } from "@/libs/stp@types";
 
 interface ReactiveConnectionProps {
-	externalLogins: ExternalLogins | null;
+	externalLogins: ExternalConnections | null;
 }
 export function ReactiveConnection({
 	externalLogins,
@@ -14,12 +14,12 @@ export function ReactiveConnection({
 				justifyContent: "center",
 				alignItems: "center",
 				gap: "10px",
+				marginLeft: "auto",
 			}}>
 			{externalLogins != null &&
 				(externalLogins["discord"] == undefined ? (
 					<div
 						style={{
-							display: "flex",
 							justifyContent: "center",
 							alignItems: "center",
 							textAlign: "center",

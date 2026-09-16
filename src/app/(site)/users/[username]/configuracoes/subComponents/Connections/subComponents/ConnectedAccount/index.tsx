@@ -72,9 +72,11 @@ export function ConnectedAccunt({
 	label,
 	icon,
 }: ConnectedAccuntProps) {
-	const { externalLogins, reloadUser } = useCurrentUser();
+	const { externalConnections, reloadUser } = useCurrentUser();
 	const connected: boolean =
-		externalLogins == null ? false : externalLogins[provider] != undefined;
+		externalConnections == null
+			? false
+			: externalConnections[provider] != undefined;
 
 	return (
 		<ConnectedAccountContainer>

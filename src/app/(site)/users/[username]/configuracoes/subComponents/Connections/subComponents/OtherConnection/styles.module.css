@@ -19,3 +19,10 @@
 		color: var(--cl-gray-300);
 	}
 }
+
+.childContainer {
+	position: relative;
+	display: flex;
+	width: 90%;
+	height: 100%;
+}

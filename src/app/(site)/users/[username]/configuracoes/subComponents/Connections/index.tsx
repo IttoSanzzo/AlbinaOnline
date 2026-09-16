@@ -3,7 +3,8 @@ import { ConnectedAccunt } from "./subComponents/ConnectedAccount";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { OtherConnection } from "./subComponents/OtherConnection";
-import { ReactiveConnection } from "./subComponents/ReactiveConnection";
+import { ReactiveConnection } from "./subComponents/OtherConnection/Others/ReactiveConnection";
+import { DDDiceConnection } from "./subComponents/OtherConnection/Others/DDDiceConnection";
 
 const ConnectedAccountsContainer = newStyledElement.div(
 	styles.connectedAccountsContainer,
@@ -46,6 +47,11 @@ export function Connections() {
 							"https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://reactive.fugi.tech/library&size=50"
 						}
 						childrenGenerator={ReactiveConnection}
+					/>
+					<OtherConnection
+						label={"DDDice"}
+						icon={"https://cdn.dddice.com/images/logo-light-fs8.png"}
+						childrenGenerator={DDDiceConnection}
 					/>
 				</ConnectedAccountsContainer>
 			</UIBasics.Box>

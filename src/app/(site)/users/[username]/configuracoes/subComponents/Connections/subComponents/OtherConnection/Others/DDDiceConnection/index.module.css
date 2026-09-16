@@ -1,0 +1,36 @@
+.dDDiceConnectionContainer {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	width: 100%;
+	max-width: 750px;
+	gap: var(--sp-2);
+	margin-left: auto;
+}
+
+.getKeyButton {
+	display: flex;
+	height: 40px;
+	margin: auto;
+	aspect-ratio: 1/1;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-900);
+	border: 1px solid var(--cl-gray-700);
+	transition:
+		0.25s linear background-color,
+		0.25s linear border;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	& > svg {
+		height: 60%;
+		width: 60%;
+	}
+
+	&:hover {
+		background-color: var(--cl-gray-700);
+		border: 1px solid var(--cl-gray-500);
+	}
+}

@@ -5,18 +5,19 @@ import styles from "./styles.module.css";
 import Image from "next/image";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ReactNode } from "react";
-import { ExternalLogins } from "@/libs/stp@types";
+import { ExternalConnections } from "@/libs/stp@types";
 
 const ConnectedAccountContainer = newStyledElement.div(
 	styles.connectedAccountContainer,
 );
 const ProviderContainer = newStyledElement.div(styles.providerContainer);
+const ChildContainer = newStyledElement.div(styles.childContainer);
 
 interface OtherConnectionProps {
 	label: string;
 	icon: string;
 	childrenGenerator: (data: {
-		externalLogins: ExternalLogins | null;
+		externalLogins: ExternalConnections | null;
 	}) => ReactNode;
 }
 export function OtherConnection({
@@ -24,7 +25,7 @@ export function OtherConnection({
 	icon,
 	childrenGenerator,
 }: OtherConnectionProps) {
-	const { externalLogins } = useCurrentUser();
+	const { externalConnections } = useCurrentUser();
 
 	return (
 		<ConnectedAccountContainer>
@@ -37,7 +38,9 @@ export function OtherConnection({
 				/>
 				<p>{label}</p>
 			</ProviderContainer>
-			<div children={childrenGenerator({ externalLogins: externalLogins })} />
+			<ChildContainer
+				children={childrenGenerator({ externalLogins: externalConnections })}
+			/>
 		</ConnectedAccountContainer>
 	);
 }

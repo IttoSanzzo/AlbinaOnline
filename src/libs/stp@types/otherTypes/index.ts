@@ -14,11 +14,7 @@ export type {
 	DiceResults,
 	DiceResultsWithTimestamp,
 } from "./DiceRoller";
-export type {
-	ExternalLoginProvider,
-	ExternalLogins,
-	ExternalLogin,
-} from "./ExternalLogin";
+export * from "./ExternalLogin";
 export { ExternalLoginProviders } from "./ExternalLogin";
 export * from "./WorldPlane";
 export * from "./LifeState";

@@ -31,6 +31,7 @@ import { VttLocalSettingsProvider } from "../Contexts/VttLocalSettings/VttLocalS
 import { VttAudioControllerProvider } from "../Contexts/AudioManager/VttAudioControllerContext";
 import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
+import { DDDiceIntegration } from "./DDDiceIntegration";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -82,6 +83,7 @@ function VttCoreEngine() {
 			<GeneralShortcutsEngine />
 			<VirtualGridView />
 			<TestZone />
+			<DDDiceIntegration />
 			<PingEngine />
 			<CursorSyncronizer />
 			<PlayerConnectionChange />
