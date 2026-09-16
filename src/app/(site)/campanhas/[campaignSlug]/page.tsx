@@ -4,7 +4,7 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import PageView from "./page.view";
 import { MetadataData } from "@/libs/stp@types/otherTypes/MetadataData";
 import { redirect } from "next/navigation";
-import { GenericPageContainer } from "@/components/(Design)";
+import { GenericPageContainer, StyledLink } from "@/components/(Design)";
 import { Campaign, CampaignTypeName } from "@/libs/stp@types";
 import { StyledFalseLink } from "@/components/(Design)/components/StyledFalseLink";
 import { StandartTextColor } from "@/components/(UIBasics)";
@@ -56,6 +56,9 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
 			title={data.name}
 			icon={data.iconUrl}
 			banner={data.bannerUrl}
+			borderColor={
+				data.isListed ? StandartTextColor["blue"] : StandartTextColor["purple"]
+			}
 			subTitle={
 				<div
 					style={{
@@ -86,10 +89,11 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
 				</div>
 			}
 			subTitle2={
-				<StyledFalseLink
-					withoutIcon
-					color={data.isListed ? undefined : StandartTextColor["purple"]}
-					title={data.isListed ? "Listado" : "Não Listado"}
+				<StyledLink
+					title={"Acessar o VTT"}
+					style={{ height: "fit-content" }}
+					icon={getAlbinaApiFullAddress("/favicon/core-page/vtt")}
+					href={`/campanhas/${data.slug}/vtt`}
 				/>
 			}>
 			<PageView campaign={data} />

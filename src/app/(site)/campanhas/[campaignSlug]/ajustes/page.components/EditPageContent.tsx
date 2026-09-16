@@ -14,6 +14,7 @@ import { CampaignMembersManager } from "./CampaignMembersManager";
 import { CampaignSettingsManager } from "./CampaignSettingsManager";
 import { CampaingJoinRequests } from "../../page.components/MasterPageContent.components/CampaingJoinRequests";
 import { CampaignDiscordSettingsManager } from "./CampaignDiscordSettingsManager";
+import { CampaignDDDiceSettingsManager } from "./CampaignDDDiceSettingsManager";
 
 interface EditPageContentProps {
 	campaign: Campaign;
@@ -60,6 +61,8 @@ export function EditPageContent({ campaign, member }: EditPageContentProps) {
 			<UIBasics.Divisor />
 
 			<CampaignDiscordSettingsManager campaign={campaign} />
+			<UIBasics.EmptyLine />
+			<CampaignDDDiceSettingsManager campaign={campaign} />
 
 			<UIBasics.Divisor />
 

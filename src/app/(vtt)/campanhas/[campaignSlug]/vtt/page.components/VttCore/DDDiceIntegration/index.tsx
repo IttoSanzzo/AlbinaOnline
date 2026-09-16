@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./DDDiceServerShell.module.css";
+import styles from "./index.module.css";
 import { ThreeDDice } from "dddice-js";
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/libs/stp@hooks";

@@ -125,7 +125,9 @@ export function CampaignDiscordSettingsManager({
 
 	return (
 		<CampaignDiscordSettingsManagerContainer>
-			<UIBasics.Header textColor="gray">Configurações</UIBasics.Header>
+			<UIBasics.Header textColor="gray">
+				Configurações do Discord
+			</UIBasics.Header>
 			<HookedForm.Form
 				form={form}
 				onSubmit={onSubmit}>
