@@ -11,8 +11,8 @@ import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 const MuteButtonContainer = newStyledElement.button(styles.muteButtonContainer);
 
 export function MuteButton() {
-	const { loading, externalLogins } = useCurrentUser();
-	if (loading || externalLogins == null || !externalLogins["discord"])
+	const { loading, externalConnections } = useCurrentUser();
+	if (loading || externalConnections == null || !externalConnections["discord"])
 		return null;
 
 	return (
