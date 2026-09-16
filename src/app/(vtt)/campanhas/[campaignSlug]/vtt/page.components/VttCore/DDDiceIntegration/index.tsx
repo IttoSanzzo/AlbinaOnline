@@ -85,8 +85,10 @@ function DDDiceCanvas({
 			if (timeoutRef != null) clearTimeout(timeoutRef);
 			timeoutRef = setTimeout(() => {
 				if (!dddiceRef.current) return;
+				dddiceRef.current.stop();
 				dddiceRef.current.resize(window.innerWidth, window.window.innerHeight);
-			}, 20);
+				dddiceRef.current.start();
+			}, 250);
 		}
 		resizeCanva();
 		const observer = new ResizeObserver(resizeCanva);
