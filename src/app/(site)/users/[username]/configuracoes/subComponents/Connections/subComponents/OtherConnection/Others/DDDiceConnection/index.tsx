@@ -9,7 +9,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const DDDiceConnectionContainer = newStyledElement.div(
 	styles.dDDiceConnectionContainer,
@@ -27,6 +27,8 @@ interface DDDiceConnectionProps {
 }
 export function DDDiceConnection({ externalLogins }: DDDiceConnectionProps) {
 	const form = useForm<FormData>({
+		resolver: zodResolver(schema),
+		mode: "all",
 		defaultValues: {
 			key: externalLogins?.dddice?.externalUserId ?? "",
 		},
