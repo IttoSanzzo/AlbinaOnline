@@ -10,10 +10,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { HookedForm } from "@/libs/stp@forms";
 import toast from "react-hot-toast";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import { useEffect, useState } from "react";
 
 const CampaignDDDiceSettingsManagerContainer = newStyledElement.div(
 	styles.campaignDDDiceSettingsManagerContainer,
 );
+
+export interface DDDiceSettings {
+	roomSlug: string;
+	roomPassword?: string;
+}
 
 const schema = z.object({
 	roomSlug: z.string(),
@@ -27,12 +33,43 @@ interface CampaignDDDiceSettingsManagerProps {
 export function CampaignDDDiceSettingsManager({
 	campaign,
 }: CampaignDDDiceSettingsManagerProps) {
+	const [settings, setSettings] = useState<DDDiceSettings | null | undefined>(
+		undefined,
+	);
+
+	useEffect(() => {
+		(async () => {
+			const response = await authenticatedFetchAsync(
+				`/campaigns/${campaign.slug}/integrations/dddice`,
+			);
+			if (response.ok) setSettings(await response.json());
+			else setSettings(null);
+		})();
+	}, [campaign]);
+
+	if (settings === undefined) return null;
+	return (
+		<CampaignDDDiceSettingsForm
+			campaign={campaign}
+			settings={settings}
+		/>
+	);
+}
+
+interface CampaignDDDiceSettingsFormProps {
+	campaign: Campaign;
+	settings: DDDiceSettings | null;
+}
+function CampaignDDDiceSettingsForm({
+	campaign,
+	settings,
+}: CampaignDDDiceSettingsFormProps) {
 	const form = useForm<FormData>({
 		resolver: zodResolver(schema),
 		mode: "all",
 		defaultValues: {
-			roomSlug: "",
-			roomPassword: "",
+			roomSlug: settings != null ? settings.roomSlug : "",
+			roomPassword: settings != null ? (settings?.roomPassword ?? "") : "",
 		},
 	});
 
