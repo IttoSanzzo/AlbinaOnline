@@ -2,30 +2,82 @@
 
 import styles from "./DDDiceServerShell.module.css";
 import { ThreeDDice } from "dddice-js";
-import { useEffect, useRef } from "react";
-import { useVttContext } from "../../Contexts/VttContextProvider";
+import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/libs/stp@hooks";
+import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
+import { useVttContext } from "../../Contexts/VttContextProvider";
 
 export function DDDiceIntegration() {
-	const { vttId } = useVttContext();
+	const { campaign } = useVttContext();
 	const { externalConnections } = useAuthStore();
+	const [roomData, setRoomData] = useState<null | {
+		roomSlug: string;
+		roomPassword?: string;
+	}>(null);
 
-	const dddiceRef = useRef<ThreeDDice | null>(null);
 	useEffect(() => {
-		if (dddiceRef.current != null || externalConnections == null) return;
-		const userDDiceId = externalConnections.dddice;
-		if (!userDDiceId || !userDDiceId.externalUserId) return;
+		if (
+			!externalConnections ||
+			!externalConnections.dddice ||
+			!externalConnections.dddice.externalUserId
+		)
+			return;
+		(async () => {
+			const response = await authenticatedFetchAsync(
+				`/campaigns/${campaign.slug}/integrations/dddice`,
+			);
+			if (!response.ok) return;
+			setRoomData(await response.json());
+		})();
+	}, [externalConnections]);
+
+	if (
+		!roomData ||
+		!externalConnections ||
+		!externalConnections.dddice ||
+		!externalConnections.dddice.externalUserId
+	)
+		return null;
+	return (
+		<DDDiceCanvas
+			userDDDiceId={externalConnections.dddice.externalUserId}
+			roomSlug={roomData.roomSlug}
+			roomPassword={roomData.roomPassword}
+		/>
+	);
+}
+
+interface DDDiceCanvasProps {
+	userDDDiceId: string;
+	roomSlug: string;
+	roomPassword?: string;
+}
+function DDDiceCanvas({
+	userDDDiceId,
+	roomSlug,
+	roomPassword,
+}: DDDiceCanvasProps) {
+	const dddiceRef = useRef<ThreeDDice | null>(null);
+
+	useEffect(() => {
+		if (dddiceRef.current) return;
 		dddiceRef.current = new ThreeDDice(
 			document.getElementById("dddice-canvas") as HTMLCanvasElement,
-			userDDiceId.externalUserId,
+			userDDDiceId,
 			{
 				dice: { size: 0.7 },
 			},
 		);
 		dddiceRef.current.controlsEnabled = false;
 		dddiceRef.current.start();
-		// dddiceRef.current.connect("ROOM", "ROOMKEY");
-	}, [vttId, externalConnections]);
+		dddiceRef.current.connect(roomSlug, roomPassword);
+
+		return () => {
+			if (!dddiceRef.current) return;
+			dddiceRef.current.stop();
+			dddiceRef.current = null;
+		};
+	}, [userDDDiceId, roomSlug, roomPassword]);
 
 	useEffect(() => {
 		let timeoutRef: null | NodeJS.Timeout = null;
