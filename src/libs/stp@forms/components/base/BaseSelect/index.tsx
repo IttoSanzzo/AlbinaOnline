@@ -17,7 +17,7 @@ const BaseSelectLabel = newStyledElement.label(styles.baseSelectLabel);
 const BaseSelectError = newStyledElement.div(styles.baseSelectError);
 
 export type BaseSelectOption = {
-	value: string | number;
+	value: string | number | object;
 	name: string;
 	icon?: string;
 };
@@ -71,7 +71,7 @@ export function BaseSelect({
 						<Select.Viewport className={styles.baseSelectViewport}>
 							{options.map((option) => (
 								<Select.Item
-									key={option.value}
+									key={`${option.value}`}
 									value={String(option.value)}
 									className={styles.baseSelectItem}>
 									{option.icon && (

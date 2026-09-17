@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { assembleMetadata } from "@/metadata/assembleMetadata";
-import UserConfigurationUserPageContent from "./pageContent";
+import UserConfigurationUserPageContent from "./page.content";
 
 interface UserConfigurationPageServerShellProps {
 	params: Promise<{

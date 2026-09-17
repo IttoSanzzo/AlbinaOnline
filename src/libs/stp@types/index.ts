@@ -51,3 +51,4 @@ export * from "./utils/LocationLinkUtils";
 export * from "./dataTypes/campaign";
 export * from "./dataTypes/campaignMember";
 export * from "./dataTypes/campaignSessionDay";
+export * from "./dataTypes/userDiceSet";

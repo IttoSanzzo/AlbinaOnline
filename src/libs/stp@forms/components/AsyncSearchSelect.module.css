@@ -105,7 +105,7 @@
 .clearSelectionButton {
 	transition: 0.25s ease-in-out background-color;
 	&:hover,
-	:focus {
+	&:focus {
 		background-color: var(--cl-gray-600);
 		outline: none;
 	}

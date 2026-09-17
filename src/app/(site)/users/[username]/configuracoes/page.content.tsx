@@ -13,6 +13,7 @@ import { Security } from "./subComponents/Security";
 import { redirect } from "next/navigation";
 import { Connections } from "./subComponents/Connections";
 import { UIBasics } from "@/components/(UIBasics)";
+import { DDDice } from "./subComponents/DDDice";
 
 const anchorNavigationData: AnchorProps[] = [
 	{ name: "Conexões" },
@@ -59,10 +60,11 @@ export default function UserConfigurationUserPageContent({
 			icon={getAlbinaApiFullAddress("/favicon/default/configuration")}
 			subTitle={<UIBasics.Text textColor="gray">{user.nickname}</UIBasics.Text>}
 			subTitle2={<UIBasics.Text textColor="darkGray">{user.id}</UIBasics.Text>}>
+			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 			<SetAnchorNavigation anchors={anchorNavigationData} />
 			<Connections />
+			<DDDice />
 			<Security />
-			<SetBreadcrumbs breadcrumbs={breadcrumbs} />
 		</GenericPageContainer>
 	);
 }

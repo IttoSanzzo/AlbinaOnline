@@ -40,6 +40,7 @@ interface AsyncSearchSelectProps<TFormInput> {
 		query: string,
 	) => BaseSelectOption[] | Promise<BaseSelectOption[]>;
 	debounceMs?: number;
+	defaultOptions?: BaseSelectOption[];
 }
 export function AsyncSearchSelect<TFormInput extends FieldValues>({
 	fieldName,
@@ -52,10 +53,11 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 	queryMinLength = 2,
 	optionGenerator,
 	debounceMs = 250,
+	defaultOptions = [],
 }: AsyncSearchSelectProps<TFormInput>) {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [inputText, setInputText] = useState("");
-	const [options, setOptions] = useState<BaseSelectOption[]>([]);
+	const [options, setOptions] = useState<BaseSelectOption[]>(defaultOptions);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const {
 		form: { control },
@@ -83,7 +85,7 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 
 	useEffect(() => {
 		if (inputText.length < queryMinLength) {
-			setOptions([]);
+			setOptions(defaultOptions);
 			return;
 		}
 		const timeout = setTimeout(async () => {
@@ -93,8 +95,15 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 	}, [inputText, debounceMs, queryMinLength]);
 
 	useEffect(() => {
-		setInputText(field.value ?? "");
-	}, [setInputText]);
+		const option = defaultOptions.find(
+			(option) => JSON.stringify(option.value) == JSON.stringify(field.value),
+		);
+		if (!option) {
+			setInputText(`${field.value ?? ""}`);
+			return;
+		}
+		setInputText(option.name);
+	}, []);
 
 	return (
 		<AsyncSearchSelectContainer
@@ -134,6 +143,20 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 			/>
 			{isOpen && (
 				<DropdownContainer>
+					{field.value && (
+						<button
+							className={styles.clearSelectionButton}
+							onClick={() => {
+								field.onChange(null);
+								setIsOpen(false);
+								setInputText("");
+							}}>
+							Clear Selection
+						</button>
+					)}
+					{options.length == 0 && (
+						<div className={styles.noOptions}>No Options</div>
+					)}
 					{options.map((option, index) => (
 						<SelectOptionButton
 							key={`${index}|${option.name}`}
@@ -156,18 +179,6 @@ export function AsyncSearchSelect<TFormInput extends FieldValues>({
 							<p>{option.name}</p>
 						</SelectOptionButton>
 					))}
-					{options.length == 0 &&
-						(field.value ? (
-							<button
-								className={styles.clearSelectionButton}
-								onClick={() => {
-									field.onChange(null);
-								}}>
-								Clear Selection
-							</button>
-						) : (
-							<div className={styles.noOptions}>No Options</div>
-						))}
 				</DropdownContainer>
 			)}
 			<AsyncSearchSelectLabel
