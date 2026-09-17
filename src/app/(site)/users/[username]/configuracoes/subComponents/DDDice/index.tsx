@@ -211,6 +211,7 @@ function DDDiceForm({
 							diceName: value.name,
 							dDDiceTheme: value.themeId,
 							preview: value.preview,
+							notation: value.notation,
 						}),
 						headers: {
 							"Content-Type": "application/json",
@@ -240,15 +241,34 @@ function DDDiceForm({
 			<UIBasics.MultiColumn.Two
 				colum1={
 					<DiceSetSelectorColumn
-						themes={dddiceThemes}
 						type={"Primary"}
+						themes={{
+							...Object.fromEntries(
+								Object.entries(dddiceThemes).map(([key, themes]) => [
+									key,
+									themes.filter(
+										(theme: DDDiceTheme) =>
+											theme.notation == null || theme.notation === `d${key}`,
+									),
+								]),
+							),
+						}}
 						watchedValues={watchedValues}
 					/>
 				}
 				colum2={
 					<DiceSetSelectorColumn
-						themes={dddiceThemes}
 						type={"Secondary"}
+						themes={{
+							...Object.fromEntries(
+								Object.entries(dddiceThemes).map(([key, themes]) => [
+									key,
+									themes.filter(
+										(theme: DDDiceTheme) => theme.notation === `d${key}x`,
+									),
+								]),
+							),
+						}}
 						watchedValues={watchedValues}
 					/>
 				}

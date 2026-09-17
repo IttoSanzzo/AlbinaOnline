@@ -11,6 +11,7 @@ export type UserDiceSet = {
 	type: keyof typeof UserDiceSetType;
 	ddDiceTheme: string;
 	preview: string;
+	notation?: string;
 	diceName: string;
 	user: string;
 };
