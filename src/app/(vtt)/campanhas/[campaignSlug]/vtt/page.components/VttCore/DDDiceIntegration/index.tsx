@@ -1,7 +1,12 @@
 "use client";
 
 import styles from "./index.module.css";
-import { ThreeDDice } from "dddice-js";
+import {
+	IRoom,
+	ThreeDDice,
+	ThreeDDiceAPI,
+	ThreeDDiceRollEvent,
+} from "dddice-js";
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/libs/stp@hooks";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
@@ -58,9 +63,30 @@ function DDDiceCanvas({
 	roomPassword,
 }: DDDiceCanvasProps) {
 	const dddiceRef = useRef<ThreeDDice | null>(null);
+	const dddiceApiRef = useRef<ThreeDDiceAPI | null>(null);
 
 	useEffect(() => {
-		if (dddiceRef.current) return;
+		if (dddiceRef.current || dddiceApiRef.current) return;
+		(async () => {
+			try {
+				dddiceApiRef.current = new ThreeDDiceAPI(userDDDiceId, "AlbinaOnline");
+				try {
+					await dddiceApiRef.current.room.join(roomSlug, roomPassword);
+				} catch (ex) {
+					void ex;
+				}
+				dddiceApiRef.current.listen(
+					ThreeDDiceRollEvent.RollFinished,
+					(event) => {
+						console.log("Hello there");
+						console.log(event);
+					},
+				);
+			} catch (ex) {
+				void ex;
+			}
+		})();
+
 		dddiceRef.current = new ThreeDDice(
 			document.getElementById("dddice-canvas") as HTMLCanvasElement,
 			userDDDiceId,
