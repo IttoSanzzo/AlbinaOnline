@@ -1,12 +1,7 @@
 "use client";
 
 import styles from "./index.module.css";
-import {
-	IRoom,
-	ThreeDDice,
-	ThreeDDiceAPI,
-	ThreeDDiceRollEvent,
-} from "dddice-js";
+import { ThreeDDice, ThreeDDiceAPI } from "dddice-js";
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/libs/stp@hooks";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
@@ -68,20 +63,9 @@ function DDDiceCanvas({
 	useEffect(() => {
 		if (dddiceRef.current || dddiceApiRef.current) return;
 		(async () => {
+			dddiceApiRef.current = new ThreeDDiceAPI(userDDDiceId, "AlbinaOnline");
 			try {
-				dddiceApiRef.current = new ThreeDDiceAPI(userDDDiceId, "AlbinaOnline");
-				try {
-					await dddiceApiRef.current.room.join(roomSlug, roomPassword);
-				} catch (ex) {
-					void ex;
-				}
-				dddiceApiRef.current.listen(
-					ThreeDDiceRollEvent.RollFinished,
-					(event) => {
-						console.log("Hello there");
-						console.log(event);
-					},
-				);
+				await dddiceApiRef.current.room.join(roomSlug, roomPassword);
 			} catch (ex) {
 				void ex;
 			}
@@ -91,12 +75,13 @@ function DDDiceCanvas({
 			document.getElementById("dddice-canvas") as HTMLCanvasElement,
 			userDDDiceId,
 			{
-				dice: { size: 0.7 },
+				dice: { size: 0.55 },
 			},
 		);
 		dddiceRef.current.controlsEnabled = false;
 		dddiceRef.current.start();
 		dddiceRef.current.connect(roomSlug, roomPassword);
+		// dddiceRef.current.on(ThreeDDiceRollEvent.RollFinished, (event) => { });
 
 		return () => {
 			if (!dddiceRef.current) return;
