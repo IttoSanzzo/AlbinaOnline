@@ -71,12 +71,4 @@ export function VirtualUserCursor() {
 		/>,
 		document.body,
 	);
-	// return (
-	// 	<ClientCursor
-	// 		mouseState={mouseState}
-	// 		screenPosition={screenPosition}
-	// 		userId={user.id}
-	// 		isActiveUser
-	// 	/>
-	// );
 }

@@ -1,6 +1,10 @@
 import styles from "./ClientCursor.module.css";
 import { Guid } from "@/libs/stp@types";
-import { VttInteractionType, VttMouseState } from "../../Types/VttMouseState";
+import {
+	horizontalCursorOffset,
+	verticalCursorOffset,
+	VttMouseState,
+} from "../../Types/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { CursorSvg } from "./CursorSvg";
 import { useVttMembersContext } from "../../Contexts/VttMembersProvider";
@@ -13,31 +17,6 @@ const ClientCursorContainer = newStyledElement.div(
 	styles.clientCursorContainer,
 );
 const CursorUserName = newStyledElement.div(styles.cursorUserName);
-
-const horizontalCursorOffset: Record<VttInteractionType, number> = {
-	Default: 3,
-	DefaultUp: 11,
-	Pointer: 9,
-	Brush: 1,
-	Menu: 3,
-	Chat: 3,
-	Hand: 11,
-	Move: 12,
-	Eraser: 3,
-	Measuring: 4,
-};
-const verticalCursorOffset: Record<VttInteractionType, number> = {
-	Default: 3,
-	DefaultUp: 2,
-	Pointer: 2,
-	Brush: 1,
-	Menu: 3,
-	Chat: 3,
-	Hand: 11,
-	Move: 12,
-	Eraser: 3,
-	Measuring: 4,
-};
 
 interface ClientCursorProps {
 	userId: Guid;

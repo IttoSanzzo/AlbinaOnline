@@ -1,6 +1,6 @@
 .cameraControlsContainer {
 	position: absolute;
-	right: 14px;
+	left: 14px;
 	bottom: 14px;
 	display: flex;
 	align-items: center;

@@ -1,10 +1,14 @@
 import styles from "./OffScreenCursor.module.css";
 import { CampaignMember } from "@/libs/stp@types";
-import { VttMouseState } from "../../Types/VttMouseState";
+import {
+	VttCursorInteractionType,
+	VttMouseState,
+} from "../../Types/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
 import { useRef } from "react";
 import { CursorSvg } from "./CursorSvg";
+import { setVttElementHoverInteraction } from "../../Utils/ElementDataAttributeUtils";
 
 const OffScreenCursorContainer = newStyledElement.div(
 	styles.offScreenCursorContainer,
@@ -151,7 +155,7 @@ export function OffScreenCursor({
 					transform: `rotate(${angle + Math.PI / 2}rad)`,
 				}}
 				onClick={onClick}
-				data-cursor-hover-interaction-type="Pointer">
+				{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}>
 				<svg
 					viewBox="0 0 24 24"
 					fill="none"

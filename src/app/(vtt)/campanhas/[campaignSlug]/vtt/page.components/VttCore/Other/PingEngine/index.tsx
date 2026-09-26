@@ -12,16 +12,20 @@ import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { Guid } from "@/libs/stp@types";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { roundCoordinate } from "../../../Utils/coodinateUtils";
+import { roundCoordinate } from "../../../Utils/CoodinateUtils";
 import { StandartTextColor } from "@/components/(UIBasics)";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
-import {
-	PING_COLORS,
-	PING_OPTIONS,
-	PING_SOUNDS,
-	PingType,
-} from "./PingRadialWheelTypes";
+import { PING_COLORS, PING_OPTIONS, PingType } from "./PingRadialWheelTypes";
 import { useVttAudioController } from "../../../Contexts/AudioManager/VttAudioControllerContext";
+import { WindowCursorState } from "../../../Contexts/WindowStates";
+import {
+	VttElementDataAttribute,
+	hasClosestAttribute,
+	setVttElementHoverInteraction,
+} from "../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { isFormElement } from "@/utils/General";
+import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
 
 const PingEngineContainer = newStyledElement.div(styles.pingEngineContainer);
 const PING_MESSAGE_TYPE = "PostPing";
@@ -51,10 +55,8 @@ function findPingOption(
 			if (result) return result;
 		}
 	}
-
 	return undefined;
 }
-
 function getPingScreenPosition(
 	worldPosition: CoordinatePair,
 	worldToScreen: (position: CoordinatePair) => CoordinatePair,
@@ -115,7 +117,7 @@ function getPingScreenPosition(
 export function PingEngine() {
 	const radialMenu = useRadialMenu();
 	const { send, subscribe } = useVttContext();
-	const { viewport, screenToWorld, worldToScreen, setCameraPosition } =
+	const { screenToWorld, worldToScreen, setCameraPosition } =
 		useVttViewportContext();
 	const { members } = useVttMembersContext();
 	const { play } = useVttAudioController();
@@ -123,13 +125,8 @@ export function PingEngine() {
 	const pingTimestampsRef = useRef<number[]>([]);
 	const lastPingType = useRef<keyof typeof PingType>("Default");
 
-	const mousePositionRef = useRef({
-		x: viewport.width / 2,
-		y: viewport.height / 2,
-	});
-
 	function playPingSound(type: PingType, userId: Guid) {
-		const source = PING_SOUNDS[type];
+		const source = audioPaths.vtt.pings[type];
 		if (!source) return;
 		play({
 			path: source,
@@ -137,20 +134,6 @@ export function PingEngine() {
 			sourceId: userId,
 		});
 	}
-
-	useEffect(() => {
-		const handleMouseMove = (event: MouseEvent) => {
-			mousePositionRef.current = {
-				x: event.clientX,
-				y: event.clientY,
-			};
-		};
-		window.addEventListener("mousemove", handleMouseMove);
-		return () => {
-			window.removeEventListener("mousemove", handleMouseMove);
-		};
-	}, []);
-
 	function sendPing(type: keyof typeof PingType, position: CoordinatePair) {
 		const now = Date.now();
 		const windowStart = now - MAX_PING_TIMEOUT_MS;
@@ -172,7 +155,7 @@ export function PingEngine() {
 
 	const openPingMenu = useCallback(
 		(mode: "fast" | "switch") => {
-			const screenPosition = mousePositionRef.current;
+			const screenPosition = { x: WindowCursorState.x, y: WindowCursorState.y };
 			const worldPosition = roundCoordinate(screenToWorld(screenPosition));
 
 			radialMenu.openNew({
@@ -180,7 +163,7 @@ export function PingEngine() {
 				id: "ping",
 				name: "Ping",
 				overlay: false,
-				screenPosition,
+				screenPosition: screenPosition,
 				actionPosition: worldPosition,
 				options: PING_OPTIONS,
 				ringWidths: [100, 80, 65],
@@ -202,7 +185,12 @@ export function PingEngine() {
 		const handleKeyDown = (event: KeyboardEvent) => {
 			if (
 				event.repeat ||
-				!(event.ctrlKey && event.key.toLowerCase() === PING_KEY)
+				!(event.ctrlKey && event.key.toLowerCase() === PING_KEY) ||
+				isFormElement(event.target as Element) ||
+				!hasClosestAttribute(
+					WindowCursorState.element,
+					VttElementDataAttribute.EventPing,
+				)
 			)
 				return;
 			event.preventDefault();
@@ -210,15 +198,13 @@ export function PingEngine() {
 				if (event.altKey) {
 					sendPing(
 						lastPingType.current,
-						roundCoordinate(screenToWorld(mousePositionRef.current)),
+						roundCoordinate(screenToWorld(WindowCursorState)),
 					);
 				} else openPingMenu("switch");
 			} else openPingMenu("fast");
 		};
 		window.addEventListener("keydown", handleKeyDown);
-		return () => {
-			window.removeEventListener("keydown", handleKeyDown);
-		};
+		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, [openPingMenu]);
 	useEffect(() => {
 		return subscribe(PING_MESSAGE_TYPE, (message) => {
@@ -271,9 +257,9 @@ export function PingEngine() {
 							top: position.y,
 							color: PING_COLORS[PingType[ping.type]],
 						}}
-						data-cursor-hover-interaction-type={
-							offscreen ? "Pointer" : undefined
-						}
+						{...setVttElementHoverInteraction(
+							offscreen ? VttCursorInteractionType.Pointer : undefined,
+						)}
 						title={option?.name ?? "Ping"}
 						onClick={
 							offscreen

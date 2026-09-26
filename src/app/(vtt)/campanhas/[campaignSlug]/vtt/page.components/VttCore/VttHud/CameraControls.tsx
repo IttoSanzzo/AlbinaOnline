@@ -6,6 +6,8 @@ import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider
 import styles from "./CameraControls.module.css";
 import { DEFAULT_GRID_CELL_SIZE } from "../../Contexts/VttGridProvider";
 import { useEffect } from "react";
+import { setVttElementHoverInteraction } from "../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../Types/VttMouseState";
 
 const CameraControlsContainer = newStyledElement.div(
 	styles.cameraControlsContainer,
@@ -47,7 +49,7 @@ export function CameraControls() {
 			<CameraControl
 				onClick={resetPosition}
 				title="Reset position"
-				data-cursor-hover-interaction-type={"Pointer"}>
+				{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}>
 				{Math.floor(camera.x / DEFAULT_GRID_CELL_SIZE)},{" "}
 				{Math.floor(camera.y / DEFAULT_GRID_CELL_SIZE)}
 			</CameraControl>
@@ -57,7 +59,7 @@ export function CameraControls() {
 			<CameraControl
 				onClick={resetZoom}
 				title="Reset zoom"
-				data-cursor-hover-interaction-type={"Pointer"}>
+				{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}>
 				{camera.zoom.toFixed(1)}×
 			</CameraControl>
 
@@ -73,7 +75,7 @@ export function CameraControls() {
 				}
 				onClick={toggleEdgePan}
 				title="Toggle edge pan"
-				data-cursor-hover-interaction-type={"Pointer"}>
+				{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}>
 				<span className={styles.edgePanIndicator} />
 				EP
 			</CameraControl>

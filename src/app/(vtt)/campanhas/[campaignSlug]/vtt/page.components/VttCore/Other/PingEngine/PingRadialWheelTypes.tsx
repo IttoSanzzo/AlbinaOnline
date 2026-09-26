@@ -89,7 +89,7 @@ export const PING_SOUNDS: Record<PingType, string> = {
 	[PingType.Suspicious]: "/sounds/vtt/pings/suspicious.mp3",
 	[PingType.Stop]: "/sounds/vtt/pings/stop.mp3",
 	[PingType.HeeHee]: "/sounds/vtt/pings/heehee.mp3",
-};
+} as const;
 
 const PING_OPTIONS_MOVEMENT: RadialMenuOption[] = [
 	{

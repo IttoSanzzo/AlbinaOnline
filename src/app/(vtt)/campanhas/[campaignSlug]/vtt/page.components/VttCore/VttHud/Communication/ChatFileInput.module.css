@@ -1,0 +1,30 @@
+.sendImageTrigger {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	pointer-events: none;
+	background: transparent;
+	background-color: var(--cl-blue-900);
+	border: none;
+	border-radius: inherit;
+	opacity: 0.5;
+	animation: 0.25s linear fade-in;
+
+	& > svg {
+		width: 50px;
+		height: 50px;
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+.overlay {
+	cursor: none;
+}

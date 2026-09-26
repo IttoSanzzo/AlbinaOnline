@@ -35,3 +35,11 @@ export function getElementById<T extends HTMLElement>(id: string) {
 export function focusIntoElementById<T extends HTMLElement>(id: string) {
 	return getElementById<T>(id).focus();
 }
+export function isFormElement(element: Element | null): boolean {
+	return (
+		element instanceof HTMLInputElement ||
+		element instanceof HTMLTextAreaElement ||
+		element instanceof HTMLSelectElement ||
+		element instanceof HTMLButtonElement
+	);
+}

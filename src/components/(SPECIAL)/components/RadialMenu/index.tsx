@@ -85,8 +85,8 @@ export function RadialMenu({
 		);
 	}, [ringGeometry, coreDiameter]);
 
-	const handleMouseMove = useCallback(
-		(event: MouseEvent) => {
+	useEffect(() => {
+		function handleMouseMove(event: MouseEvent) {
 			if (ringGeometry.length === 0) return;
 			const dx = event.clientX - screenPosition.x;
 			const dy = event.clientY - screenPosition.y;
@@ -122,16 +122,12 @@ export function RadialMenu({
 			const optionIndex = Math.floor(normalizedAngle / sectorSize);
 			setActiveDepth(targetRingIndex);
 			setActiveOption(ring.options[optionIndex]);
-		},
-		[ringGeometry, screenPosition, coreDiameter],
-	);
-
-	useEffect(() => {
+		}
 		window.addEventListener("mousemove", handleMouseMove);
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [handleMouseMove]);
+	}, [ringGeometry, screenPosition, coreDiameter]);
 
 	useEffect(() => {
 		if (!activeOption) {

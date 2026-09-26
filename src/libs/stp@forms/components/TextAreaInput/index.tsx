@@ -1,12 +1,13 @@
 "use client";
 
-import { CSSProperties, TextareaHTMLAttributes } from "react";
+import { CSSProperties, RefObject, TextareaHTMLAttributes } from "react";
 import { FieldValues, Path, useController } from "react-hook-form";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./styles.module.css";
 import { StandartBackgroundColor } from "@/components/(UIBasics)";
 import { useHookedForm } from "../../context/HookedFormContext";
 import { startCase } from "lodash";
+import { mergeRefs } from "@/utils/Data";
 
 const TextAreaInputContainer = newStyledElement.div(
 	styles.textAreaInputContainer,
@@ -38,6 +39,9 @@ type TextAreaInputProps<TFormInput> = {
 		| "9xl";
 	lesserPadding?: boolean;
 	textCentered?: boolean;
+	borderColor?: CSSProperties["borderColor"];
+	inputRef?: RefObject<HTMLTextAreaElement>;
+	containerRef?: RefObject<HTMLDivElement>;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 export function TextAreaInput<TFormInput extends FieldValues>({
 	fieldName,
@@ -49,6 +53,9 @@ export function TextAreaInput<TFormInput extends FieldValues>({
 	textCentered = false,
 	fontSize,
 	style,
+	borderColor,
+	inputRef,
+	containerRef,
 	...rest
 }: TextAreaInputProps<TFormInput>) {
 	const {
@@ -74,7 +81,11 @@ export function TextAreaInput<TFormInput extends FieldValues>({
 	};
 
 	return (
-		<TextAreaInputContainer>
+		<TextAreaInputContainer
+			ref={containerRef}
+			style={{
+				borderColor: borderColor,
+			}}>
 			<TextAreaInputLabel
 				children={label}
 				style={labelStyle}
@@ -85,6 +96,7 @@ export function TextAreaInput<TFormInput extends FieldValues>({
 			<TextAreaInputField
 				style={inputStyle}
 				{...field}
+				ref={mergeRefs(field.ref, inputRef)}
 				value={field.value ?? ""}
 				{...rest}
 				onChange={(event) => {

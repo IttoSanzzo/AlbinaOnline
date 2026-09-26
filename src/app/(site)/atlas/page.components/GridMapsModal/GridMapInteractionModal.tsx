@@ -11,6 +11,8 @@ import { useCurrentUser } from "@/libs/stp@hooks";
 import { StateSwitch } from "@/components/(UTILS)";
 import { DEFAULT_MOCK_GRID_COLORS, GridMapGridViewer } from "./MockGrid";
 import { useLocalStorageState } from "@/utils/Storage";
+import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/VttMouseState";
+import { setVttElementHoverInteraction } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Utils/ElementDataAttributeUtils";
 
 const Footer = newStyledElement.div(styles.footer);
 const EditButton = newStyledElement.div(styles.editButton);
@@ -59,7 +61,9 @@ export function GridMapInteractionModal({
 						<Footer>
 							{user != null && RoleHierarchy[user.role] && (
 								<EditButton
-									data-cursor-hover-interaction-type="Pointer"
+									{...setVttElementHoverInteraction(
+										VttCursorInteractionType.Pointer,
+									)}
 									onClick={() => {
 										if (setEditingGridMapId) setEditingGridMapId(gridMap.id);
 									}}>
@@ -67,7 +71,10 @@ export function GridMapInteractionModal({
 								</EditButton>
 							)}
 							{isInVtt && (
-								<div data-cursor-hover-interaction-type="Pointer">
+								<div
+									{...setVttElementHoverInteraction(
+										VttCursorInteractionType.Pointer,
+									)}>
 									Add to Vtt
 								</div>
 							)}

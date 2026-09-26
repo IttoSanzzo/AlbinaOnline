@@ -7,11 +7,11 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { VttInteractionType } from "../Types/VttMouseState";
+import { VttCursorInteractionType } from "../Types/VttMouseState";
 import { useVttContext } from "./VttContextProvider";
 
 export interface VttInteraction {
-	type: VttInteractionType;
+	type: VttCursorInteractionType;
 	allowMiddlePan: boolean;
 	allowEdgeScroll: boolean;
 	edgeScrollOverride: boolean | null;
@@ -19,10 +19,10 @@ export interface VttInteraction {
 
 interface VttInteractionContext {
 	interaction: VttInteraction;
-	hoverInteractionType: VttInteractionType | null;
+	hoverInteractionType: VttCursorInteractionType | null;
 	setInteraction: (interaction: VttInteraction) => void;
 	setHoverInteractionType: (
-		hoverInteractionType: VttInteractionType | null,
+		hoverInteractionType: VttCursorInteractionType | null,
 	) => void;
 	setEdgeScrollOverride: (override: boolean | null) => void;
 	clearInteraction: () => void;
@@ -50,7 +50,7 @@ export function VttInteractionContextProvider({
 		useState<VttInteraction>(DEFAULT_INTERACTION);
 
 	const [hoverInteractionType, setHoverInteractionType] =
-		useState<VttInteractionType | null>(null);
+		useState<VttCursorInteractionType | null>(null);
 
 	const setEdgeScrollOverride = (override: boolean | null) => {
 		setInteractionState((current) => ({

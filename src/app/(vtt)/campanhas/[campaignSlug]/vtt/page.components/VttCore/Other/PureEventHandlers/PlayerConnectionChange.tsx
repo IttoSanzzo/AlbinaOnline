@@ -8,10 +8,7 @@ import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
 import Image from "next/image";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useVttAudioController } from "../../../Contexts/AudioManager/VttAudioControllerContext";
-
-const PLAYER_JOINING = "/sounds/vtt/player-events/joining.mp3";
-const PLAYER_JOIN_SOUND = "/sounds/vtt/player-events/connected.mp3";
-const PLAYER_LEAVE_SOUND = "/sounds/vtt/player-events/disconnected.mp3";
+import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
 
 export function PlayerConnectionChange() {
 	const { connectedUserIds, members } = useVttMembersContext();
@@ -23,7 +20,7 @@ export function PlayerConnectionChange() {
 		if (previousUserIds.current === null) {
 			previousUserIds.current = connectedUserIds;
 			play({
-				path: PLAYER_JOINING,
+				path: audioPaths.vtt.playerEvents.Connect,
 				type: "players.self_greeting",
 			});
 			toast.success("Conectado");
@@ -49,7 +46,7 @@ export function PlayerConnectionChange() {
 				),
 			});
 			play({
-				path: PLAYER_JOIN_SOUND,
+				path: audioPaths.vtt.playerEvents.PlayerConnected,
 				type: "players.greetings",
 				sourceId: joinedUserId,
 			});
@@ -73,7 +70,7 @@ export function PlayerConnectionChange() {
 				),
 			});
 			play({
-				path: PLAYER_LEAVE_SOUND,
+				path: audioPaths.vtt.playerEvents.PlayerDisconnected,
 				type: "players.greetings",
 				sourceId: leftUserId,
 			});

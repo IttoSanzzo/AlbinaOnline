@@ -24,7 +24,14 @@ export function useMiddleButtonCameraPan() {
 		};
 
 		const handleMouseDown = (event: MouseEvent) => {
-			if (event.button !== 1) return;
+			if (
+				event.button !== 1 ||
+				!(
+					event.target instanceof Element &&
+					event.target.hasAttribute("data-vtt-event-middle-button-pan")
+				)
+			)
+				return;
 			setHoverInteractionType("Hand");
 			isPanning = true;
 			lastMousePosition = {
@@ -50,7 +57,7 @@ export function useMiddleButtonCameraPan() {
 		};
 
 		const handleMouseUp = (event: MouseEvent) => {
-			if (event.button !== 1) return;
+			if (event.button !== 1 || !isPanning) return;
 			setHoverInteractionType(null);
 			isPanning = false;
 		};

@@ -10,8 +10,9 @@ import {
 	useState,
 } from "react";
 import { VttInputMessage } from "../Types/VttInputMessage";
-import { VttOutputMessage } from "../Types/VttOutputtMessage";
+import { VttOutputMessage } from "../Types/VttOutputMessage";
 import { Campaign, Guid } from "@/libs/stp@types";
+import { VttOutputMessageType } from "../Types/Static/VttOutputMessageType";
 
 type VttMessageHandler = (message: VttOutputMessage) => void;
 
@@ -20,8 +21,12 @@ interface VttBasicContext {
 	activeSceneId: Guid | null;
 	campaign: Campaign;
 	send: (message: VttInputMessage) => void;
-	subscribe: (type: string, handler: VttMessageHandler) => () => void;
+	subscribe: (
+		type: VttOutputMessageType,
+		handler: VttMessageHandler,
+	) => () => void;
 	ignoreMessage: (id: Guid) => void;
+	localDispatch: (message: VttOutputMessage) => void;
 }
 
 const VttContext = createContext<VttBasicContext | null>(null);
@@ -30,6 +35,7 @@ interface VttContextProviderProps {
 	campaign: Campaign;
 	children: ReactNode;
 }
+
 export function VttContextProvider({
 	campaign,
 	children,
@@ -38,6 +44,17 @@ export function VttContextProvider({
 	const [activeSceneId, setActiveSceneId] = useState<Guid | null>(null);
 	const subscriptions = useRef<Map<string, Set<VttMessageHandler>>>(new Map());
 	const ignoredMessages = useRef<Set<Guid>>(new Set());
+
+	const dispatchMessage = (message: VttOutputMessage) => {
+		if (ignoredMessages.current.delete(message.id)) return;
+		if (message.type === "VttSceneSnapshot")
+			setActiveSceneId((message.data as { sceneId: Guid }).sceneId);
+		const handlers = subscriptions.current.get(message.type);
+		if (!handlers) return;
+		handlers.forEach((handler) => {
+			handler(message);
+		});
+	};
 
 	useEffect(() => {
 		if (!socket) return;
@@ -50,16 +67,7 @@ export function VttContextProvider({
 					console.error("Failed to parse VTT WebSocket message.", event.data);
 					return;
 				}
-				if (ignoredMessages.current.delete(message.id)) return;
-
-				if (message.type === "VttSceneSnapshot")
-					setActiveSceneId((message.data as { sceneId: Guid }).sceneId);
-
-				const handlers = subscriptions.current.get(message.type);
-				if (!handlers) return;
-				handlers.forEach((handler) => {
-					handler(message);
-				});
+				dispatchMessage(message);
 			} catch (ex) {
 				console.error(`Exception on HandleMessage: ${ex}`);
 			}
@@ -81,7 +89,10 @@ export function VttContextProvider({
 		}
 	};
 
-	const subscribe = (type: string, handler: VttMessageHandler) => {
+	const subscribe = (
+		type: VttOutputMessageType,
+		handler: VttMessageHandler,
+	) => {
 		let handlers = subscriptions.current.get(type);
 		if (!handlers) {
 			handlers = new Set<VttMessageHandler>();
@@ -90,15 +101,17 @@ export function VttContextProvider({
 		handlers.add(handler);
 		return () => {
 			handlers?.delete(handler);
-			if (handlers?.size === 0) {
-				subscriptions.current.delete(type);
-			}
+			if (handlers?.size === 0) subscriptions.current.delete(type);
 		};
 	};
 
-	const ignoreMessage = (id: Guid) => {
+	function ignoreMessage(id: Guid) {
 		ignoredMessages.current.add(id);
-	};
+	}
+
+	function localDispatch(message: VttOutputMessage) {
+		dispatchMessage(message);
+	}
 
 	const contextValue: VttBasicContext = {
 		vttId,
@@ -107,6 +120,7 @@ export function VttContextProvider({
 		send,
 		subscribe,
 		ignoreMessage,
+		localDispatch,
 	};
 
 	return (

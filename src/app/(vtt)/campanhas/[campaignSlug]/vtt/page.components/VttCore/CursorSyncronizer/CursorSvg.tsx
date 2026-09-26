@@ -1,92 +1,24 @@
-import { VttInteractionType } from "../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../Types/VttMouseState";
 import styles from "./CursorSvg.module.css";
 
 interface CursorIconProps {
-	type?: VttInteractionType;
+	type?: VttCursorInteractionType;
 	mainColor?: string;
 	secondaryColor?: string;
 }
 export function CursorSvg({
-	type,
+	type = VttCursorInteractionType.Default,
 	mainColor = "var(--cl-gray-200)",
 	secondaryColor = "var(--cl-gray-900)",
 }: CursorIconProps) {
-	switch (type) {
-		case "Default":
-		default:
-			return (
-				<DefaultCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Brush":
-			return (
-				<BrushCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Menu":
-			return (
-				<MenuCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Chat":
-			return (
-				<ChatCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Move":
-			return (
-				<MoveCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Eraser":
-			return (
-				<EraserCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Hand":
-			return (
-				<HandCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Measuring":
-			return (
-				<MeasuringCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "DefaultUp":
-			return (
-				<DefaultUpCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-		case "Pointer":
-			return (
-				<PointerCursorSvg
-					mainColor={mainColor}
-					secondaryColor={secondaryColor}
-				/>
-			);
-	}
+	return CursorSvgFunctions[type]({ mainColor, secondaryColor });
 }
-function DefaultCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+
+const CursorSvgFunctions: Record<
+	VttCursorInteractionType,
+	({ mainColor, secondaryColor }: CursorIconProps) => React.ReactNode
+> = {
+	[VttCursorInteractionType.Default]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="100%"
@@ -103,10 +35,8 @@ function DefaultCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				strokeLinejoin="round"
 			/>
 		</svg>
-	);
-}
-function DefaultUpCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.DefaultUp]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="100%"
@@ -123,10 +53,26 @@ function DefaultUpCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				strokeLinejoin="round"
 			/>
 		</svg>
-	);
-}
-function BrushCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Pointer]: ({ mainColor, secondaryColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 48 48"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M38.1,16.1a4.8,4.8,0,0,0-2.7.2A4.9,4.9,0,0,0,31.2,14l-1.3.2A4.8,4.8,0,0,0,25.4,11h-1V7.2a5,5,0,0,0-5.8-5.1,5.1,5.1,0,0,0-4,5V21.9l-2.4-2.4A4.9,4.9,0,0,0,8.7,18a4.6,4.6,0,0,0-3.4,1.5,4.1,4.1,0,0,0-1.3,3,7.9,7.9,0,0,0,1.3,4C6.5,28.7,13.8,41.3,16,45a1.9,1.9,0,0,0,1.7,1H36.5a2,2,0,0,0,2-1.5l3.4-13.2a1.3,1.3,0,0,0,.1-.6V21.2A5.2,5.2,0,0,0,38.1,16.1ZM35.1,42H18.8c-2.7-4.5-9-15.5-10.1-17.5-.1-.2-1.1-1.8-.7-2.2l.7-.3a1.1,1.1,0,0,1,.7.3l5.8,6a2,2,0,0,0,3.3-1.4V7a1,1,0,0,1,2,0V21a1.9,1.9,0,0,0,1.9,2h0a2,2,0,0,0,2-2V16a1,1,0,0,1,1-1,1,1,0,0,1,.9,1v6a2,2,0,0,0,2,2h0a2,2,0,0,0,2-2V19a.9.9,0,0,1,1,1v5a2,2,0,0,0,2,2h0a1.9,1.9,0,0,0,1.9-2V21a1,1,0,0,1,2,0v9.5a1.3,1.3,0,0,1-.1.6Z"
+				fill={mainColor}
+				stroke={secondaryColor}
+				strokeWidth="4"
+				strokeLinejoin="round"
+				paintOrder="stroke fill"
+			/>
+		</svg>
+	),
+	[VttCursorInteractionType.Brush]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -144,10 +90,8 @@ function BrushCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				transform="rotate(90 12 12)"
 			/>
 		</svg>
-	);
-}
-function MenuCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Menu]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -164,10 +108,8 @@ function MenuCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				strokeLinejoin="round"
 			/>
 		</svg>
-	);
-}
-function ChatCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Chat]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -184,10 +126,26 @@ function ChatCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				strokeLinejoin="round"
 			/>
 		</svg>
-	);
-}
-function MoveCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Hand]: ({ mainColor, secondaryColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M6.9 11.4444V14.2222M6.9 11.4444V4.77778C6.9 3.8573 7.66112 3.11111 8.6 3.11111C9.53888 3.11111 10.3 3.8573 10.3 4.77778M6.9 11.4444C6.9 10.524 6.13888 9.77778 5.2 9.77778C4.26112 9.77778 3.5 10.524 3.5 11.4444V13.6667C3.5 18.269 7.30558 22 12 22C16.6944 22 20.5 18.269 20.5 13.6667V8.11111C20.5 7.19064 19.7389 6.44444 18.8 6.44444C17.8611 6.44444 17.1 7.19064 17.1 8.11111M10.3 4.77778V10.8889M10.3 4.77778V3.66667C10.3 2.74619 11.0611 2 12 2C12.9389 2 13.7 2.74619 13.7 3.66667V4.77778M13.7 4.77778V10.8889M13.7 4.77778C13.7 3.8573 14.4611 3.11111 15.4 3.11111C16.3389 3.11111 17.1 3.8573 17.1 4.77778V8.11111M17.1 8.11111V10.8889"
+				fill={mainColor}
+				stroke={secondaryColor}
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	[VttCursorInteractionType.Move]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -204,10 +162,8 @@ function MoveCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				strokeLinejoin="round"
 			/>
 		</svg>
-	);
-}
-function EraserCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Eraser]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -225,30 +181,8 @@ function EraserCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				transform="rotate(270 12 12)"
 			/>
 		</svg>
-	);
-}
-function HandCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
-		<svg
-			className={styles.cursorIcon}
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg">
-			<path
-				d="M6.9 11.4444V14.2222M6.9 11.4444V4.77778C6.9 3.8573 7.66112 3.11111 8.6 3.11111C9.53888 3.11111 10.3 3.8573 10.3 4.77778M6.9 11.4444C6.9 10.524 6.13888 9.77778 5.2 9.77778C4.26112 9.77778 3.5 10.524 3.5 11.4444V13.6667C3.5 18.269 7.30558 22 12 22C16.6944 22 20.5 18.269 20.5 13.6667V8.11111C20.5 7.19064 19.7389 6.44444 18.8 6.44444C17.8611 6.44444 17.1 7.19064 17.1 8.11111M10.3 4.77778V10.8889M10.3 4.77778V3.66667C10.3 2.74619 11.0611 2 12 2C12.9389 2 13.7 2.74619 13.7 3.66667V4.77778M13.7 4.77778V10.8889M13.7 4.77778C13.7 3.8573 14.4611 3.11111 15.4 3.11111C16.3389 3.11111 17.1 3.8573 17.1 4.77778V8.11111M17.1 8.11111V10.8889"
-				fill={mainColor}
-				stroke={secondaryColor}
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/>
-		</svg>
-	);
-}
-function MeasuringCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.Measuring]: ({ mainColor, secondaryColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
@@ -266,25 +200,91 @@ function MeasuringCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
 				transform="rotate(270 12 12)"
 			/>
 		</svg>
-	);
-}
-function PointerCursorSvg({ mainColor, secondaryColor }: CursorIconProps) {
-	return (
+	),
+	[VttCursorInteractionType.AlignVertical]: ({ mainColor }) => (
 		<svg
 			className={styles.cursorIcon}
 			width="24"
 			height="24"
-			viewBox="0 0 48 48"
+			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg">
 			<path
-				d="M38.1,16.1a4.8,4.8,0,0,0-2.7.2A4.9,4.9,0,0,0,31.2,14l-1.3.2A4.8,4.8,0,0,0,25.4,11h-1V7.2a5,5,0,0,0-5.8-5.1,5.1,5.1,0,0,0-4,5V21.9l-2.4-2.4A4.9,4.9,0,0,0,8.7,18a4.6,4.6,0,0,0-3.4,1.5,4.1,4.1,0,0,0-1.3,3,7.9,7.9,0,0,0,1.3,4C6.5,28.7,13.8,41.3,16,45a1.9,1.9,0,0,0,1.7,1H36.5a2,2,0,0,0,2-1.5l3.4-13.2a1.3,1.3,0,0,0,.1-.6V21.2A5.2,5.2,0,0,0,38.1,16.1ZM35.1,42H18.8c-2.7-4.5-9-15.5-10.1-17.5-.1-.2-1.1-1.8-.7-2.2l.7-.3a1.1,1.1,0,0,1,.7.3l5.8,6a2,2,0,0,0,3.3-1.4V7a1,1,0,0,1,2,0V21a1.9,1.9,0,0,0,1.9,2h0a2,2,0,0,0,2-2V16a1,1,0,0,1,1-1,1,1,0,0,1,.9,1v6a2,2,0,0,0,2,2h0a2,2,0,0,0,2-2V19a.9.9,0,0,1,1,1v5a2,2,0,0,0,2,2h0a1.9,1.9,0,0,0,1.9-2V21a1,1,0,0,1,2,0v9.5a1.3,1.3,0,0,1-.1.6Z"
-				fill={mainColor}
-				stroke={secondaryColor}
-				strokeWidth="4"
+				d="M3 12H21M12 2V8.5M12 8.5L16 4.5M12 8.5L8 4.5M12 22V15.5M12 15.5L16 19.5M12 15.5L8 19.5"
+				stroke={mainColor}
+				strokeWidth="2"
+				strokeLinecap="round"
 				strokeLinejoin="round"
-				paintOrder="stroke fill"
 			/>
 		</svg>
-	);
-}
+	),
+	[VttCursorInteractionType.AlignHorizontal]: ({ mainColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M12 3V21M2 12H8.5M8.5 12L4.5 8M8.5 12L4.5 16M22 12H15.5M15.5 12L19.5 8M15.5 12L19.5 16"
+				stroke={mainColor}
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	[VttCursorInteractionType.ResizeVertical]: ({ mainColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M3 12H21M12 2V8.5M12 2L8 6M12 2L16 6M12 22V15.5M12 22L8 18M12 22L16 18"
+				stroke={mainColor}
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	[VttCursorInteractionType.ResizeHorizontal]: ({ mainColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M12 3V21M2 12H8.5M2 12L6 8M2 12L6 16M22 12H15.5M22 12L18 8M22 12L18 16"
+				stroke={mainColor}
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+	[VttCursorInteractionType.Resize]: ({ mainColor, secondaryColor }) => (
+		<svg
+			className={styles.cursorIcon}
+			width="24"
+			height="24"
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg">
+			<path
+				d="M8 2H2V8M2 2L9 9M16 2H22V8M22 2L15 9M2 16V22H8M2 22L9 15M22 16V22H16M22 22L15 15"
+				fill={secondaryColor}
+				stroke={mainColor}
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	),
+};

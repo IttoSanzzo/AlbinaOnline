@@ -1,0 +1,75 @@
+.chatMessageContainer {
+	box-sizing: border-box;
+	width: 100%;
+	animation: 0.75s ease-in fade-in;
+	overflow-wrap: break-word;
+	word-break: normal;
+	white-space: pre-wrap;
+	background-color: #151519;
+	border-radius: var(--rd-md);
+	padding: 6px;
+}
+
+.chatMessageAuthor {
+	display: inline;
+	font-size: var(--fs-sm);
+}
+
+.chatMessageContent {
+	display: inline;
+	color: var(--cl-gray-200);
+	font-size: var(--fs-sm);
+}
+
+.chatLink {
+	color: #4da6ff;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.embedImageLinkContainer {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+}
+
+.chatImage {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.embedVideoContainer {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+.chatVideo {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+}
+
+.chatYoutube {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	aspect-ratio: 16 / 9;
+	border: 0;
+	border-radius: var(--rd-sm);
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

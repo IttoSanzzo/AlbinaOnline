@@ -3,7 +3,10 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
-import { VttContextProvider } from "../Contexts/VttContextProvider";
+import {
+	useVttContext,
+	VttContextProvider,
+} from "../Contexts/VttContextProvider";
 import { CursorSyncronizer } from "./CursorSyncronizer";
 import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
@@ -32,6 +35,13 @@ import { VttAudioControllerProvider } from "../Contexts/AudioManager/VttAudioCon
 import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
 import { DDDiceIntegration } from "./DDDiceIntegration";
+import { WindowStates } from "../Contexts/WindowStates";
+import {
+	VttElementDataAttribute,
+	setVttElementDataAttributes,
+} from "../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { useEffect, useState } from "react";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -48,26 +58,28 @@ export function VttCore({ campaign }: VttCoreProps) {
 
 	return (
 		<VttCoreProvidersContainer>
-			<AudioManagerProvider>
-				<VttLocalSettingsProvider vttId={vttId}>
-					<VttAudioControllerProvider>
-						<VttContextProvider campaign={campaign}>
-							<VttMembersContextProvider>
-								<VttViewportContextProvider>
-									<VttGridContextProvider>
-										<VttInteractionContextProvider>
-											<RadialMenuProvider>
-												{`Connected to VttId: ${vttId}`}
-												<VttCoreEngine />
-											</RadialMenuProvider>
-										</VttInteractionContextProvider>
-									</VttGridContextProvider>
-								</VttViewportContextProvider>
-							</VttMembersContextProvider>
-						</VttContextProvider>
-					</VttAudioControllerProvider>
-				</VttLocalSettingsProvider>
-			</AudioManagerProvider>
+			<WindowStates>
+				<AudioManagerProvider>
+					<VttLocalSettingsProvider vttId={vttId}>
+						<VttAudioControllerProvider>
+							<VttContextProvider campaign={campaign}>
+								<VttMembersContextProvider>
+									<VttViewportContextProvider>
+										<VttGridContextProvider>
+											<VttInteractionContextProvider>
+												<RadialMenuProvider>
+													{`Connected to VttId: ${vttId}`}
+													<VttCoreEngine />
+												</RadialMenuProvider>
+											</VttInteractionContextProvider>
+										</VttGridContextProvider>
+									</VttViewportContextProvider>
+								</VttMembersContextProvider>
+							</VttContextProvider>
+						</VttAudioControllerProvider>
+					</VttLocalSettingsProvider>
+				</AudioManagerProvider>
+			</WindowStates>
 		</VttCoreProvidersContainer>
 	);
 }
@@ -99,6 +111,16 @@ const TestContainer = newStyledElement.div(styles.testContainer);
 function TestZone() {
 	const { camera, worldToScreen } = useVttViewportContext();
 	const { setInteraction } = useVttInteractionContext();
+	const { subscribe } = useVttContext();
+	const [vttResultsTest, setVttResultsTest] = useState<string>("");
+
+	useEffect(() => {
+		const unsubscribe = subscribe("VttDiceResult", (event) => {
+			setVttResultsTest((state) => `${state}\n\n${JSON.stringify(event.data)}`);
+			console.log(event);
+		});
+		return () => unsubscribe();
+	}, []);
 
 	const square1Position = worldToScreen({
 		x: 0,
@@ -108,120 +130,34 @@ function TestZone() {
 		x: 100,
 		y: 100,
 	});
+	const square3Position = worldToScreen({
+		x: 200,
+		y: 200,
+	});
 
 	return (
-		<TestContainer>
+		<TestContainer
+			{...setVttElementDataAttributes(
+				VttElementDataAttribute.EventPing,
+				VttElementDataAttribute.EventZoom,
+				VttElementDataAttribute.EventMiddleButtonPan,
+			)}>
 			<br />
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Default",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Mouse Default
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Brush",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Brush
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Chat",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Chat
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Menu",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Menu
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Move",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Move
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Eraser",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Eraser
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Hand",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Hand
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Measuring",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Measuring
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "DefaultUp",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				DefaultUp
-			</button>
-			<button
-				onClick={() => {
-					setInteraction({
-						type: "Pointer",
-						allowMiddlePan: true,
-						allowEdgeScroll: false,
-						edgeScrollOverride: null,
-					});
-				}}>
-				Pointer
-			</button>
+
+			{Object.keys(VttCursorInteractionType).map((key) => (
+				<button
+					key={key}
+					onClick={() => {
+						setInteraction({
+							type: key as VttCursorInteractionType,
+							allowMiddlePan: true,
+							allowEdgeScroll: false,
+							edgeScrollOverride: null,
+						});
+					}}>
+					{key}
+				</button>
+			))}
 
 			<span
 				style={{
@@ -241,6 +177,17 @@ function TestZone() {
 					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
 			/>
+			<span
+				style={{
+					position: "absolute",
+					left: square3Position.x,
+					top: square3Position.y,
+					overflowWrap: "break-word",
+					wordBreak: "normal",
+					whiteSpace: "pre-wrap",
+				}}>
+				{vttResultsTest}
+			</span>
 		</TestContainer>
 	);
 }
