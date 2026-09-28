@@ -11,17 +11,13 @@ import {
 	useState,
 } from "react";
 import { useVttContext } from "./VttContextProvider";
+import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 5;
 const DEFAULT_ZOOM = 1;
 const GRID_CELL_SIZE = 100;
 export const PIXELS_PER_CENTIMETER = 1;
-
-interface VttPosition {
-	x: number;
-	y: number;
-}
 
 interface VttViewportSize {
 	width: number;
@@ -65,12 +61,12 @@ interface VttViewportContext {
 		mode?: VisibilityMode,
 		padding?: number,
 	) => boolean;
-	worldToScreen: (position: VttPosition) => VttPosition;
-	screenToWorld: (position: VttPosition) => VttPosition;
+	worldToScreen: (position: CoordinatePair) => CoordinatePair;
+	screenToWorld: (position: CoordinatePair) => CoordinatePair;
 	setCameraPosition: (x: number, y: number) => void;
 	moveCamera: (deltaX: number, deltaY: number) => void;
 	setZoom: (zoom: number) => void;
-	zoomAt: (screenPosition: VttPosition, zoom: number) => void;
+	zoomAt: (screenPosition: CoordinatePair, zoom: number) => void;
 	resetCamera: () => void;
 	resetPosition: () => void;
 	resetZoom: () => void;
@@ -172,7 +168,7 @@ export function VttViewportContextProvider({
 		}));
 	};
 
-	const zoomAt = (screenPosition: VttPosition, zoom: number) => {
+	const zoomAt = (screenPosition: CoordinatePair, zoom: number) => {
 		const nextZoom = Math.round(zoom * 10) / 10;
 		if (nextZoom < MIN_ZOOM || nextZoom > MAX_ZOOM) return;
 
@@ -228,7 +224,7 @@ export function VttViewportContextProvider({
 		});
 	};
 
-	const worldToScreen = (position: VttPosition): VttPosition => {
+	const worldToScreen = (position: CoordinatePair): CoordinatePair => {
 		return {
 			x:
 				(position.x - camera.x) * PIXELS_PER_CENTIMETER * camera.zoom +
@@ -239,7 +235,7 @@ export function VttViewportContextProvider({
 		};
 	};
 
-	const screenToWorld = (position: VttPosition): VttPosition => {
+	const screenToWorld = (position: CoordinatePair): CoordinatePair => {
 		return {
 			x:
 				(position.x - viewport.width / 2) /

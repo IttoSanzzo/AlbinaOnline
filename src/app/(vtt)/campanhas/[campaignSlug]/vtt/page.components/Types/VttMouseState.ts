@@ -22,6 +22,7 @@ export const VttCursorInteractionType = {
 	Resize: "Resize",
 	ResizeVertical: "ResizeVertical",
 	ResizeHorizontal: "ResizeHorizontal",
+	CornerUpLeft: "CornerUpLeft",
 } as const;
 
 export type VttCursorInteractionType =
@@ -44,6 +45,7 @@ export const horizontalCursorOffset: Record<VttCursorInteractionType, number> =
 		ResizeVertical: 12,
 		ResizeHorizontal: 12,
 		Resize: 12,
+		CornerUpLeft: 3,
 	};
 export const verticalCursorOffset: Record<VttCursorInteractionType, number> = {
 	Default: 3,
@@ -61,4 +63,5 @@ export const verticalCursorOffset: Record<VttCursorInteractionType, number> = {
 	ResizeVertical: 12,
 	ResizeHorizontal: 12,
 	Resize: 12,
+	CornerUpLeft: 3,
 };

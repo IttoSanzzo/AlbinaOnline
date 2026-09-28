@@ -6,8 +6,10 @@ import styles from "./ChatFileInput.module.css";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+	Dispatch,
 	forwardRef,
 	RefObject,
+	SetStateAction,
 	useEffect,
 	useImperativeHandle,
 	useRef,
@@ -22,6 +24,7 @@ import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";
+import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 
 const SendImageTrigger = newStyledElement.button(styles.sendImageTrigger);
 
@@ -38,12 +41,23 @@ interface ChatFileInputProps {
 	send: (message: VttInputMessage) => void;
 	lastSubmitAttempt: RefObject<number>;
 	isDragging: boolean;
+	messageToReplyIdState: [
+		Guid | undefined,
+		Dispatch<SetStateAction<Guid | undefined>>,
+	];
+	messageToReply?: VttChatMessage;
 }
 export const ChatFileInput = forwardRef<
 	SendDraggedImageToChatHandle,
 	ChatFileInputProps
 >(function ChatFileInput(
-	{ send, lastSubmitAttempt, isDragging }: ChatFileInputProps,
+	{
+		send,
+		lastSubmitAttempt,
+		isDragging,
+		messageToReplyIdState: [messageToReplyId, setMessageToReplyIdState],
+		messageToReply,
+	}: ChatFileInputProps,
 	ref,
 ) {
 	const [pendingImage, setPendingImage] = useState<File | null>(null);
@@ -98,12 +112,15 @@ export const ChatFileInput = forwardRef<
 				type: "PostChatMessage",
 				data: {
 					text: result.storage_url,
+					messageToReplyId: messageToReplyId,
+					recipients: messageToReply ? messageToReply.recipients : undefined,
 				},
 			});
 		} catch (error) {
 			console.error("Failed to upload chat file.", error);
 		} finally {
 			form.reset();
+			if (messageToReplyId) setMessageToReplyIdState(undefined);
 			setOpen(false);
 		}
 	}
@@ -155,7 +172,12 @@ export const ChatFileInput = forwardRef<
 								fieldName="image"
 								maxSize={8_368_608}
 							/>
-							<HookedForm.SubmitButton label="Enviar" />
+							<HookedForm.SubmitButton
+								label="Enviar"
+								ref={(element) => {
+									element?.focus();
+								}}
+							/>
 						</HookedForm.Form>
 					</Dialog.Content>
 				</Dialog.Overlay>

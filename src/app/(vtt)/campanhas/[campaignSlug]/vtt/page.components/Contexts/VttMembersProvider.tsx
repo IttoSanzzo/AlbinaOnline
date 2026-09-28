@@ -48,7 +48,17 @@ export function VttMembersContextProvider({
 		})();
 
 		return subscribe("ConnectedUserIds", (message) => {
-			setConnectedUserIds(new Set(message.data as Guid[]));
+			const nextConnectedUserIds = new Set(message.data as Guid[]);
+			setConnectedUserIds((currentConnectedUserIds) => {
+				if (
+					currentConnectedUserIds.size === nextConnectedUserIds.size &&
+					[...currentConnectedUserIds].every((id) =>
+						nextConnectedUserIds.has(id),
+					)
+				)
+					return currentConnectedUserIds;
+				return nextConnectedUserIds;
+			});
 		});
 	}, [vttId, subscribe]);
 

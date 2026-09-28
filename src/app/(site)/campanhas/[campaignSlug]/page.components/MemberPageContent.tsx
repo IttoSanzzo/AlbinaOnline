@@ -20,9 +20,6 @@ export function MemberPageContent({
 	campaign,
 	member,
 }: MemberPageContentProps) {
-	void campaign;
-	void member;
-
 	return (
 		<>
 			{member.isMaster ? (

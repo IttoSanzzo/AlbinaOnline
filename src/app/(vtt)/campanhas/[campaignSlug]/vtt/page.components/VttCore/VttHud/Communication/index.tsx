@@ -12,6 +12,8 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatFileInput, SendDraggedImageToChatHandle } from "./ChatFileInput";
 import { StpIcon } from "@/libs/stp@icons";
 import { ChatTextInput } from "./ChatTextInput";
+import { Guid, LintIgnoredAny } from "@/libs/stp@types";
+import { useLocalStorageState } from "@/utils/Storage";
 
 const CommunicationContainer = newStyledElement.div(
 	styles.communicationContainer,
@@ -53,11 +55,16 @@ function Chat() {
 
 	const { play } = useVttAudioController();
 	const { members } = useVttMembersContext();
+
 	const [chatMessages, setChatMessages] = useState<VttChatMessage[]>([]);
-	const [chatHistoryHeight, setChatHistoryHeight] = useState(150);
+	const [chatHistoryHeight, setChatHistoryHeight] = useLocalStorageState(
+		"vtt-chat-history-size",
+		150,
+	);
 	const [hasNewMessages, setHasNewMessages] = useState(false);
 	const [hasScrollTop, setHasScrollTop] = useState(false);
 	const [hasScrollBottom, setHasScrollBottom] = useState(false);
+	const messageToReplyIdState = useState<Guid | undefined>(undefined);
 
 	const historyRef = useRef<HTMLDivElement>(null);
 	const shouldScrollToBottom = useRef(true);
@@ -130,7 +137,10 @@ function Chat() {
 	}
 
 	useEffect(() => {
-		return subscribe("VttChatMessage", (event) => {
+		const unsubscribe1 = subscribe("VttAllChatMessages", (event) => {
+			setChatMessages(event.data as VttChatMessage[]);
+		});
+		const unsubscribe2 = subscribe("VttChatMessage", (event) => {
 			const wasAtBottom = shouldScrollToBottom.current;
 			const chatIsActive = isChatHovered.current || isChatFocused.current;
 			if (!chatIsActive || !wasAtBottom) {
@@ -144,7 +154,23 @@ function Chat() {
 			setChatMessages((state) => [...state, event.data as VttChatMessage]);
 			if (!wasAtBottom) setHasNewMessages(true);
 		});
-	}, [subscribe]);
+		const unsubscribe3 = subscribe("VttDeleteChatMessage", (event) => {
+			const idToRemove = (event.data as LintIgnoredAny).messageId;
+			setChatMessages((state) =>
+				state.filter((message) => message.id != idToRemove),
+			);
+		});
+		send({
+			id: Guid.NewGuid(),
+			type: "RequestChatMessages",
+			data: {},
+		});
+		return () => {
+			unsubscribe1();
+			unsubscribe2();
+			unsubscribe3();
+		};
+	}, [setChatMessages, subscribe, send]);
 	useEffect(() => {
 		const history = historyRef.current;
 		if (!history) return;
@@ -209,6 +235,15 @@ function Chat() {
 		updateScrollState();
 	}, [chatMessages, chatHistoryHeight]);
 
+	const messageToReply = messageToReplyIdState[0]
+		? chatMessages.find(
+				(messageToReply) => messageToReply.id == messageToReplyIdState[0],
+			)
+		: undefined;
+	const messageToReplyMember = messageToReply
+		? members.find((member) => member.userId == messageToReply.userId)
+		: undefined;
+
 	return (
 		<ChatContainer
 			onMouseEnter={() => {
@@ -262,13 +297,33 @@ function Chat() {
 					style={{
 						height: `${chatHistoryHeight}px`,
 					}}>
-					{chatMessages.map((message) => (
-						<ChatMessage
-							key={`${message.timestamp}|${message.userId}`}
-							message={message}
-							member={members.find((member) => member.userId == message.userId)}
-						/>
-					))}
+					{chatMessages.map((message) => {
+						const messageToReply = message.messageToReplyId
+							? chatMessages.find(
+									(messageToReply) =>
+										messageToReply.id == message.messageToReplyId,
+								)
+							: undefined;
+						return (
+							<ChatMessage
+								key={message.id}
+								message={message}
+								member={members.find(
+									(member) => member.userId == message.userId,
+								)}
+								messageToReply={messageToReply}
+								messageToReplyMember={
+									messageToReply
+										? members.find(
+												(member) => member.userId == messageToReply.userId,
+											)
+										: undefined
+								}
+								messageToReplyIdState={messageToReplyIdState}
+								members={members}
+							/>
+						);
+					})}
 					{hasNewMessages && (
 						<GoToBottomButton
 							{...setVttElementHoverInteraction(
@@ -286,12 +341,19 @@ function Chat() {
 				send={send}
 				setHasNewMessages={setHasNewMessages}
 				shouldScrollToBottom={shouldScrollToBottom}
+				messageToReplyIdState={messageToReplyIdState}
+				messageToReply={messageToReply}
+				messageToReplyMember={messageToReplyMember}
+				members={members}
+				allChatMessages={chatMessages}
 			/>
 			<ChatFileInput
 				ref={sendImageModalRef}
 				lastSubmitAttempt={lastSubmitAttempt}
 				send={send}
 				isDragging={isDragging}
+				messageToReplyIdState={messageToReplyIdState}
+				messageToReply={messageToReply}
 			/>
 		</ChatContainer>
 	);

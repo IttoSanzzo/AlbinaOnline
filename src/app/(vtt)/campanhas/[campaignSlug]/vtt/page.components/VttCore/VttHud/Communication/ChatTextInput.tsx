@@ -5,11 +5,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 import { VttInputMessage } from "../../../Types/VttInputMessage";
 import z from "zod";
-import { Guid } from "@/libs/stp@types";
+import { CampaignMember, Guid } from "@/libs/stp@types";
 import { CHAT_SUBMIT_COOLDOWN_MS } from ".";
 import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
 import { VttCursorInteractionType } from "../../../Types/VttMouseState";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
+import { newStyledElement } from "@setsu-tp/styled-components";
+import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
+import { VttCommandLineHandler } from "./VttCommandLineHandler";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useCurrentUser } from "@/libs/stp@hooks";
+
+const ChatTextInputContainer = newStyledElement.div(
+	styles.chatTextInputContainer,
+);
+const ReplyContainer = newStyledElement.div(styles.replyContainer);
+const ReplyMessageContent = newStyledElement.span(styles.replyMessageContent);
+const ReplyMessageAuthor = newStyledElement.span(styles.replyMessageAuthor);
+const CancelReplyButton = newStyledElement.button(styles.cancelReplyButton);
 
 const schema = z.object({
 	message: z.string(),
@@ -21,14 +34,29 @@ interface ChatTextInputProps {
 	lastSubmitAttempt: RefObject<number>;
 	setHasNewMessages: Dispatch<SetStateAction<boolean>>;
 	shouldScrollToBottom: RefObject<boolean>;
+	messageToReplyIdState: [
+		Guid | undefined,
+		Dispatch<SetStateAction<Guid | undefined>>,
+	];
+	messageToReply?: VttChatMessage;
+	messageToReplyMember?: CampaignMember;
+	members: CampaignMember[];
+	allChatMessages: VttChatMessage[];
 }
 export function ChatTextInput({
 	lastSubmitAttempt,
 	send,
 	setHasNewMessages,
 	shouldScrollToBottom,
+	messageToReplyIdState: [messageToReplyId, setMessageToReplyId],
+	messageToReplyMember,
+	messageToReply,
+	members,
+	allChatMessages,
 }: ChatTextInputProps) {
 	const { setInteraction, interaction } = useVttInteractionContext();
+	const { screenToWorld } = useVttViewportContext();
+	const { user } = useCurrentUser();
 	const chatInputRef = useRef<HTMLTextAreaElement>(null);
 
 	const form = useForm<FormData>({
@@ -41,18 +69,37 @@ export function ChatTextInput({
 	const watchedMessage = (form.watch().message ?? "").trim();
 
 	async function handleSubmit(data: FormData) {
-		const now = Date.now();
-		if (now - lastSubmitAttempt.current < CHAT_SUBMIT_COOLDOWN_MS) return;
-		lastSubmitAttempt.current = now;
-		if (data.message.trim().length == 0) return;
-		send({
-			id: Guid.NewGuid(),
-			type: "PostChatMessage",
-			data: {
+		let shouldReset: boolean = true;
+		try {
+			const now = Date.now();
+			if (now - lastSubmitAttempt.current < CHAT_SUBMIT_COOLDOWN_MS) return;
+			lastSubmitAttempt.current = now;
+			if (data.message.trim().length == 0) return;
+			const result = await VttCommandLineHandler({
 				text: data.message,
-			},
-		});
-		form.reset();
+				userId: user?.id ?? Guid.Empty,
+				messageToReplyId: messageToReplyId,
+				messageToReply: messageToReply,
+				members: members,
+				send: send,
+				screenToWorld: screenToWorld,
+				allChatMessages: allChatMessages,
+			});
+			shouldReset = result.shouldReset ?? false;
+			if (result.type)
+				send({
+					id: Guid.NewGuid(),
+					type: result.type,
+					data: result.data ?? {},
+				});
+		} catch (error) {
+			console.error("Failed to upload chat file.", error);
+		} finally {
+			if (shouldReset) {
+				form.reset();
+				if (messageToReplyId) setMessageToReplyId(undefined);
+			}
+		}
 	}
 	function canOpenChat(event: KeyboardEvent): boolean {
 		if (event.repeat) return false;
@@ -70,69 +117,104 @@ export function ChatTextInput({
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {
-			if (event.key !== "Enter" || !canOpenChat(event) || !chatInputRef.current)
+			if (
+				(event.key !== "Enter" && event.key !== "/") ||
+				!canOpenChat(event) ||
+				!chatInputRef.current
+			)
 				return;
 			event.preventDefault();
+			if (event.key === "/") form.setValue("message", "/");
 			chatInputRef.current.focus();
 		}
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
 	}, []);
+	useEffect(() => {
+		if (!messageToReplyId || !chatInputRef.current) return;
+		chatInputRef.current.focus();
+	}, [messageToReplyId]);
 
 	return (
-		<HookedForm.Form<FormData>
-			form={form}
-			onSubmit={handleSubmit}>
-			<HookedForm.TextAreaInput<FormData>
-				fieldName="message"
-				label={""}
-				placeholder={"Digite uma Mensagem"}
-				height={"60px"}
-				borderColor={"transparent"}
-				style={
-					watchedMessage.length == 0
-						? {
-								color: "var(--cl-gray-600)",
-								textAlign: "center",
-							}
-						: {
-								color: "var(--cl-gray-200)",
-							}
-				}
-				className={styles.chatInput}
-				inputRef={chatInputRef as RefObject<HTMLTextAreaElement>}
-				{...setVttElementHoverInteraction(VttCursorInteractionType.Chat)}
-				onFocus={() => {
-					setInteraction({
-						...interaction,
-						type: VttCursorInteractionType.Chat,
-					});
-				}}
-				onBlur={() => {
-					setInteraction({
-						...interaction,
-						type: VttCursorInteractionType.Default,
-					});
-				}}
-				onInput={(event) => {
-					const textarea = event.currentTarget;
-					textarea.style.height = "60px";
-					textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
-				}}
-				onKeyDown={(event) => {
-					if (event.key === "Escape") {
-						event.preventDefault();
-						event.currentTarget.blur();
-					} else if (event.key === "Enter" && !event.shiftKey) {
-						event.preventDefault();
-						shouldScrollToBottom.current = true;
-						setHasNewMessages(false);
-						if (watchedMessage.length == 0) return;
-						event.currentTarget.form?.requestSubmit();
-						event.currentTarget.style.height = "60px";
+		<ChatTextInputContainer>
+			{messageToReplyId && (
+				<ReplyContainer>
+					<ReplyMessageContent>
+						Respondendo a{" "}
+						<ReplyMessageAuthor
+							style={{
+								background: `linear-gradient(10deg, ${messageToReply?.color1 ?? "#FFFFFF"}, ${messageToReply?.color2 ?? "#000000"})`,
+								WebkitBackgroundClip: "text",
+								WebkitTextFillColor: "transparent",
+							}}>
+							{messageToReplyMember?.user.nickname ?? "???"}
+						</ReplyMessageAuthor>
+					</ReplyMessageContent>
+					<CancelReplyButton
+						{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
+						onClick={(event) => {
+							event.preventDefault();
+							setMessageToReplyId(undefined);
+						}}>
+						Cancelar
+					</CancelReplyButton>
+				</ReplyContainer>
+			)}
+			<HookedForm.Form<FormData>
+				form={form}
+				onSubmit={handleSubmit}>
+				<HookedForm.TextAreaInput<FormData>
+					fieldName="message"
+					label={""}
+					placeholder={"Digite uma Mensagem"}
+					height={"60px"}
+					borderColor={"transparent"}
+					style={
+						watchedMessage.length == 0
+							? {
+									color: "var(--cl-gray-600)",
+									textAlign: "center",
+								}
+							: {
+									color: "var(--cl-gray-200)",
+								}
 					}
-				}}
-			/>
-		</HookedForm.Form>
+					className={styles.chatInput}
+					inputRef={chatInputRef as RefObject<HTMLTextAreaElement>}
+					{...setVttElementHoverInteraction(VttCursorInteractionType.Chat)}
+					onFocus={() => {
+						setInteraction({
+							...interaction,
+							type: VttCursorInteractionType.Chat,
+						});
+					}}
+					onBlur={() => {
+						setInteraction({
+							...interaction,
+							type: VttCursorInteractionType.Default,
+						});
+					}}
+					onInput={(event) => {
+						const textarea = event.currentTarget;
+						textarea.style.height = "60px";
+						textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
+					}}
+					onKeyDown={(event) => {
+						if (event.key === "Escape") {
+							event.preventDefault();
+							if (messageToReplyId) setMessageToReplyId(undefined);
+							else event.currentTarget.blur();
+						} else if (event.key === "Enter" && !event.shiftKey) {
+							event.preventDefault();
+							shouldScrollToBottom.current = true;
+							setHasNewMessages(false);
+							if (watchedMessage.length == 0) return;
+							event.currentTarget.form?.requestSubmit();
+							event.currentTarget.style.height = "60px";
+						}
+					}}
+				/>
+			</HookedForm.Form>
+		</ChatTextInputContainer>
 	);
 }

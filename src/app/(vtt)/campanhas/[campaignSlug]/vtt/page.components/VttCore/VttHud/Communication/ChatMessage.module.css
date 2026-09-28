@@ -11,8 +11,17 @@
 }
 
 .chatMessageAuthor {
+	position: relative;
+	white-space: nowrap;
 	display: inline;
 	font-size: var(--fs-sm);
+	padding-left: 17px;
+}
+
+.chatMessageAuthorImage {
+	position: absolute;
+	left: -3px;
+	border-radius: var(--rd-full);
 }
 
 .chatMessageContent {
@@ -63,6 +72,51 @@
 	aspect-ratio: 16 / 9;
 	border: 0;
 	border-radius: var(--rd-sm);
+}
+
+.firstEmbed {
+	margin-top: 10px;
+}
+
+.replyContainer {
+	display: flex;
+	height: 25px;
+	width: 100%;
+}
+
+.replyCurvedLineSpan {
+	flex: 0 0 26px;
+	display: block;
+	margin-top: auto;
+	margin-left: 4px;
+	height: 16px;
+	width: 26px;
+	border-top: 2px solid var(--cl-gray-500);
+	border-left: 2px solid var(--cl-gray-500);
+	border-top-left-radius: var(--rd-md);
+}
+
+.replyContent {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	flex: 1;
+	height: 100%;
+	padding-right: 10px;
+	padding-bottom: 3px;
+}
+
+.replyText {
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	color: var(--cl-gray-600);
+	padding-left: 5px;
+	font-size: var(--fs-xs);
+
+	&.deleted {
+		color: var(--cl-gray-700);
+	}
 }
 
 @keyframes fade-in {

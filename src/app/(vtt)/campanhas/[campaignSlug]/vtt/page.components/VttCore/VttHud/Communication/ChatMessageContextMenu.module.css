@@ -1,0 +1,43 @@
+.chatMessageContextMenuContainer {
+	display: flex;
+	flex-direction: column;
+	padding: var(--sp-2);
+	background-color: var(--cl-gray-900);
+	border: 1px solid var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	gap: 6px;
+
+	&,
+	& * {
+		cursor: none;
+	}
+}
+
+.menuButton {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: var(--sp-1) var(--sp-3);
+	font-weight: var(--fw-bold);
+	background-color: var(--cl-gray-700);
+	border: none;
+	border-radius: var(--rd-xs);
+	color: var(--cl-gray-300);
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+
+	&:hover {
+		background-color: var(--cl-gray-500);
+		color: var(--cl-gray-100);
+	}
+}
+
+.deleteButton {
+	background-color: var(--cl-red-900);
+	color: var(--cl-black-3);
+	&:hover {
+		background-color: var(--cl-red-700);
+	}
+}

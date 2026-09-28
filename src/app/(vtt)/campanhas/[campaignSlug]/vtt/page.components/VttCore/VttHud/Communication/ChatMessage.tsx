@@ -1,11 +1,13 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./ChatMessage.module.css";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
-import { CampaignMember } from "@/libs/stp@types";
+import { CampaignMember, Guid } from "@/libs/stp@types";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../../../Types/VttMouseState";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Image from "next/image";
+import { ChatMessageContextMenu } from "./ChatMessageContextMenu";
 
 const ChatMessageContainer = newStyledElement.div(styles.chatMessageContainer);
 const ChatMessageAuthor = newStyledElement.div(styles.chatMessageAuthor);
@@ -13,6 +15,10 @@ const ChatMessageContent = newStyledElement.div(styles.chatMessageContent);
 const EmbedImageLinkContainer = newStyledElement.a(
 	styles.embedImageLinkContainer,
 );
+const ReplyContainer = newStyledElement.div(styles.replyContainer);
+const ReplyCurvedLineSpan = newStyledElement.span(styles.replyCurvedLineSpan);
+const ReplyContent = newStyledElement.div(styles.replyContent);
+const ReplyText = newStyledElement.p(styles.replyText);
 
 const CHAT_URL_REGEX = /https?:\/\/[^\s<]+/gi;
 const CHAT_IMAGE_EXTENSIONS = [
@@ -137,6 +143,7 @@ function ChatMessageContentRenderer({ text }: ChatMessageContentProps) {
 				<EmbedImageLinkContainer
 					{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
 					key={`image-${index}`}
+					className={parts.length == 0 ? styles.firstEmbed : undefined}
 					href={url}
 					target="_blank"
 					rel="noopener noreferrer">
@@ -153,7 +160,11 @@ function ChatMessageContentRenderer({ text }: ChatMessageContentProps) {
 				<video
 					{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
 					key={`video-${index}`}
-					className={clsx(styles.embedVideoContainer, styles.chatVideo)}
+					className={clsx(
+						styles.embedVideoContainer,
+						styles.chatVideo,
+						parts.length == 0 ? styles.firstEmbed : undefined,
+					)}
 					controls
 					preload="metadata"
 					playsInline>
@@ -165,7 +176,10 @@ function ChatMessageContentRenderer({ text }: ChatMessageContentProps) {
 				<iframe
 					{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
 					key={`youtube-${index}`}
-					className={styles.chatYoutube}
+					className={clsx(
+						styles.chatYoutube,
+						parts.length == 0 ? styles.firstEmbed : undefined,
+					)}
 					src={`https://www.youtube.com/embed/${youtubeVideoId}`}
 					title="Vídeo do YouTube"
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -181,7 +195,10 @@ function ChatMessageContentRenderer({ text }: ChatMessageContentProps) {
 					href={url}
 					target="_blank"
 					rel="noopener noreferrer"
-					className={styles.chatLink}>
+					className={clsx(
+						styles.chatLink,
+						parts.length == 0 ? styles.firstEmbed : undefined,
+					)}>
 					{url}
 				</a>,
 			);
@@ -194,24 +211,153 @@ function ChatMessageContentRenderer({ text }: ChatMessageContentProps) {
 
 interface ChatMessageProps {
 	message: VttChatMessage;
-	member: CampaignMember | undefined;
+	member?: CampaignMember;
+	messageToReply?: VttChatMessage;
+	messageToReplyMember?: CampaignMember;
+	messageToReplyIdState: [
+		Guid | undefined,
+		Dispatch<SetStateAction<Guid | undefined>>,
+	];
+	members: CampaignMember[];
 }
+export function ChatMessage({
+	message,
+	member,
+	messageToReply,
+	messageToReplyMember,
+	messageToReplyIdState: [, setMessageToReplyId],
+	members,
+}: ChatMessageProps) {
+	const [contextMenuPosition, setContextMenuPosition] = useState<{
+		x: number;
+		y: number;
+	} | null>(null);
 
-export function ChatMessage({ message, member }: ChatMessageProps) {
 	return (
-		<ChatMessageContainer>
-			<ChatMessageAuthor
-				style={{
-					background: `linear-gradient(10deg, ${message.color1}, ${message.color2})`,
-					WebkitBackgroundClip: "text",
-					WebkitTextFillColor: "transparent",
-				}}>
-				{member?.user.nickname ?? "???"}
-			</ChatMessageAuthor>
-			:{" "}
-			<ChatMessageContent>
+		<ChatMessageContainer
+			id={`vtt-chatmessage|${message.id}`}
+			data-chat-context-menu-open={contextMenuPosition != null}
+			onContextMenu={(event) => {
+				event.preventDefault();
+				setContextMenuPosition({
+					x: event.clientX,
+					y: event.clientY,
+				});
+			}}>
+			{message.messageToReplyId && (
+				<ReplyContainer>
+					<ReplyCurvedLineSpan />
+					<ReplyContent
+						{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
+						{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
+						onClick={(event) => {
+							event.preventDefault();
+							const messageElement = document.getElementById(
+								`vtt-chatmessage|${message.messageToReplyId}`,
+							);
+							if (!messageElement) return;
+							messageElement.scrollIntoView({
+								behavior: "smooth",
+								block: "start",
+								inline: "start",
+							});
+						}}>
+						<MessageAuthor
+							member={messageToReplyMember}
+							message={messageToReply}
+							isReply
+						/>
+						<ReplyText
+							className={messageToReply ? undefined : styles.deleted}
+							style={
+								messageToReply && messageToReply.recipients.length > 0
+									? { color: "var(--cl-mauve-900)" }
+									: undefined
+							}>
+							{messageToReply?.text ?? "Removido"}
+						</ReplyText>
+					</ReplyContent>
+				</ReplyContainer>
+			)}
+			<MessageAuthor
+				member={member}
+				message={message}
+				setMessageToReplyId={setMessageToReplyId}
+				title={
+					message.recipients.length > 0
+						? `Recipientes:\n${message.recipients
+								.filter((recipientId) => recipientId != message.userId)
+								.map(
+									(recipientId) =>
+										`\n${members.find((member) => member.userId == recipientId)?.user.nickname ?? "???"}`,
+								)}`
+						: undefined
+				}
+			/>
+			{"  "}
+			<ChatMessageContent
+				style={
+					message.recipients.length > 0
+						? { color: "var(--cl-mauve-900)" }
+						: undefined
+				}>
 				<ChatMessageContentRenderer text={message.text} />
 			</ChatMessageContent>
+			{contextMenuPosition && (
+				<ChatMessageContextMenu
+					position={contextMenuPosition}
+					messageId={message.id}
+					messageAuthorId={message.userId}
+					closeContextMenu={() => setContextMenuPosition(null)}
+					onReply={() => setMessageToReplyId(message.id)}
+				/>
+			)}
 		</ChatMessageContainer>
+	);
+}
+
+interface MessageAuthorProps {
+	message?: VttChatMessage;
+	member?: CampaignMember;
+	setMessageToReplyId?: Dispatch<SetStateAction<Guid | undefined>>;
+	title?: string;
+	isReply?: boolean;
+}
+function MessageAuthor({
+	message,
+	member,
+	setMessageToReplyId,
+	title,
+	isReply = false,
+}: MessageAuthorProps) {
+	return (
+		<ChatMessageAuthor
+			{...(setMessageToReplyId &&
+				setVttElementHoverInteraction(VttCursorInteractionType.CornerUpLeft))}
+			title={title}
+			style={{
+				background: `linear-gradient(10deg, ${message?.color1 ?? "#FFFFFF"}, ${message?.color2 ?? "#000000"})`,
+				WebkitBackgroundClip: "text",
+				WebkitTextFillColor: "transparent",
+				fontSize: isReply ? "var(--fs-xs)" : undefined,
+			}}
+			onDoubleClick={
+				setMessageToReplyId
+					? () => {
+							if (message) setMessageToReplyId(message.id);
+						}
+					: undefined
+			}>
+			{member && (
+				<Image
+					src={member.user.iconUrl}
+					alt={""}
+					width={isReply ? 15 : 18}
+					height={isReply ? 15 : 18}
+					className={styles.chatMessageAuthorImage}
+				/>
+			)}
+			{member?.user.nickname ?? "???"}
+		</ChatMessageAuthor>
 	);
 }

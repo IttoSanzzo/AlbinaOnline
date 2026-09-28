@@ -5,5 +5,8 @@ export const VttOutputMessageTypes = [
 	"VttSceneSnapshot",
 	"VttDiceResult",
 	"VttChatMessage",
+	"VttAllChatMessages",
+	"VttAllDiceResults",
+	"VttDeleteChatMessage",
 ] as const;
 export type VttOutputMessageType = (typeof VttOutputMessageTypes)[number];

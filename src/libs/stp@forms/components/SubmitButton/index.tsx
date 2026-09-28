@@ -13,6 +13,7 @@ interface SubmitButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 	label?: string;
 	color?: "gray" | "green" | "red" | "teal" | "blue" | "violet" | "mauve";
 	useDebugTitle?: boolean;
+	ref?: React.Ref<HTMLButtonElement>;
 }
 export function SubmitButton({
 	label = "Submit",
@@ -54,7 +55,11 @@ export function SubmitButton({
 					? false
 					: disabled || !isValid || isSubmitting || !isDirty
 			}
-			{...rest}>
+			{...rest}
+			onKeyDown={(event) => {
+				if (event.code == "Enter") event.currentTarget.form?.requestSubmit();
+				rest.onKeyDown?.(event);
+			}}>
 			<label>{label}</label>
 		</SubmitButtonTrigger>
 	);

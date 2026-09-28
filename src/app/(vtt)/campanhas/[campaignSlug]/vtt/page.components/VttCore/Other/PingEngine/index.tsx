@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./index.module.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useRadialMenu } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import {
@@ -26,6 +26,7 @@ import {
 import { VttCursorInteractionType } from "../../../Types/VttMouseState";
 import { isFormElement } from "@/utils/General";
 import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
+import { VttInputMessage } from "../../../Types/VttInputMessage";
 
 const PingEngineContainer = newStyledElement.div(styles.pingEngineContainer);
 const PING_MESSAGE_TYPE = "PostPing";
@@ -114,6 +115,34 @@ function getPingScreenPosition(
 	};
 }
 
+let pingTimestamps: number[] = [];
+let lastPingType: keyof typeof PingType = "Default";
+
+interface sendPingProps {
+	type?: keyof typeof PingType;
+	position: CoordinatePair;
+	send: (message: VttInputMessage) => void;
+}
+export function sendPing({ position, type, send }: sendPingProps) {
+	const now = Date.now();
+	const windowStart = now - MAX_PING_TIMEOUT_MS;
+	type ??= lastPingType;
+	lastPingType = type;
+	pingTimestamps = pingTimestamps.filter(
+		(timestamp) => timestamp > windowStart,
+	);
+	if (pingTimestamps.length >= MAX_PING_COUNT_PER_TIMEOUT) return;
+	pingTimestamps.push(now);
+	send({
+		id: Guid.NewGuid(),
+		type: PING_MESSAGE_TYPE,
+		data: {
+			type: type,
+			position: position,
+		},
+	});
+}
+
 export function PingEngine() {
 	const radialMenu = useRadialMenu();
 	const { send, subscribe } = useVttContext();
@@ -122,8 +151,6 @@ export function PingEngine() {
 	const { members } = useVttMembersContext();
 	const { play } = useVttAudioController();
 	const [pings, setPings] = useState<Ping[]>([]);
-	const pingTimestampsRef = useRef<number[]>([]);
-	const lastPingType = useRef<keyof typeof PingType>("Default");
 
 	function playPingSound(type: PingType, userId: Guid) {
 		const source = audioPaths.vtt.pings[type];
@@ -132,24 +159,6 @@ export function PingEngine() {
 			path: source,
 			type: "vtt.pings",
 			sourceId: userId,
-		});
-	}
-	function sendPing(type: keyof typeof PingType, position: CoordinatePair) {
-		const now = Date.now();
-		const windowStart = now - MAX_PING_TIMEOUT_MS;
-		lastPingType.current = type;
-		pingTimestampsRef.current = pingTimestampsRef.current.filter(
-			(timestamp) => timestamp > windowStart,
-		);
-		if (pingTimestampsRef.current.length >= MAX_PING_COUNT_PER_TIMEOUT) return;
-		pingTimestampsRef.current.push(now);
-		send({
-			id: Guid.NewGuid(),
-			type: PING_MESSAGE_TYPE,
-			data: {
-				type: type,
-				position: position,
-			},
 		});
 	}
 
@@ -170,10 +179,11 @@ export function PingEngine() {
 				submitKeys: [PING_KEY],
 				nameColor: StandartTextColor["gray"],
 				onSubmit: (props: RadialMenuSubmitProps) => {
-					sendPing(
-						props.option.id as keyof typeof PingType,
-						props.cursorPosition,
-					);
+					sendPing({
+						type: props.option.id as keyof typeof PingType,
+						position: props.cursorPosition,
+						send: send,
+					});
 					props.close();
 				},
 			});
@@ -196,10 +206,10 @@ export function PingEngine() {
 			event.preventDefault();
 			if (event.shiftKey) {
 				if (event.altKey) {
-					sendPing(
-						lastPingType.current,
-						roundCoordinate(screenToWorld(WindowCursorState)),
-					);
+					sendPing({
+						position: roundCoordinate(screenToWorld(WindowCursorState)),
+						send: send,
+					});
 				} else openPingMenu("switch");
 			} else openPingMenu("fast");
 		};
