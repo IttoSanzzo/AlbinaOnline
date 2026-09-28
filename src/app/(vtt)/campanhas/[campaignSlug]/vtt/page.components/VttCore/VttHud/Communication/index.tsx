@@ -1,12 +1,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
-import { HookedForm } from "@/libs/stp@forms";
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Guid } from "@/libs/stp@types";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
@@ -16,7 +11,7 @@ import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
 import { ChatMessage } from "./ChatMessage";
 import { ChatFileInput, SendDraggedImageToChatHandle } from "./ChatFileInput";
 import { StpIcon } from "@/libs/stp@icons";
-import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
+import { ChatTextInput } from "./ChatTextInput";
 
 const CommunicationContainer = newStyledElement.div(
 	styles.communicationContainer,
@@ -41,11 +36,6 @@ const ChatHistoryResizeHandle = newStyledElement.div(
 );
 const GoToBottomButton = newStyledElement.button(styles.goToBottomButton);
 
-const schema = z.object({
-	message: z.string(),
-});
-type FormData = z.infer<typeof schema>;
-
 export const CHAT_SUBMIT_COOLDOWN_MS = 500;
 const CHAT_HISTORY_MIN_HEIGHT = 80;
 const CHAT_HISTORY_MAX_HEIGHT = 500;
@@ -57,23 +47,10 @@ function isAtBottom(element: HTMLDivElement): boolean {
 		CHAT_SCROLL_THRESHOLD
 	);
 }
-function canOpenChat(event: KeyboardEvent): boolean {
-	if (event.repeat) return false;
-	if (event.ctrlKey || event.altKey || event.metaKey) return false;
-	const target = event.target;
-	if (
-		target instanceof HTMLInputElement ||
-		target instanceof HTMLTextAreaElement ||
-		target instanceof HTMLSelectElement ||
-		(target instanceof HTMLElement && target.isContentEditable)
-	)
-		return false;
-	return true;
-}
 
 function Chat() {
 	const { subscribe, send } = useVttContext();
-	const { setInteraction, interaction } = useVttInteractionContext();
+
 	const { play } = useVttAudioController();
 	const { members } = useVttMembersContext();
 	const [chatMessages, setChatMessages] = useState<VttChatMessage[]>([]);
@@ -81,7 +58,7 @@ function Chat() {
 	const [hasNewMessages, setHasNewMessages] = useState(false);
 	const [hasScrollTop, setHasScrollTop] = useState(false);
 	const [hasScrollBottom, setHasScrollBottom] = useState(false);
-	const chatInputRef = useRef<HTMLTextAreaElement>(null);
+
 	const historyRef = useRef<HTMLDivElement>(null);
 	const shouldScrollToBottom = useRef(true);
 	const isProgrammaticScroll = useRef(false);
@@ -231,41 +208,6 @@ function Chat() {
 		}
 		updateScrollState();
 	}, [chatMessages, chatHistoryHeight]);
-	useEffect(() => {
-		function handleKeyDown(event: KeyboardEvent) {
-			if (event.key !== "Enter" || !canOpenChat(event) || !chatInputRef.current)
-				return;
-			event.preventDefault();
-			chatInputRef.current.focus();
-		}
-		window.addEventListener("keydown", handleKeyDown);
-		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, []);
-
-	const form = useForm<FormData>({
-		mode: "all",
-		resolver: zodResolver(schema),
-		defaultValues: {
-			message: "",
-		},
-	});
-
-	const watchedMessage = (form.watch().message ?? "").trim();
-
-	async function handleSubmit(data: FormData) {
-		const now = Date.now();
-		if (now - lastSubmitAttempt.current < CHAT_SUBMIT_COOLDOWN_MS) return;
-		lastSubmitAttempt.current = now;
-		if (data.message.trim().length == 0) return;
-		send({
-			id: Guid.NewGuid(),
-			type: "PostChatMessage",
-			data: {
-				text: data.message,
-			},
-		});
-		form.reset();
-	}
 
 	return (
 		<ChatContainer
@@ -339,60 +281,12 @@ function Chat() {
 					)}
 				</ChatHistoryContainer>
 			</ChatHistoryResizeContainer>
-			<HookedForm.Form<FormData>
-				form={form}
-				onSubmit={handleSubmit}>
-				<HookedForm.TextAreaInput<FormData>
-					fieldName="message"
-					label={""}
-					placeholder={"Digite uma Mensagem"}
-					height={"60px"}
-					borderColor={"transparent"}
-					style={
-						watchedMessage.length == 0
-							? {
-									color: "var(--cl-gray-600)",
-									textAlign: "center",
-								}
-							: {
-									color: "var(--cl-gray-200)",
-								}
-					}
-					className={styles.chatInput}
-					inputRef={chatInputRef as RefObject<HTMLTextAreaElement>}
-					{...setVttElementHoverInteraction(VttCursorInteractionType.Chat)}
-					onFocus={() => {
-						setInteraction({
-							...interaction,
-							type: VttCursorInteractionType.Chat,
-						});
-					}}
-					onBlur={() => {
-						setInteraction({
-							...interaction,
-							type: VttCursorInteractionType.Default,
-						});
-					}}
-					onInput={(event) => {
-						const textarea = event.currentTarget;
-						textarea.style.height = "60px";
-						textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
-					}}
-					onKeyDown={(event) => {
-						if (event.key === "Escape") {
-							event.preventDefault();
-							event.currentTarget.blur();
-						} else if (event.key === "Enter" && !event.shiftKey) {
-							event.preventDefault();
-							shouldScrollToBottom.current = true;
-							setHasNewMessages(false);
-							if (watchedMessage.length == 0) return;
-							event.currentTarget.form?.requestSubmit();
-							event.currentTarget.style.height = "60px";
-						}
-					}}
-				/>
-			</HookedForm.Form>
+			<ChatTextInput
+				lastSubmitAttempt={lastSubmitAttempt}
+				send={send}
+				setHasNewMessages={setHasNewMessages}
+				shouldScrollToBottom={shouldScrollToBottom}
+			/>
 			<ChatFileInput
 				ref={sendImageModalRef}
 				lastSubmitAttempt={lastSubmitAttempt}
