@@ -33,14 +33,19 @@ const ChatHistoryResizeContainer = newStyledElement.div(
 	styles.chatHistoryResizeContainer,
 );
 const ChatHistoryContainer = newStyledElement.div(styles.chatHistoryContainer);
-const ChatHistoryResizeHandle = newStyledElement.div(
-	styles.chatHistoryResizeHandle,
+const ChatHistoryVerticalResizeHandle = newStyledElement.div(
+	styles.chatHistoryVerticalResizeHandle,
+);
+const ChatHistoryHorizontalResizeHandle = newStyledElement.div(
+	styles.chatHistoryHorizontalResizeHandle,
 );
 const GoToBottomButton = newStyledElement.button(styles.goToBottomButton);
 
 export const CHAT_SUBMIT_COOLDOWN_MS = 500;
 const CHAT_HISTORY_MIN_HEIGHT = 80;
-const CHAT_HISTORY_MAX_HEIGHT = 500;
+const CHAT_HISTORY_MAX_HEIGHT = 700;
+const CHAT_MIN_WIDTH = 200;
+const CHAT_MAX_WIDTH = 550;
 const CHAT_SCROLL_THRESHOLD = 10;
 
 function isAtBottom(element: HTMLDivElement): boolean {
@@ -61,6 +66,7 @@ function Chat() {
 		"vtt-chat-history-size",
 		150,
 	);
+	const [chatWidth, setChatWidth] = useLocalStorageState("vtt-chat-width", 300);
 	const [hasNewMessages, setHasNewMessages] = useState(false);
 	const [hasScrollTop, setHasScrollTop] = useState(false);
 	const [hasScrollBottom, setHasScrollBottom] = useState(false);
@@ -70,8 +76,12 @@ function Chat() {
 	const shouldScrollToBottom = useRef(true);
 	const isProgrammaticScroll = useRef(false);
 	const isResizing = useRef(false);
+	const resizeAxis = useRef<"vertical" | "horizontal" | null>(null);
 	const resizeStartY = useRef(0);
+	const resizeStartX = useRef(0);
 	const resizeStartHeight = useRef(150);
+	const resizeStartWidth = useRef(300);
+	const resizeHorizontalDirection = useRef(1);
 	const isChatHovered = useRef(false);
 	const isChatFocused = useRef(false);
 	const lastSubmitAttempt = useRef(0);
@@ -117,23 +127,62 @@ function Chat() {
 		};
 		requestAnimationFrame(checkScroll);
 	}
-	function handleResizeStart(event: React.PointerEvent) {
+	function handleVerticalResizeStart(event: React.PointerEvent) {
 		isResizing.current = true;
+		resizeAxis.current = "vertical";
 		resizeStartY.current = event.clientY;
 		resizeStartHeight.current = chatHistoryHeight;
 		event.currentTarget.setPointerCapture(event.pointerId);
 	}
+	function handleHorizontalResizeStart(event: React.PointerEvent) {
+		isResizing.current = true;
+		resizeAxis.current = "horizontal";
+		resizeStartX.current = event.clientX;
+		resizeStartWidth.current = chatWidth;
+
+		const handleRect = event.currentTarget.getBoundingClientRect();
+		const containerRect =
+			event.currentTarget.parentElement?.getBoundingClientRect();
+
+		if (containerRect) {
+			const handleCenter = (handleRect.left + handleRect.right) / 2;
+			const containerCenter = (containerRect.left + containerRect.right) / 2;
+
+			resizeHorizontalDirection.current =
+				handleCenter < containerCenter ? -1 : 1;
+		} else {
+			resizeHorizontalDirection.current = 1;
+		}
+
+		event.currentTarget.setPointerCapture(event.pointerId);
+	}
 	function handleResizeMove(event: React.PointerEvent) {
 		if (!isResizing.current) return;
-		const delta = resizeStartY.current - event.clientY;
-		const height = Math.min(
-			Math.max(resizeStartHeight.current + delta, CHAT_HISTORY_MIN_HEIGHT),
-			CHAT_HISTORY_MAX_HEIGHT,
-		);
-		setChatHistoryHeight(height);
+
+		if (resizeAxis.current === "vertical") {
+			const delta = resizeStartY.current - event.clientY;
+			const height = Math.min(
+				Math.max(resizeStartHeight.current + delta, CHAT_HISTORY_MIN_HEIGHT),
+				CHAT_HISTORY_MAX_HEIGHT,
+			);
+			setChatHistoryHeight(height);
+			return;
+		}
+
+		if (resizeAxis.current === "horizontal") {
+			const delta =
+				(event.clientX - resizeStartX.current) *
+				resizeHorizontalDirection.current;
+			const width = Math.min(
+				Math.max(resizeStartWidth.current + delta, CHAT_MIN_WIDTH),
+				CHAT_MAX_WIDTH,
+			);
+			setChatWidth(width);
+		}
 	}
 	function handleResizeEnd() {
 		isResizing.current = false;
+		resizeAxis.current = null;
 	}
 
 	useEffect(() => {
@@ -246,6 +295,9 @@ function Chat() {
 
 	return (
 		<ChatContainer
+			style={{
+				width: `${chatWidth}px`,
+			}}
 			onMouseEnter={() => {
 				isChatHovered.current = true;
 			}}
@@ -279,13 +331,22 @@ function Chat() {
 					sendImageModalRef.current.openByDragEvent(e);
 			}}>
 			<ChatHistoryResizeContainer>
-				<ChatHistoryResizeHandle
-					onPointerDown={handleResizeStart}
+				<ChatHistoryVerticalResizeHandle
+					onPointerDown={handleVerticalResizeStart}
 					onPointerMove={handleResizeMove}
 					onPointerUp={handleResizeEnd}
 					onPointerCancel={handleResizeEnd}
 					{...setVttElementHoverInteraction(
 						VttCursorInteractionType.ResizeVertical,
+					)}
+				/>
+				<ChatHistoryHorizontalResizeHandle
+					onPointerDown={handleHorizontalResizeStart}
+					onPointerMove={handleResizeMove}
+					onPointerUp={handleResizeEnd}
+					onPointerCancel={handleResizeEnd}
+					{...setVttElementHoverInteraction(
+						VttCursorInteractionType.ResizeHorizontal,
 					)}
 				/>
 				<ChatHistoryContainer

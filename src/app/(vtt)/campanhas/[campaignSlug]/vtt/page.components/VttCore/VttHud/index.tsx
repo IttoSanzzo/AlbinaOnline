@@ -1,19 +1,24 @@
+"use client";
+
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { EdgeBleed } from "./EdgeBleed";
 import { CameraControls } from "./CameraControls";
 import { Crosshair } from "./Crosshair";
 import { Communication } from "./Communication";
+import { DiceHistory } from "./DiceHistory";
+import { memo } from "react";
 
 const VttHudContainer = newStyledElement.div(styles.vttHudContainer);
 
-export function VttHud() {
+export const VttHud = memo(function VttHud() {
 	return (
 		<VttHudContainer>
 			<EdgeBleed />
 			<CameraControls />
 			<Communication />
+			<DiceHistory />
 			<Crosshair />
 		</VttHudContainer>
 	);
-}
+});

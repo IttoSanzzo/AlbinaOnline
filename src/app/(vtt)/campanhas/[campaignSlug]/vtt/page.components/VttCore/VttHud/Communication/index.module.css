@@ -12,77 +12,94 @@
 	position: absolute;
 	right: 35px;
 	bottom: 0;
-	min-width: 400px;
+	min-width: 200px;
+	max-width: 600px;
 	width: 5vw;
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
-	opacity: 0.3;
+	opacity: 0.2;
 	transition: opacity 0.4s ease-out;
+}
 
-	&:hover,
-	&:focus-within {
-		opacity: 1;
-	}
+.chatContainer:hover,
+.chatContainer:focus-within {
+	opacity: 1;
 }
 
 .chatHistoryResizeContainer {
 	position: relative;
 	width: 100%;
-
-	&::before,
-	&::after {
-		content: "";
-		position: absolute;
-		left: 0;
-		width: 100%;
-		height: 30px;
-		z-index: 2;
-		pointer-events: none;
-		opacity: 0;
-		transition: 0.1s linear opacity;
-	}
-
-	&::before {
-		transition: 0.25s linear opacity;
-		top: 0;
-		background: linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0.5),
-			rgba(0, 0, 0, 0.25) 25%,
-			rgba(0, 0, 0, 0.1) 60%,
-			transparent
-		);
-	}
-
-	&::after {
-		transition: 0.25s linear opacity;
-		bottom: 0;
-		background: linear-gradient(
-			to top,
-			rgba(0, 0, 0, 0.5),
-			rgba(0, 0, 0, 0.25) 25%,
-			rgba(0, 0, 0, 0.1) 60%,
-			transparent
-		);
-	}
-
-	&:has(.chatHistoryContainer[data-scroll-top="true"])::before {
-		opacity: 1;
-	}
-
-	&:has(.chatHistoryContainer[data-scroll-bottom="true"])::after {
-		opacity: 1;
-	}
+	height: 100%;
 }
 
-.chatHistoryResizeHandle {
+.chatHistoryResizeContainer::before,
+.chatHistoryResizeContainer::after {
+	content: "";
 	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	z-index: 2;
+	pointer-events: none;
+	opacity: 0;
+	transition: 0.1s linear opacity;
+}
+
+.chatHistoryResizeContainer::before {
+	transition: 0.25s linear opacity;
+	top: 0;
+	background: linear-gradient(
+		to bottom,
+		rgba(0, 0, 0, 0.5),
+		rgba(0, 0, 0, 0.25) 25%,
+		rgba(0, 0, 0, 0.1) 60%,
+		transparent
+	);
+}
+
+.chatHistoryResizeContainer::after {
+	transition: 0.25s linear opacity;
+	bottom: 0;
+	background: linear-gradient(
+		to top,
+		rgba(0, 0, 0, 0.5),
+		rgba(0, 0, 0, 0.25) 25%,
+		rgba(0, 0, 0, 0.1) 60%,
+		transparent
+	);
+}
+
+.chatHistoryResizeContainer:has(
+		.chatHistoryContainer[data-scroll-top="true"]
+	)::before {
+	opacity: 1;
+}
+
+.chatHistoryResizeContainer:has(
+		.chatHistoryContainer[data-scroll-bottom="true"]
+	)::after {
+	opacity: 1;
+}
+
+.chatHistoryVerticalResizeHandle,
+.chatHistoryHorizontalResizeHandle {
+	position: absolute;
+	z-index: 3;
+}
+
+.chatHistoryVerticalResizeHandle {
 	top: -3px;
 	left: 0;
 	width: 100%;
 	height: 10px;
-	z-index: 3;
+}
+
+.chatHistoryHorizontalResizeHandle {
+	top: 0;
+	left: -3px;
+	height: 100%;
+	width: 10px;
 }
 
 .chatHistoryContainer {
@@ -117,11 +134,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
 
-	& > svg {
-		width: 20px;
-		height: 20px;
-	}
+.goToBottomButton > svg {
+	width: 20px;
+	height: 20px;
 }
 
 @keyframes fade-in {

@@ -53,54 +53,8 @@ export async function VttCommandLineHandler({
 			messageToReply: message,
 			messageToReplyId: message.id,
 		});
-	} else if (text.startsWith("/p") || text.startsWith("/private")) {
-		if (!(text.startsWith("/p ") || text.startsWith("/private ")))
-			return { shouldReset: false };
-
-		const commandLength = text.startsWith("/private") ? 9 : 3;
-
-		const messageText = text.slice(commandLength);
-		if (!messageText.trim()) return { shouldReset: false };
-
-		return {
-			shouldReset: true,
-			type: "PostChatMessage",
-			data: {
-				text: messageText,
-				messageToReplyId,
-				recipients: [userId],
-			},
-		};
-	} else if (text.startsWith("/w") || text.startsWith("/whisper")) {
-		const commandLength = text.startsWith("/whisper") ? 9 : 3;
-		const usernameEnd = text.indexOf(" ", commandLength);
-
-		if (usernameEnd == -1) return { shouldReset: false };
-
-		const username = text.slice(commandLength, usernameEnd);
-		const messageText = text.slice(usernameEnd + 1);
-		const member = members.find((member) => member.user.username == username);
-
-		if (!messageText.trim() || !member) return { shouldReset: false };
-
-		return {
-			shouldReset: true,
-			type: "PostChatMessage",
-			data: {
-				text: messageText,
-				messageToReplyId,
-				recipients: [member.userId],
-			},
-		};
-	} else if (
-		text == "/p" ||
-		text.startsWith("/p ") ||
-		text == "/ping" ||
-		text.startsWith("/ping ")
-	) {
-		const commandLength = text.startsWith("/ping") ? 5 : 2;
-		const pingText = text.slice(commandLength).trim();
-
+	} else if (text == "/ping" || text.startsWith("/ping ")) {
+		const pingText = text.slice(5).trim();
 		let pingType = "Default";
 
 		if (pingText) {
@@ -157,6 +111,46 @@ export async function VttCommandLineHandler({
 
 		return {
 			shouldReset: true,
+		};
+	} else if (text.startsWith("/p") || text.startsWith("/private")) {
+		if (!(text.startsWith("/p ") || text.startsWith("/private ")))
+			return { shouldReset: false };
+
+		const commandLength = text.startsWith("/private") ? 9 : 3;
+
+		const messageText = text.slice(commandLength);
+		if (!messageText.trim()) return { shouldReset: false };
+
+		return {
+			shouldReset: true,
+			type: "PostChatMessage",
+			data: {
+				text: messageText,
+				messageToReplyId,
+				recipients: [userId],
+				private: true,
+			},
+		};
+	} else if (text.startsWith("/w") || text.startsWith("/whisper")) {
+		const commandLength = text.startsWith("/whisper") ? 9 : 3;
+		const usernameEnd = text.indexOf(" ", commandLength);
+
+		if (usernameEnd == -1) return { shouldReset: false };
+
+		const username = text.slice(commandLength, usernameEnd);
+		const messageText = text.slice(usernameEnd + 1);
+		const member = members.find((member) => member.user.username == username);
+
+		if (!messageText.trim() || !member) return { shouldReset: false };
+
+		return {
+			shouldReset: true,
+			type: "PostChatMessage",
+			data: {
+				text: messageText,
+				messageToReplyId,
+				recipients: [member.userId],
+			},
 		};
 	}
 

@@ -6,6 +6,7 @@ import {
 	PIXELS_PER_CENTIMETER,
 	useVttViewportContext,
 } from "../../Contexts/VttViewportContextProvider";
+import { VttElementDataAttribute } from "../ElementDataAttributeUtils";
 
 export function useMiddleButtonCameraPan() {
 	const { interaction } = useVttInteractionContext();
@@ -28,7 +29,12 @@ export function useMiddleButtonCameraPan() {
 				event.button !== 1 ||
 				!(
 					event.target instanceof Element &&
-					event.target.hasAttribute("data-vtt-event-middle-button-pan")
+					(event.target.hasAttribute(
+						VttElementDataAttribute.EventMiddleButtonPan,
+					) ||
+						event.target.closest(
+							`[${VttElementDataAttribute.EventMiddleButtonPanAncestral}]`,
+						))
 				)
 			)
 				return;

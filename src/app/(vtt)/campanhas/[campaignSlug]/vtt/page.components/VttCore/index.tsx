@@ -3,10 +3,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
-import {
-	useVttContext,
-	VttContextProvider,
-} from "../Contexts/VttContextProvider";
+import { VttContextProvider } from "../Contexts/VttContextProvider";
 import { CursorSyncronizer } from "./CursorSyncronizer";
 import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
@@ -41,7 +38,6 @@ import {
 	setVttElementDataAttributes,
 } from "../Utils/ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../Types/VttMouseState";
-import { useEffect, useState } from "react";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -111,16 +107,21 @@ const TestContainer = newStyledElement.div(styles.testContainer);
 function TestZone() {
 	const { camera, worldToScreen } = useVttViewportContext();
 	const { setInteraction } = useVttInteractionContext();
-	const { subscribe } = useVttContext();
-	const [vttResultsTest, setVttResultsTest] = useState<string>("");
+	// const { subscribe } = useVttContext();
+	// const [vttResultsTest, setVttResultsTest] = useState<string>("");
 
-	useEffect(() => {
-		const unsubscribe = subscribe("VttDiceResult", (event) => {
-			setVttResultsTest((state) => `${state}\n\n${JSON.stringify(event.data)}`);
-			console.log(event);
-		});
-		return () => unsubscribe();
-	}, []);
+	// useEffect(() => {
+	// const unsubscribe1 = subscribe("VttAllDiceResults", (event) => {
+	// 	setVttResultsTest(JSON.stringify(event.data));
+	// });
+	// const unsubscribe2 = subscribe("VttDiceResult", (event) => {
+	// 	setVttResultsTest((state) => `${state}\n\n${JSON.stringify(event.data)}`);
+	// });
+	// return () => {
+	// 	unsubscribe1();
+	// 	unsubscribe2();
+	// };
+	// }, []);
 
 	const square1Position = worldToScreen({
 		x: 0,
@@ -186,7 +187,7 @@ function TestZone() {
 					wordBreak: "normal",
 					whiteSpace: "pre-wrap",
 				}}>
-				{vttResultsTest}
+				{/* {vttResultsTest} */}
 			</span>
 		</TestContainer>
 	);

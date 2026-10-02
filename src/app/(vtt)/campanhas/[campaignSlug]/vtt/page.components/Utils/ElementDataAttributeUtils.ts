@@ -2,6 +2,7 @@ import { VttCursorInteractionType } from "../Types/VttMouseState";
 
 export const VttElementDataAttribute = {
 	EventMiddleButtonPan: "data-vtt-event-middle-button-pan",
+	EventMiddleButtonPanAncestral: "data-vtt-event-middle-button-pan-ancestral",
 	EventZoom: "data-vtt-event-zoom",
 	EventPing: "data-vtt-event-ping",
 	CursorHoverInteractionType: "data-cursor-hover-interaction-type",

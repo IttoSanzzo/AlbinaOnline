@@ -283,16 +283,21 @@ export function ChatMessage({
 				member={member}
 				message={message}
 				setMessageToReplyId={setMessageToReplyId}
-				title={
+				title={`${new Date(message.timestamp).toLocaleString("pt-BR", {
+					dateStyle: "long",
+					timeStyle: "short",
+				})}${
 					message.recipients.length > 0
-						? `Recipientes:\n${message.recipients
-								.filter((recipientId) => recipientId != message.userId)
-								.map(
-									(recipientId) =>
-										`\n${members.find((member) => member.userId == recipientId)?.user.nickname ?? "???"}`,
-								)}`
-						: undefined
-				}
+						? message.recipients.length == 1
+							? "\n\nPrivado"
+							: `\n\nRecipientes:${message.recipients
+									.filter((recipientId) => recipientId != message.userId)
+									.map(
+										(recipientId) =>
+											`\n  ${members.find((member) => member.userId == recipientId)?.user.nickname ?? "???"}`,
+									)}`
+						: ""
+				}`}
 			/>
 			{"  "}
 			<ChatMessageContent
