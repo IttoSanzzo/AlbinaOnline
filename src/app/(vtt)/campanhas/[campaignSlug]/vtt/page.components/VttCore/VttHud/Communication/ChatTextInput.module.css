@@ -47,6 +47,11 @@
 	color: var(--cl-gray-500);
 }
 
+.chatFormContainer {
+	position: relative;
+	width: 100%;
+}
+
 .chatInput {
 	min-height: 60px;
 	max-height: 100px;

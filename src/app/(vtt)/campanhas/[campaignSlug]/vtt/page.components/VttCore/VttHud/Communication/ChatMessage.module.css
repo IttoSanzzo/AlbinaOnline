@@ -41,8 +41,10 @@
 
 .embedImageLinkContainer {
 	display: block;
-	width: 100%;
+	width: max-content;
 	max-width: 100%;
+	border-radius: var(--rd-md);
+	overflow: hidden;
 }
 
 .chatImage {
@@ -53,9 +55,11 @@
 
 .embedVideoContainer {
 	display: block;
-	width: 100%;
+	width: fit-content;
 	max-width: 100%;
 	height: auto;
+	border-radius: var(--rd-md);
+	overflow: hidden;
 }
 
 .chatVideo {

@@ -1,0 +1,123 @@
+.klipyGifSelectorContainer {
+	position: absolute;
+	top: 25px;
+	right: 15px;
+}
+
+.openGifSelectorButton {
+	height: 30px;
+	width: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--rd-md);
+	background-color: var(--cl-gray-800);
+	color: var(--cl-gray-500);
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+
+	&:hover,
+	&:focus-within {
+		background-color: var(--cl-gray-600);
+		color: var(--cl-gray-400);
+	}
+}
+
+.form {
+	position: absolute;
+	bottom: 52px;
+	right: -10px;
+	max-width: 500px;
+	width: 90vw;
+	max-height: 500px;
+	height: 90vh;
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-lg);
+	box-shadow: 0 0 15px 0 var(--cl-black-3);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	animation: 0.5s linear slideFadeIn;
+}
+
+.formHeaderContainer {
+	width: 100%;
+	height: fit-content;
+	background-color: var(--cl-gray-900);
+	padding: var(--sp-1) var(--sp-2);
+	flex-shrink: 0;
+}
+
+.klipyLogoContainer {
+	position: absolute;
+	top: 33px;
+	right: 25px;
+	width: 80px;
+	opacity: 0.5;
+}
+
+.formContentContainer {
+	width: 100%;
+	flex: 1;
+	min-height: 0;
+	padding: var(--sp-3);
+	overflow-y: auto;
+}
+
+.gifSelectionButton {
+	border: none;
+	border-radius: var(--rd-sm);
+	overflow: hidden;
+	border: 1px solid transparent;
+	width: 100%;
+	background: linear-gradient(
+		110deg,
+		var(--cl-gray-800) 35%,
+		var(--cl-gray-500) 50%,
+		var(--cl-gray-800) 65%
+	);
+	background-size: 300% 100%;
+	animation: gifLoading 3s linear infinite;
+	outline: none;
+
+	& > img {
+		display: block;
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		opacity: 0;
+		transition: opacity 0.15s ease-out;
+
+		&[data-loaded="true"] {
+			opacity: 1;
+		}
+	}
+
+	&:has(img[data-loaded="true"]) {
+		animation: none;
+		background: transparent;
+	}
+
+	&:focus {
+		border: 1px solid var(--cl-gray-100);
+	}
+}
+
+@keyframes gifLoading {
+	0% {
+		background-position: -100% 0%;
+	}
+	100% {
+		background-position: 200% 0%;
+	}
+}
+
+@keyframes slideFadeIn {
+	0% {
+		opacity: 0;
+		margin-bottom: -16px;
+	}
+	100% {
+	}
+}

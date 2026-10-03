@@ -3,10 +3,6 @@
 	column-width: 200px;
 	column-gap: var(--sp-1);
 
-	/* margin-bottom: calc(-1 * var(--sp-1));
-	& > * {
-		margin-bottom: var(--sp-1);
-	} */
 	& > * {
 		margin-bottom: var(--sp-1);
 	}
@@ -19,8 +15,23 @@
 	justify-items: center;
 }
 
+.contentContainerMasonry {
+	display: grid;
+	gap: var(--sp-1);
+	align-items: start;
+	width: 100%;
+}
+
+.masonryColumn {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-1);
+	min-width: 0;
+}
+
 .contentContainerColumn > *,
-.contentContainerRow > * {
+.contentContainerRow > *,
+.masonryColumn > * {
 	break-inside: avoid;
 	page-break-inside: avoid;
 	-webkit-column-break-inside: avoid;
