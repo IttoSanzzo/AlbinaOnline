@@ -94,6 +94,7 @@ export default async function CampaignPage({ params }: CampaignPageProps) {
 					style={{ height: "fit-content" }}
 					icon={getAlbinaApiFullAddress("/favicon/core-page/vtt")}
 					href={`/campanhas/${data.slug}/vtt`}
+					usePreview={false}
 				/>
 			}>
 			<PageView campaign={data} />

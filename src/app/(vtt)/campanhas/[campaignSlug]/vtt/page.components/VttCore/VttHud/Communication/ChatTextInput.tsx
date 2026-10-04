@@ -79,7 +79,7 @@ export function ChatTextInput({
 	const watchedMessage = (form.watch().message ?? "").trim();
 
 	async function handleSubmit(data: FormData) {
-		let shouldReset: boolean = true;
+		let shouldReset: boolean = false;
 		try {
 			const now = Date.now();
 			if (now - lastSubmitAttempt.current < CHAT_SUBMIT_COOLDOWN_MS) return;

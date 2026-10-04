@@ -33,6 +33,7 @@ const ChatHistoryResizeContainer = newStyledElement.div(
 	styles.chatHistoryResizeContainer,
 );
 const ChatHistoryContainer = newStyledElement.div(styles.chatHistoryContainer);
+const ChatHistoryContent = newStyledElement.div(styles.chatHistoryContent);
 const ChatHistoryVerticalResizeHandle = newStyledElement.div(
 	styles.chatHistoryVerticalResizeHandle,
 );
@@ -223,10 +224,9 @@ function Chat() {
 	useEffect(() => {
 		const history = historyRef.current;
 		if (!history) return;
-		const messageElements = Array.from(history.children).filter(
-			(element) =>
-				element instanceof HTMLElement && element.tagName !== "BUTTON",
-		) as HTMLElement[];
+		const messageElements = Array.from(
+			history.querySelectorAll("[data-chat-message]"),
+		);
 		if (messageElements.length === 0) {
 			shouldScrollToBottom.current = true;
 			return;
@@ -255,10 +255,9 @@ function Chat() {
 	useEffect(() => {
 		const history = historyRef.current;
 		if (!history) return;
-		const messageElements = Array.from(history.children).filter(
-			(element) =>
-				element instanceof HTMLElement && element.tagName !== "BUTTON",
-		) as HTMLElement[];
+		const messageElements = Array.from(
+			history.querySelectorAll("[data-chat-message]"),
+		);
 		if (messageElements.length === 0) return;
 		const resizeObserver = new ResizeObserver(() => {
 			if (!shouldScrollToBottom.current) return;
@@ -358,43 +357,48 @@ function Chat() {
 					style={{
 						height: `${chatHistoryHeight}px`,
 					}}>
-					{chatMessages.map((message) => {
-						const messageToReply = message.messageToReplyId
-							? chatMessages.find(
-									(messageToReply) =>
-										messageToReply.id == message.messageToReplyId,
-								)
-							: undefined;
-						return (
-							<ChatMessage
-								key={message.id}
-								message={message}
-								member={members.find(
-									(member) => member.userId == message.userId,
+					<ChatHistoryContent>
+						{chatMessages.map((message) => {
+							const messageToReply = message.messageToReplyId
+								? chatMessages.find(
+										(messageToReply) =>
+											messageToReply.id == message.messageToReplyId,
+									)
+								: undefined;
+							return (
+								<div
+									key={message.id}
+									data-chat-message>
+									<ChatMessage
+										message={message}
+										member={members.find(
+											(member) => member.userId == message.userId,
+										)}
+										messageToReply={messageToReply}
+										messageToReplyMember={
+											messageToReply
+												? members.find(
+														(member) => member.userId == messageToReply.userId,
+													)
+												: undefined
+										}
+										messageToReplyIdState={messageToReplyIdState}
+										members={members}
+									/>
+								</div>
+							);
+						})}
+						{hasNewMessages && (
+							<GoToBottomButton
+								{...setVttElementHoverInteraction(
+									VttCursorInteractionType.Pointer,
 								)}
-								messageToReply={messageToReply}
-								messageToReplyMember={
-									messageToReply
-										? members.find(
-												(member) => member.userId == messageToReply.userId,
-											)
-										: undefined
-								}
-								messageToReplyIdState={messageToReplyIdState}
-								members={members}
-							/>
-						);
-					})}
-					{hasNewMessages && (
-						<GoToBottomButton
-							{...setVttElementHoverInteraction(
-								VttCursorInteractionType.Pointer,
-							)}
-							type="button"
-							onClick={scrollToLatestMessages}>
-							<StpIcon name={"ArrowFatLineDown"} />
-						</GoToBottomButton>
-					)}
+								type="button"
+								onClick={scrollToLatestMessages}>
+								<StpIcon name={"ArrowFatLineDown"} />
+							</GoToBottomButton>
+						)}
+					</ChatHistoryContent>
 				</ChatHistoryContainer>
 			</ChatHistoryResizeContainer>
 			<ChatTextInput
