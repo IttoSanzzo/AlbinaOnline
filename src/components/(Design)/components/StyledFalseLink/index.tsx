@@ -12,6 +12,7 @@ const StyledFalseLinkContainer = newStyledElement.div(
 
 export interface StyledFalseLinkProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	title: string;
+	hoverTitle?: string;
 	icon?: string;
 	textMode?: boolean;
 	withoutIcon?: boolean;
@@ -19,6 +20,7 @@ export interface StyledFalseLinkProps extends React.ButtonHTMLAttributes<HTMLBut
 
 export function StyledFalseLink({
 	title,
+	hoverTitle,
 	icon,
 	textMode = false,
 	withoutIcon = false,
@@ -46,7 +48,7 @@ export function StyledFalseLink({
 					style={{
 						color: rest.color,
 					}}
-					title={title}>
+					title={hoverTitle ? hoverTitle : title}>
 					{title}
 				</span>
 			</button>

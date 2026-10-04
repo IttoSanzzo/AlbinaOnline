@@ -19,7 +19,7 @@ import { CHAT_SUBMIT_COOLDOWN_MS } from ".";
 import { Guid } from "@/libs/stp@types";
 import { HookedForm } from "@/libs/stp@forms";
 import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
-import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
+import { MediaInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -63,8 +63,8 @@ export const ChatFileInput = forwardRef<
 	const [pendingImage, setPendingImage] = useState<File | null>(null);
 	const [open, setOpen] = useState<boolean>(false);
 
-	const imageInputRef = useRef<ImageInputHandle | null>(null);
-	const handleImageInputRef = (node: ImageInputHandle | null) => {
+	const imageInputRef = useRef<MediaInputHandle | null>(null);
+	const handleImageInputRef = (node: MediaInputHandle | null) => {
 		imageInputRef.current = node;
 		if (node && pendingImage)
 			node.setImage(pendingImage).then(() => {

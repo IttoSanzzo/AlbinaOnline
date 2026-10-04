@@ -36,7 +36,7 @@ export function GetAlignmentName(alignment: Alignment): string {
 
 	const ethic = EthicAlignmentName[alignment.ethic];
 	const moral = MoralAlignmentName[alignment.moral];
-	if (alignment.ethic === "Unknown") return moral;
-	if (alignment.moral === "Unknown") return ethic;
+	if (alignment.ethic === "Unknown") return `Moralmente ${moral}`;
+	if (alignment.moral === "Unknown") return `Éticamente ${ethic}`;
 	return `${ethic} ${moral}`;
 }

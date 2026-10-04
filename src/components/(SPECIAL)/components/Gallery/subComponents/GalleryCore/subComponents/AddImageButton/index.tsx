@@ -19,7 +19,7 @@ import { Dialog } from "@/libs/stp@radix";
 import { HookedForm } from "@/libs/stp@forms";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { StateSwitch } from "@/components/(UTILS)";
-import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
+import { MediaInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
 
 const AddImageButtonContainer = newStyledElement.div(
@@ -69,8 +69,8 @@ export const AddImageButton = forwardRef<
 		resolver: zodResolver(schema),
 	});
 
-	const imageInputRef = useRef<ImageInputHandle | null>(null);
-	const handleImageInputRef = (node: ImageInputHandle | null) => {
+	const imageInputRef = useRef<MediaInputHandle | null>(null);
+	const handleImageInputRef = (node: MediaInputHandle | null) => {
 		imageInputRef.current = node;
 		if (node && pendingImage)
 			node.setImage(pendingImage).then(() => {

@@ -25,6 +25,14 @@ import { redirect } from "next/navigation";
 import { CreatureViewer } from "./page.components/CreatureViewer";
 import { MechanicalAbilityViewer } from "./page.components/MechanicalAbilityViewer";
 
+function formatDistance(centimeters: number) {
+	if (centimeters >= 100000) return `${centimeters / 100000}km`;
+
+	if (centimeters >= 100) return `${centimeters / 100}m`;
+
+	return `${centimeters}cm`;
+}
+
 interface CreaturePageViewProps {
 	entitySlug: string;
 }
@@ -65,6 +73,7 @@ export default async function CreaturePageView({
 		...creatureData.info.miscellaneous,
 	];
 
+	console.log(creatureData.miscMetrics.volume);
 	return (
 		<GenericPageContainer
 			title={creatureData.name}
@@ -93,6 +102,7 @@ export default async function CreaturePageView({
 					/>
 					{" _ "}
 					<StyledFalseLink
+						hoverTitle={`X: ${formatDistance(creatureData.miscMetrics.volume.width)}\nY: ${formatDistance(creatureData.miscMetrics.volume.height)}\nZ: ${formatDistance(creatureData.miscMetrics.volume.length)}`}
 						title={
 							SizeClassMasculineName[creatureData.miscMetrics.volume.sizeClass]
 						}

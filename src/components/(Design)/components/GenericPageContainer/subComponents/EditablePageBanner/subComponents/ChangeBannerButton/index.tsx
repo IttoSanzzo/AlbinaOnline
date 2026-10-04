@@ -24,7 +24,7 @@ import {
 	revalidatePathByClientSide,
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
-import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
+import { MediaInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { eventBus } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
@@ -73,8 +73,8 @@ export const ChangeBannerButton = forwardRef<
 		resolver: zodResolver(schema),
 	});
 
-	const imageInputRef = useRef<ImageInputHandle | null>(null);
-	const handleImageInputRef = (node: ImageInputHandle | null) => {
+	const imageInputRef = useRef<MediaInputHandle | null>(null);
+	const handleImageInputRef = (node: MediaInputHandle | null) => {
 		imageInputRef.current = node;
 		if (node && pendingImage)
 			node.setImage(pendingImage).then(() => {

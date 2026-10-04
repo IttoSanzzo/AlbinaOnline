@@ -25,7 +25,7 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
-import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
+import { MediaInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { eventBus } from "@/libs/stp@hooks";
 import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
@@ -76,8 +76,8 @@ export const ChangeIconButton = forwardRef<
 		resolver: zodResolver(schema),
 	});
 
-	const imageInputRef = useRef<ImageInputHandle | null>(null);
-	const handleImageInputRef = (node: ImageInputHandle | null) => {
+	const imageInputRef = useRef<MediaInputHandle | null>(null);
+	const handleImageInputRef = (node: MediaInputHandle | null) => {
 		imageInputRef.current = node;
 		if (node && pendingImage)
 			node.setImage(pendingImage).then(() => {
