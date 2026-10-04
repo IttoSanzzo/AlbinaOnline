@@ -1,4 +1,4 @@
-.imageInputContainer {
+.mediaInputContainer {
 	display: flex;
 	flex-direction: column;
 	color: var(--cl-gray-100);
@@ -13,7 +13,7 @@
 	}
 }
 
-.imageInputField {
+.mediaInputField {
 	background-color: transparent;
 	color: var(--cl-gray-100);
 	padding: var(--sp-5) var(--sp-4);
@@ -39,7 +39,7 @@
 	}
 }
 
-.imageInputLabel {
+.mediaInputLabel {
 	font-size: var(--fs-xs);
 	color: var(--cl-gray-200);
 	background-color: var(--cl-gray-800);
@@ -50,7 +50,7 @@
 	left: 10px;
 }
 
-.imageInputError {
+.mediaInputError {
 	font-size: var(--fs-xs);
 	color: var(--cl-red-500);
 	border-radius: var(--rd-md);
@@ -61,7 +61,7 @@
 	right: 10;
 }
 
-.imagePreviewContainer {
+.mediaPreviewContainer {
 	position: relative;
 	display: flex;
 	justify-content: center;

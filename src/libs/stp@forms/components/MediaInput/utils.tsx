@@ -1,4 +1,5 @@
 "use client";
+
 import { LintIgnoredAny } from "@/libs/stp@types";
 import * as cheerio from "cheerio";
 
@@ -98,7 +99,10 @@ async function urlToFile(url: string | null): Promise<File | null> {
 		);
 		const blob = await res.blob();
 		if (!blob.type.startsWith("image/")) return null;
-		return new File([blob], "dropped-image", { type: blob.type });
+
+		return new File([blob], "dropped-image", {
+			type: blob.type,
+		});
 	} catch {
 		return null;
 	}

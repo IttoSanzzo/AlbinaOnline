@@ -19,8 +19,8 @@ import { Dialog } from "@/libs/stp@radix";
 import { HookedForm } from "@/libs/stp@forms";
 import { revalidateTagByClientSide } from "@/utils/ServerActions";
 import { StateSwitch } from "@/components/(UTILS)";
-import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
-import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
+import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
 
 const AddImageButtonContainer = newStyledElement.div(
 	styles.addImageButtonContainer,
@@ -165,7 +165,7 @@ export const AddImageButton = forwardRef<
 									return true;
 								}}
 							/>
-							<HookedForm.ImageInput<FormData>
+							<HookedForm.MediaInput<FormData>
 								ref={handleImageInputRef}
 								label="Insira nova imagem"
 								fieldName="images"

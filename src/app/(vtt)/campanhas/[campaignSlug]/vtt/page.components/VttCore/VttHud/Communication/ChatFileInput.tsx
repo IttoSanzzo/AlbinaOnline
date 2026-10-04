@@ -18,8 +18,8 @@ import {
 import { CHAT_SUBMIT_COOLDOWN_MS } from ".";
 import { Guid } from "@/libs/stp@types";
 import { HookedForm } from "@/libs/stp@forms";
-import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
-import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
+import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { newStyledElement } from "@setsu-tp/styled-components";
@@ -166,7 +166,7 @@ export const ChatFileInput = forwardRef<
 						<HookedForm.Form<FormData>
 							form={form}
 							onSubmit={handleSubmit}>
-							<HookedForm.ImageInput<FormData>
+							<HookedForm.MediaInput<FormData>
 								ref={handleImageInputRef}
 								label="Insira sua imagem"
 								fieldName="image"

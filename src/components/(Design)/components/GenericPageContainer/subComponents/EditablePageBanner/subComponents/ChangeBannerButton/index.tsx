@@ -24,10 +24,10 @@ import {
 	revalidatePathByClientSide,
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
-import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
+import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { eventBus } from "@/libs/stp@hooks";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
-import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
 
 const ChangeBannerButtonContainer = newStyledElement.div(
 	styles.changeBannerButtonContainer,
@@ -149,7 +149,7 @@ export const ChangeBannerButton = forwardRef<
 							<HookedForm.Form
 								form={form}
 								onSubmit={onSubmit}>
-								<HookedForm.ImageInput
+								<HookedForm.MediaInput
 									ref={handleImageInputRef}
 									label="Insira nova imagem"
 									fieldName="image"

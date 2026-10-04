@@ -73,7 +73,7 @@ export function ChangeLocationMapImage({
 						form={form}
 						onSubmit={onSubmit}>
 						<HookedForm.Space />
-						<HookedForm.ImageInput<FormData> fieldName="image" />
+						<HookedForm.MediaInput<FormData> fieldName="image" />
 						<HookedForm.SubmitButton label="Save" />
 						<HookedForm.Space />
 					</HookedForm.Form>

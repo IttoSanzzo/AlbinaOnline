@@ -4,10 +4,10 @@ import { LocationData } from "@/libs/stp@types";
 import styles from "./GridMapCard.module.css";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { StyledLink } from "@/components/(Design)";
+import { BasicMedia } from "@/components/(Design)/components/BasicMedia";
 
 const GridMapCardContainer = newStyledElement.div(styles.gridMapCardContainer);
 const ImageContainer = newStyledElement.div(styles.imageContainer);
@@ -42,7 +42,7 @@ export function GridMapCard({ gridMap }: GridMapCardProps) {
 					: `Tags:\n${gridMap.tags.join(",\n")}`
 			}>
 			<ImageContainer>
-				<Image
+				<BasicMedia
 					src={gridMap.imageUrl}
 					alt={gridMap.name}
 					width={240}

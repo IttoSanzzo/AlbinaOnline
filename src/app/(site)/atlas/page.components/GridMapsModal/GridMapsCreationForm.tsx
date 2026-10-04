@@ -69,8 +69,10 @@ export function GridMapsCreationForm({
 			form={form}
 			className={styles.form}
 			onSubmit={handleSubmit}>
-			<HookedForm.ImageInput<FormData>
+			<HookedForm.MediaInput<FormData>
 				fieldName={"image"}
+				mediaTypes={"both"}
+				GifVideo
 				maxFiles={1}
 				maxSize={20_971_520}
 				maxWidth={20_000_000}

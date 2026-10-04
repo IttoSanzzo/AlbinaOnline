@@ -25,10 +25,10 @@ import {
 	revalidateTagByClientSide,
 } from "@/utils/ServerActions";
 import toast from "react-hot-toast";
-import { ImageInputHandle } from "@/libs/stp@forms/components/ImageInput";
+import { ImageInputHandle } from "@/libs/stp@forms/components/MediaInput";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { eventBus } from "@/libs/stp@hooks";
-import { extractImageFromDrop } from "@/libs/stp@forms/components/ImageInput/utils";
+import { extractImageFromDrop } from "@/libs/stp@forms/components/MediaInput/utils";
 
 const ChangeIconButtonContainer = newStyledElement.div(
 	styles.changeIconButtonContainer,
@@ -153,7 +153,7 @@ export const ChangeIconButton = forwardRef<
 							<HookedForm.Form
 								form={form}
 								onSubmit={onSubmit}>
-								<HookedForm.ImageInput
+								<HookedForm.MediaInput
 									ref={handleImageInputRef}
 									label="Insira nova imagem"
 									fieldName="image"

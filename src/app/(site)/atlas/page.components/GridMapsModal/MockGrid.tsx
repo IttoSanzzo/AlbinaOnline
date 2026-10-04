@@ -5,7 +5,7 @@ import styles from "./MockGrid.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
-import Image from "next/image";
+import { BasicMedia } from "@/components/(Design)/components/BasicMedia";
 
 const ImageGridContainer = newStyledElement.div(styles.imageGridContainer);
 const MockGridContainer = newStyledElement.div(styles.mockGridContainer);
@@ -51,16 +51,26 @@ export function GridMapGridViewer({
 
 	return (
 		<ImageGridContainer>
-			<Image
+			<BasicMedia
 				src={gridMap.imageUrl}
 				alt={gridMap.name}
 				fill
 				onLoad={(event) => {
-					const image = event.currentTarget;
+					const media = event.currentTarget;
 
+					if (!(media instanceof HTMLImageElement)) return;
 					setImageSize({
-						width: image.naturalWidth,
-						height: image.naturalHeight,
+						width: media.naturalWidth,
+						height: media.naturalHeight,
+					});
+				}}
+				onLoadedMetadata={(event) => {
+					const media = event.currentTarget;
+
+					if (!(media instanceof HTMLVideoElement)) return;
+					setImageSize({
+						width: media.videoWidth,
+						height: media.videoHeight,
 					});
 				}}
 			/>

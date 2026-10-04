@@ -13,7 +13,7 @@ import { ObjectArrayTextInput } from "./components/ObjectArrayTextInput";
 import { ObjectArraySelectInput } from "./components/ObjectArraySelectInput";
 import { NumberInput } from "./components/NumberInput";
 import { PasswordInput } from "./components/PasswordInput";
-import { ImageInput } from "./components/ImageInput";
+import { MediaInput } from "./components/MediaInput";
 import { SubmitButton } from "./components/SubmitButton";
 import { Space } from "./components/Space";
 import { SimpleMessage } from "./components/FailMessage";
@@ -38,7 +38,7 @@ export const HookedForm = {
 	ObjectArraySelectInput: ObjectArraySelectInput,
 	NumberInput: NumberInput,
 	PasswordInput: PasswordInput,
-	ImageInput: ImageInput,
+	MediaInput: MediaInput,
 	Select: SelectComponent,
 	MultiSelect: MultiSelectComponent,
 	AsyncSearchSelect: AsyncSearchSelect,
