@@ -32,12 +32,10 @@ import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
 import { DDDiceIntegration } from "./MainPassiveComponents/DDDiceIntegration";
 import { WindowStates } from "../Contexts/WindowStates";
-import {
-	VttElementDataAttribute,
-	setVttElementDataAttributes,
-} from "../Utils/ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../Types/VttMouseState";
-import { VirtualGridView } from "./MainPassiveComponents/VirtualGridView";
+import { VttBoard } from "./VttBoard";
+import { VttBoardLayerContextProvider } from "../Contexts/VttBoardLayerContext";
+import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledViewportContext";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -59,18 +57,22 @@ export function VttCore({ campaign }: VttCoreProps) {
 					<VttLocalSettingsProvider vttId={vttId}>
 						<VttAudioControllerProvider>
 							<VttContextProvider campaign={campaign}>
-								<VttMembersContextProvider>
-									<VttViewportContextProvider>
-										<VttGridContextProvider>
-											<VttInteractionContextProvider>
-												<RadialMenuProvider>
-													{`Connected to VttId: ${vttId}`}
-													<VttCoreEngine />
-												</RadialMenuProvider>
-											</VttInteractionContextProvider>
-										</VttGridContextProvider>
-									</VttViewportContextProvider>
-								</VttMembersContextProvider>
+								<VttBoardLayerContextProvider>
+									<VttMembersContextProvider>
+										<VttViewportContextProvider>
+											<VttThrottledViewportContextProvider>
+												<VttGridContextProvider>
+													<VttInteractionContextProvider>
+														<RadialMenuProvider>
+															{`Connected to VttId: ${vttId}`}
+															<VttCoreEngine />
+														</RadialMenuProvider>
+													</VttInteractionContextProvider>
+												</VttGridContextProvider>
+											</VttThrottledViewportContextProvider>
+										</VttViewportContextProvider>
+									</VttMembersContextProvider>
+								</VttBoardLayerContextProvider>
 							</VttContextProvider>
 						</VttAudioControllerProvider>
 					</VttLocalSettingsProvider>
@@ -89,14 +91,14 @@ function VttCoreEngine() {
 	return (
 		<VttCoreEngineContainer>
 			<GeneralShortcutsEngine />
-			<VirtualGridView />
+			<VttBoard />
 			<TestZone />
 			<DDDiceIntegration />
 			<PingEngine />
 			<CursorSyncronizer />
-			<PlayerConnectionChange />
 			<VttHud />
 			<VirtualUserCursor />
+			<PlayerConnectionChange />
 		</VttCoreEngineContainer>
 	);
 }
@@ -124,25 +126,12 @@ function TestZone() {
 	// }, []);
 
 	const square1Position = worldToScreen({
-		x: 0,
-		y: 0,
-	});
-	const square2Position = worldToScreen({
-		x: 100,
-		y: 100,
-	});
-	const square3Position = worldToScreen({
-		x: 200,
-		y: 200,
+		x: -50,
+		y: -50,
 	});
 
 	return (
-		<TestContainer
-			{...setVttElementDataAttributes(
-				VttElementDataAttribute.EventPing,
-				VttElementDataAttribute.EventZoom,
-				VttElementDataAttribute.EventMiddleButtonPan,
-			)}>
+		<TestContainer style={{ pointerEvents: "none" }}>
 			<br />
 
 			{Object.keys(VttCursorInteractionType).map((key) => (
@@ -169,7 +158,16 @@ function TestZone() {
 					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
 			/>
-			<span
+			{/* <span
+				style={{
+					position: "absolute",
+					left: square1Position.x,
+					top: square1Position.y,
+					width: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
+					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
+				}}
+			/> */}
+			{/* <span
 				style={{
 					position: "absolute",
 					left: square2Position.x,
@@ -177,7 +175,7 @@ function TestZone() {
 					width: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
-			/>
+			/> */}
 			{/* <span
 				style={{
 					position: "absolute",

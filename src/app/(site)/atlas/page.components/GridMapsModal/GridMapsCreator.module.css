@@ -26,3 +26,11 @@
 	height: 87vw;
 	max-height: 839px;
 }
+
+.isInVtt {
+	pointer-events: all;
+	&,
+	& * {
+		cursor: none;
+	}
+}

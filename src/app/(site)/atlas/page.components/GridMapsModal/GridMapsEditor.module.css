@@ -70,3 +70,11 @@
 .gridSwitch {
 	height: 30px;
 }
+
+.isInVtt {
+	pointer-events: all;
+	&,
+	& * {
+		cursor: none;
+	}
+}

@@ -279,14 +279,15 @@ export function RadialMenu({
 	}, [rings, onClose, submitKeys, handleSubmit, submitOption]);
 
 	useEffect(() => {
-		const consumeNextContextMenu = () => {
-			const handleContextMenu = (event: MouseEvent) => {
+		function consumeNextContextMenu() {
+			function handleContextMenu(event: MouseEvent) {
 				event.preventDefault();
-			};
+				event.stopPropagation();
+			}
 			window.addEventListener("contextmenu", handleContextMenu, {
 				once: true,
 			});
-		};
+		}
 
 		const handleMouseDown = (event: MouseEvent) => {
 			if (event.button === 2) {

@@ -26,10 +26,12 @@ type FormData = {
 interface AllGridMapsViewerProps {
 	isInVtt: boolean;
 	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
+	setCoreModalOpenState: Dispatch<SetStateAction<boolean>>;
 }
 export function AllGridMapsViewer({
 	isInVtt,
 	setEditingGridMapId,
+	setCoreModalOpenState,
 }: AllGridMapsViewerProps) {
 	const { user } = useCurrentUser();
 	const [allGridMaps, setAllGridMaps] = useState<GridMap[]>([]);
@@ -74,7 +76,10 @@ export function AllGridMapsViewer({
 					/>
 				</HookedForm.Form>
 				{user != null && RoleHierarchy[user.role] >= RoleHierarchy.Admin && (
-					<GridMapsCreator setEditingGridMapId={setEditingGridMapId} />
+					<GridMapsCreator
+						setEditingGridMapId={setEditingGridMapId}
+						isInVtt={isInVtt}
+					/>
 				)}
 			</HeaderContainer>
 			<HookedForm.Space />
@@ -87,6 +92,7 @@ export function AllGridMapsViewer({
 						gridMap={map}
 						setEditingGridMapId={setEditingGridMapId}
 						isInVtt={isInVtt}
+						setCoreModalOpenState={setCoreModalOpenState}
 					/>
 				))}
 			</UIBasics.List.Grid>

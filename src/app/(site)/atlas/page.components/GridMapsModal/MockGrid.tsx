@@ -1,11 +1,11 @@
 "use client";
 
-import { Grid } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/VttCore/VirtualGridView";
 import styles from "./MockGrid.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { BasicMedia } from "@/components/(Design)/components/BasicMedia";
+import { Grid } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/VttCore/VttBoard/VirtualGridView";
 
 const ImageGridContainer = newStyledElement.div(styles.imageGridContainer);
 const MockGridContainer = newStyledElement.div(styles.mockGridContainer);

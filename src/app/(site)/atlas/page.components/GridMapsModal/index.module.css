@@ -13,15 +13,23 @@
 		width: 35px;
 		height: 35px;
 	}
+
+	&.insideVtt {
+		top: 15px;
+		right: 15px;
+	}
+	&.outsideVtt {
+		bottom: 80px;
+		right: 15px;
+	}
 }
 
 .insideVtt {
-	bottom: 15px;
-	right: 15px;
-}
-.outsideVtt {
-	bottom: 80px;
-	right: 15px;
+	pointer-events: all;
+	&,
+	& * {
+		cursor: none;
+	}
 }
 
 .content {

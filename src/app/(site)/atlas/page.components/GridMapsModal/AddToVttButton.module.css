@@ -1,0 +1,27 @@
+.addToVttButtonCore {
+	border: none;
+	background: none;
+	height: 100%;
+	font-size: var(--fs-3xl);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 var(--sp-10);
+	border-radius: var(--rd-md);
+	cursor: pointer;
+	background-color: var(--cl-green-800);
+	color: var(--cl-green-200);
+	&:hover {
+		background-color: var(--cl-green-600);
+		color: var(--cl-green-100);
+	}
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+
+	pointer-events: all;
+	&,
+	& * {
+		cursor: none;
+	}
+}

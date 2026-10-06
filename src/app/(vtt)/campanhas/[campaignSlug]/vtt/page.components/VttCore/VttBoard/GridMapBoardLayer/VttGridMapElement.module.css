@@ -1,0 +1,23 @@
+.vttGridMapElementContainer {
+	position: absolute;
+	top: 200px;
+	left: 200px;
+	outline: 6px solid transparent;
+	transition: 0.25s linear outline;
+
+	top: attr(data-vtt-board-y px);
+	left: attr(data-vtt-board-x px);
+	width: attr(data-vtt-board-width px);
+	height: attr(data-vtt-board-height px);
+
+	&.activeLayer {
+		outline: 6px solid var(--cl-gray-300);
+		pointer-events: all;
+	}
+}
+
+.media {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}

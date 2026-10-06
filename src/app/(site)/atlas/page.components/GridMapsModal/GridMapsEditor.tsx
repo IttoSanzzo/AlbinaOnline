@@ -28,10 +28,12 @@ const GridMapsEditorContainer = newStyledElement.div(
 interface GridMapsEditorProps {
 	gridMapId: Guid;
 	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
+	isInVtt: boolean;
 }
 export function GridMapsEditor({
 	gridMapId,
 	setEditingGridMapId,
+	isInVtt,
 }: GridMapsEditorProps) {
 	const gridMapState = useState<GridMap | null>(null);
 
@@ -57,6 +59,7 @@ export function GridMapsEditor({
 				gridMapState as [GridMap, Dispatch<SetStateAction<GridMap | null>>]
 			}
 			setEditingGridMapId={setEditingGridMapId}
+			isInVtt={isInVtt}
 		/>
 	);
 }
@@ -86,10 +89,12 @@ type FormData = z.infer<typeof schema>;
 interface EditorCoreProps {
 	gridMapState: [GridMap, Dispatch<SetStateAction<GridMap | null>>];
 	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
+	isInVtt: boolean;
 }
 function EditorCore({
 	gridMapState: [gridMap, setGridMap],
 	setEditingGridMapId,
+	isInVtt,
 }: EditorCoreProps) {
 	const [deletionOpenState, setDeletionOpenState] = useState<boolean>(false);
 	const showGridState = useState<boolean>(true);
@@ -177,7 +182,7 @@ function EditorCore({
 	}
 
 	return (
-		<GridMapsEditorContainer>
+		<GridMapsEditorContainer className={isInVtt ? styles.isInVtt : undefined}>
 			<GridMapGridViewer
 				gridMap={{
 					...gridMap,

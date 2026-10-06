@@ -7,6 +7,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Dialog } from "@/libs/stp@radix";
 import { GridMapsCreationForm } from "./GridMapsCreationForm";
+import clsx from "clsx";
 
 const GridMapsCreatorTrigger = newStyledElement.div(
 	styles.gridMapsCreatorTrigger,
@@ -14,8 +15,12 @@ const GridMapsCreatorTrigger = newStyledElement.div(
 
 interface GridMapsCreatorProps {
 	setEditingGridMapId: Dispatch<SetStateAction<Guid | null>>;
+	isInVtt: boolean;
 }
-export function GridMapsCreator({ setEditingGridMapId }: GridMapsCreatorProps) {
+export function GridMapsCreator({
+	setEditingGridMapId,
+	isInVtt,
+}: GridMapsCreatorProps) {
 	const [openState, setOpenState] = useState<boolean>(false);
 
 	return (
@@ -23,7 +28,8 @@ export function GridMapsCreator({ setEditingGridMapId }: GridMapsCreatorProps) {
 			open={openState}
 			onOpenChange={setOpenState}>
 			<Dialog.Trigger asChild>
-				<GridMapsCreatorTrigger>
+				<GridMapsCreatorTrigger
+					className={isInVtt ? styles.isInVtt : undefined}>
 					<StpIcon
 						name={"PlusCircle"}
 						color={"blue"}
@@ -31,8 +37,15 @@ export function GridMapsCreator({ setEditingGridMapId }: GridMapsCreatorProps) {
 				</GridMapsCreatorTrigger>
 			</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay onClick={() => setOpenState(false)} />
-				<Dialog.Content className={styles.content}>
+				<Dialog.Overlay
+					onClick={() => setOpenState(false)}
+					className={isInVtt ? styles.isInVtt : undefined}
+				/>
+				<Dialog.Content
+					className={clsx(
+						styles.content,
+						isInVtt ? styles.isInVtt : undefined,
+					)}>
 					<Dialog.Title />
 					<Dialog.Description />
 					<GridMapsCreationForm

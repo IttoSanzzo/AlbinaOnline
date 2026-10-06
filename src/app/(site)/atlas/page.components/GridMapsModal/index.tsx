@@ -8,6 +8,7 @@ import { StpIcon } from "@/libs/stp@icons";
 import { Guid } from "@/libs/stp@types";
 import { AllGridMapsViewer } from "./AllGridMapsViewer";
 import { GridMapsEditor } from "./GridMapsEditor";
+import clsx from "clsx";
 
 const Trigger = newStyledElement.div(styles.trigger);
 
@@ -37,24 +38,31 @@ export function GridMapsModal({ isInVtt = false }: GridMapsModalProps) {
 			</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay
+					className={isInVtt ? styles.insideVtt : styles.outsideVtt}
 					onClick={(event) => {
 						event.preventDefault();
 						event.stopPropagation();
 						handleOpenStateChange(false);
 					}}
 				/>
-				<Dialog.Content className={styles.content}>
+				<Dialog.Content
+					className={clsx(
+						styles.content,
+						isInVtt ? styles.insideVtt : styles.outsideVtt,
+					)}>
 					<Dialog.Title />
 					<Dialog.Description />
 					{editingGridMapId == null ? (
 						<AllGridMapsViewer
 							isInVtt={isInVtt}
 							setEditingGridMapId={setEditingGridMapId}
+							setCoreModalOpenState={setOpenState}
 						/>
 					) : (
 						<GridMapsEditor
 							gridMapId={editingGridMapId}
 							setEditingGridMapId={setEditingGridMapId}
+							isInVtt={isInVtt}
 						/>
 					)}
 				</Dialog.Content>

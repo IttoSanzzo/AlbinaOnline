@@ -47,7 +47,7 @@ export function VttContextProvider({
 
 	const dispatchMessage = (message: VttOutputMessage) => {
 		if (ignoredMessages.current.delete(message.id)) return;
-		if (message.type === "VttSceneSnapshot")
+		if (message.type === "VttCompleteSceneSnapshot")
 			setActiveSceneId((message.data as { sceneId: Guid }).sceneId);
 		const handlers = subscriptions.current.get(message.type);
 		if (!handlers) return;

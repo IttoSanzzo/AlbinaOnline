@@ -4,7 +4,6 @@
 	color: unset;
 }
 .content {
-	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -34,8 +33,6 @@
 
 .editButton {
 	height: 100%;
-	background-color: var(--cl-blue-900);
-	color: var(--cl-blue-200);
 	font-size: var(--fs-3xl);
 	display: flex;
 	align-items: center;
@@ -43,12 +40,21 @@
 	padding: 0 var(--sp-10);
 	border-radius: var(--rd-md);
 	cursor: pointer;
-	transition:
-		0.25s linear background-color,
-		0.25s linear color;
-
+	color: var(--cl-blue-200);
+	background-color: var(--cl-blue-900);
 	&:hover {
 		background-color: var(--cl-blue-700);
 		color: var(--cl-blue-100);
+	}
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+}
+
+.isInVtt {
+	pointer-events: all;
+	&,
+	& * {
+		cursor: none;
 	}
 }

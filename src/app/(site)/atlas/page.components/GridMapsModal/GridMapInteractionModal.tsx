@@ -13,17 +13,21 @@ import { DEFAULT_MOCK_GRID_COLORS, GridMapGridViewer } from "./MockGrid";
 import { useLocalStorageState } from "@/utils/Storage";
 import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/VttMouseState";
 import { setVttElementHoverInteraction } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Utils/ElementDataAttributeUtils";
+import clsx from "clsx";
+import { AddToVttButton } from "./AddToVttButton";
 
 const Footer = newStyledElement.div(styles.footer);
 const EditButton = newStyledElement.div(styles.editButton);
 
 interface GridMapInteractionModalProps {
 	setEditingGridMapId?: Dispatch<SetStateAction<Guid | null>>;
+	setCoreModalOpenState: Dispatch<SetStateAction<boolean>>;
 	gridMap: GridMap;
 	isInVtt: boolean;
 }
 export function GridMapInteractionModal({
 	setEditingGridMapId,
+	setCoreModalOpenState,
 	gridMap,
 	isInVtt,
 }: GridMapInteractionModalProps) {
@@ -45,8 +49,15 @@ export function GridMapInteractionModal({
 				<GridMapCard gridMap={gridMap} />
 			</Dialog.Trigger>
 			<Dialog.Portal>
-				<Dialog.Overlay onClick={() => setOpenState(false)} />
-				<Dialog.Content className={styles.content}>
+				<Dialog.Overlay
+					onClick={() => setOpenState(false)}
+					className={isInVtt ? styles.isInVtt : undefined}
+				/>
+				<Dialog.Content
+					className={clsx(
+						styles.content,
+						isInVtt ? styles.isInVtt : undefined,
+					)}>
 					<GridMapGridViewer
 						gridMap={gridMap}
 						showGrid={withGridState[0]}
@@ -71,12 +82,10 @@ export function GridMapInteractionModal({
 								</EditButton>
 							)}
 							{isInVtt && (
-								<div
-									{...setVttElementHoverInteraction(
-										VttCursorInteractionType.Pointer,
-									)}>
-									Add to Vtt
-								</div>
+								<AddToVttButton
+									gridMap={gridMap}
+									setCoreModalOpenState={setCoreModalOpenState}
+								/>
 							)}
 						</Footer>
 					)}
