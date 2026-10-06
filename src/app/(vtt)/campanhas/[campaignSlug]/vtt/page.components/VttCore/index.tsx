@@ -4,7 +4,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
 import { VttContextProvider } from "../Contexts/VttContextProvider";
-import { CursorSyncronizer } from "./CursorSyncronizer";
+import { CursorSyncronizer } from "./MainPassiveComponents/CursorSyncronizer";
 import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
 import {
@@ -16,13 +16,12 @@ import {
 	useVttInteractionContext,
 	VttInteractionContextProvider,
 } from "../Contexts/VttInteractionContextProvider";
-import { VirtualUserCursor } from "./VirtualUserCursor";
+import { VirtualUserCursor } from "./MainPassiveComponents/VirtualUserCursor";
 import { useCursorHoverInteraction } from "../Utils/InteractionUtils";
 import { useMiddleButtonCameraPan } from "../Utils/CameraUtils/CameraMiddleButtonPanUtils";
 import { useWheelCameraZoom } from "../Utils/CameraUtils/CameraZoomUtils";
 import { useEdgeCameraPan } from "../Utils/CameraUtils/CameraEdgePanUtils";
 import { VttGridContextProvider } from "../Contexts/VttGridProvider";
-import { VirtualGridView } from "./VirtualGridView";
 import { RadialMenuProvider } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { PingEngine } from "./Other/PingEngine";
 import { PlayerConnectionChange } from "./Other/PureEventHandlers/PlayerConnectionChange";
@@ -31,13 +30,14 @@ import { VttLocalSettingsProvider } from "../Contexts/VttLocalSettings/VttLocalS
 import { VttAudioControllerProvider } from "../Contexts/AudioManager/VttAudioControllerContext";
 import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
-import { DDDiceIntegration } from "./DDDiceIntegration";
+import { DDDiceIntegration } from "./MainPassiveComponents/DDDiceIntegration";
 import { WindowStates } from "../Contexts/WindowStates";
 import {
 	VttElementDataAttribute,
 	setVttElementDataAttributes,
 } from "../Utils/ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { VirtualGridView } from "./MainPassiveComponents/VirtualGridView";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -178,7 +178,7 @@ function TestZone() {
 					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
 			/>
-			<span
+			{/* <span
 				style={{
 					position: "absolute",
 					left: square3Position.x,
@@ -187,8 +187,8 @@ function TestZone() {
 					wordBreak: "normal",
 					whiteSpace: "pre-wrap",
 				}}>
-				{/* {vttResultsTest} */}
-			</span>
+				{vttResultsTest}
+			</span> */}
 		</TestContainer>
 	);
 }

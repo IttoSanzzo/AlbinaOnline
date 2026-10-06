@@ -2,11 +2,11 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import {
 	DEFAULT_GRID_CELL_SIZE,
 	useVttGridContext,
-} from "../../Contexts/VttGridProvider";
+} from "../../../Contexts/VttGridProvider";
 import { useId } from "react";
 
 const VttGridContainer = newStyledElement.div(styles.vttGridContainer);

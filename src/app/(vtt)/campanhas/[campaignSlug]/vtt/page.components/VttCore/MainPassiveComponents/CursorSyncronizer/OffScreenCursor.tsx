@@ -3,12 +3,12 @@ import { CampaignMember } from "@/libs/stp@types";
 import {
 	VttCursorInteractionType,
 	VttMouseState,
-} from "../../Types/VttMouseState";
+} from "../../../Types/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { useRef } from "react";
 import { CursorSvg } from "./CursorSvg";
-import { setVttElementHoverInteraction } from "../../Utils/ElementDataAttributeUtils";
+import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
 
 const OffScreenCursorContainer = newStyledElement.div(
 	styles.offScreenCursorContainer,

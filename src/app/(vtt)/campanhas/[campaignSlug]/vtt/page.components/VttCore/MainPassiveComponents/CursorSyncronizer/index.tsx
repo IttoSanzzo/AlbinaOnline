@@ -1,13 +1,13 @@
 import styles from "./index.module.css";
 import { Guid } from "@/libs/stp@types";
-import { useVttContext } from "../../Contexts/VttContextProvider";
+import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useEffect, useRef, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { VttMouseState } from "../../Types/VttMouseState";
+import { VttMouseState } from "../../../Types/VttMouseState";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ClientCursor } from "./ClientCursor";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
-import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
 
 const ClientCursorsRenderer = newStyledElement.div(
 	styles.clientCursorsRenderer,

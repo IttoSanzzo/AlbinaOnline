@@ -1,4 +1,4 @@
-import { VttCursorInteractionType } from "../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/VttMouseState";
 import styles from "./CursorSvg.module.css";
 
 interface CursorIconProps {

@@ -5,7 +5,7 @@ import { ThreeDDice, ThreeDDiceAPI } from "dddice-js";
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/libs/stp@hooks";
 import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
-import { useVttContext } from "../../Contexts/VttContextProvider";
+import { useVttContext } from "../../../Contexts/VttContextProvider";
 
 export function DDDiceIntegration() {
 	const { campaign } = useVttContext();

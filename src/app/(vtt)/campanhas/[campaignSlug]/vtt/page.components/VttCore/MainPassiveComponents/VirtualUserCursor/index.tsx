@@ -1,11 +1,11 @@
 "use client";
 
 import { useCurrentUser } from "@/libs/stp@hooks";
-import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { ClientCursor } from "../CursorSyncronizer/ClientCursor";
 import { useEffect, useState } from "react";
-import { VttMouseState } from "../../Types/VttMouseState";
+import { VttMouseState } from "../../../Types/VttMouseState";
 import { createPortal } from "react-dom";
 
 export function VirtualUserCursor() {

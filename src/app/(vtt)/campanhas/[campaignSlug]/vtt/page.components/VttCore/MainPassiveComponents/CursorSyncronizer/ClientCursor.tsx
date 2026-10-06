@@ -4,14 +4,14 @@ import {
 	horizontalCursorOffset,
 	verticalCursorOffset,
 	VttMouseState,
-} from "../../Types/VttMouseState";
+} from "../../../Types/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { CursorSvg } from "./CursorSvg";
-import { useVttMembersContext } from "../../Contexts/VttMembersProvider";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
+import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { useMemo } from "react";
 import { OffScreenCursor } from "./OffScreenCursor";
-import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
+import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
 
 const ClientCursorContainer = newStyledElement.div(
 	styles.clientCursorContainer,
