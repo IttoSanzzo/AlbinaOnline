@@ -8,6 +8,9 @@ export function GeneralShortcutsEngine() {
 					event.preventDefault();
 					handleImmersiveMode();
 					break;
+				case "KeyG":
+					if (event.ctrlKey) event.preventDefault();
+					break;
 			}
 		}
 
