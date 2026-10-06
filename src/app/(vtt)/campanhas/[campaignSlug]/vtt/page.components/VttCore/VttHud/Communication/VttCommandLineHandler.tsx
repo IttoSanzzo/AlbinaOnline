@@ -1,5 +1,5 @@
 import { CampaignMember, Guid } from "@/libs/stp@types";
-import { VttInputMessageType } from "../../../Types/Static/VttInputMessageType";
+import { VttInputMessageType } from "../../../Types/Static/VttOperationMethod";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { VttInputMessage } from "../../../Types/VttInputMessage";
 import { sendPing } from "../../Other/PingEngine";

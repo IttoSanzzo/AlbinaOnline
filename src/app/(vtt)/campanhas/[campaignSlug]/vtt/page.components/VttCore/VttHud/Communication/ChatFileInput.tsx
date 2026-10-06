@@ -109,7 +109,8 @@ export const ChatFileInput = forwardRef<
 				throw new Error("Upload response did not contain a storage URL.");
 			send({
 				id: Guid.NewGuid(),
-				type: "PostChatMessage",
+				method: "Post",
+				path: "/chat/messages",
 				data: {
 					text: result.storage_url,
 					messageToReplyId: messageToReplyId,

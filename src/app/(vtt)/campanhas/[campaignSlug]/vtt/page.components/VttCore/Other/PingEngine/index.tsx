@@ -135,7 +135,8 @@ export function sendPing({ position, type, send }: sendPingProps) {
 	pingTimestamps.push(now);
 	send({
 		id: Guid.NewGuid(),
-		type: PING_MESSAGE_TYPE,
+		path: "/ping",
+		method: "Post",
 		data: {
 			type: type,
 			position: position,

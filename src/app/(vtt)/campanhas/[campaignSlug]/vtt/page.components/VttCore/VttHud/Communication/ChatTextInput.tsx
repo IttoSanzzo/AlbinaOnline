@@ -99,7 +99,8 @@ export function ChatTextInput({
 			if (result.type)
 				send({
 					id: Guid.NewGuid(),
-					type: result.type,
+					path: "/chat/messages",
+					method: "Post",
 					data: result.data ?? {},
 				});
 		} catch (error) {

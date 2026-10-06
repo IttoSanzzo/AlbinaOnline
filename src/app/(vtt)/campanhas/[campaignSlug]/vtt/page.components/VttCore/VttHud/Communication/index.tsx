@@ -212,7 +212,8 @@ function Chat() {
 		});
 		send({
 			id: Guid.NewGuid(),
-			type: "RequestChatMessages",
+			path: "/chat",
+			method: "Get",
 			data: {},
 		});
 		return () => {

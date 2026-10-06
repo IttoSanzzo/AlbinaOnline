@@ -1,8 +1,9 @@
 import { Guid } from "@/libs/stp@types";
-import { VttInputMessageType } from "./Static/VttInputMessageType";
+import { VttOperationMethod } from "./Static/VttOperationMethod";
 
 export interface VttInputMessage {
 	id: Guid;
-	type: VttInputMessageType;
+	method: VttOperationMethod;
+	path: string;
 	data: object;
 }

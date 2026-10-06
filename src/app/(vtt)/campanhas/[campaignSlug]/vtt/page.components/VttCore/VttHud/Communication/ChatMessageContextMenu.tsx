@@ -84,7 +84,8 @@ export function ChatMessageContextMenu({
 					onClick={() => {
 						send({
 							id: Guid.NewGuid(),
-							type: "DeleteChatMessage",
+							path: "/chat/messages",
+							method: "Delete",
 							data: { messageId: messageId },
 						});
 						closeContextMenu();

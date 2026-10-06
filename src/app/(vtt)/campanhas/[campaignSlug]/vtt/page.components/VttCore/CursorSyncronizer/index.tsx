@@ -13,6 +13,8 @@ const ClientCursorsRenderer = newStyledElement.div(
 	styles.clientCursorsRenderer,
 );
 
+let lastMouseStateSentAt = 0;
+
 export function CursorSyncronizer() {
 	const { vttId, subscribe, send } = useVttContext();
 	const { loading, user } = useCurrentUser();
@@ -28,11 +30,15 @@ export function CursorSyncronizer() {
 
 	if (!vttId) return null;
 	function sendMouseState() {
+		const now = performance.now();
+		if (now - lastMouseStateSentAt < 75) return;
+		lastMouseStateSentAt = now;
 		const worldPosition = screenToWorld(mousePosition.current);
 
 		send({
 			id: Guid.NewGuid(),
-			type: "PostMouseState",
+			method: "Post",
+			path: "/cursors",
 			data: {
 				type: hoverInteractionType ?? interaction.type,
 				color1: "#00FF00",

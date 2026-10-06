@@ -43,7 +43,8 @@ export function DiceHistory() {
 		});
 		send({
 			id: Guid.NewGuid(),
-			type: "RequestDiceResults",
+			path: "/dice/results",
+			method: "Get",
 			data: {},
 		});
 		return () => unsubscribe();
