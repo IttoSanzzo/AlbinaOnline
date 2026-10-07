@@ -73,7 +73,6 @@ export default async function CreaturePageView({
 		...creatureData.info.miscellaneous,
 	];
 
-	console.log(creatureData.miscMetrics.volume);
 	return (
 		<GenericPageContainer
 			title={creatureData.name}

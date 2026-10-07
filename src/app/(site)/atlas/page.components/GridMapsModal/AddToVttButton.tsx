@@ -14,7 +14,7 @@ const AddToVttButtonCore = newStyledElement.button(styles.addToVttButtonCore);
 
 interface AddToVttButtonProps {
 	gridMap: GridMap;
-	setCoreModalOpenState: Dispatch<SetStateAction<boolean>>;
+	setCoreModalOpenState?: Dispatch<SetStateAction<boolean>>;
 }
 export function AddToVttButton({
 	gridMap,
@@ -28,7 +28,7 @@ export function AddToVttButton({
 			{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
 			onClick={(event) => {
 				event.preventDefault();
-				setCoreModalOpenState(false);
+				if (setCoreModalOpenState) setCoreModalOpenState(false);
 
 				const imageWidth = gridMap.width * PIXELS_PER_CENTIMETER * camera.zoom;
 				const imageHeight =

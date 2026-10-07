@@ -1,5 +1,4 @@
 import { CampaignMember, Guid } from "@/libs/stp@types";
-import { VttInputMessageType } from "../../../Types/Static/VttOperationMethod";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { VttInputMessage } from "../../../Types/VttInputMessage";
 import { sendPing } from "../../Other/PingEngine";
@@ -7,6 +6,7 @@ import { WindowCursorState } from "../../../Contexts/WindowStates";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { roundCoordinate } from "../../../Utils/CoodinateUtils";
 import { PingType } from "../../Other/PingEngine/PingRadialWheelTypes";
+import { VttOperationMethod } from "../../../Types/Static/VttOperationMethod";
 
 interface VttCommandLineHandlerProps {
 	text: string;
@@ -28,7 +28,8 @@ export async function VttCommandLineHandler({
 	screenToWorld,
 	allChatMessages,
 }: VttCommandLineHandlerProps): Promise<{
-	type?: VttInputMessageType;
+	path?: string;
+	method?: VttOperationMethod;
 	data?: object;
 	shouldReset: boolean;
 }> {
@@ -123,7 +124,8 @@ export async function VttCommandLineHandler({
 
 		return {
 			shouldReset: true,
-			type: "PostChatMessage",
+			path: "/chat/messages",
+			method: "Post",
 			data: {
 				text: messageText,
 				messageToReplyId,
@@ -145,7 +147,8 @@ export async function VttCommandLineHandler({
 
 		return {
 			shouldReset: true,
-			type: "PostChatMessage",
+			path: "/chat/messages",
+			method: "Post",
 			data: {
 				text: messageText,
 				messageToReplyId,
@@ -169,7 +172,8 @@ function defaultReturn({
 }: DefaultReturnProps) {
 	return {
 		shouldReset: true,
-		type: "PostChatMessage" as VttInputMessageType,
+		path: "/chat/messages",
+		method: "Post" as VttOperationMethod,
 		data: {
 			text,
 			messageToReplyId,

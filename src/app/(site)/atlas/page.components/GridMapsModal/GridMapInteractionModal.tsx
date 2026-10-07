@@ -21,7 +21,7 @@ const EditButton = newStyledElement.div(styles.editButton);
 
 interface GridMapInteractionModalProps {
 	setEditingGridMapId?: Dispatch<SetStateAction<Guid | null>>;
-	setCoreModalOpenState: Dispatch<SetStateAction<boolean>>;
+	setCoreModalOpenState?: Dispatch<SetStateAction<boolean>>;
 	gridMap: GridMap;
 	isInVtt: boolean;
 }

@@ -96,11 +96,11 @@ export function ChatTextInput({
 				allChatMessages: allChatMessages,
 			});
 			shouldReset = result.shouldReset ?? false;
-			if (result.type)
+			if (result.path && result.method)
 				send({
 					id: Guid.NewGuid(),
-					path: "/chat/messages",
-					method: "Post",
+					path: result.path,
+					method: result.method,
 					data: result.data ?? {},
 				});
 		} catch (error) {
