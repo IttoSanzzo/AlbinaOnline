@@ -7,6 +7,7 @@ import {
 	useVttViewportContext,
 } from "../../Contexts/VttViewportContextProvider";
 import { VttElementDataAttribute } from "../ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../Types/Classes/VttMouseState";
 
 export function useMiddleButtonCameraPan() {
 	const { interaction } = useVttInteractionContext();
@@ -38,7 +39,7 @@ export function useMiddleButtonCameraPan() {
 				)
 			)
 				return;
-			setHoverInteractionType("Hand");
+			setHoverInteractionType(VttCursorInteractionType.CameraLens);
 			isPanning = true;
 			lastMousePosition = {
 				x: event.clientX,

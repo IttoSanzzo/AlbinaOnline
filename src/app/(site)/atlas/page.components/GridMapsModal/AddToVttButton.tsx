@@ -1,7 +1,7 @@
 import { setVttElementHoverInteraction } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Utils/ElementDataAttributeUtils";
 import styles from "./AddToVttButton.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/VttMouseState";
+import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/Classes/VttMouseState";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { Dispatch, SetStateAction } from "react";
 import { useVttContext } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Contexts/VttContextProvider";

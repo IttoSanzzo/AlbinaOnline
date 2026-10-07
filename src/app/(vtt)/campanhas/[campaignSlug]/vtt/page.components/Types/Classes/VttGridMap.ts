@@ -2,6 +2,7 @@ import { Guid } from "@/libs/stp@types";
 import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { VttGenericTransform } from "./VttGenericTransform";
+import { VttLockableResource } from "./VttLockableResouce";
 
 export interface VttGridMap {
 	id: Guid;
@@ -13,4 +14,5 @@ export interface VttGridMap {
 	updatedAt?: string;
 	// scene: Scene;
 	gridMap: GridMap;
+	resourceLocks: VttLockableResource[];
 }

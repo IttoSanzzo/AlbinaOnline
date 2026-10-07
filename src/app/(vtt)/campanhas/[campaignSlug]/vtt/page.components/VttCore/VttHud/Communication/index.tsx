@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 import { useVttAudioController } from "../../../Contexts/AudioManager/VttAudioControllerContext";
 import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
 import { ChatMessage } from "./ChatMessage";

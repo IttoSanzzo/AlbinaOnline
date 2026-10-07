@@ -4,7 +4,7 @@ import {
 	horizontalCursorOffset,
 	verticalCursorOffset,
 	VttMouseState,
-} from "../../../Types/VttMouseState";
+} from "../../../Types/Classes/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { CursorSvg } from "./CursorSvg";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";

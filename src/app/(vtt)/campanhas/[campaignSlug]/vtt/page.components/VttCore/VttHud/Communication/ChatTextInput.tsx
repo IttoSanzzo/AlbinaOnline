@@ -10,12 +10,12 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { VttInputMessage } from "../../../Types/VttInputMessage";
+import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import z from "zod";
 import { CampaignMember, Guid } from "@/libs/stp@types";
 import { CHAT_SUBMIT_COOLDOWN_MS } from ".";
 import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";

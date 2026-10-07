@@ -7,7 +7,7 @@ import styles from "./CameraControls.module.css";
 import { DEFAULT_GRID_CELL_SIZE } from "../../Contexts/VttGridProvider";
 import { useEffect } from "react";
 import { setVttElementHoverInteraction } from "../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../Types/Classes/VttMouseState";
 
 const CameraControlsContainer = newStyledElement.div(
 	styles.cameraControlsContainer,

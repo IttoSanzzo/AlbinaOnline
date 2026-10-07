@@ -1,6 +1,6 @@
 import { CampaignMember, Guid } from "@/libs/stp@types";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
-import { VttInputMessage } from "../../../Types/VttInputMessage";
+import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import { sendPing } from "../../Other/PingEngine";
 import { WindowCursorState } from "../../../Contexts/WindowStates";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";

@@ -9,10 +9,10 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { VttInputMessage } from "../Types/VttInputMessage";
-import { VttOutputMessage } from "../Types/VttOutputMessage";
+import { VttInputMessage } from "../Types/Core/VttInputMessage";
 import { Campaign, Guid } from "@/libs/stp@types";
 import { VttOutputMessageType } from "../Types/Static/VttOutputMessageType";
+import { VttOutputMessage } from "../Types/Core/VttOutputMessage";
 
 type VttMessageHandler = (message: VttOutputMessage) => void;
 

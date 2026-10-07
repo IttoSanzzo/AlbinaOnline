@@ -11,7 +11,7 @@ import { useCurrentUser } from "@/libs/stp@hooks";
 import { StateSwitch } from "@/components/(UTILS)";
 import { DEFAULT_MOCK_GRID_COLORS, GridMapGridViewer } from "./MockGrid";
 import { useLocalStorageState } from "@/utils/Storage";
-import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/VttMouseState";
+import { VttCursorInteractionType } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Types/Classes/VttMouseState";
 import { setVttElementHoverInteraction } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Utils/ElementDataAttributeUtils";
 import clsx from "clsx";
 import { AddToVttButton } from "./AddToVttButton";

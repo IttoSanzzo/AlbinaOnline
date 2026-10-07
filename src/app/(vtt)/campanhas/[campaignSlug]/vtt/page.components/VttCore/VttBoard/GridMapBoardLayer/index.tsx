@@ -22,30 +22,52 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 	const { camera, worldToScreen, viewport } =
 		useVttThrottledViewportContext(100);
 	const { subscribe } = useVttContext();
-	const [vttGridMaps, setVttGridMaps] = useState<VttGridMap[]>([]);
+	const [vttGridMaps, setVttGridMaps] = useState<Map<Guid, VttGridMap>>(
+		new Map<Guid, VttGridMap>(),
+	);
+	const [vttGridMapOrder, setVttGridMapOrder] = useState<Guid[]>([]);
 
 	useEffect(() => {
 		const unsubscribe1 = subscribe("VttCompleteSceneSnapshot", (event) => {
-			setVttGridMaps((event.data as { gridMaps: VttGridMap[] }).gridMaps);
+			const payloadVttGridMaps = (
+				event.data as { gridMaps: VttGridMap[] }
+			).gridMaps.toSorted(
+				(a, b) =>
+					new Date(a.updatedAt ?? a.createdAt).getTime() -
+					new Date(b.updatedAt ?? b.createdAt).getTime(),
+			);
+			setVttGridMapOrder(payloadVttGridMaps.map((vttGridMap) => vttGridMap.id));
+			setVttGridMaps(
+				new Map<Guid, VttGridMap>(
+					payloadVttGridMaps.map((vttGridMap) => [vttGridMap.id, vttGridMap]),
+				),
+			);
 		});
 		const unsubscribe2 = subscribe("VttGridMapAdded", (event) => {
-			setVttGridMaps((state) => [
-				...state,
-				(event.data as { vttGridMap: VttGridMap }).vttGridMap,
-			]);
+			const vttGridMap = (event.data as { vttGridMap: VttGridMap }).vttGridMap;
+			setVttGridMaps((state) => {
+				const next = new Map(state);
+				next.set(vttGridMap.id, vttGridMap);
+				return next;
+			});
+			setVttGridMapOrder((state) => [...state, vttGridMap.id]);
 		});
 		const unsubscribe3 = subscribe("VttGridMapUpdated", (event) => {
 			const vttGridMap = (event.data as { vttGridMap: VttGridMap }).vttGridMap;
-			setVttGridMaps((state) => [
-				...state.filter((entity) => entity.id != vttGridMap.id),
-				vttGridMap,
-			]);
+			setVttGridMaps((state) => {
+				const next = new Map(state);
+				next.set(vttGridMap.id, vttGridMap);
+				return next;
+			});
 		});
 		const unsubscribe4 = subscribe("VttGridMapRemoved", (event) => {
 			const vttGridMapId = (event.data as { vttGridMapId: Guid }).vttGridMapId;
-			setVttGridMaps((state) => [
-				...state.filter((entity) => entity.id != vttGridMapId),
-			]);
+			setVttGridMaps((state) => {
+				const next = new Map(state);
+				next.delete(vttGridMapId);
+				return next;
+			});
+			setVttGridMapOrder((state) => state.filter((id) => id != vttGridMapId));
 		});
 		return () => {
 			unsubscribe1();
@@ -57,7 +79,9 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 
 	return (
 		<GridMapBoardLayerContainer>
-			{vttGridMaps.map((vttGridMap) => {
+			{vttGridMapOrder.map((id) => {
+				const vttGridMap = vttGridMaps.get(id);
+				if (!vttGridMap) return null;
 				const coordinates = worldToScreen(vttGridMap.coordinates);
 				const x =
 					coordinates.x -

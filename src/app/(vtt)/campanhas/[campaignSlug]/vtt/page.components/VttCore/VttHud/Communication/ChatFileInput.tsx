@@ -1,7 +1,7 @@
 "use client";
 
 import z from "zod";
-import { VttInputMessage } from "../../../Types/VttInputMessage";
+import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import styles from "./ChatFileInput.module.css";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

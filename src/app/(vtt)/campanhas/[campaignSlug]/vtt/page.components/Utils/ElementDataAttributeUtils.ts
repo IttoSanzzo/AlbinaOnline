@@ -1,4 +1,4 @@
-import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 
 export const VttElementDataAttribute = {
 	EventMiddleButtonPan: "data-vtt-event-middle-button-pan",

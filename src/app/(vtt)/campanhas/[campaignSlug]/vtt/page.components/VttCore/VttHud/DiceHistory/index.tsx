@@ -13,7 +13,7 @@ import {
 	setVttElementHoverInteraction,
 	VttElementDataAttribute,
 } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 import { useLocalStorageState } from "@/utils/Storage";
 import { VttDiceResultView } from "./VttDiceResultView";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";

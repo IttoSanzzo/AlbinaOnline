@@ -32,7 +32,7 @@ import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
 import { DDDiceIntegration } from "./MainPassiveComponents/DDDiceIntegration";
 import { WindowStates } from "../Contexts/WindowStates";
-import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 import { VttBoard } from "./VttBoard";
 import { VttBoardLayerContextProvider } from "../Contexts/VttBoardLayerContext";
 import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledViewportContext";

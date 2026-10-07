@@ -9,7 +9,7 @@ import { useCurrentCampaignMember } from "@/libs/stp@hooks";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import clsx from "clsx";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 
 const ChatMessageContextMenuContainer = newStyledElement.div(
 	styles.chatMessageContextMenuContainer,

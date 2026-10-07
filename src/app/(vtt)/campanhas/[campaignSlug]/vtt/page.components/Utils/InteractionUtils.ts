@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 import { useVttInteractionContext } from "../Contexts/VttInteractionContextProvider";
-import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 import { VttElementDataAttribute } from "./ElementDataAttributeUtils";
 
 const ATTRIBUTE_NAME = VttElementDataAttribute.CursorHoverInteractionType;

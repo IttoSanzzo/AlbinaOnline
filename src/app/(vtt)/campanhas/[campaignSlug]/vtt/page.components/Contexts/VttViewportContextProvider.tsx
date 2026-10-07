@@ -13,7 +13,7 @@ import {
 import { useVttContext } from "./VttContextProvider";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 
-const MIN_ZOOM = 0.5;
+const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 5;
 const DEFAULT_ZOOM = 1;
 const GRID_CELL_SIZE = 100;
@@ -169,8 +169,7 @@ export function VttViewportContextProvider({
 	};
 
 	const zoomAt = (screenPosition: CoordinatePair, zoom: number) => {
-		const nextZoom = Math.round(zoom * 10) / 10;
-		if (nextZoom < MIN_ZOOM || nextZoom > MAX_ZOOM) return;
+		const nextZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
 
 		setCamera((current) => {
 			const worldPosition = {

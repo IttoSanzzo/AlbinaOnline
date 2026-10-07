@@ -7,7 +7,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { VttCursorInteractionType } from "../Types/VttMouseState";
+import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 import { useVttContext } from "./VttContextProvider";
 
 export interface VttInteraction {

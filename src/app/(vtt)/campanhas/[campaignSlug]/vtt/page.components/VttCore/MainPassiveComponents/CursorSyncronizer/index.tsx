@@ -3,7 +3,7 @@ import { Guid } from "@/libs/stp@types";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useEffect, useRef, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { VttMouseState } from "../../../Types/VttMouseState";
+import { VttMouseState } from "../../../Types/Classes/VttMouseState";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ClientCursor } from "./ClientCursor";
 import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";

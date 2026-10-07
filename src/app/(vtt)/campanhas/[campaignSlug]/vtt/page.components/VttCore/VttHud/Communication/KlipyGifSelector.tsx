@@ -1,7 +1,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./KlipyGifSelector.module.css";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 import {
 	Dispatch,
 	RefObject,

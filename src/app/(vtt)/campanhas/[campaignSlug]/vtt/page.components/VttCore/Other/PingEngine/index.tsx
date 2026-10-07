@@ -23,10 +23,10 @@ import {
 	hasClosestAttribute,
 	setVttElementHoverInteraction,
 } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/VttMouseState";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 import { isFormElement } from "@/utils/General";
 import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
-import { VttInputMessage } from "../../../Types/VttInputMessage";
+import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 
 const PingEngineContainer = newStyledElement.div(styles.pingEngineContainer);
 const PING_MESSAGE_TYPE = "PostPing";

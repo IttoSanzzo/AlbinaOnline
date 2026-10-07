@@ -3,7 +3,7 @@ import { CampaignMember } from "@/libs/stp@types";
 import {
 	VttCursorInteractionType,
 	VttMouseState,
-} from "../../../Types/VttMouseState";
+} from "../../../Types/Classes/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
 import { useRef } from "react";
