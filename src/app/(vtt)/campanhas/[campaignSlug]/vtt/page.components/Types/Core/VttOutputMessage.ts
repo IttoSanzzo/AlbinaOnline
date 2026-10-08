@@ -1,5 +1,5 @@
 import { Guid } from "@/libs/stp@types";
-import { VttOutputMessageType } from "./Static/VttOutputMessageType";
+import { VttOutputMessageType } from "../Static/VttOutputMessageType";
 
 export interface VttOutputMessage {
 	id: Guid;

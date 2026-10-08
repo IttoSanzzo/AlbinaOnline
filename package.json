@@ -18,7 +18,8 @@
 		"start": "next start -p 11759",
 		"test": "next build && next start -p 11759",
 		"test-reset": "rm -rf ./.next && next build && next start -p 11759",
-		"lint": "next lint"
+		"lint": "next lint",
+		"safe-checks": "npx tsc --noEmit && npx eslint src/"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",
