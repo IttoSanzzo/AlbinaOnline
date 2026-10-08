@@ -38,6 +38,7 @@ export function RadialMenu({
 	nameColor,
 	showNames,
 	submitKeys,
+	seekMouseOutside = true,
 	coreDiameter = DEFAULT_CORE_DIAMETER,
 	ringWidths = DEFAULT_RING_WIDTHS,
 	mode = "fast",
@@ -85,6 +86,19 @@ export function RadialMenu({
 		);
 	}, [ringGeometry, coreDiameter]);
 
+	const isInsideRing = useCallback(
+		(clientX: number, clientY: number) => {
+			const dx = clientX - screenPosition.x;
+			const dy = clientY - screenPosition.y;
+			const distance = Math.sqrt(dx * dx + dy * dy);
+
+			return ringGeometry.some(
+				(ring) => distance >= ring.innerRadius && distance <= ring.outerRadius,
+			);
+		},
+		[screenPosition, ringGeometry],
+	);
+
 	useEffect(() => {
 		function handleMouseMove(event: MouseEvent) {
 			if (ringGeometry.length === 0) return;
@@ -108,9 +122,14 @@ export function RadialMenu({
 				}
 			}
 			if (targetRingIndex === -1) {
-				if (distance > ringGeometry[ringGeometry.length - 1].outerRadius) {
+				if (
+					seekMouseOutside &&
+					distance > ringGeometry[ringGeometry.length - 1].outerRadius
+				) {
 					targetRingIndex = ringGeometry.length - 1;
 				} else {
+					setActiveOption(undefined);
+					setActiveDepth(0);
 					return;
 				}
 			}
@@ -127,7 +146,7 @@ export function RadialMenu({
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [ringGeometry, screenPosition, coreDiameter]);
+	}, [ringGeometry, screenPosition, coreDiameter, seekMouseOutside]);
 
 	useEffect(() => {
 		if (!activeOption) {
@@ -286,6 +305,7 @@ export function RadialMenu({
 			}
 			window.addEventListener("contextmenu", handleContextMenu, {
 				once: true,
+				capture: true,
 			});
 		}
 
@@ -303,6 +323,12 @@ export function RadialMenu({
 			if (event.button !== 0) return;
 
 			event.preventDefault();
+
+			if (!seekMouseOutside && !isInsideRing(event.clientX, event.clientY)) {
+				onClose();
+				return;
+			}
+
 			handleSubmit();
 		};
 
@@ -318,7 +344,7 @@ export function RadialMenu({
 			window.removeEventListener("mouseup", handleMouseUp);
 			window.removeEventListener("contextmenu", handleContextMenu);
 		};
-	}, [handleSubmit, onClose]);
+	}, [handleSubmit, onClose, seekMouseOutside, isInsideRing]);
 
 	const core = coreGenerator ? (
 		coreGenerator({

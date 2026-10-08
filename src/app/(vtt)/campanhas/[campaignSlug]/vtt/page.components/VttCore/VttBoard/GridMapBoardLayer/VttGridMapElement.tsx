@@ -167,6 +167,7 @@ function openRadialMenu(
 		name: "GridMap",
 		screenPosition: { x: WindowCursorState.x, y: WindowCursorState.y },
 		actionPosition: { x: 0, y: 0 },
+		seekMouseOutside: false,
 		options: radialMenuOptions,
 		nameColor: StandartTextColor["lightGray"],
 		ringWidths: [120],

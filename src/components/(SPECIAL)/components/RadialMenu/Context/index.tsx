@@ -21,6 +21,7 @@ export interface RadialMenuData {
 	name: string;
 	mode?: "fast" | "switch";
 	overlay?: boolean;
+	seekMouseOutside?: boolean;
 	screenPosition: CoordinatePair;
 	actionPosition: CoordinatePair;
 	coreDiameter?: number;
@@ -49,6 +50,7 @@ export function RadialMenuProvider({ children }: { children: ReactNode }) {
 			...props,
 			mode: props.mode ?? "fast",
 			overlay: props.overlay ?? false,
+			seekMouseOutside: props.seekMouseOutside ?? true,
 			showNames: props.showNames ?? true,
 		});
 	}, []);

@@ -2,7 +2,7 @@ import { SideBar, NavBar, AnchorNavBar } from "@/components/(HUD)";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./layout.module.css";
 import { ReactNode } from "react";
-import { DiceRoller, DiscordWidget } from "@/components/(SPECIAL)";
+import { DiceRoller } from "@/components/(SPECIAL)";
 import { BroadcastViewer } from "@/components/(SPECIAL)/components/BroadcastViewer";
 import { ShortcutsEngine } from "@/components/(HUD)/components/ShortcutsEngine";
 
