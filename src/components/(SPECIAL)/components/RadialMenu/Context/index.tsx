@@ -33,7 +33,7 @@ export interface RadialMenuData {
 	onSubmit: (props: RadialMenuSubmitProps) => void;
 }
 
-interface RadialMenuContext {
+export interface RadialMenuContext {
 	openNew: (props: RadialMenuData) => void;
 	close: () => void;
 	id: string | null;

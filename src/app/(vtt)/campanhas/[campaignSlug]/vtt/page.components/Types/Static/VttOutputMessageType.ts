@@ -12,5 +12,9 @@ export const VttOutputMessageTypes = [
 	"VttGridMapAdded",
 	"VttGridMapUpdated",
 	"VttGridMapRemoved",
+	"VttGridMapDragStarted",
+	"VttGridMapDragUpdate",
+	"VttGridMapDragEnded",
+	"VttGridMapDragCanceled",
 ] as const;
 export type VttOutputMessageType = (typeof VttOutputMessageTypes)[number];

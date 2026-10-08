@@ -82,5 +82,5 @@ export function useEdgeCameraPan() {
 			window.removeEventListener("mousemove", handleMouseMove);
 			window.clearInterval(interval);
 		};
-	}, [interaction.allowEdgeScroll, moveCamera]);
+	}, [interaction.allowEdgeScroll, interaction.edgeScrollOverride, moveCamera]);
 }

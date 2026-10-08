@@ -55,7 +55,7 @@ export function AddToVttButton({
 
 				send({
 					id: Guid.NewGuid(),
-					path: "/scene/gridmaps",
+					path: "/scenes/gridmaps",
 					method: "Post",
 					data: {
 						sceneId: activeSceneId,
