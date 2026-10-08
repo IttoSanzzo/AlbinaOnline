@@ -14,11 +14,9 @@ import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvi
 import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledViewportContext";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { VttResourceLockDto } from "../../../Types/Classes/VttResourceLock";
-
 const GridMapBoardLayerContainer = newStyledElement.div(
 	styles.gridMapBoardLayerContainer,
 );
-
 export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 	const { activeLayer } = useVttBoardLayerContext();
 	const { camera, worldToScreen, viewport } =
@@ -28,7 +26,6 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 		new Map<Guid, VttGridMap>(),
 	);
 	const [vttGridMapOrder, setVttGridMapOrder] = useState<Guid[]>([]);
-
 	useEffect(() => {
 		const unsubscribe1 = subscribe("VttCompleteSceneSnapshot", (event) => {
 			const payloadVttGridMaps = (
@@ -172,9 +169,9 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 			unsubscribeDragCanceled();
 		};
 	}, [subscribe]);
-
 	return (
 		<GridMapBoardLayerContainer>
+			{" "}
 			{vttGridMapOrder.map((id) => {
 				const vttGridMap = vttGridMaps.get(id);
 				if (!vttGridMap) return null;
@@ -189,23 +186,20 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 					vttGridMap.gridMap.width * PIXELS_PER_CENTIMETER * camera.zoom;
 				const height =
 					vttGridMap.gridMap.height * PIXELS_PER_CENTIMETER * camera.zoom;
-
 				const isVisible =
 					x + width >= 0 &&
 					y + height >= 0 &&
 					x <= viewport.width &&
 					y <= viewport.height;
-
 				if (!isVisible) return null;
-
 				return (
 					<VttGridMapElement
 						key={vttGridMap.id}
 						vttGridMap={vttGridMap}
 					/>
 				);
-			})}
-			{activeLayer == VttBoardLayer.GridMap && <GridMapsModal isInVtt />}
+			})}{" "}
+			{activeLayer == VttBoardLayer.GridMap && <GridMapsModal isInVtt />}{" "}
 		</GridMapBoardLayerContainer>
 	);
 });
