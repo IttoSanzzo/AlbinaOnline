@@ -169,7 +169,7 @@ function openRadialMenu(
 		actionPosition: { x: 0, y: 0 },
 		seekMouseOutside: false,
 		options: radialMenuOptions,
-		nameColor: StandartTextColor["lightGray"],
+		nameColor: StandartTextColor["gray"],
 		ringWidths: [120],
 		onSubmit: (data) => {
 			const newVttGridMap = vttGridMap;
@@ -215,6 +215,24 @@ function openRadialMenu(
 					newVttGridMap.transform.verticalMirror =
 						!newVttGridMap.transform.verticalMirror;
 					break;
+				case "Reset":
+					newVttGridMap.transform = {
+						opacity: 100,
+						rotation: 0,
+						horizontalMirror: false,
+						verticalMirror: false,
+					};
+					break;
+				case "Duplicate": {
+					data.close();
+					send({
+						id: Guid.NewGuid(),
+						path: "/scenes/gridmaps/duplicate",
+						method: "Post",
+						data: { vttGridMapId: vttGridMap.id },
+					});
+					return;
+				}
 				case "Delete": {
 					data.close();
 					send({
@@ -240,44 +258,115 @@ const radialMenuOptions: RadialMenuOption[] = [
 	{
 		id: "Cancel",
 		name: "Cancelar",
-		icon: undefined,
 		nameColor: StandartTextColor["lightGray"],
 		backgroundColor: StandartTextColor["darkerGray"],
+		icon: (
+			<StpIcon
+				name={"XCircle"}
+				color={"gray"}
+			/>
+		),
+		description: "Fecha esse menu radial",
 	},
 	{
 		id: "BringUp",
 		name: "PinUp",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"CaretCircleUp"}
+				color={"gray"}
+			/>
+		),
+		description: "Trás esse VttGridMap para o topo",
 	},
 	{
 		id: "Opacity+",
 		name: "Opacidade +",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"Sunglasses"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Aumenta a opacidade do VttGridMap (max 100%)",
 	},
 	{
 		id: "Opacity-",
 		name: "Opacidade -",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"Eyeglasses"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Diminui a opacidade do VttGridMap (min 0%)",
 	},
 	{
 		id: "Rotate+",
 		name: "Rotacionar +",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"ArrowClockwise"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Rotaciona o VttGridMap em sentido horário",
 	},
 	{
 		id: "Rotate-",
 		name: "Rotacionar -",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"ArrowCounterClockwise"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Rotaciona o VttGridMap em sentido anti-horário",
 	},
 	{
 		id: "MirrorX",
 		name: "Espelhar X",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"FlipHorizontal"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Espelha esse VttGridMap horizontalmente",
 	},
 	{
 		id: "MirrorY",
 		name: "Espelhar Y",
-		icon: undefined,
+		icon: (
+			<StpIcon
+				name={"FlipVertical"}
+				color={"lightCyan"}
+			/>
+		),
+		description: "Espelha esse VttGridMap verticalmente",
+	},
+	{
+		id: "Duplicate",
+		name: "Duplicar",
+		icon: (
+			<StpIcon
+				name={"Copy"}
+				color={"gray"}
+				style={"fill"}
+			/>
+		),
+		description: "Duplica esse VttGridMap",
+	},
+	{
+		id: "Reset",
+		name: "Resetar",
+		icon: (
+			<StpIcon
+				name={"Recycle"}
+				color={"gray"}
+			/>
+		),
+		description: "Remove todas as transformações desse VttGridMap",
 	},
 	{
 		id: "Delete",
@@ -290,5 +379,6 @@ const radialMenuOptions: RadialMenuOption[] = [
 		),
 		nameColor: StandartTextColor["black"],
 		backgroundColor: StandartTextColor["darkRed"],
+		description: "Remove esse VttGridMap da cena",
 	},
 ];

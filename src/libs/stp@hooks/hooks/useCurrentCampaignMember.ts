@@ -10,12 +10,14 @@ export function useCurrentCampaignMember() {
 
 	const {
 		isMember,
+		isMaster,
 		loadedCampaignSlug,
 		member,
 		loading,
 		reloadMember,
 		setMember,
 		setIsMember,
+		setIsMaster,
 		setLoading,
 		clear,
 	} = useCurrentCampaignMemberStore();
@@ -32,12 +34,14 @@ export function useCurrentCampaignMember() {
 
 	return {
 		isMember,
+		isMaster,
 		loadedCampaignSlug,
 		member,
 		loading,
 		reloadMember,
 		setMember,
 		setIsMember,
+		setIsMaster,
 		setLoading,
 		clear,
 	};

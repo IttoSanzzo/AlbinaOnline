@@ -9,9 +9,11 @@ interface CampaignMemberState {
 	member: CampaignMember | null;
 	loadedCampaignSlug: string | null;
 	isMember: boolean | null;
+	isMaster: boolean | null;
 	loading: boolean;
 	setMember: (member: CampaignMember | null) => void;
 	setIsMember: (isMember: boolean | null) => void;
+	setIsMaster: (isMaster: boolean | null) => void;
 	setLoading: (loading: boolean) => void;
 	reloadMember: (campaignSlug: string) => Promise<void>;
 	clear: () => void;
@@ -24,9 +26,11 @@ export const useCurrentCampaignMemberStore = create<CampaignMemberState>(
 		member: null,
 		loadedCampaignSlug: null,
 		isMember: null,
+		isMaster: null,
 		loading: true,
 		setMember: (member: CampaignMember | null) => set({ member }),
 		setIsMember: (isMember: boolean | null) => set({ isMember }),
+		setIsMaster: (isMaster: boolean | null) => set({ isMaster }),
 		setLoading: (loading: boolean) => set({ loading }),
 		reloadMember: async (campaignSlug: string) => {
 			if (reloadMemberPromise != null) return reloadMemberPromise;
@@ -44,15 +48,18 @@ export const useCurrentCampaignMemberStore = create<CampaignMemberState>(
 					);
 					if (response.status == 401) throw new Error("Not authenticated");
 					if (response.status == 404) throw new Error("Not member");
+					const member: CampaignMember = await response.json();
 					set({
-						member: await response.json(),
+						member: member,
 						isMember: true,
+						isMaster: member.isMaster,
 						loadedCampaignSlug: campaignSlug,
 					});
 				} catch {
 					set({
 						member: null,
 						isMember: false,
+						isMaster: false,
 						loadedCampaignSlug: campaignSlug,
 					});
 				} finally {
@@ -69,6 +76,7 @@ export const useCurrentCampaignMemberStore = create<CampaignMemberState>(
 			set({
 				member: null,
 				isMember: null,
+				isMaster: null,
 				loadedCampaignSlug: null,
 				loading: true,
 			});

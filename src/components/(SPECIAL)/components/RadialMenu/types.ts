@@ -13,7 +13,7 @@ export interface RadialMenuOption {
 	id: string;
 	name?: string;
 	data?: LintIgnoredAny;
-	icon: ReactNode;
+	icon?: ReactNode;
 	description?: string;
 	backgroundColor?: string;
 	nameColor?: string;

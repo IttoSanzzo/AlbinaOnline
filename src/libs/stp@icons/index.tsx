@@ -1,32 +1,21 @@
 import React, { JSX } from "react";
 import * as Phosphor from "@phosphor-icons/react/dist/ssr";
 import { IconProps, IconWeight } from "@phosphor-icons/react";
+import { StandartTextColor } from "@/components/(UIBasics)";
 
-export enum StpIconColor {
-	"default" = "#DFDFDF",
-	"gray" = "#37352F",
-	"brown" = "#9F6B53",
-	"orange" = "#D9730D",
-	"yellow" = "#CB912F",
-	"green" = "#448361",
-	"blue" = "#337EA9",
-	"purple" = "#9065B0",
-	"pink" = "#C14C8A",
-	"red" = "#D44C47",
-	"white" = "#FFFFFF",
-	"black" = "#000000",
-}
+export { StandartTextColor as StpIconColor };
 
 export type PhosphorKey = keyof typeof Phosphor;
 
 export interface StpIconProps {
 	name: PhosphorKey | "";
-	color?: keyof typeof StpIconColor;
+	color?: keyof typeof StandartTextColor;
 	style?: IconWeight;
 	mirror?: boolean;
 }
 
 export type StpIcon = JSX.Element;
+
 export function StpIcon({
 	name,
 	color = "default",
@@ -39,7 +28,7 @@ export function StpIcon({
 
 	return (
 		<PhosphorIcon
-			color={StpIconColor[color]}
+			color={StandartTextColor[color]}
 			weight={style}
 			style={mirror ? { transform: "scaleX(-1)" } : undefined}
 		/>

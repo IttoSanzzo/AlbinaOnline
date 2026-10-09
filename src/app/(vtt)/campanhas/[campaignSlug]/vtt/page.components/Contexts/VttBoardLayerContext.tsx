@@ -42,8 +42,7 @@ export function VttBoardLayerContextProvider({
 	children,
 }: VttBoardLayerContextProviderProps) {
 	const [activeLayer, setActiveLayer] = useState<VttBoardLayer>(
-		VttBoardLayer.GridMap,
-		// VttBoardLayer.Token,
+		VttBoardLayer.Token,
 	);
 
 	const isLayerActive = useCallback(

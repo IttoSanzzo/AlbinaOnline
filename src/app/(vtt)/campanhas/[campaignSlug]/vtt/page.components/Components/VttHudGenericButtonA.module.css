@@ -1,0 +1,33 @@
+.vttHudGenericButton {
+	width: 28px;
+	height: 28px;
+	background-color: var(--cl-gray-900);
+	border-radius: var(--rd-sm);
+	outline: 1px solid transparent;
+	border: 1px solid var(--cl-gray-600);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition:
+		0.25s linear background-color,
+		0.25s linear border;
+
+	&:hover {
+		background-color: var(--cl-gray-600);
+	}
+}
+
+.iconContainer {
+	width: 20px;
+	height: 20px;
+
+	& > svg {
+		width: 20px;
+		height: 20px;
+	}
+}
+
+.isActive {
+	background-color: var(--cl-gray-500);
+	border-color: var(--cl-gray-300);
+}

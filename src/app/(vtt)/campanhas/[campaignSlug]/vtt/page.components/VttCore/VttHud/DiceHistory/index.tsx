@@ -154,6 +154,10 @@ export function DiceHistory() {
 					alt={""}
 					width={24}
 					height={24}
+					style={{
+						userSelect: "none",
+						WebkitUserSelect: "none",
+					}}
 				/>
 			</DiceBoxOpenButton>
 		</DiceHistoryContainer>
