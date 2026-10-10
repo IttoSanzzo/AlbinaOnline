@@ -33,7 +33,7 @@
 		top: -15px;
 		left: 0px;
 		height: 50px;
-		width: 30px;
+		width: 40px;
 		border-radius: inherit;
 	}
 
@@ -57,6 +57,7 @@
 .diceToasterBox {
 	left: 40px !important;
 	opacity: 0.75;
+	transition: 0.5s ease-in-out opacity;
 	&,
 	& * {
 		pointer-events: none !important;
@@ -73,15 +74,21 @@
 		0.35s linear opacity,
 		0.5s ease-in-out left;
 
-	&:hover {
-		opacity: 0.95;
-	}
-
 	&.isOpen {
 		left: 40px;
 	}
 	&.isClosed {
 		left: calc(-1 * var(--diceHistoryWidth));
+	}
+}
+
+.diceHistoryContainer:hover {
+	.diceHistoryBox {
+		opacity: 0.95;
+		left: 40px;
+	}
+	.diceToasterBox {
+		opacity: 0;
 	}
 }
 
