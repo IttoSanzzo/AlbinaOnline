@@ -1,0 +1,9 @@
+.communicationButtonsContainer {
+	display: flex;
+	flex-direction: column;
+	opacity: 0.25;
+	transition: 0.25s linear opacity;
+	&:hover {
+		opacity: 0.9;
+	}
+}

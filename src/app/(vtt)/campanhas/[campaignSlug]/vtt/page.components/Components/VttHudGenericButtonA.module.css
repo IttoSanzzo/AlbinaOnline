@@ -31,3 +31,13 @@
 	background-color: var(--cl-gray-500);
 	border-color: var(--cl-gray-300);
 }
+
+.withRoughBorderRadius:not(.withRoughBorderRadius + .withRoughBorderRadius) {
+	border-radius: var(--rd-sm) var(--rd-sm) 0 0;
+}
+.withRoughBorderRadius:has(+ .withRoughBorderRadius) {
+	border-radius: 0;
+}
+.withRoughBorderRadius:not(:has(+ .withRoughBorderRadius)) {
+	border-radius: 0 0 var(--rd-sm) var(--rd-sm);
+}

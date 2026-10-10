@@ -12,10 +12,7 @@ import {
 	useVttViewportContext,
 	VttViewportContextProvider,
 } from "../Contexts/VttViewportContextProvider";
-import {
-	useVttInteractionContext,
-	VttInteractionContextProvider,
-} from "../Contexts/VttInteractionContextProvider";
+import { VttInteractionContextProvider } from "../Contexts/VttInteractionContextProvider";
 import { VirtualUserCursor } from "./MainPassiveComponents/VirtualUserCursor";
 import { useCursorHoverInteraction } from "../Utils/InteractionUtils";
 import { useMiddleButtonCameraPan } from "../Utils/CameraUtils/CameraMiddleButtonPanUtils";
@@ -32,10 +29,10 @@ import { VttHud } from "./VttHud";
 import { GeneralShortcutsEngine } from "./Other/GeneralShortcutsEngine";
 import { DDDiceIntegration } from "./MainPassiveComponents/DDDiceIntegration";
 import { WindowStates } from "../Contexts/WindowStates";
-import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 import { VttBoard } from "./VttBoard";
 import { VttBoardLayerContextProvider } from "../Contexts/VttBoardLayerContext";
 import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledViewportContext";
+import { memo } from "react";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -64,8 +61,17 @@ export function VttCore({ campaign }: VttCoreProps) {
 												<VttGridContextProvider>
 													<VttInteractionContextProvider>
 														<RadialMenuProvider>
-															{`Connected to VttId: ${vttId}`}
 															<VttCoreEngine />
+															<p
+																style={{
+																	position: "absolute",
+																	zIndex: "100",
+																	color: "var(--cl-gray-300)",
+																	pointerEvents: "none",
+																	userSelect: "none",
+																}}>
+																{`Connected to VttId: |${campaign.name}| |${vttId}|`}
+															</p>
 														</RadialMenuProvider>
 													</VttInteractionContextProvider>
 												</VttGridContextProvider>
@@ -82,7 +88,7 @@ export function VttCore({ campaign }: VttCoreProps) {
 	);
 }
 
-function VttCoreEngine() {
+const VttCoreEngine = memo(function VttCoreEngine() {
 	useCursorHoverInteraction();
 	useMiddleButtonCameraPan();
 	useEdgeCameraPan();
@@ -101,14 +107,14 @@ function VttCoreEngine() {
 			<PlayerConnectionChange />
 		</VttCoreEngineContainer>
 	);
-}
+});
 
 // Test ////////////////////////////////////////////////////////////////////////
 const TestContainer = newStyledElement.div(styles.testContainer);
 
 function TestZone() {
 	const { camera, worldToScreen } = useVttViewportContext();
-	const { setInteraction } = useVttInteractionContext();
+	// const { setInteraction } = useVttInteractionContext();
 	// const { subscribe } = useVttContext();
 	// const [vttResultsTest, setVttResultsTest] = useState<string>("");
 
@@ -134,7 +140,7 @@ function TestZone() {
 		<TestContainer style={{ pointerEvents: "none" }}>
 			<br />
 
-			{Object.keys(VttCursorInteractionType).map((key) => (
+			{/* {Object.keys(VttCursorInteractionType).map((key) => (
 				<button
 					key={key}
 					onClick={() => {
@@ -147,7 +153,7 @@ function TestZone() {
 					}}>
 					{key}
 				</button>
-			))}
+			))} */}
 
 			<span
 				style={{

@@ -15,6 +15,9 @@ export interface LocalVttAudioSettings {
 	musicVolume: number;
 	effectsVolume: number;
 	pingVolume: number;
+	pingMuted: boolean;
+	chatVolume: number;
+	chatMuted: boolean;
 	greetingsVolume: number;
 	users: Partial<Record<Guid, VttAudioUserLocalSettings>>;
 }

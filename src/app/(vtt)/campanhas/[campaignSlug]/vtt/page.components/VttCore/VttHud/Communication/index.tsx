@@ -14,15 +14,19 @@ import { StpIcon } from "@/libs/stp@icons";
 import { ChatTextInput } from "./ChatTextInput";
 import { Guid, LintIgnoredAny } from "@/libs/stp@types";
 import { useLocalStorageState } from "@/utils/Storage";
+import { CommunicationButtons } from "./CommunicationButtons";
 
 const CommunicationContainer = newStyledElement.div(
 	styles.communicationContainer,
 );
 
 export function Communication() {
+	const showChatState = useLocalStorageState<boolean>("vtt-show-chat", false);
+
 	return (
 		<CommunicationContainer>
-			<Chat />
+			<Chat showChat={showChatState[0]} />
+			<CommunicationButtons showChatState={showChatState} />
 		</CommunicationContainer>
 	);
 }
@@ -56,7 +60,10 @@ function isAtBottom(element: HTMLDivElement): boolean {
 	);
 }
 
-function Chat() {
+interface ChatProps {
+	showChat: boolean;
+}
+function Chat({ showChat }: ChatProps) {
 	const { subscribe, send } = useVttContext();
 
 	const { play } = useVttAudioController();
@@ -72,6 +79,7 @@ function Chat() {
 	const [hasScrollTop, setHasScrollTop] = useState(false);
 	const [hasScrollBottom, setHasScrollBottom] = useState(false);
 	const messageToReplyIdState = useState<Guid | undefined>(undefined);
+	const [enableTransition, setEnableTransition] = useState(false);
 
 	const historyRef = useRef<HTMLDivElement>(null);
 	const shouldScrollToBottom = useRef(true);
@@ -221,7 +229,7 @@ function Chat() {
 			unsubscribe2();
 			unsubscribe3();
 		};
-	}, [setChatMessages, subscribe, send]);
+	}, [setChatMessages, subscribe, send, play]);
 	useEffect(() => {
 		const history = historyRef.current;
 		if (!history) return;
@@ -283,6 +291,10 @@ function Chat() {
 		}
 		updateScrollState();
 	}, [chatMessages, chatHistoryHeight]);
+	useEffect(() => {
+		const frame = requestAnimationFrame(() => setEnableTransition(true));
+		return () => cancelAnimationFrame(frame);
+	}, []);
 
 	const messageToReply = messageToReplyIdState[0]
 		? chatMessages.find(
@@ -295,8 +307,10 @@ function Chat() {
 
 	return (
 		<ChatContainer
+			className={enableTransition ? styles.enableTransition : undefined}
 			style={{
 				width: `${chatWidth}px`,
+				marginRight: showChat ? "0px" : `-${chatWidth + 45}px`,
 			}}
 			onMouseEnter={() => {
 				isChatHovered.current = true;

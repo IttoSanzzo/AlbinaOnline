@@ -15,6 +15,7 @@ interface VttHudGenericButtonAProps extends React.ComponentPropsWithoutRef<"butt
 	stpIconStyle?: IconWeight;
 	stpIconMirror?: boolean;
 	isActive?: boolean;
+	withRoughBorderRadius?: boolean;
 }
 export function VttHudGenericButtonA({
 	stpIconName,
@@ -22,12 +23,17 @@ export function VttHudGenericButtonA({
 	stpIconMirror,
 	stpIconStyle,
 	isActive = false,
+	withRoughBorderRadius = false,
 	className,
 	...rest
 }: VttHudGenericButtonAProps) {
 	return (
 		<VttHudGenericButton
-			className={clsx(className, isActive ? styles.isActive : undefined)}
+			className={clsx(
+				className,
+				isActive ? styles.isActive : undefined,
+				withRoughBorderRadius ? styles.withRoughBorderRadius : undefined,
+			)}
 			{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
 			{...rest}>
 			<IconContainer>

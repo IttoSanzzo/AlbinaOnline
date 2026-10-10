@@ -1,10 +1,7 @@
 .communicationContainer {
 	position: absolute;
-	right: 5px;
-	bottom: 5px;
-	width: 30px;
-	height: 150px;
-	background-color: var(--cl-gray-900);
+	right: 10px;
+	bottom: 10px;
 	pointer-events: all;
 }
 
@@ -19,7 +16,11 @@
 	flex-direction: column;
 	gap: 2px;
 	opacity: 0.2;
-	transition: opacity 0.4s ease-out;
+	&.enableTransition {
+		transition:
+			opacity 0.4s ease-out,
+			margin 0.4s ease-out;
+	}
 }
 
 .chatContainer:hover,

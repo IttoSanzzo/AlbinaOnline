@@ -39,10 +39,14 @@ export function VttAudioControllerProvider({
 
 				case "vtt.pings":
 					volume *= settings.audio.pingVolume;
+					volume *= settings.audio.pingMuted ? 0 : settings.audio.pingVolume;
 					if (options.sourceId) {
 						const userSettings = getUserAudioSettings(options.sourceId as Guid);
 						volume *= userSettings.pingVolume;
 					}
+					break;
+				case "vtt.chat":
+					volume *= settings.audio.chatMuted ? 0 : settings.audio.chatVolume;
 					break;
 
 				case "vtt.effects":

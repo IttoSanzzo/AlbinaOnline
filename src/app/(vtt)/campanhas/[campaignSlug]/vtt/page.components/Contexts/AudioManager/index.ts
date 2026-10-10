@@ -12,6 +12,7 @@ import {
 } from "./types";
 
 function clampVolume(volume: number): number {
+	if (!Number.isFinite(volume)) return 1;
 	return Math.max(0, Math.min(1, volume));
 }
 
@@ -53,7 +54,8 @@ export class AudioManager {
 
 			return {
 				globalVolume:
-					typeof parsed.globalVolume === "number"
+					typeof parsed.globalVolume === "number" &&
+					Number.isFinite(parsed.globalVolume)
 						? clampVolume(parsed.globalVolume)
 						: DEFAULT_SETTINGS.globalVolume,
 
@@ -140,6 +142,7 @@ export class AudioManager {
 			options.sourceId,
 			localVolume,
 		);
+		if (audio.volume <= 0) return undefined;
 
 		audio.loop = options.loop ?? false;
 
@@ -245,7 +248,7 @@ export class AudioManager {
 		for (let index = 1; index <= parts.length; index++) {
 			const category = parts.slice(0, index).join(".");
 			const categoryVolume = this.settings.categoryVolumes[category];
-			if (typeof categoryVolume === "number")
+			if (typeof categoryVolume === "number" && Number.isFinite(categoryVolume))
 				volume *= clampVolume(categoryVolume);
 		}
 		return volume;

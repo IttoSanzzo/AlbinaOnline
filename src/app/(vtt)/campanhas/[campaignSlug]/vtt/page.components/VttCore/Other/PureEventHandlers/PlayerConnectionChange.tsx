@@ -23,7 +23,7 @@ export function PlayerConnectionChange() {
 				path: audioPaths.vtt.playerEvents.Connect,
 				type: "players.self_greeting",
 			});
-			toast.success("Conectado");
+			toast.success("Conectado", { position: "top-center" });
 			return;
 		}
 
@@ -35,6 +35,7 @@ export function PlayerConnectionChange() {
 			const member = members.find((member) => member.userId === joinedUserId);
 			toast.success(`${member?.user.nickname ?? "Um jogador"} se conectou`, {
 				id: joinedUserId,
+				position: "top-center",
 				icon: (
 					<Image
 						src={getAlbinaApiFullAddress(`/favicon/users/id/${joinedUserId}`)}
@@ -59,6 +60,7 @@ export function PlayerConnectionChange() {
 			const member = members.find((member) => member.userId === leftUserId);
 			toast.error(`${member?.user.nickname ?? "Um jogador"} se desconectou`, {
 				id: leftUserId,
+				position: "top-center",
 				icon: (
 					<Image
 						src={getAlbinaApiFullAddress(`/favicon/users/id/${leftUserId}`)}
