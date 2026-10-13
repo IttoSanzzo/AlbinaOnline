@@ -19,17 +19,38 @@ const LONG_PRESS_DURATION = 500;
 const DRAG_UPDATE_INTERVAL = 1000 / 10;
 const REMOTE_INTERPOLATION_DURATION = 100;
 
+export type VttResourceDragSnapOptions =
+	| {
+			type: "vertex";
+			cellSize?: number;
+	  }
+	| {
+			type: "center";
+			cellSize?: number;
+	  }
+	| {
+			type: "centered";
+			cellSize?: number;
+			width: number;
+			height: number;
+			offsetX?: number;
+			offsetY?: number;
+	  };
+
+export type VttResourceDragSnap = number | VttResourceDragSnapOptions;
+
 export interface UseVttResourceDragOptions {
 	coordinates: CoordinatePair;
 	resourceLock?: VttResourceLockDto;
 	enabled?: boolean;
-	snap?: number;
+	snap?: VttResourceDragSnap;
 	onDragStart?: () => void;
 	onDragUpdate?: (coordinates: CoordinatePair) => void;
 	onDragEnd?: (coordinates: CoordinatePair) => void;
 	onDragCancel?: () => void;
 	onLongPress?: () => void;
 }
+
 export interface UseVttResourceDragResult {
 	coordinates: CoordinatePair;
 	isDragging: boolean;
@@ -38,9 +59,87 @@ export interface UseVttResourceDragResult {
 	onPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
 	onPointerMove: (event: ReactPointerEvent<HTMLElement>) => void;
 	onPointerUp: (event: ReactPointerEvent<HTMLElement>) => void;
+	snapCoordinates: (
+		coordinates: CoordinatePair,
+		snap?: VttResourceDragSnap,
+	) => CoordinatePair;
 	cancel: () => void;
 	clearLongPress: () => void;
 }
+
+function snapCoordinateToVertex(coordinate: number, cellSize: number) {
+	return Math.round(coordinate / cellSize) * cellSize;
+}
+
+function snapCoordinateToCenter(coordinate: number, cellSize: number) {
+	return (Math.round(coordinate / cellSize - 0.5) + 0.5) * cellSize;
+}
+
+function snapCoordinateToCenteredArea(
+	coordinate: number,
+	size: number,
+	offset: number,
+	cellSize: number,
+) {
+	return (
+		Math.round((coordinate - size / 2 + offset) / cellSize) * cellSize +
+		size / 2 -
+		offset
+	);
+}
+
+function applySnap(
+	coordinates: CoordinatePair,
+	snap: VttResourceDragSnap,
+): CoordinatePair {
+	if (typeof snap === "number") {
+		if (!Number.isFinite(snap) || snap <= 0) return coordinates;
+		return {
+			x: snapCoordinateToVertex(coordinates.x, snap),
+			y: snapCoordinateToVertex(coordinates.y, snap),
+		};
+	}
+
+	const cellSize = snap.cellSize ?? 100;
+	if (!Number.isFinite(cellSize) || cellSize <= 0) return coordinates;
+
+	switch (snap.type) {
+		case "vertex":
+			return {
+				x: snapCoordinateToVertex(coordinates.x, cellSize),
+				y: snapCoordinateToVertex(coordinates.y, cellSize),
+			};
+		case "center":
+			return {
+				x: snapCoordinateToCenter(coordinates.x, cellSize),
+				y: snapCoordinateToCenter(coordinates.y, cellSize),
+			};
+		case "centered":
+			if (
+				!Number.isFinite(snap.width) ||
+				!Number.isFinite(snap.height) ||
+				snap.width <= 0 ||
+				snap.height <= 0
+			)
+				return coordinates;
+
+			return {
+				x: snapCoordinateToCenteredArea(
+					coordinates.x,
+					snap.width,
+					snap.offsetX ?? 0,
+					cellSize,
+				),
+				y: snapCoordinateToCenteredArea(
+					coordinates.y,
+					snap.height,
+					snap.offsetY ?? 0,
+					cellSize,
+				),
+			};
+	}
+}
+
 export function useVttResourceDrag({
 	coordinates: sourceCoordinates,
 	resourceLock,
@@ -108,6 +207,25 @@ export function useVttResourceDrag({
 	const isRemoteDragging =
 		resourceLock?.lockType == "drag" && resourceLock.userId != user?.id;
 
+	const snapCoordinates = useCallback(
+		(
+			coordinates: CoordinatePair,
+			snapOverride?: VttResourceDragSnap,
+		): CoordinatePair =>
+			applySnap(coordinates, snapOverride ?? snapRef.current),
+		[],
+	);
+	const clearLongPress = useCallback(() => {
+		if (longPressTimeoutRef.current === null) return;
+		clearTimeout(longPressTimeoutRef.current);
+		longPressTimeoutRef.current = null;
+	}, []);
+	const cancel = useCallback(() => {
+		const wasDragging = dragStartedRef.current;
+		finishPointer();
+		if (wasDragging) onDragCancelRef.current?.();
+	}, []);
+
 	useEffect(() => {
 		if (dragStartedRef.current) return;
 		setDragCoordinates(sourceCoordinates);
@@ -158,11 +276,6 @@ export function useVttResourceDrag({
 		};
 		remoteAnimationFrameRef.current = requestAnimationFrame(animate);
 	}, [sourceCoordinates, isRemoteDragging]);
-	const clearLongPress = useCallback(() => {
-		if (longPressTimeoutRef.current === null) return;
-		clearTimeout(longPressTimeoutRef.current);
-		longPressTimeoutRef.current = null;
-	}, []);
 	useEffect(() => {
 		return () => {
 			clearLongPress();
@@ -174,6 +287,7 @@ export function useVttResourceDrag({
 			restoreUserSelect();
 		};
 	}, []);
+
 	function getDragCoordinates(clientX: number, clientY: number) {
 		const worldPosition = screenToWorldRef.current({
 			x: clientX,
@@ -264,14 +378,7 @@ export function useVttResourceDrag({
 	}
 	function endDrag(clientX: number, clientY: number) {
 		const coordinates = getDragCoordinates(clientX, clientY);
-		const currentSnap = snapRef.current;
-		const snappedCoordinates =
-			currentSnap == 0
-				? coordinates
-				: {
-						x: Math.round(coordinates.x / currentSnap) * currentSnap,
-						y: Math.round(coordinates.y / currentSnap) * currentSnap,
-					};
+		const snappedCoordinates = applySnap(coordinates, snapRef.current);
 		setDragCoordinates(snappedCoordinates);
 		onDragEndRef.current?.(snappedCoordinates);
 	}
@@ -290,11 +397,6 @@ export function useVttResourceDrag({
 		setEdgeScrollOverride(null);
 		restoreUserSelect();
 	}
-	const cancel = useCallback(() => {
-		const wasDragging = dragStartedRef.current;
-		finishPointer();
-		if (wasDragging) onDragCancelRef.current?.();
-	}, []);
 	function handleWindowMouseMove(event: MouseEvent) {
 		if (!dragStartedRef.current) return;
 		event.preventDefault();
@@ -382,6 +484,7 @@ export function useVttResourceDrag({
 		onPointerDown: handlePointerDown,
 		onPointerMove: handlePointerMove,
 		onPointerUp: handlePointerUp,
+		snapCoordinates,
 		cancel,
 		clearLongPress,
 	};

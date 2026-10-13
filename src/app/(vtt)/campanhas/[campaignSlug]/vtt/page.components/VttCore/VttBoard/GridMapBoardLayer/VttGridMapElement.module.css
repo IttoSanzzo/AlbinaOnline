@@ -1,14 +1,7 @@
 .vttGridMapElementContainer {
 	position: absolute;
-	top: 200px;
-	left: 200px;
 	outline: 6px solid transparent;
 	transition: 0.25s linear outline;
-
-	top: attr(data-vtt-board-y px);
-	left: attr(data-vtt-board-x px);
-	width: attr(data-vtt-board-width px);
-	height: attr(data-vtt-board-height px);
 
 	&.activeLayer {
 		outline: 6px solid var(--cl-gray-300);
@@ -23,4 +16,26 @@
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
+}
+
+.vttGridMapCoordinateIndicator {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+	background-color: red;
+	outline: 1px solid white;
+	margin-left: -5px;
+	margin-top: -5px;
+	pointer-events: none;
+	animation: 0.25s linear fade-in;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

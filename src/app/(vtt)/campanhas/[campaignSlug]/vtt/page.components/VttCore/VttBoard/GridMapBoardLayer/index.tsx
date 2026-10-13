@@ -181,21 +181,15 @@ export const GridMapBoardLayer = memo(function GridMapBoardLayer() {
 				const vttGridMap = vttGridMaps.get(id);
 				if (!vttGridMap) return null;
 				const coordinates = worldToScreen(vttGridMap.coordinates);
-				const x =
-					coordinates.x -
-					vttGridMap.gridMap.offsetX * PIXELS_PER_CENTIMETER * camera.zoom;
-				const y =
-					coordinates.y -
-					vttGridMap.gridMap.offsetY * PIXELS_PER_CENTIMETER * camera.zoom;
-				const width =
-					vttGridMap.gridMap.width * PIXELS_PER_CENTIMETER * camera.zoom;
-				const height =
-					vttGridMap.gridMap.height * PIXELS_PER_CENTIMETER * camera.zoom;
+				const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+				const size =
+					Math.max(vttGridMap.gridMap.width, vttGridMap.gridMap.height) * scale;
+				const halfSize = size / 2;
 				const isVisible =
-					x + width >= -cullingMargin &&
-					y + height >= -cullingMargin &&
-					x <= viewport.width + cullingMargin &&
-					y <= viewport.height + cullingMargin;
+					coordinates.x + halfSize >= -cullingMargin &&
+					coordinates.y + halfSize >= -cullingMargin &&
+					coordinates.x - halfSize <= viewport.width + cullingMargin &&
+					coordinates.y - halfSize <= viewport.height + cullingMargin;
 				if (!isVisible) return null;
 				return (
 					<VttGridMapElement

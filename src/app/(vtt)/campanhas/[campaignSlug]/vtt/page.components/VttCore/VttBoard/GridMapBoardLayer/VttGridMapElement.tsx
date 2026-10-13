@@ -2,7 +2,7 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./VttGridMapElement.module.css";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
@@ -27,12 +27,108 @@ import {
 import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledViewportContext";
 import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import { DEFAULT_GRID_CELL_SIZE } from "../../../Contexts/VttGridProvider";
+import {
+	useVttResourceDrag,
+	VttResourceDragSnap,
+} from "../../../Hooks/useVttResourceDrag";
 import { VttGridMap } from "../../../Types/Classes/VttGridMap";
-import { useVttResourceDrag } from "../../../Hooks/useVttResourceDrag";
+import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 
 const VttGridMapElementContainer = newStyledElement.div(
 	styles.vttGridMapElementContainer,
 );
+const VttGridMapCoordinateIndicator = newStyledElement.div(
+	styles.vttGridMapCoordinateIndicator,
+);
+
+interface TransformedGridMapGeometry {
+	width: number;
+	height: number;
+	offsetX: number;
+	offsetY: number;
+}
+function getTransformedGridMapGeometry(
+	width: number,
+	height: number,
+	offsetX: number,
+	offsetY: number,
+	rotation: number,
+	horizontalMirror: boolean,
+	verticalMirror: boolean,
+): TransformedGridMapGeometry {
+	const radians = (rotation * Math.PI) / 180;
+	const cos = Math.cos(radians);
+	const sin = Math.sin(radians);
+	const scaleX = horizontalMirror ? -1 : 1;
+	const scaleY = verticalMirror ? -1 : 1;
+
+	function transformPoint(x: number, y: number) {
+		const mirroredX = x * scaleX;
+		const mirroredY = y * scaleY;
+
+		return {
+			x: mirroredX * cos - mirroredY * sin,
+			y: mirroredX * sin + mirroredY * cos,
+		};
+	}
+
+	const halfWidth = width / 2;
+	const halfHeight = height / 2;
+
+	const corners = [
+		transformPoint(-halfWidth, -halfHeight),
+		transformPoint(halfWidth, -halfHeight),
+		transformPoint(halfWidth, halfHeight),
+		transformPoint(-halfWidth, halfHeight),
+	];
+
+	const minX = Math.min(...corners.map((point) => point.x));
+	const maxX = Math.max(...corners.map((point) => point.x));
+	const minY = Math.min(...corners.map((point) => point.y));
+	const maxY = Math.max(...corners.map((point) => point.y));
+
+	const transformedOffset = transformPoint(
+		offsetX - halfWidth,
+		offsetY - halfHeight,
+	);
+
+	function clean(value: number) {
+		const rounded = Math.round(value);
+		return Math.abs(value - rounded) < 1e-8 ? rounded : value;
+	}
+
+	return {
+		width: clean(maxX - minX),
+		height: clean(maxY - minY),
+		offsetX: clean(transformedOffset.x - minX),
+		offsetY: clean(transformedOffset.y - minY),
+	};
+}
+function getGridMapSnap(
+	gridMap: VttGridMap["gridMap"],
+	rotation: number,
+	horizontalMirror: boolean,
+	verticalMirror: boolean,
+): VttResourceDragSnap {
+	const geometry = getTransformedGridMapGeometry(
+		gridMap.width,
+		gridMap.height,
+		gridMap.offsetX,
+		gridMap.offsetY,
+		rotation,
+		horizontalMirror,
+		verticalMirror,
+	);
+
+	return {
+		type: "centered",
+		cellSize: DEFAULT_GRID_CELL_SIZE,
+		width: geometry.width,
+		height: geometry.height,
+		offsetX: geometry.offsetX,
+		offsetY: geometry.offsetY,
+	};
+}
 
 interface VttGridMapElementProps {
 	vttGridMap: VttGridMap;
@@ -40,28 +136,50 @@ interface VttGridMapElementProps {
 export const VttGridMapElement = memo(function VttGridMapElement({
 	vttGridMap,
 }: VttGridMapElementProps) {
-	const { worldToScreen, camera } = useVttThrottledViewportContext(16);
+	const { worldToScreen, camera } = useVttThrottledViewportContext(32);
 	const { activeLayer } = useVttBoardLayerContext();
 	const { send, subscribe } = useVttContext();
 	const radialMenu = useRadialMenu();
 
+	const vttGridMapRef = useRef(vttGridMap);
+	vttGridMapRef.current = vttGridMap;
+
+	const isActiveInLayer = activeLayer == VttBoardLayer.GridMap;
+	const gridMap = vttGridMap.gridMap;
+	const transform = vttGridMap.transform;
 	const dragResourceLock = vttGridMap.resourceLocks.find(
 		(lock) => lock.lockType == "drag",
 	);
-	const isActiveInLayer = activeLayer == VttBoardLayer.GridMap;
 
 	const drag = useVttResourceDrag({
 		coordinates: vttGridMap.coordinates,
 		resourceLock: dragResourceLock,
 		enabled: isActiveInLayer,
-		snap: DEFAULT_GRID_CELL_SIZE,
+		snap: useMemo(
+			() =>
+				getGridMapSnap(
+					gridMap,
+					transform.rotation,
+					transform.horizontalMirror,
+					transform.verticalMirror,
+				),
+			[
+				gridMap.width,
+				gridMap.height,
+				gridMap.offsetX,
+				gridMap.offsetY,
+				transform.rotation,
+				transform.horizontalMirror,
+				transform.verticalMirror,
+			],
+		),
 		onDragStart: () => {
 			send({
 				id: Guid.NewGuid(),
 				path: "/scenes/gridmaps/drag",
 				method: "Post",
 				data: {
-					vttGridMapId: vttGridMap.id,
+					vttGridMapId: vttGridMapRef.current.id,
 				},
 			});
 		},
@@ -71,7 +189,7 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 				path: "/scenes/gridmaps/drag",
 				method: "Patch",
 				data: {
-					vttGridMapId: vttGridMap.id,
+					vttGridMapId: vttGridMapRef.current.id,
 					coordinates,
 				},
 			});
@@ -82,13 +200,13 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 				path: "/scenes/gridmaps/drag",
 				method: "Put",
 				data: {
-					vttGridMapId: vttGridMap.id,
+					vttGridMapId: vttGridMapRef.current.id,
 					coordinates,
 				},
 			});
 		},
 		onLongPress: () => {
-			openRadialMenu(vttGridMap, send, radialMenu);
+			openRadialMenu(vttGridMapRef, send, radialMenu, drag.snapCoordinates);
 		},
 	});
 
@@ -97,71 +215,90 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 			const payload = event.data as {
 				vttGridMapId: Guid;
 			};
-			if (payload.vttGridMapId != vttGridMap.id) return;
+			if (payload.vttGridMapId != vttGridMapRef.current.id) return;
 			drag.cancel();
 		});
-	}, [subscribe, vttGridMap.id, drag.cancel]);
+	}, [subscribe, drag.cancel]);
 
-	const coordinates = worldToScreen(drag.coordinates);
-	const x =
-		coordinates.x -
-		vttGridMap.gridMap.offsetX * PIXELS_PER_CENTIMETER * camera.zoom;
-	const y =
-		coordinates.y -
-		vttGridMap.gridMap.offsetY * PIXELS_PER_CENTIMETER * camera.zoom;
-	const width = vttGridMap.gridMap.width * PIXELS_PER_CENTIMETER * camera.zoom;
-	const height =
-		vttGridMap.gridMap.height * PIXELS_PER_CENTIMETER * camera.zoom;
+	const position = worldToScreen(drag.coordinates);
+	const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
+	const width = gridMap.width * pixelScale;
+	const height = gridMap.height * pixelScale;
+	const left = position.x - width / 2;
+	const top = position.y - height / 2;
 
 	return (
-		<VttGridMapElementContainer
-			{...setVttElementDataAttributes(
-				VttElementDataAttribute.EventPing,
-				VttElementDataAttribute.EventZoom,
-				VttElementDataAttribute.EventMiddleButtonPan,
-			)}
-			className={isActiveInLayer ? styles.activeLayer : undefined}
-			style={{
-				rotate: `${vttGridMap.transform.rotation}deg`,
-				scale: `${vttGridMap.transform.horizontalMirror ? -1 : 1} ${vttGridMap.transform.verticalMirror ? -1 : 1}`,
-				touchAction: "none",
-				...(dragResourceLock
-					? drag.isLocalDragging
-						? { outlineColor: "blue", zIndex: 10000 }
-						: { outlineColor: "yellow", zIndex: 9999 }
-					: undefined),
-			}}
-			data-vtt-board-x={x}
-			data-vtt-board-y={y}
-			data-vtt-board-height={height}
-			data-vtt-board-width={width}
-			onPointerDown={drag.onPointerDown}
-			onPointerMove={drag.onPointerMove}
-			onPointerUp={drag.onPointerUp}
-			onContextMenu={(event) => {
-				event.preventDefault();
-				drag.clearLongPress();
-				openRadialMenu(vttGridMap, send, radialMenu);
-			}}>
-			<BasicMedia
-				src={vttGridMap.gridMap.imageUrl}
-				alt={vttGridMap.gridMap.name}
-				className={styles.media}
-				fill
+		<>
+			<VttGridMapElementContainer
+				{...setVttElementDataAttributes(
+					VttElementDataAttribute.EventPing,
+					VttElementDataAttribute.EventZoom,
+					VttElementDataAttribute.EventMiddleButtonPan,
+				)}
+				className={isActiveInLayer ? styles.activeLayer : undefined}
 				style={{
-					pointerEvents: "none",
-					opacity: vttGridMap.transform.opacity / 100,
+					left,
+					top,
+					width,
+					height,
+					transformOrigin: "center center",
+					rotate: `${transform.rotation}deg`,
+					scale: `${transform.horizontalMirror ? -1 : 1} ${transform.verticalMirror ? -1 : 1}`,
+					touchAction: "none",
+					...(dragResourceLock
+						? drag.isLocalDragging
+							? { outlineColor: "blue", zIndex: 10000 }
+							: { outlineColor: "yellow", zIndex: 9999 }
+						: undefined),
 				}}
-			/>
-		</VttGridMapElementContainer>
+				onPointerDown={drag.onPointerDown}
+				onPointerMove={drag.onPointerMove}
+				onPointerUp={drag.onPointerUp}
+				onContextMenu={(event) => {
+					event.preventDefault();
+					drag.clearLongPress();
+					openRadialMenu(vttGridMapRef, send, radialMenu, drag.snapCoordinates);
+				}}>
+				<BasicMedia
+					src={gridMap.imageUrl}
+					alt={gridMap.name}
+					className={styles.media}
+					fill
+					style={{
+						pointerEvents: "none",
+						opacity: transform.opacity / 100,
+					}}
+				/>
+			</VttGridMapElementContainer>
+			{isActiveInLayer && (
+				<VttGridMapCoordinateIndicator
+					style={{
+						left: position.x,
+						top: position.y,
+						...(dragResourceLock
+							? drag.isLocalDragging
+								? { outlineColor: "blue", zIndex: 10000 }
+								: { outlineColor: "yellow", zIndex: 9999 }
+							: undefined),
+					}}
+				/>
+			)}
+		</>
 	);
 });
 
 function openRadialMenu(
-	vttGridMap: VttGridMap,
+	vttGridMapRef: React.RefObject<VttGridMap>,
 	send: (message: VttInputMessage) => void,
 	radialMenu: RadialMenuContext,
+	snapCoordinates: (
+		coordinates: CoordinatePair,
+		snap?: VttResourceDragSnap,
+	) => CoordinatePair,
 ) {
+	const vttGridMap = vttGridMapRef.current;
+	if (!vttGridMap) return;
+
 	radialMenu.openNew({
 		id: vttGridMap.id,
 		name: "GridMap",
@@ -172,7 +309,16 @@ function openRadialMenu(
 		nameColor: StandartTextColor["gray"],
 		ringWidths: [120],
 		onSubmit: (data) => {
-			const newVttGridMap = vttGridMap;
+			const currentGridMap = vttGridMapRef.current;
+			if (!currentGridMap) return;
+
+			const newVttGridMap = {
+				...currentGridMap,
+				transform: { ...currentGridMap.transform },
+				coordinates: { ...currentGridMap.coordinates },
+			};
+			let shouldSnapAfterTransform = false;
+
 			switch (data.option.id) {
 				case "Cancel":
 					data.close();
@@ -199,6 +345,7 @@ function openRadialMenu(
 						0,
 						360,
 					);
+					shouldSnapAfterTransform = true;
 					break;
 				case "Rotate-":
 					newVttGridMap.transform.rotation = wrap(
@@ -206,14 +353,17 @@ function openRadialMenu(
 						0,
 						360,
 					);
+					shouldSnapAfterTransform = true;
 					break;
 				case "MirrorX":
 					newVttGridMap.transform.horizontalMirror =
 						!newVttGridMap.transform.horizontalMirror;
+					shouldSnapAfterTransform = true;
 					break;
 				case "MirrorY":
 					newVttGridMap.transform.verticalMirror =
 						!newVttGridMap.transform.verticalMirror;
+					shouldSnapAfterTransform = true;
 					break;
 				case "Reset":
 					newVttGridMap.transform = {
@@ -222,6 +372,7 @@ function openRadialMenu(
 						horizontalMirror: false,
 						verticalMirror: false,
 					};
+					shouldSnapAfterTransform = true;
 					break;
 				case "Duplicate": {
 					data.close();
@@ -229,7 +380,7 @@ function openRadialMenu(
 						id: Guid.NewGuid(),
 						path: "/scenes/gridmaps/duplicate",
 						method: "Post",
-						data: { vttGridMapId: vttGridMap.id },
+						data: { vttGridMapId: currentGridMap.id },
 					});
 					return;
 				}
@@ -239,17 +390,32 @@ function openRadialMenu(
 						id: Guid.NewGuid(),
 						path: "/scenes/gridmaps",
 						method: "Delete",
-						data: { vttGridMapId: vttGridMap.id },
+						data: { vttGridMapId: currentGridMap.id },
 					});
 					return;
 				}
 			}
+
+			if (shouldSnapAfterTransform) {
+				const snap = getGridMapSnap(
+					newVttGridMap.gridMap,
+					newVttGridMap.transform.rotation,
+					newVttGridMap.transform.horizontalMirror,
+					newVttGridMap.transform.verticalMirror,
+				);
+				newVttGridMap.coordinates = snapCoordinates(
+					newVttGridMap.coordinates,
+					snap,
+				);
+			}
+
 			send({
 				id: Guid.NewGuid(),
 				path: "/scenes/gridmaps",
 				method: "Put",
 				data: { vttGridMap: newVttGridMap },
 			});
+
 			if (data.option.id == "BringUp") data.close();
 		},
 	});
