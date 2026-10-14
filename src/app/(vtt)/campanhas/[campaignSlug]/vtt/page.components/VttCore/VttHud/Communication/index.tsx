@@ -305,8 +305,6 @@ function Chat({ showChat }: ChatProps) {
 		? members.find((member) => member.userId == messageToReply.userId)
 		: undefined;
 
-	console.log(isChatFocused);
-
 	return (
 		<ChatContainer
 			className={enableTransition ? styles.enableTransition : undefined}

@@ -10,10 +10,10 @@ import {
 } from "react";
 
 export enum VttBoardLayer {
+	None = -1,
 	GridMap = 0,
-	VirtualGrid = 100,
-	Token = 200,
-	Image = 300,
+	Image = 200,
+	Token = 300,
 	Drawing = 400,
 }
 

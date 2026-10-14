@@ -46,19 +46,19 @@ export function BoardLayerSelector() {
 				/>
 			)}
 			<VttHudGenericButtonA
-				stpIconName={"PokerChip"}
-				isActive={activeLayer == VttBoardLayer.Token}
-				onClick={(event) => {
-					event.preventDefault();
-					storageSetActiveLayer(VttBoardLayer.Token);
-				}}
-			/>
-			<VttHudGenericButtonA
 				stpIconName={"Panorama"}
 				isActive={activeLayer == VttBoardLayer.Image}
 				onClick={(event) => {
 					event.preventDefault();
 					storageSetActiveLayer(VttBoardLayer.Image);
+				}}
+			/>
+			<VttHudGenericButtonA
+				stpIconName={"PokerChip"}
+				isActive={activeLayer == VttBoardLayer.Token}
+				onClick={(event) => {
+					event.preventDefault();
+					storageSetActiveLayer(VttBoardLayer.Token);
 				}}
 			/>
 			<VttHudGenericButtonA
