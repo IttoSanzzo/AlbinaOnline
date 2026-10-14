@@ -65,6 +65,7 @@ export function KlipyGifSelector({
 	function closeGifSelector() {
 		form.reset();
 		setIsGifSelectorOpen(false);
+		if (chatInputRef.current) chatInputRef.current.focus();
 	}
 
 	useEffect(() => {
@@ -99,7 +100,6 @@ export function KlipyGifSelector({
 			) {
 				event.preventDefault();
 				closeGifSelector();
-				if (chatInputRef.current) chatInputRef.current.focus();
 			}
 		}
 

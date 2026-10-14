@@ -11,9 +11,9 @@ import {
 const VttBoardContainer = newStyledElement.div(styles.vttBoardContainer);
 
 export const VttBoard = memo(function VttBoard() {
-	// const { activeSceneId } = useVttContext();
 	return (
 		<VttBoardContainer
+			onContextMenu={(event) => event.preventDefault()}
 			{...setVttElementDataAttributes(
 				VttElementDataAttribute.EventPing,
 				VttElementDataAttribute.EventZoom,

@@ -80,6 +80,7 @@ function Chat({ showChat }: ChatProps) {
 	const [hasScrollBottom, setHasScrollBottom] = useState(false);
 	const messageToReplyIdState = useState<Guid | undefined>(undefined);
 	const [enableTransition, setEnableTransition] = useState(false);
+	const [isChatFocused, setIsChatFocused] = useState<boolean>(false);
 
 	const historyRef = useRef<HTMLDivElement>(null);
 	const shouldScrollToBottom = useRef(true);
@@ -92,7 +93,6 @@ function Chat({ showChat }: ChatProps) {
 	const resizeStartWidth = useRef(300);
 	const resizeHorizontalDirection = useRef(1);
 	const isChatHovered = useRef(false);
-	const isChatFocused = useRef(false);
 	const lastSubmitAttempt = useRef(0);
 	const [isDragging, setIsDragging] = useState<boolean>(false);
 	const sendImageModalRef = useRef<SendDraggedImageToChatHandle | null>(null);
@@ -200,7 +200,7 @@ function Chat({ showChat }: ChatProps) {
 		});
 		const unsubscribe2 = subscribe("VttChatMessage", (event) => {
 			const wasAtBottom = shouldScrollToBottom.current;
-			const chatIsActive = isChatHovered.current || isChatFocused.current;
+			const chatIsActive = isChatHovered.current || isChatFocused;
 			if (!chatIsActive || !wasAtBottom) {
 				play({
 					path: audioPaths.vtt.chat.NewMessage,
@@ -229,7 +229,7 @@ function Chat({ showChat }: ChatProps) {
 			unsubscribe2();
 			unsubscribe3();
 		};
-	}, [setChatMessages, subscribe, send, play]);
+	}, [setChatMessages, subscribe, send, play, isChatFocused]);
 	useEffect(() => {
 		const history = historyRef.current;
 		if (!history) return;
@@ -305,12 +305,14 @@ function Chat({ showChat }: ChatProps) {
 		? members.find((member) => member.userId == messageToReply.userId)
 		: undefined;
 
+	console.log(isChatFocused);
+
 	return (
 		<ChatContainer
 			className={enableTransition ? styles.enableTransition : undefined}
 			style={{
 				width: `${chatWidth}px`,
-				marginRight: showChat ? "0px" : `-${chatWidth + 45}px`,
+				marginRight: showChat || isChatFocused ? "0px" : `-${chatWidth + 45}px`,
 			}}
 			onMouseEnter={() => {
 				isChatHovered.current = true;
@@ -319,11 +321,11 @@ function Chat({ showChat }: ChatProps) {
 				isChatHovered.current = false;
 			}}
 			onFocusCapture={() => {
-				isChatFocused.current = true;
+				setIsChatFocused(true);
 			}}
 			onBlurCapture={(event) => {
 				if (!event.currentTarget.contains(event.relatedTarget as Node))
-					isChatFocused.current = false;
+					setIsChatFocused(false);
 			}}
 			onDragEnter={(e) => {
 				e.preventDefault();
