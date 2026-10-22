@@ -5,4 +5,5 @@ export interface VttResourceLockDto {
 	targetId: Guid;
 	lockType: string;
 	userId: Guid;
+	sceneId: Guid;
 }

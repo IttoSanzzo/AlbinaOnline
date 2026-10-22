@@ -7,6 +7,7 @@ import {
 	setVttElementDataAttributes,
 	VttElementDataAttribute,
 } from "../../Utils/ElementDataAttributeUtils";
+import { TokenBoardLayer } from "./TokenBoardLayer";
 
 const VttBoardContainer = newStyledElement.div(styles.vttBoardContainer);
 
@@ -21,6 +22,7 @@ export const VttBoard = memo(function VttBoard() {
 			)}>
 			<GridMapBoardLayer />
 			<VirtualGridView />
+			<TokenBoardLayer />
 		</VttBoardContainer>
 	);
 });

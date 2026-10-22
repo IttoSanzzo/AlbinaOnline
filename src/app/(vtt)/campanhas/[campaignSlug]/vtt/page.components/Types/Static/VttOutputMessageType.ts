@@ -1,4 +1,5 @@
 export const VttOutputMessageTypes = [
+	// Miscs /////////////////////////////////////////////////////////////////////
 	"MouseStates",
 	"ConnectedUserIds",
 	"PostPing",
@@ -8,7 +9,11 @@ export const VttOutputMessageTypes = [
 	"VttAllChatMessages",
 	"VttAllDiceResults",
 	"VttDeleteChatMessage",
+
+	// Vtt Snapshot //////////////////////////////////////////////////////////////
 	"VttCompleteSceneSnapshot",
+
+	// VttGridMap ////////////////////////////////////////////////////////////////
 	"VttGridMapAdded",
 	"VttGridMapUpdated",
 	"VttGridMapRemoved",
@@ -16,5 +21,14 @@ export const VttOutputMessageTypes = [
 	"VttGridMapDragUpdate",
 	"VttGridMapDragEnded",
 	"VttGridMapDragCanceled",
+
+	// VttToken //////////////////////////////////////////////////////////////////
+	"VttTokenAdded",
+	"VttTokenUpdated",
+	"VttTokenRemoved",
+	"VttTokenDragStarted",
+	"VttTokenDragUpdate",
+	"VttTokenDragEnded",
+	"VttTokenDragCanceled",
 ] as const;
 export type VttOutputMessageType = (typeof VttOutputMessageTypes)[number];

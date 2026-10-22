@@ -5,4 +5,5 @@ export interface VttLockableResource {
 	targetId: Guid;
 	lockType: string;
 	userId: Guid;
+	sceneId: Guid;
 }
