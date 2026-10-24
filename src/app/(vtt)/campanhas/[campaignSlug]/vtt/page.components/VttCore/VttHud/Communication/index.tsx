@@ -64,7 +64,8 @@ interface ChatProps {
 	showChat: boolean;
 }
 function Chat({ showChat }: ChatProps) {
-	const { subscribe, send } = useVttContext();
+	const subscribe = useVttContext((state) => state.subscribe);
+	const send = useVttContext((state) => state.send);
 
 	const { play } = useVttAudioController();
 	const { members } = useVttMembersContext();

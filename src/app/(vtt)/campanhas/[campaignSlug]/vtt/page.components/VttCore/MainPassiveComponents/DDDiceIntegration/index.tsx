@@ -8,7 +8,7 @@ import { authenticatedFetchAsync } from "@/utils/FetchClientTools";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 
 export function DDDiceIntegration() {
-	const { campaign } = useVttContext();
+	const campaign = useVttContext((state) => state.campaign);
 	const { externalConnections } = useAuthStore();
 	const [roomData, setRoomData] = useState<null | {
 		roomSlug: string;

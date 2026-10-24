@@ -36,7 +36,9 @@ export function ClientCursor({
 	const { members } = useVttMembersContext();
 	const { isVisible, viewport, camera, setCameraPosition } =
 		useVttViewportContext();
-	const { hoverInteractionType } = useVttInteractionContext();
+	const hoverInteractionType = useVttInteractionContext(
+		(state) => state.hoverInteractionType,
+	);
 	const isInScreen = isVisible(
 		{
 			x: mouseState.x,

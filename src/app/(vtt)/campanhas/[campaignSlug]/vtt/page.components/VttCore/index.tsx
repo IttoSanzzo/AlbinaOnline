@@ -33,6 +33,7 @@ import { VttBoard } from "./VttBoard";
 import { VttBoardLayerContextProvider } from "../Contexts/VttBoardLayerContext";
 import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledViewportContext";
 import { memo } from "react";
+import { VttStoreProviders } from "../Contexts/VttStoreProviders";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -55,29 +56,31 @@ export function VttCore({ campaign }: VttCoreProps) {
 						<VttAudioControllerProvider>
 							<VttContextProvider campaign={campaign}>
 								<VttBoardLayerContextProvider>
-									<VttMembersContextProvider>
-										<VttViewportContextProvider>
-											<VttThrottledViewportContextProvider>
-												<VttGridContextProvider>
-													<VttInteractionContextProvider>
-														<RadialMenuProvider>
-															<VttCoreEngine />
-															<p
-																style={{
-																	position: "absolute",
-																	zIndex: "100",
-																	color: "var(--cl-gray-300)",
-																	pointerEvents: "none",
-																	userSelect: "none",
-																}}>
-																{`Connected to VttId: |${campaign.name}| |${vttId}|`}
-															</p>
-														</RadialMenuProvider>
-													</VttInteractionContextProvider>
-												</VttGridContextProvider>
-											</VttThrottledViewportContextProvider>
-										</VttViewportContextProvider>
-									</VttMembersContextProvider>
+									<VttStoreProviders>
+										<VttMembersContextProvider>
+											<VttViewportContextProvider>
+												<VttThrottledViewportContextProvider>
+													<VttGridContextProvider>
+														<VttInteractionContextProvider>
+															<RadialMenuProvider>
+																<VttCoreEngine />
+																<p
+																	style={{
+																		position: "absolute",
+																		zIndex: "100",
+																		color: "var(--cl-gray-300)",
+																		pointerEvents: "none",
+																		userSelect: "none",
+																	}}>
+																	{`Connected to VttId: |${campaign.name}| |${vttId}|`}
+																</p>
+															</RadialMenuProvider>
+														</VttInteractionContextProvider>
+													</VttGridContextProvider>
+												</VttThrottledViewportContextProvider>
+											</VttViewportContextProvider>
+										</VttMembersContextProvider>
+									</VttStoreProviders>
 								</VttBoardLayerContextProvider>
 							</VttContextProvider>
 						</VttAudioControllerProvider>

@@ -34,7 +34,7 @@ export function ChatMessageContextMenu({
 	onReply,
 }: ChatMessageContextMenuProps) {
 	const { member } = useCurrentCampaignMember();
-	const { send } = useVttContext();
+	const send = useVttContext((state) => state.send);
 	const [mounted, setMounted] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 

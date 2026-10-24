@@ -3,35 +3,36 @@
 import {
 	createContext,
 	ReactNode,
+	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
 	useRef,
 	useSyncExternalStore,
 } from "react";
-import { useVttViewportContext } from "./VttViewportContextProvider";
-
-type VttViewportContextValue = ReturnType<typeof useVttViewportContext>;
+import { StoreApi } from "zustand";
+import {
+	useVttViewportStoreApi,
+	VttViewportState,
+} from "./VttViewportContextProvider";
 
 interface VttThrottledViewportStore {
-	value: VttViewportContextValue;
+	value: StoreApi<VttViewportState>;
 	subscribe: (throttleMs: number, listener: () => void) => () => void;
 }
 
-const VttThrottledViewportContext =
+const VttThrottledViewportStoreContext =
 	createContext<VttThrottledViewportStore | null>(null);
 
 class ThrottledViewportSubscription {
-	private listener: () => void;
-	private throttleMs: number;
 	private timeout: ReturnType<typeof setTimeout> | null = null;
 	private lastUpdateAt = 0;
 	private pending = false;
 
-	constructor(throttleMs: number, listener: () => void) {
-		this.throttleMs = Math.max(0, throttleMs);
-		this.listener = listener;
-	}
+	constructor(
+		private readonly throttleMs: number,
+		private readonly listener: () => void,
+	) {}
 
 	public notify() {
 		if (this.throttleMs === 0) {
@@ -51,12 +52,10 @@ class ThrottledViewportSubscription {
 		}
 
 		this.pending = true;
-
 		if (this.timeout !== null) return;
 
 		this.timeout = setTimeout(() => {
 			this.timeout = null;
-
 			if (!this.pending) return;
 
 			this.pending = false;
@@ -78,37 +77,35 @@ class ThrottledViewportSubscription {
 interface VttThrottledViewportContextProviderProps {
 	children: ReactNode;
 }
+
 export function VttThrottledViewportContextProvider({
 	children,
 }: VttThrottledViewportContextProviderProps) {
-	const viewportContext = useVttViewportContext();
-
-	const viewportRef = useRef(viewportContext);
+	const viewportStore = useVttViewportStoreApi();
 	const subscriptionsRef = useRef(new Set<ThrottledViewportSubscription>());
 
-	viewportRef.current = viewportContext;
-
 	useEffect(() => {
-		for (const subscription of subscriptionsRef.current) subscription.notify();
-	}, [viewportContext]);
+		const unsubscribe = viewportStore.subscribe(() => {
+			for (const subscription of subscriptionsRef.current)
+				subscription.notify();
+		});
 
-	useEffect(() => {
 		return () => {
+			unsubscribe();
+
 			for (const subscription of subscriptionsRef.current)
 				subscription.dispose();
 
 			subscriptionsRef.current.clear();
 		};
-	}, []);
+	}, [viewportStore]);
 
 	const store = useMemo<VttThrottledViewportStore>(
 		() => ({
-			get value() {
-				return viewportRef.current;
-			},
+			value: viewportStore,
 			subscribe: (throttleMs, listener) => {
 				const subscription = new ThrottledViewportSubscription(
-					throttleMs,
+					Math.max(0, throttleMs),
 					listener,
 				);
 
@@ -120,34 +117,95 @@ export function VttThrottledViewportContextProvider({
 				};
 			},
 		}),
-		[],
+		[viewportStore],
 	);
 
 	return (
-		<VttThrottledViewportContext.Provider value={store}>
+		<VttThrottledViewportStoreContext.Provider value={store}>
 			{children}
-		</VttThrottledViewportContext.Provider>
+		</VttThrottledViewportStoreContext.Provider>
 	);
 }
 
+type ViewportSelector<T> = (state: VttViewportState) => T;
+type EqualityFn<T> = (previous: T, next: T) => boolean;
+
+const identitySelector: ViewportSelector<VttViewportState> = (state) => state;
+
 export function useVttThrottledViewportContext(
-	throttleMs: number = 100,
-): VttViewportContextValue {
-	const store = useContext(VttThrottledViewportContext);
+	throttleMs?: number,
+): VttViewportState;
+
+export function useVttThrottledViewportContext<T>(
+	selector: ViewportSelector<T>,
+	throttleMs?: number,
+	equalityFn?: EqualityFn<T>,
+): T;
+
+export function useVttThrottledViewportContext<T>(
+	selectorOrThrottle: ViewportSelector<T> | number = 100,
+	throttleMs = 100,
+	equalityFn: EqualityFn<T> = Object.is,
+): T | VttViewportState {
+	const store = useContext(VttThrottledViewportStoreContext);
 
 	if (!store)
 		throw new Error(
 			"useVttThrottledViewportContext must be used inside a VttThrottledViewportContextProvider.",
 		);
 
-	const subscribe = useMemo(
-		() => (listener: () => void) => {
-			return store.subscribe(throttleMs, listener);
-		},
-		[store, throttleMs],
+	const hasSelector = typeof selectorOrThrottle === "function";
+
+	const selector: ViewportSelector<T | VttViewportState> = hasSelector
+		? (selectorOrThrottle as ViewportSelector<T>)
+		: identitySelector;
+
+	const actualThrottleMs =
+		typeof selectorOrThrottle === "number" ? selectorOrThrottle : throttleMs;
+
+	const cacheRef = useRef<{
+		state: VttViewportState;
+		selector: ViewportSelector<T | VttViewportState>;
+		selection: T | VttViewportState;
+	} | null>(null);
+
+	const subscribe = useCallback(
+		(listener: () => void) => store.subscribe(actualThrottleMs, listener),
+		[store, actualThrottleMs],
 	);
 
-	const getSnapshot = () => store.value;
+	const getSnapshot = useCallback(() => {
+		const state = store.value.getState();
+		const cached = cacheRef.current;
+
+		if (cached?.state === state && cached.selector === selector)
+			return cached.selection;
+
+		const nextSelection = selector(state);
+
+		if (
+			cached &&
+			cached.selector === selector &&
+			(hasSelector
+				? equalityFn(cached.selection as T, nextSelection as T)
+				: Object.is(cached.selection, nextSelection))
+		) {
+			cacheRef.current = {
+				state,
+				selector,
+				selection: cached.selection,
+			};
+			return cached.selection;
+		}
+
+		cacheRef.current = {
+			state,
+			selector,
+			selection: nextSelection,
+		};
+
+		return nextSelection;
+	}, [store, selector, hasSelector, equalityFn]);
 
 	return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }

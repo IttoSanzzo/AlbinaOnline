@@ -1,17 +1,17 @@
 "use client";
 
 import { Guid } from "@/libs/stp@types";
+import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import {
 	createContext,
 	ReactNode,
-	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
 	useState,
 } from "react";
+import { createStore, StoreApi, useStore } from "zustand";
 import { useVttContext } from "./VttContextProvider";
-import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 
 const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 5;
@@ -19,12 +19,12 @@ const DEFAULT_ZOOM = 1;
 const GRID_CELL_SIZE = 100;
 export const PIXELS_PER_CENTIMETER = 1;
 
-interface VttViewportSize {
+export interface VttViewportSize {
 	width: number;
 	height: number;
 }
 
-interface VttVisibleWorld {
+export interface VttVisibleWorld {
 	left: number;
 	top: number;
 	right: number;
@@ -33,28 +33,81 @@ interface VttVisibleWorld {
 	height: number;
 }
 
-type VisibilityMode = "center" | "partial" | "full";
+export type VisibilityMode = "center" | "partial" | "full" | "partial-extra";
 
-interface VttBounds {
+export interface VttBounds {
 	x: number;
 	y: number;
 	width?: number;
 	height?: number;
 }
 
-interface VttCamera {
+export interface VttCamera {
 	x: number;
 	y: number;
 	zoom: number;
 }
 
-interface VttViewportContext {
+export function isVisible(
+	bounds: VttBounds,
+	visibleWorld: VttVisibleWorld,
+	mode?: VisibilityMode,
+	padding?: number,
+): boolean {
+	const visibilityMode = mode ?? "partial";
+	const visibilityPadding = padding ?? 0;
+	const expansion = visibilityMode === "partial-extra" ? visibilityPadding : 0;
+	const inset = visibilityMode === "partial-extra" ? 0 : visibilityPadding;
+
+	const left = visibleWorld.left + inset - expansion;
+	const right = visibleWorld.right - inset + expansion;
+	const top = visibleWorld.top + inset - expansion;
+	const bottom = visibleWorld.bottom - inset + expansion;
+
+	if (visibilityMode === "center") {
+		return (
+			bounds.x >= left &&
+			bounds.x <= right &&
+			bounds.y >= top &&
+			bounds.y <= bottom
+		);
+	}
+
+	const halfWidth = (bounds.width ?? 0) / 2;
+	const halfHeight = (bounds.height ?? 0) / 2;
+	const boundsLeft = bounds.x - halfWidth;
+	const boundsRight = bounds.x + halfWidth;
+	const boundsTop = bounds.y - halfHeight;
+	const boundsBottom = bounds.y + halfHeight;
+
+	switch (visibilityMode) {
+		case "partial":
+		case "partial-extra":
+			return (
+				boundsRight >= left &&
+				boundsLeft <= right &&
+				boundsBottom >= top &&
+				boundsTop <= bottom
+			);
+
+		case "full":
+			return (
+				boundsLeft >= left &&
+				boundsRight <= right &&
+				boundsTop >= top &&
+				boundsBottom <= bottom
+			);
+	}
+}
+
+export interface VttViewportState {
 	vttId: Guid | null;
 	sceneId: Guid | null;
 	viewport: VttViewportSize;
 	camera: VttCamera;
 	pixelsPerCentimeter: number;
 	gridCellSize: number;
+	cullingMargin: number;
 	visibleWorld: VttVisibleWorld;
 	isVisible: (
 		bounds: VttBounds,
@@ -72,285 +125,284 @@ interface VttViewportContext {
 	resetZoom: () => void;
 }
 
-const VttViewportContext = createContext<VttViewportContext | null>(null);
+const VttViewportStoreContext =
+	createContext<StoreApi<VttViewportState> | null>(null);
 
 interface VttViewportContextProviderProps {
 	children: ReactNode;
 }
-export function VttViewportContextProvider({
-	children,
-}: VttViewportContextProviderProps) {
-	const { vttId, activeSceneId } = useVttContext();
-	const [viewport, setViewport] = useState<VttViewportSize>({
-		width: typeof window === "undefined" ? 0 : window.innerWidth,
-		height: typeof window === "undefined" ? 0 : window.innerHeight,
-	});
-	const [isCameraLoaded, setIsCameraLoaded] = useState(false);
 
-	const [camera, setCamera] = useState<VttCamera>({
+function clampZoom(zoom: number): number {
+	return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
+}
+
+function getVisibleWorld(
+	camera: VttCamera,
+	viewport: VttViewportSize,
+): VttVisibleWorld {
+	const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+	const left = camera.x - viewport.width / 2 / scale;
+	const top = camera.y - viewport.height / 2 / scale;
+	const right = camera.x + viewport.width / 2 / scale;
+	const bottom = camera.y + viewport.height / 2 / scale;
+
+	return {
+		left,
+		top,
+		right,
+		bottom,
+		width: right - left,
+		height: bottom - top,
+	};
+}
+
+function createVttViewportStore(
+	vttId: Guid | null,
+	sceneId: Guid | null,
+): StoreApi<VttViewportState> {
+	const initialCamera: VttCamera = {
 		x: 0,
 		y: 0,
 		zoom: DEFAULT_ZOOM,
+	};
+	const initialViewport: VttViewportSize = {
+		width: 0,
+		height: 0,
+	};
+
+	return createStore<VttViewportState>()((set, get) => {
+		const updateCamera = (camera: VttCamera) => {
+			set({
+				camera,
+				visibleWorld: getVisibleWorld(camera, get().viewport),
+			});
+		};
+
+		return {
+			vttId,
+			sceneId,
+			viewport: initialViewport,
+			camera: initialCamera,
+			pixelsPerCentimeter: PIXELS_PER_CENTIMETER,
+			gridCellSize: GRID_CELL_SIZE,
+			cullingMargin: 0,
+			visibleWorld: getVisibleWorld(initialCamera, initialViewport),
+
+			isVisible: (bounds, mode, padding) => {
+				const state = get();
+				const visibilityPadding =
+					mode === "partial-extra"
+						? (padding ??
+							state.cullingMargin / (PIXELS_PER_CENTIMETER * state.camera.zoom))
+						: padding;
+
+				return isVisible(bounds, state.visibleWorld, mode, visibilityPadding);
+			},
+
+			worldToScreen: (position) => {
+				const { camera, viewport } = get();
+				const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+
+				return {
+					x: (position.x - camera.x) * scale + viewport.width / 2,
+					y: (position.y - camera.y) * scale + viewport.height / 2,
+				};
+			},
+
+			screenToWorld: (position) => {
+				const { camera, viewport } = get();
+				const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+
+				return {
+					x: (position.x - viewport.width / 2) / scale + camera.x,
+					y: (position.y - viewport.height / 2) / scale + camera.y,
+				};
+			},
+
+			setCameraPosition: (x, y) => {
+				updateCamera({ ...get().camera, x, y });
+			},
+
+			moveCamera: (deltaX, deltaY) => {
+				const { camera } = get();
+
+				updateCamera({
+					...camera,
+					x: camera.x + deltaX,
+					y: camera.y + deltaY,
+				});
+			},
+
+			setZoom: (zoom) => {
+				updateCamera({ ...get().camera, zoom: clampZoom(zoom) });
+			},
+
+			zoomAt: (screenPosition, zoom) => {
+				const { camera, viewport } = get();
+				const nextZoom = clampZoom(zoom);
+				const scale = PIXELS_PER_CENTIMETER;
+
+				const worldPosition = {
+					x: Math.round(
+						camera.x +
+							(screenPosition.x - viewport.width / 2) / (scale * camera.zoom),
+					),
+					y: Math.round(
+						camera.y +
+							(screenPosition.y - viewport.height / 2) / (scale * camera.zoom),
+					),
+				};
+
+				updateCamera({
+					x: Math.round(
+						worldPosition.x -
+							(screenPosition.x - viewport.width / 2) / (scale * nextZoom),
+					),
+					y: Math.round(
+						worldPosition.y -
+							(screenPosition.y - viewport.height / 2) / (scale * nextZoom),
+					),
+					zoom: nextZoom,
+				});
+			},
+
+			resetCamera: () => updateCamera(initialCamera),
+
+			resetPosition: () => {
+				updateCamera({ ...get().camera, x: 0, y: 0 });
+			},
+
+			resetZoom: () => {
+				updateCamera({ ...get().camera, zoom: DEFAULT_ZOOM });
+			},
+		};
 	});
+}
+
+export function VttViewportContextProvider({
+	children,
+}: VttViewportContextProviderProps) {
+	const vttId = useVttContext((state) => state.vttId);
+	const activeSceneId = useVttContext((state) => state.activeSceneId);
+	const [store] = useState(() => createVttViewportStore(vttId, activeSceneId));
+	const [loadedStorageKey, setLoadedStorageKey] = useState<string | null>(null);
+
+	const storageKey = useMemo(
+		() => (vttId ? `vttId=${vttId}|scene=${activeSceneId}|camera` : null),
+		[vttId, activeSceneId],
+	);
+
+	useEffect(() => {
+		store.setState({ vttId, sceneId: activeSceneId });
+	}, [store, vttId, activeSceneId]);
 
 	useEffect(() => {
 		const handleResize = () => {
-			setViewport({
+			const viewport = {
 				width: window.innerWidth,
 				height: window.innerHeight,
-			});
+			};
+
+			store.setState((state) => ({
+				viewport,
+				cullingMargin: Math.max(viewport.width, viewport.height) * 0.5,
+				visibleWorld: getVisibleWorld(state.camera, viewport),
+			}));
 		};
+
 		handleResize();
 		window.addEventListener("resize", handleResize);
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
-
-	const storageKey = useMemo(() => {
-		if (!vttId) return null;
-		return `vttId=${vttId}|scene=${activeSceneId}|camera`;
-	}, [vttId, activeSceneId]);
+		return () => window.removeEventListener("resize", handleResize);
+	}, [store]);
 
 	useEffect(() => {
-		if (!storageKey) return;
-
-		setIsCameraLoaded(false);
-		const stored = localStorage.getItem(storageKey);
-		if (!stored) {
-			setIsCameraLoaded(true);
+		if (!storageKey) {
+			setLoadedStorageKey(null);
 			return;
 		}
+
+		let camera: VttCamera = {
+			x: 0,
+			y: 0,
+			zoom: DEFAULT_ZOOM,
+		};
+
 		try {
-			const storedCamera = JSON.parse(stored) as VttCamera;
-			setCamera({
-				x: storedCamera.x ?? 0,
-				y: storedCamera.y ?? 0,
-				zoom: Math.min(
-					MAX_ZOOM,
-					Math.max(MIN_ZOOM, storedCamera.zoom ?? DEFAULT_ZOOM),
-				),
-			});
+			const stored = localStorage.getItem(storageKey);
+
+			if (stored) {
+				const parsed = JSON.parse(stored) as Partial<VttCamera>;
+
+				camera = {
+					x: parsed.x ?? 0,
+					y: parsed.y ?? 0,
+					zoom: clampZoom(parsed.zoom ?? DEFAULT_ZOOM),
+				};
+			}
 		} catch {
-			localStorage.removeItem(storageKey);
+			try {
+				localStorage.removeItem(storageKey);
+			} catch {
+				// Storage may be unavailable in the current browser context.
+			}
 		}
-		setIsCameraLoaded(true);
-	}, [storageKey, setIsCameraLoaded]);
+
+		store.setState((state) => ({
+			camera,
+			visibleWorld: getVisibleWorld(camera, state.viewport),
+		}));
+		setLoadedStorageKey(storageKey);
+	}, [store, storageKey]);
 
 	useEffect(() => {
-		if (!storageKey || !isCameraLoaded) return;
-		localStorage.setItem(storageKey, JSON.stringify(camera));
-	}, [storageKey, camera, isCameraLoaded]);
+		if (!storageKey || loadedStorageKey !== storageKey) return;
 
-	const setCameraPosition = (x: number, y: number) => {
-		setCamera((current) => ({
-			...current,
-			x,
-			y,
-		}));
-	};
+		const unsubscribe = store.subscribe((state, previousState) => {
+			if (state.camera === previousState.camera) return;
 
-	const moveCamera = useCallback(
-		(deltaX: number, deltaY: number) => {
-			setCamera((current) => ({
-				...current,
-				x: current.x + deltaX,
-				y: current.y + deltaY,
-			}));
-		},
-		[setCamera],
-	);
-
-	const setZoom = (zoom: number) => {
-		setCamera((current) => ({
-			...current,
-			zoom: Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom)),
-		}));
-	};
-
-	const zoomAt = (screenPosition: CoordinatePair, zoom: number) => {
-		const nextZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom));
-
-		setCamera((current) => {
-			const worldPosition = {
-				x: Math.round(
-					current.x +
-						(screenPosition.x - viewport.width / 2) /
-							(PIXELS_PER_CENTIMETER * current.zoom),
-				),
-				y: Math.round(
-					current.y +
-						(screenPosition.y - viewport.height / 2) /
-							(PIXELS_PER_CENTIMETER * current.zoom),
-				),
-			};
-
-			return {
-				x: Math.round(
-					worldPosition.x -
-						(screenPosition.x - viewport.width / 2) /
-							(PIXELS_PER_CENTIMETER * nextZoom),
-				),
-				y: Math.round(
-					worldPosition.y -
-						(screenPosition.y - viewport.height / 2) /
-							(PIXELS_PER_CENTIMETER * nextZoom),
-				),
-				zoom: nextZoom,
-			};
-		});
-	};
-
-	const resetCamera = () => {
-		setCamera({
-			x: 0,
-			y: 0,
-			zoom: DEFAULT_ZOOM,
-		});
-	};
-	const resetZoom = () => {
-		setCamera({
-			x: camera.x,
-			y: camera.y,
-			zoom: DEFAULT_ZOOM,
-		});
-	};
-	const resetPosition = () => {
-		setCamera({
-			x: 0,
-			y: 0,
-			zoom: camera.zoom,
-		});
-	};
-
-	const worldToScreen = (position: CoordinatePair): CoordinatePair => {
-		return {
-			x:
-				(position.x - camera.x) * PIXELS_PER_CENTIMETER * camera.zoom +
-				viewport.width / 2,
-			y:
-				(position.y - camera.y) * PIXELS_PER_CENTIMETER * camera.zoom +
-				viewport.height / 2,
-		};
-	};
-
-	const screenToWorld = (position: CoordinatePair): CoordinatePair => {
-		return {
-			x:
-				(position.x - viewport.width / 2) /
-					(PIXELS_PER_CENTIMETER * camera.zoom) +
-				camera.x,
-			y:
-				(position.y - viewport.height / 2) /
-					(PIXELS_PER_CENTIMETER * camera.zoom) +
-				camera.y,
-		};
-	};
-
-	const visibleWorld = useMemo<VttVisibleWorld>(() => {
-		const topLeft = screenToWorld({
-			x: 0,
-			y: 0,
+			try {
+				localStorage.setItem(storageKey, JSON.stringify(state.camera));
+			} catch {
+				// Storage may be unavailable or full.
+			}
 		});
 
-		const bottomRight = screenToWorld({
-			x: viewport.width,
-			y: viewport.height,
-		});
-
-		return {
-			left: topLeft.x,
-			top: topLeft.y,
-			right: bottomRight.x,
-			bottom: bottomRight.y,
-			width: bottomRight.x - topLeft.x,
-			height: bottomRight.y - topLeft.y,
-		};
-	}, [camera, viewport]);
-
-	const isVisible = (
-		bounds: VttBounds,
-		mode: VisibilityMode = "partial",
-		padding = 0,
-	): boolean => {
-		const left = visibleWorld.left + padding;
-		const right = visibleWorld.right - padding;
-		const top = visibleWorld.top + padding;
-		const bottom = visibleWorld.bottom - padding;
-
-		if (mode === "center") {
-			return (
-				bounds.x >= left &&
-				bounds.x <= right &&
-				bounds.y >= top &&
-				bounds.y <= bottom
-			);
+		try {
+			localStorage.setItem(storageKey, JSON.stringify(store.getState().camera));
+		} catch {
+			// Storage may be unavailable or full.
 		}
 
-		const halfWidth = (bounds.width ?? 0) / 2;
-		const halfHeight = (bounds.height ?? 0) / 2;
-
-		const boundsLeft = bounds.x - halfWidth;
-		const boundsRight = bounds.x + halfWidth;
-		const boundsTop = bounds.y - halfHeight;
-		const boundsBottom = bounds.y + halfHeight;
-
-		switch (mode) {
-			case "partial":
-				return (
-					boundsRight >= left &&
-					boundsLeft <= right &&
-					boundsBottom >= top &&
-					boundsTop <= bottom
-				);
-
-			case "full":
-				return (
-					boundsLeft >= left &&
-					boundsRight <= right &&
-					boundsTop >= top &&
-					boundsBottom <= bottom
-				);
-		}
-	};
-
-	const contextValue = useMemo<VttViewportContext>(
-		() => ({
-			vttId,
-			sceneId: activeSceneId,
-			viewport,
-			camera,
-			pixelsPerCentimeter: PIXELS_PER_CENTIMETER,
-			gridCellSize: GRID_CELL_SIZE,
-			visibleWorld,
-			isVisible,
-			worldToScreen,
-			screenToWorld,
-			setCameraPosition,
-			moveCamera,
-			setZoom,
-			zoomAt,
-			resetCamera,
-			resetZoom,
-			resetPosition,
-		}),
-		[vttId, activeSceneId, viewport, camera, visibleWorld],
-	);
+		return unsubscribe;
+	}, [store, storageKey, loadedStorageKey]);
 
 	return (
-		<VttViewportContext.Provider value={contextValue}>
+		<VttViewportStoreContext.Provider value={store}>
 			{children}
-		</VttViewportContext.Provider>
+		</VttViewportStoreContext.Provider>
 	);
 }
 
-export function useVttViewportContext(): VttViewportContext {
-	const context = useContext(VttViewportContext);
+export function useVttViewportStoreApi(): StoreApi<VttViewportState> {
+	const store = useContext(VttViewportStoreContext);
 
-	if (!context)
+	if (!store)
 		throw new Error(
-			"useVttViewportContext must be used inside a VttViewportContextProvider.",
+			"useVttViewportStoreApi must be used inside a VttViewportContextProvider.",
 		);
 
-	return context;
+	return store;
+}
+
+export function useVttViewportStore<T>(
+	selector: (state: VttViewportState) => T,
+): T {
+	return useStore(useVttViewportStoreApi(), selector);
+}
+
+/**
+ * Compatibility hook. Prefer useVttViewportStore(selector) for granular subscriptions.
+ */
+export function useVttViewportContext(): VttViewportState {
+	return useVttViewportStore((state) => state);
 }

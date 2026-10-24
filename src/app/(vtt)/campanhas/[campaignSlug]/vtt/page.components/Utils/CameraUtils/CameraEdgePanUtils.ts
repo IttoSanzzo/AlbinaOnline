@@ -12,7 +12,7 @@ const MAX_SPEED = 20;
 const UPDATE_INTERVAL = 33;
 
 export function useEdgeCameraPan() {
-	const { interaction } = useVttInteractionContext();
+	const interaction = useVttInteractionContext((state) => state.interaction);
 	const { moveCamera, camera, viewport } = useVttViewportContext();
 
 	const mousePosition = useRef({

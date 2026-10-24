@@ -3,7 +3,7 @@
 import styles from "./index.module.css";
 import { useCallback, useEffect, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useRadialMenu } from "@/components/(SPECIAL)/components/RadialMenu/Context";
+import { useRadialMenuActions } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import {
 	RadialMenuOption,
 	RadialMenuSubmitProps,
@@ -145,8 +145,9 @@ export function sendPing({ position, type, send }: sendPingProps) {
 }
 
 export function PingEngine() {
-	const radialMenu = useRadialMenu();
-	const { send, subscribe } = useVttContext();
+	const { openNew: openNewRadialMenu } = useRadialMenuActions();
+	const send = useVttContext((state) => state.send);
+	const subscribe = useVttContext((state) => state.subscribe);
 	const { screenToWorld, worldToScreen, setCameraPosition } =
 		useVttViewportContext();
 	const { members } = useVttMembersContext();
@@ -168,7 +169,7 @@ export function PingEngine() {
 			const screenPosition = { x: WindowCursorState.x, y: WindowCursorState.y };
 			const worldPosition = roundCoordinate(screenToWorld(screenPosition));
 
-			radialMenu.openNew({
+			openNewRadialMenu({
 				mode,
 				id: "ping",
 				name: "Ping",
@@ -189,7 +190,7 @@ export function PingEngine() {
 				},
 			});
 		},
-		[radialMenu, screenToWorld, send],
+		[openNewRadialMenu, screenToWorld, send],
 	);
 
 	useEffect(() => {

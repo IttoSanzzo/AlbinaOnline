@@ -12,6 +12,8 @@ import { useVttThrottledViewportContext } from "@/app/(vtt)/campanhas/[campaignS
 
 const AddToVttButtonCore = newStyledElement.button(styles.addToVttButtonCore);
 
+const throttleMs = 200;
+
 interface AddToVttButtonProps {
 	gridMap: GridMap;
 	setCoreModalOpenState?: Dispatch<SetStateAction<boolean>>;
@@ -20,9 +22,20 @@ export function AddToVttButton({
 	gridMap,
 	setCoreModalOpenState,
 }: AddToVttButtonProps) {
-	const { send, activeSceneId } = useVttContext();
-	const { screenToWorld, viewport, camera } =
-		useVttThrottledViewportContext(200);
+	const send = useVttContext((state) => state.send);
+	const activeSceneId = useVttContext((state) => state.activeSceneId);
+	const screenToWorld = useVttThrottledViewportContext(
+		(state) => state.screenToWorld,
+		throttleMs,
+	);
+	const viewport = useVttThrottledViewportContext(
+		(state) => state.viewport,
+		throttleMs,
+	);
+	const camera = useVttThrottledViewportContext(
+		(state) => state.camera,
+		throttleMs,
+	);
 	return (
 		<AddToVttButtonCore
 			{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}

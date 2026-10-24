@@ -5,6 +5,7 @@ import {
 	ReactNode,
 	useCallback,
 	useContext,
+	useMemo,
 	useState,
 } from "react";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
@@ -34,13 +35,19 @@ export interface RadialMenuData {
 	onSubmit: (props: RadialMenuSubmitProps) => void;
 }
 
-export interface RadialMenuContext {
+export interface RadialMenuActions {
 	openNew: (props: RadialMenuData) => void;
 	close: () => void;
+}
+
+export interface RadialMenuContext extends RadialMenuActions {
 	id: string | null;
 }
 
-const RadialMenuContext = createContext<RadialMenuContext | null>(null);
+const RadialMenuActionsContext = createContext<RadialMenuActions | undefined>(
+	undefined,
+);
+const RadialMenuIdContext = createContext<string | null | undefined>(undefined);
 
 export function RadialMenuProvider({ children }: { children: ReactNode }) {
 	const [session, setSession] = useState<RadialMenuData | null>(null);
@@ -59,28 +66,48 @@ export function RadialMenuProvider({ children }: { children: ReactNode }) {
 		setSession(null);
 	}, []);
 
+	const actions = useMemo<RadialMenuActions>(
+		() => ({ openNew, close }),
+		[openNew, close],
+	);
+
 	return (
-		<RadialMenuContext.Provider
-			value={{
-				openNew,
-				close,
-				id: session?.id ?? null,
-			}}>
-			{children}
-			{session && (
-				<RadialMenu
-					key={session.id}
-					{...session}
-					onClose={close}
-				/>
-			)}
-		</RadialMenuContext.Provider>
+		<RadialMenuActionsContext.Provider value={actions}>
+			<RadialMenuIdContext.Provider value={session?.id ?? null}>
+				{children}
+				{session && (
+					<RadialMenu
+						key={session.id}
+						{...session}
+						onClose={close}
+					/>
+				)}
+			</RadialMenuIdContext.Provider>
+		</RadialMenuActionsContext.Provider>
 	);
 }
 
-export function useRadialMenu(): RadialMenuContext {
-	const context = useContext(RadialMenuContext);
+export function useRadialMenuActions(): RadialMenuActions {
+	const context = useContext(RadialMenuActionsContext);
 	if (!context)
-		throw new Error("useRadialMenu must be used inside a RadialMenuProvider.");
+		throw new Error(
+			"useRadialMenuActions must be used inside a RadialMenuProvider.",
+		);
 	return context;
+}
+
+export function useRadialMenuId(): string | null {
+	const id = useContext(RadialMenuIdContext);
+	if (id === undefined)
+		throw new Error(
+			"useRadialMenuId must be used inside a RadialMenuProvider.",
+		);
+	return id;
+}
+
+export function useRadialMenu(): RadialMenuContext {
+	return {
+		...useRadialMenuActions(),
+		id: useRadialMenuId(),
+	};
 }

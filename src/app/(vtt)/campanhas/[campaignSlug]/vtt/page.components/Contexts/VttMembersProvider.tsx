@@ -24,7 +24,9 @@ interface VttMembersContextProviderProps {
 export function VttMembersContextProvider({
 	children,
 }: VttMembersContextProviderProps) {
-	const { vttId, campaign, subscribe } = useVttContext();
+	const vttId = useVttContext((state) => state.vttId);
+	const campaign = useVttContext((state) => state.campaign);
+	const subscribe = useVttContext((state) => state.subscribe);
 
 	const [members, setMembers] = useState<CampaignMember[]>([]);
 	const [connectedUserIds, setConnectedUserIds] = useState<Set<Guid>>(

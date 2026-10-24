@@ -1,6 +1,7 @@
 "use client";
 
 import { useVttWebSocket } from "@/libs/stp@hooks/hooks/useVttWebSocket";
+import { Campaign, Guid } from "@/libs/stp@types";
 import {
 	createContext,
 	ReactNode,
@@ -9,14 +10,14 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { createStore, StoreApi, useStore } from "zustand";
 import { VttInputMessage } from "../Types/Core/VttInputMessage";
-import { Campaign, Guid } from "@/libs/stp@types";
-import { VttOutputMessageType } from "../Types/Static/VttOutputMessageType";
 import { VttOutputMessage } from "../Types/Core/VttOutputMessage";
+import { VttOutputMessageType } from "../Types/Static/VttOutputMessageType";
 
 type VttMessageHandler = (message: VttOutputMessage) => void;
 
-interface VttBasicContext {
+export interface VttState {
 	vttId: Guid | null;
 	activeSceneId: Guid | null;
 	campaign: Campaign;
@@ -29,11 +30,69 @@ interface VttBasicContext {
 	localDispatch: (message: VttOutputMessage) => void;
 }
 
-const VttContext = createContext<VttBasicContext | null>(null);
+export type VttBasicContext = VttState;
+const VttStoreContext = createContext<StoreApi<VttState> | null>(null);
 
 interface VttContextProviderProps {
 	campaign: Campaign;
 	children: ReactNode;
+}
+
+function createVttStore(
+	campaign: Campaign,
+	socketRef: React.RefObject<WebSocket | null>,
+): StoreApi<VttState> {
+	const subscriptions = new Map<string, Set<VttMessageHandler>>();
+	const ignoredMessages = new Set<Guid>();
+
+	return createStore<VttState>()((set) => {
+		function dispatchMessage(message: VttOutputMessage) {
+			if (ignoredMessages.delete(message.id)) return;
+			if (message.type === "VttCompleteSceneSnapshot")
+				set({
+					activeSceneId: (message.data as { sceneId: Guid }).sceneId,
+				});
+			const handlers = subscriptions.get(message.type);
+			if (!handlers) return;
+			handlers.forEach((handler) => {
+				handler(message);
+			});
+		}
+
+		return {
+			vttId: null,
+			activeSceneId: null,
+			campaign,
+			send: (message) => {
+				try {
+					const socket = socketRef.current;
+					if (socket?.readyState !== WebSocket.OPEN) return;
+					socket.send(JSON.stringify(message));
+				} catch (ex) {
+					console.error(ex);
+				}
+			},
+
+			subscribe: (type, handler) => {
+				let handlers = subscriptions.get(type);
+				if (!handlers) {
+					handlers = new Set<VttMessageHandler>();
+					subscriptions.set(type, handlers);
+				}
+				handlers.add(handler);
+				return () => {
+					handlers.delete(handler);
+					if (handlers.size === 0) subscriptions.delete(type);
+				};
+			},
+
+			ignoreMessage: (id) => {
+				ignoredMessages.add(id);
+			},
+
+			localDispatch: dispatchMessage,
+		};
+	});
 }
 
 export function VttContextProvider({
@@ -41,20 +100,13 @@ export function VttContextProvider({
 	children,
 }: VttContextProviderProps) {
 	const { vttId, socket } = useVttWebSocket();
-	const [activeSceneId, setActiveSceneId] = useState<Guid | null>(null);
-	const subscriptions = useRef<Map<string, Set<VttMessageHandler>>>(new Map());
-	const ignoredMessages = useRef<Set<Guid>>(new Set());
+	const socketRef = useRef<WebSocket | null>(socket);
+	socketRef.current = socket;
+	const [store] = useState(() => createVttStore(campaign, socketRef));
 
-	const dispatchMessage = (message: VttOutputMessage) => {
-		if (ignoredMessages.current.delete(message.id)) return;
-		if (message.type === "VttCompleteSceneSnapshot")
-			setActiveSceneId((message.data as { sceneId: Guid }).sceneId);
-		const handlers = subscriptions.current.get(message.type);
-		if (!handlers) return;
-		handlers.forEach((handler) => {
-			handler(message);
-		});
-	};
+	useEffect(() => {
+		store.setState({ vttId, campaign });
+	}, [store, vttId, campaign]);
 
 	useEffect(() => {
 		if (!socket) return;
@@ -67,7 +119,7 @@ export function VttContextProvider({
 					console.error("Failed to parse VTT WebSocket message.", event.data);
 					return;
 				}
-				dispatchMessage(message);
+				store.getState().localDispatch(message);
 			} catch (ex) {
 				console.error(`Exception on HandleMessage: ${ex}`);
 			}
@@ -78,59 +130,38 @@ export function VttContextProvider({
 		return () => {
 			socket.removeEventListener("message", handleMessage);
 		};
-	}, [socket]);
-
-	const send = (message: VttInputMessage) => {
-		try {
-			if (socket?.readyState !== WebSocket.OPEN) return;
-			socket.send(JSON.stringify(message));
-		} catch (ex) {
-			console.error(ex);
-		}
-	};
-
-	const subscribe = (
-		type: VttOutputMessageType,
-		handler: VttMessageHandler,
-	) => {
-		let handlers = subscriptions.current.get(type);
-		if (!handlers) {
-			handlers = new Set<VttMessageHandler>();
-			subscriptions.current.set(type, handlers);
-		}
-		handlers.add(handler);
-		return () => {
-			handlers?.delete(handler);
-			if (handlers?.size === 0) subscriptions.current.delete(type);
-		};
-	};
-
-	function ignoreMessage(id: Guid) {
-		ignoredMessages.current.add(id);
-	}
-
-	function localDispatch(message: VttOutputMessage) {
-		dispatchMessage(message);
-	}
-
-	const contextValue: VttBasicContext = {
-		vttId,
-		activeSceneId,
-		campaign,
-		send,
-		subscribe,
-		ignoreMessage,
-		localDispatch,
-	};
+	}, [socket, store]);
 
 	return (
-		<VttContext.Provider value={contextValue}>{children}</VttContext.Provider>
+		<VttStoreContext.Provider value={store}>
+			{children}
+		</VttStoreContext.Provider>
 	);
 }
 
-export function useVttContext(): VttBasicContext {
-	const context = useContext(VttContext);
-	if (!context)
-		throw new Error("useVttContext must be used inside a VttContextProvider.");
-	return context;
+export function useVttStoreApi(): StoreApi<VttState> {
+	const store = useContext(VttStoreContext);
+	if (!store)
+		throw new Error("useVttStoreApi must be used inside a VttContextProvider.");
+	return store;
+}
+
+export function useVttStore<T>(selector: (state: VttState) => T): T {
+	return useStore(useVttStoreApi(), selector);
+}
+
+/**
+ * Compatibility hook. Prefer passing a selector for granular subscriptions.
+ */
+export function useVttContext(): VttBasicContext;
+
+export function useVttContext<T>(selector: (state: VttState) => T): T;
+
+export function useVttContext<T>(
+	selector?: (state: VttState) => T,
+): T | VttBasicContext {
+	const store = useVttStoreApi();
+	const resolvedSelector: (state: VttState) => T | VttBasicContext =
+		selector ?? ((state) => state);
+	return useStore(store, resolvedSelector);
 }

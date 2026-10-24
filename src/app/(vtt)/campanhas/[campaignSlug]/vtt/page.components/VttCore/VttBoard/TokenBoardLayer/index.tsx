@@ -17,10 +17,23 @@ const TokenBoardLayerContainer = newStyledElement.div(
 	styles.tokenBoardLayerContainer,
 );
 
+const throttleMs = 100;
+
 export const TokenBoardLayer = memo(function TokenBoardLayer() {
-	const { camera, worldToScreen, viewport } =
-		useVttThrottledViewportContext(100);
-	const { activeSceneId, subscribe } = useVttContext();
+	const camera = useVttThrottledViewportContext(
+		(state) => state.camera,
+		throttleMs,
+	);
+	const worldToScreen = useVttThrottledViewportContext(
+		(state) => state.worldToScreen,
+		throttleMs,
+	);
+	const viewport = useVttThrottledViewportContext(
+		(state) => state.viewport,
+		throttleMs,
+	);
+	const activeSceneId = useVttContext((state) => state.activeSceneId);
+	const subscribe = useVttContext((state) => state.subscribe);
 	const [vttTokens, setVttTokens] = useState<
 		Map<Guid, VttTokenWithScenePlacement>
 	>(new Map());

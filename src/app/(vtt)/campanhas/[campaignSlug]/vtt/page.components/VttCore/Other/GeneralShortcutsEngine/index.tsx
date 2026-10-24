@@ -5,7 +5,10 @@ import {
 } from "../../../Contexts/VttBoardLayerContext";
 
 export const GeneralShortcutsEngine = memo(function GeneralShortcutsEngine() {
-	const { activeLayer, setActiveLayer } = useVttBoardLayerContext();
+	const activeLayer = useVttBoardLayerContext((state) => state.activeLayer);
+	const setActiveLayer = useVttBoardLayerContext(
+		(state) => state.setActiveLayer,
+	);
 
 	useEffect(() => {
 		function handleKeyDown(event: KeyboardEvent) {

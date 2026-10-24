@@ -28,7 +28,8 @@ const DiceHistoryResultsContainer = newStyledElement.div(
 );
 
 export function DiceHistory() {
-	const { subscribe, send } = useVttContext();
+	const subscribe = useVttContext((state) => state.subscribe);
+	const send = useVttContext((state) => state.send);
 	const { members } = useVttMembersContext();
 	const [vttDiceResults, setVttDiceResults] = useState<VttDiceResult[]>([]);
 	const [isOpen, setIsOpen] = useLocalStorageState<boolean>(

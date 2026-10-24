@@ -19,7 +19,10 @@ const SWITCH_EDGE_PAN_KEY = "p";
 
 export function CameraControls() {
 	const { camera, resetPosition, resetZoom } = useVttViewportContext();
-	const { interaction, setInteraction } = useVttInteractionContext();
+	const interaction = useVttInteractionContext((state) => state.interaction);
+	const setInteraction = useVttInteractionContext(
+		(state) => state.setInteraction,
+	);
 
 	function toggleEdgePan() {
 		setInteraction({

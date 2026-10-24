@@ -2,7 +2,7 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./VttGridMapElement.module.css";
-import { memo, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
@@ -11,8 +11,8 @@ import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvi
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { BasicMedia } from "@/components/(Design)/components/BasicMedia";
 import {
-	RadialMenuContext,
-	useRadialMenu,
+	RadialMenuData,
+	useRadialMenuActions,
 } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { WindowCursorState } from "../../../Contexts/WindowStates";
 import { RadialMenuOption } from "@/components/(SPECIAL)/components/RadialMenu/types";
@@ -24,7 +24,6 @@ import {
 	setVttElementDataAttributes,
 	VttElementDataAttribute,
 } from "../../../Utils/ElementDataAttributeUtils";
-import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledViewportContext";
 import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import { DEFAULT_GRID_CELL_SIZE } from "../../../Contexts/VttGridProvider";
 import {
@@ -33,6 +32,8 @@ import {
 } from "../../../Hooks/useVttResourceDrag";
 import { VttGridMap } from "../../../Types/Classes/VttGridMap";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
+import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledViewportContext";
+import { VTTGRIDMAP_RENDER_THROTTLE } from "./VttGridMapElementWrapper";
 
 const VttGridMapElementContainer = newStyledElement.div(
 	styles.vttGridMapElementContainer,
@@ -133,18 +134,24 @@ function getGridMapSnap(
 interface VttGridMapElementProps {
 	vttGridMap: VttGridMap;
 }
-export const VttGridMapElement = memo(function VttGridMapElement({
-	vttGridMap,
-}: VttGridMapElementProps) {
-	const { worldToScreen, camera } = useVttThrottledViewportContext(32);
-	const { activeLayer } = useVttBoardLayerContext();
-	const { send, subscribe } = useVttContext();
-	const radialMenu = useRadialMenu();
-
+export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
+	const { openNew: openNewRadialMenu } = useRadialMenuActions();
+	const isActiveLayer = useVttBoardLayerContext((state) =>
+		state.isLayerActive(VttBoardLayer.GridMap),
+	);
+	const send = useVttContext((state) => state.send);
+	const subscribe = useVttContext((state) => state.subscribe);
+	const worldToScreen = useVttThrottledViewportContext(
+		(state) => state.worldToScreen,
+		VTTGRIDMAP_RENDER_THROTTLE,
+	);
+	const camera = useVttThrottledViewportContext(
+		(state) => state.camera,
+		VTTGRIDMAP_RENDER_THROTTLE,
+	);
 	const vttGridMapRef = useRef(vttGridMap);
 	vttGridMapRef.current = vttGridMap;
 
-	const isActiveInLayer = activeLayer == VttBoardLayer.GridMap;
 	const gridMap = vttGridMap.gridMap;
 	const transform = vttGridMap.transform;
 	const dragResourceLock = vttGridMap.resourceLocks.find(
@@ -154,7 +161,7 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 	const drag = useVttResourceDrag({
 		coordinates: vttGridMap.coordinates,
 		resourceLock: dragResourceLock,
-		enabled: isActiveInLayer,
+		enabled: isActiveLayer,
 		snap: useMemo(
 			() =>
 				getGridMapSnap(
@@ -206,7 +213,12 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 			});
 		},
 		onLongPress: () => {
-			openRadialMenu(vttGridMapRef, send, radialMenu, drag.snapCoordinates);
+			openRadialMenu(
+				vttGridMapRef,
+				send,
+				openNewRadialMenu,
+				drag.snapCoordinates,
+			);
 		},
 	});
 
@@ -235,7 +247,7 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 					VttElementDataAttribute.EventZoom,
 					VttElementDataAttribute.EventMiddleButtonPan,
 				)}
-				className={isActiveInLayer ? styles.activeLayer : undefined}
+				className={isActiveLayer ? styles.activeLayer : undefined}
 				style={{
 					left,
 					top,
@@ -257,7 +269,12 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 				onContextMenu={(event) => {
 					event.preventDefault();
 					drag.clearLongPress();
-					openRadialMenu(vttGridMapRef, send, radialMenu, drag.snapCoordinates);
+					openRadialMenu(
+						vttGridMapRef,
+						send,
+						openNewRadialMenu,
+						drag.snapCoordinates,
+					);
 				}}>
 				<BasicMedia
 					src={gridMap.imageUrl}
@@ -270,7 +287,7 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 					}}
 				/>
 			</VttGridMapElementContainer>
-			{isActiveInLayer && (
+			{isActiveLayer && (
 				<VttGridMapCoordinateIndicator
 					style={{
 						left: position.x,
@@ -285,12 +302,12 @@ export const VttGridMapElement = memo(function VttGridMapElement({
 			)}
 		</>
 	);
-});
+}
 
 function openRadialMenu(
 	vttGridMapRef: React.RefObject<VttGridMap>,
 	send: (message: VttInputMessage) => void,
-	radialMenu: RadialMenuContext,
+	openNewRadialMenu: (props: RadialMenuData) => void,
 	snapCoordinates: (
 		coordinates: CoordinatePair,
 		snap?: VttResourceDragSnap,
@@ -299,7 +316,7 @@ function openRadialMenu(
 	const vttGridMap = vttGridMapRef.current;
 	if (!vttGridMap) return;
 
-	radialMenu.openNew({
+	openNewRadialMenu({
 		id: vttGridMap.id,
 		name: "GridMap",
 		screenPosition: { x: WindowCursorState.x, y: WindowCursorState.y },

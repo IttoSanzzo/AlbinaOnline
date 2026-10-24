@@ -10,9 +10,11 @@ import { VttElementDataAttribute } from "../ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../../Types/Classes/VttMouseState";
 
 export function useMiddleButtonCameraPan() {
-	const { interaction } = useVttInteractionContext();
+	const interaction = useVttInteractionContext((state) => state.interaction);
+	const setHoverInteractionType = useVttInteractionContext(
+		(state) => state.setHoverInteractionType,
+	);
 	const { moveCamera, camera } = useVttViewportContext();
-	const { setHoverInteractionType } = useVttInteractionContext();
 	const zoomRef = useRef(camera.zoom);
 
 	zoomRef.current = camera.zoom;

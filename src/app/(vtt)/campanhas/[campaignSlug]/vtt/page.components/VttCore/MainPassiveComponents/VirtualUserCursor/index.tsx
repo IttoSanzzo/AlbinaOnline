@@ -10,7 +10,7 @@ import { createPortal } from "react-dom";
 
 export function VirtualUserCursor() {
 	const { user, loading } = useCurrentUser();
-	const { interaction } = useVttInteractionContext();
+	const interaction = useVttInteractionContext((state) => state.interaction);
 	const { screenToWorld } = useVttViewportContext();
 
 	const [mouseState, setMouseState] = useState<VttMouseState>({

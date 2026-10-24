@@ -63,7 +63,10 @@ export function ChatTextInput({
 	members,
 	allChatMessages,
 }: ChatTextInputProps) {
-	const { setInteraction, interaction } = useVttInteractionContext();
+	const setInteraction = useVttInteractionContext(
+		(state) => state.setInteraction,
+	);
+	const interaction = useVttInteractionContext((state) => state.interaction);
 	const { screenToWorld } = useVttViewportContext();
 	const { user } = useCurrentUser();
 	const [isGifSelectorOpen, setIsGifSelectorOpen] = useState(false);

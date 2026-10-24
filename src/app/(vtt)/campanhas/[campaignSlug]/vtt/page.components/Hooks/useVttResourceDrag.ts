@@ -151,9 +151,16 @@ export function useVttResourceDrag({
 	onDragCancel,
 	onLongPress,
 }: UseVttResourceDragOptions): UseVttResourceDragResult {
-	const { screenToWorld } = useVttThrottledViewportContext(16);
-	const { setHoverInteractionType, setEdgeScrollOverride } =
-		useVttInteractionContext();
+	const screenToWorld = useVttThrottledViewportContext(
+		(state) => state.screenToWorld,
+		16,
+	);
+	const setHoverInteractionType = useVttInteractionContext(
+		(state) => state.setHoverInteractionType,
+	);
+	const setEdgeScrollOverride = useVttInteractionContext(
+		(state) => state.setEdgeScrollOverride,
+	);
 	const { user } = useCurrentUser();
 
 	const [dragCoordinates, setDragCoordinates] = useState(sourceCoordinates);

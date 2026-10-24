@@ -16,10 +16,15 @@ const ClientCursorsRenderer = newStyledElement.div(
 let lastMouseStateSentAt = 0;
 
 export function CursorSyncronizer() {
-	const { vttId, subscribe, send } = useVttContext();
+	const vttId = useVttContext((state) => state.vttId);
+	const subscribe = useVttContext((state) => state.subscribe);
+	const send = useVttContext((state) => state.send);
 	const { loading, user } = useCurrentUser();
 	const { screenToWorld, worldToScreen, viewport } = useVttViewportContext();
-	const { interaction, hoverInteractionType } = useVttInteractionContext();
+	const interaction = useVttInteractionContext((state) => state.interaction);
+	const hoverInteractionType = useVttInteractionContext(
+		(state) => state.hoverInteractionType,
+	);
 	const [cursorsState, setCursorsState] = useState<Map<Guid, VttMouseState>>(
 		new Map<Guid, VttMouseState>(),
 	);
@@ -28,7 +33,6 @@ export function CursorSyncronizer() {
 		y: viewport.height / 2,
 	});
 
-	if (!vttId) return null;
 	function sendMouseState() {
 		const now = performance.now();
 		if (now - lastMouseStateSentAt < 75) return;
@@ -51,13 +55,14 @@ export function CursorSyncronizer() {
 
 	useEffect(() => {
 		if (!vttId) return;
-		subscribe("MouseStates", (message) => {
+
+		return subscribe("MouseStates", (message) => {
 			const states = message.data as Record<Guid, VttMouseState>;
 			setCursorsState(
 				new Map(Object.entries(states) as [Guid, VttMouseState][]),
 			);
 		});
-	}, [vttId, subscribe, setCursorsState]);
+	}, [vttId, subscribe]);
 
 	useEffect(() => {
 		if (!vttId) return;
@@ -83,7 +88,7 @@ export function CursorSyncronizer() {
 	return (
 		<ClientCursorsRenderer>
 			{Array.from(cursorsState.entries())
-				.filter(([userId]) => userId != user.id)
+				.filter(([userId]) => userId !== user.id)
 				.map(([userId, mouseState]) => {
 					const screenPosition = worldToScreen({
 						x: mouseState.x,

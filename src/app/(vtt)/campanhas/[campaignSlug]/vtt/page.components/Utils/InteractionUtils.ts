@@ -9,7 +9,9 @@ import { VttElementDataAttribute } from "./ElementDataAttributeUtils";
 const ATTRIBUTE_NAME = VttElementDataAttribute.CursorHoverInteractionType;
 
 export function useCursorHoverInteraction() {
-	const { setHoverInteractionType } = useVttInteractionContext();
+	const setHoverInteractionType = useVttInteractionContext(
+		(state) => state.setHoverInteractionType,
+	);
 
 	useEffect(() => {
 		const handleMouseOver = (event: MouseEvent) => {
