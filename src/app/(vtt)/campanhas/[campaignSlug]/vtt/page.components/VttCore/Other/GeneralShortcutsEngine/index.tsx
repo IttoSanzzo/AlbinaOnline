@@ -3,9 +3,11 @@ import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
 } from "../../../Contexts/VttBoardLayerContext";
+import { useCurrentCampaignMember } from "@/libs/stp@hooks";
 
 export const GeneralShortcutsEngine = memo(function GeneralShortcutsEngine() {
 	const activeLayer = useVttBoardLayerContext((state) => state.activeLayer);
+	const { isMaster } = useCurrentCampaignMember();
 	const setActiveLayer = useVttBoardLayerContext(
 		(state) => state.setActiveLayer,
 	);
@@ -21,7 +23,7 @@ export const GeneralShortcutsEngine = memo(function GeneralShortcutsEngine() {
 					if (event.ctrlKey) event.preventDefault();
 					break;
 				case "Digit1":
-					if (activeLayer != VttBoardLayer.GridMap)
+					if (activeLayer != VttBoardLayer.GridMap && isMaster)
 						setActiveLayer(VttBoardLayer.GridMap);
 					break;
 				case "Digit2":
