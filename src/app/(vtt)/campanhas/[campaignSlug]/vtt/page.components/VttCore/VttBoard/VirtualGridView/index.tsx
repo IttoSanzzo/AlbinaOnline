@@ -2,7 +2,10 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import {
+	PIXELS_PER_CENTIMETER,
+	useVttViewportStore,
+} from "../../../Contexts/VttViewportContextProvider";
 import {
 	DEFAULT_GRID_CELL_SIZE,
 	useVttGridContext,
@@ -13,12 +16,14 @@ const VttGridContainer = newStyledElement.div(styles.vttGridContainer);
 
 export function VirtualGridView() {
 	const { grid } = useVttGridContext();
-	const { viewport, camera, pixelsPerCentimeter } = useVttViewportContext();
-	const cellSize = DEFAULT_GRID_CELL_SIZE * pixelsPerCentimeter * camera.zoom;
+	const viewport = useVttViewportStore((state) => state.viewport);
+	const camera = useVttViewportStore((state) => state.camera);
+
+	const cellSize = DEFAULT_GRID_CELL_SIZE * PIXELS_PER_CENTIMETER * camera.zoom;
 	const originX =
-		viewport.width / 2 - camera.x * pixelsPerCentimeter * camera.zoom;
+		viewport.width / 2 - camera.x * PIXELS_PER_CENTIMETER * camera.zoom;
 	const originY =
-		viewport.height / 2 - camera.y * pixelsPerCentimeter * camera.zoom;
+		viewport.height / 2 - camera.y * PIXELS_PER_CENTIMETER * camera.zoom;
 
 	return (
 		<VttGridContainer>

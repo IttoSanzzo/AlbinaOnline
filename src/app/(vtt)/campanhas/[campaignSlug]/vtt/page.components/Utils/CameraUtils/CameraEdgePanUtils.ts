@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
 import {
 	PIXELS_PER_CENTIMETER,
-	useVttViewportContext,
+	useVttViewportStore,
 } from "../../Contexts/VttViewportContextProvider";
 
 const EDGE_SIZE = 50;
@@ -13,7 +13,9 @@ const UPDATE_INTERVAL = 33;
 
 export function useEdgeCameraPan() {
 	const interaction = useVttInteractionContext((state) => state.interaction);
-	const { moveCamera, camera, viewport } = useVttViewportContext();
+	const moveCamera = useVttViewportStore((state) => state.moveCamera);
+	const camera = useVttViewportStore((state) => state.camera);
+	const viewport = useVttViewportStore((state) => state.viewport);
 
 	const mousePosition = useRef({
 		x: viewport.width / 2,

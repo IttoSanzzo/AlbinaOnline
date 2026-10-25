@@ -5,7 +5,10 @@ import {
 	VttMouseState,
 } from "../../../Types/Classes/VttMouseState";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import {
+	PIXELS_PER_CENTIMETER,
+	useVttViewportStore,
+} from "../../../Contexts/VttViewportContextProvider";
 import { useRef } from "react";
 import { CursorSvg } from "./CursorSvg";
 import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
@@ -57,7 +60,8 @@ export function OffScreenCursor({
 	screenPosition,
 	onClick,
 }: OffScreenCursorProps) {
-	const { viewport, pixelsPerCentimeter, camera } = useVttViewportContext();
+	const viewport = useVttViewportStore((state) => state.viewport);
+	const camera = useVttViewportStore((state) => state.camera);
 
 	const previousAngle = useRef<number | null>(null);
 	const centerX = viewport.width / 2;
@@ -98,7 +102,7 @@ export function OffScreenCursor({
 	const screenDistance = Math.sqrt(
 		screenDistanceX * screenDistanceX + screenDistanceY * screenDistanceY,
 	);
-	const distance = screenDistance / (pixelsPerCentimeter * camera.zoom);
+	const distance = screenDistance / (PIXELS_PER_CENTIMETER * camera.zoom);
 	let infoTransform: string;
 	if (hitHorizontalEdge) {
 		if (directionX < 0) {

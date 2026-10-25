@@ -32,12 +32,18 @@ export async function postDiceRoll(
 		saveToHistory: boolean;
 	} = { showToast: false, saveToHistory: false },
 ): Promise<DiceResults | null> {
+	const vttBeacon = localStorage.getItem("VttDiceBeaconId");
 	const response = await authenticatedFetchAsync(
 		getAlbinaApiFullAddress("/peer-out/ChariotSanzzo/peer-in/dice-roller"),
 		{
 			method: "POST",
 			body: JSON.stringify({
 				diceExpression: diceExpression,
+			}),
+			...(vttBeacon && {
+				headers: {
+					VttBeacon: vttBeacon,
+				},
 			}),
 		},
 	);

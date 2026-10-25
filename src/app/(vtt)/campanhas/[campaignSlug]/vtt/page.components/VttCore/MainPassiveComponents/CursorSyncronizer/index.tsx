@@ -6,7 +6,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttMouseState } from "../../../Types/Classes/VttMouseState";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { ClientCursor } from "./ClientCursor";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
 
 const ClientCursorsRenderer = newStyledElement.div(
@@ -20,7 +20,9 @@ export function CursorSyncronizer() {
 	const subscribe = useVttContext((state) => state.subscribe);
 	const send = useVttContext((state) => state.send);
 	const { loading, user } = useCurrentUser();
-	const { screenToWorld, worldToScreen, viewport } = useVttViewportContext();
+	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
+	const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
+	const viewport = useVttViewportStore((state) => state.viewport);
 	const interaction = useVttInteractionContext((state) => state.interaction);
 	const hoverInteractionType = useVttInteractionContext(
 		(state) => state.hoverInteractionType,

@@ -11,6 +11,7 @@ import { VttOperationMethod } from "../../../Types/Static/VttOperationMethod";
 interface VttCommandLineHandlerProps {
 	text: string;
 	userId: Guid;
+	vttId: Guid;
 	messageToReplyId?: Guid;
 	messageToReply?: VttChatMessage;
 	members: CampaignMember[];
@@ -21,6 +22,7 @@ interface VttCommandLineHandlerProps {
 export async function VttCommandLineHandler({
 	text,
 	userId,
+	vttId,
 	messageToReply,
 	messageToReplyId,
 	members,
@@ -41,6 +43,10 @@ export async function VttCommandLineHandler({
 		url.pathname = url.pathname.replace(/\/[^/]+\/?$/, "") || "/";
 		window.location.href = url.toString();
 		return { shouldReset: false };
+	}
+	if (text.startsWith("/beacon")) {
+		localStorage.setItem("VttDiceBeaconId", vttId);
+		return { shouldReset: true };
 	}
 	if (text.startsWith("/r")) {
 		const message = allChatMessages.findLast(

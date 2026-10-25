@@ -2,7 +2,7 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../Contexts/VttViewportContextProvider";
 import styles from "./CameraControls.module.css";
 import { DEFAULT_GRID_CELL_SIZE } from "../../Contexts/VttGridProvider";
 import { useEffect } from "react";
@@ -18,7 +18,9 @@ const Separator = newStyledElement.span(styles.separator);
 const SWITCH_EDGE_PAN_KEY = "p";
 
 export function CameraControls() {
-	const { camera, resetPosition, resetZoom } = useVttViewportContext();
+	const camera = useVttViewportStore((state) => state.camera);
+	const resetPosition = useVttViewportStore((state) => state.resetPosition);
+	const resetZoom = useVttViewportStore((state) => state.resetZoom);
 	const interaction = useVttInteractionContext((state) => state.interaction);
 	const setInteraction = useVttInteractionContext(
 		(state) => state.setInteraction,

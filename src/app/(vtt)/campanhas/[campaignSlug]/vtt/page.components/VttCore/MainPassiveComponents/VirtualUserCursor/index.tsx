@@ -2,7 +2,7 @@
 
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import { ClientCursor } from "../CursorSyncronizer/ClientCursor";
 import { useEffect, useState } from "react";
 import { VttMouseState } from "../../../Types/Classes/VttMouseState";
@@ -11,7 +11,7 @@ import { createPortal } from "react-dom";
 export function VirtualUserCursor() {
 	const { user, loading } = useCurrentUser();
 	const interaction = useVttInteractionContext((state) => state.interaction);
-	const { screenToWorld } = useVttViewportContext();
+	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
 
 	const [mouseState, setMouseState] = useState<VttMouseState>({
 		type: interaction.type,

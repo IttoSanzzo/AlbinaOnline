@@ -399,10 +399,3 @@ export function useVttViewportStore<T>(
 ): T {
 	return useStore(useVttViewportStoreApi(), selector);
 }
-
-/**
- * Compatibility hook. Prefer useVttViewportStore(selector) for granular subscriptions.
- */
-export function useVttViewportContext(): VttViewportState {
-	return useVttViewportStore((state) => state);
-}

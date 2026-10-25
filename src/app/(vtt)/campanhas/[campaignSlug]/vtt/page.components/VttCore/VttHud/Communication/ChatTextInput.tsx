@@ -20,9 +20,10 @@ import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttribu
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { VttCommandLineHandler } from "./VttCommandLineHandler";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import { useCurrentUser } from "@/libs/stp@hooks";
 import { KlipyGifSelector } from "./KlipyGifSelector";
+import { useVttContext } from "../../../Contexts/VttContextProvider";
 
 const ChatTextInputContainer = newStyledElement.div(
 	styles.chatTextInputContainer,
@@ -66,8 +67,9 @@ export function ChatTextInput({
 	const setInteraction = useVttInteractionContext(
 		(state) => state.setInteraction,
 	);
+	const vttId = useVttContext((state) => state.vttId!);
 	const interaction = useVttInteractionContext((state) => state.interaction);
-	const { screenToWorld } = useVttViewportContext();
+	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
 	const { user } = useCurrentUser();
 	const [isGifSelectorOpen, setIsGifSelectorOpen] = useState(false);
 	const chatInputRef = useRef<HTMLTextAreaElement>(null);
@@ -91,6 +93,7 @@ export function ChatTextInput({
 			const result = await VttCommandLineHandler({
 				text: data.message,
 				userId: user?.id ?? Guid.Empty,
+				vttId: vttId,
 				messageToReplyId: messageToReplyId,
 				messageToReply: messageToReply,
 				members: members,

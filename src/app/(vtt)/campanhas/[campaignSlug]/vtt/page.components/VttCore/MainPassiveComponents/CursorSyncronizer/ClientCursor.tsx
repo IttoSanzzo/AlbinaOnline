@@ -8,7 +8,7 @@ import {
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { CursorSvg } from "./CursorSvg";
 import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import { useMemo } from "react";
 import { OffScreenCursor } from "./OffScreenCursor";
 import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
@@ -34,8 +34,12 @@ export function ClientCursor({
 	isActiveUser = false,
 }: ClientCursorProps) {
 	const { members } = useVttMembersContext();
-	const { isVisible, viewport, camera, setCameraPosition } =
-		useVttViewportContext();
+	const isVisible = useVttViewportStore((state) => state.isVisible);
+	const viewport = useVttViewportStore((state) => state.viewport);
+	const camera = useVttViewportStore((state) => state.camera);
+	const setCameraPosition = useVttViewportStore(
+		(state) => state.setCameraPosition,
+	);
 	const hoverInteractionType = useVttInteractionContext(
 		(state) => state.hoverInteractionType,
 	);

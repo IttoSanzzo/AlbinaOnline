@@ -9,7 +9,7 @@ import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
 import {
 	PIXELS_PER_CENTIMETER,
-	useVttViewportContext,
+	useVttViewportStore,
 	VttViewportContextProvider,
 } from "../Contexts/VttViewportContextProvider";
 import { VttInteractionContextProvider } from "../Contexts/VttInteractionContextProvider";
@@ -116,7 +116,8 @@ const VttCoreEngine = memo(function VttCoreEngine() {
 const TestContainer = newStyledElement.div(styles.testContainer);
 
 function TestZone() {
-	const { camera, worldToScreen } = useVttViewportContext();
+	const camera = useVttViewportStore((state) => state.camera);
+	const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
 	// const { setInteraction } = useVttInteractionContext();
 	// const { subscribe } = useVttContext();
 	// const [vttResultsTest, setVttResultsTest] = useState<string>("");

@@ -9,7 +9,7 @@ import {
 	RadialMenuSubmitProps,
 } from "@/components/(SPECIAL)/components/RadialMenu/types";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
-import { useVttViewportContext } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import { Guid } from "@/libs/stp@types";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { roundCoordinate } from "../../../Utils/CoodinateUtils";
@@ -148,8 +148,11 @@ export function PingEngine() {
 	const { openNew: openNewRadialMenu } = useRadialMenuActions();
 	const send = useVttContext((state) => state.send);
 	const subscribe = useVttContext((state) => state.subscribe);
-	const { screenToWorld, worldToScreen, setCameraPosition } =
-		useVttViewportContext();
+	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
+	const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
+	const setCameraPosition = useVttViewportStore(
+		(state) => state.setCameraPosition,
+	);
 	const { members } = useVttMembersContext();
 	const { play } = useVttAudioController();
 	const [pings, setPings] = useState<Ping[]>([]);

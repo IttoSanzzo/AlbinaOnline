@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
 import {
 	PIXELS_PER_CENTIMETER,
-	useVttViewportContext,
+	useVttViewportStore,
 } from "../../Contexts/VttViewportContextProvider";
 import { VttElementDataAttribute } from "../ElementDataAttributeUtils";
 import { VttCursorInteractionType } from "../../Types/Classes/VttMouseState";
@@ -14,7 +14,8 @@ export function useMiddleButtonCameraPan() {
 	const setHoverInteractionType = useVttInteractionContext(
 		(state) => state.setHoverInteractionType,
 	);
-	const { moveCamera, camera } = useVttViewportContext();
+	const moveCamera = useVttViewportStore((state) => state.moveCamera);
+	const camera = useVttViewportStore((state) => state.camera);
 	const zoomRef = useRef(camera.zoom);
 
 	zoomRef.current = camera.zoom;

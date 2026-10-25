@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useVttViewportContext } from "../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../Contexts/VttViewportContextProvider";
 import {
 	hasAttribute,
 	VttElementDataAttribute,
 } from "../ElementDataAttributeUtils";
 
 export function useWheelCameraZoom() {
-	const { zoomAt, resetZoom, camera, resetPosition } = useVttViewportContext();
+	const zoomAt = useVttViewportStore((state) => state.zoomAt);
+	const resetZoom = useVttViewportStore((state) => state.resetZoom);
+	const camera = useVttViewportStore((state) => state.camera);
+	const resetPosition = useVttViewportStore((state) => state.resetPosition);
 	const zoomRef = useRef(camera.zoom);
 	zoomRef.current = camera.zoom;
 
