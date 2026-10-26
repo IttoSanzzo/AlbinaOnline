@@ -57,23 +57,26 @@ export function VttTokenStoreSync() {
 			subscribe("VttTokenDragUpdate", (event) => {
 				const payload = event.data as {
 					vttTokenId: Guid;
+					sceneId: Guid;
 					coordinates: CoordinatePair;
 				};
-				updateDrag(payload.vttTokenId, payload.coordinates);
+				updateDrag(payload.vttTokenId, payload.sceneId, payload.coordinates);
 			}),
 			subscribe("VttTokenDragEnded", (event) => {
 				const payload = event.data as {
 					vttTokenId: Guid;
+					sceneId: Guid;
 					coordinates: CoordinatePair;
 				};
-				endDrag(payload.vttTokenId, payload.coordinates);
+				endDrag(payload.vttTokenId, payload.sceneId, payload.coordinates);
 			}),
 			subscribe("VttTokenDragCanceled", (event) => {
 				const payload = event.data as {
 					vttTokenId: Guid;
+					sceneId: Guid;
 					coordinates: CoordinatePair;
 				};
-				cancelDrag(payload.vttTokenId, payload.coordinates);
+				cancelDrag(payload.vttTokenId, payload.sceneId);
 			}),
 		];
 
