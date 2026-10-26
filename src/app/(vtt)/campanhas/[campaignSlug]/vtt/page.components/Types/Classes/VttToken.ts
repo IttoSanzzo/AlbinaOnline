@@ -3,6 +3,22 @@ import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { VttGenericTransform } from "./VttGenericTransform";
 import { VttLockableResource } from "./VttLockableResouce";
 
+export interface RawVttToken {
+	id: Guid;
+	vttId: Guid;
+	ownerId?: Guid;
+	permitList: Guid[];
+	type: keyof typeof VttTokenType;
+	name?: string;
+	placements: VttTokenPlacement[];
+	resourceLocks: VttLockableResource[];
+	createdAt: string;
+	updatedAt?: string;
+
+	TargetId: Guid;
+	Target: CharacterData | ItemData | CreatureData;
+}
+
 export interface VttToken {
 	id: Guid;
 	vttId: Guid;
@@ -10,15 +26,13 @@ export interface VttToken {
 	permitList: Guid[];
 	type: keyof typeof VttTokenType;
 	name?: string;
-	vttTokenPlacement: VttTokenPlacement[];
+	placements: Map<Guid, VttTokenPlacement>;
 	resourceLocks: VttLockableResource[];
+	createdAt: string;
+	updatedAt?: string;
 
 	TargetId: Guid;
 	Target: CharacterData | ItemData | CreatureData;
-}
-
-export interface VttTokenWithScenePlacement extends VttToken {
-	scenePlacement: VttTokenPlacement;
 }
 
 export enum VttTokenType {

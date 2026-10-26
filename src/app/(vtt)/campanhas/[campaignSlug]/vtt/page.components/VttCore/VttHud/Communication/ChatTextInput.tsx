@@ -21,7 +21,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
 import { VttCommandLineHandler } from "./VttCommandLineHandler";
 import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 import { KlipyGifSelector } from "./KlipyGifSelector";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 
@@ -70,7 +70,12 @@ export function ChatTextInput({
 	const vttId = useVttContext((state) => state.vttId!);
 	const interaction = useVttInteractionContext((state) => state.interaction);
 	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
-	const { user } = useCurrentUser();
+	const isMaster = useCurrentCampaignMemberStore(
+		(state) => state.isMaster ?? false,
+	);
+	const userId = useCurrentCampaignMemberStore(
+		(state) => state.member?.userId ?? Guid.Empty,
+	);
 	const [isGifSelectorOpen, setIsGifSelectorOpen] = useState(false);
 	const chatInputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -92,7 +97,7 @@ export function ChatTextInput({
 			if (data.message.trim().length == 0) return;
 			const result = await VttCommandLineHandler({
 				text: data.message,
-				userId: user?.id ?? Guid.Empty,
+				userId: userId,
 				vttId: vttId,
 				messageToReplyId: messageToReplyId,
 				messageToReply: messageToReply,
@@ -100,6 +105,7 @@ export function ChatTextInput({
 				send: send,
 				screenToWorld: screenToWorld,
 				allChatMessages: allChatMessages,
+				isMaster: isMaster,
 			});
 			shouldReset = result.shouldReset ?? false;
 			if (result.path && result.method)

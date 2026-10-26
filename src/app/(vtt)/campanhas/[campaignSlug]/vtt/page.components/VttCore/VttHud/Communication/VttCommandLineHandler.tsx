@@ -18,6 +18,7 @@ interface VttCommandLineHandlerProps {
 	send: (message: VttInputMessage) => void;
 	screenToWorld: (position: CoordinatePair) => CoordinatePair;
 	allChatMessages: VttChatMessage[];
+	isMaster: boolean;
 }
 export async function VttCommandLineHandler({
 	text,
@@ -29,6 +30,7 @@ export async function VttCommandLineHandler({
 	send,
 	screenToWorld,
 	allChatMessages,
+	isMaster,
 }: VttCommandLineHandlerProps): Promise<{
 	path?: string;
 	method?: VttOperationMethod;
@@ -46,6 +48,32 @@ export async function VttCommandLineHandler({
 	}
 	if (text.startsWith("/beacon")) {
 		localStorage.setItem("VttDiceBeaconId", vttId);
+		return { shouldReset: true };
+	}
+	if (text.startsWith("/debug-send")) {
+		if (!isMaster) return { shouldReset: true };
+		try {
+			const match = text.match(
+				/^\/debug-send\s+(post|put|patch|delete|get)\s+(\/\S+)\s+(\{[\s\S]*\})(?:\s+(\S+))?\s*$/i,
+			);
+			if (!match) {
+				console.error("Usage: /debug-send <method> <path> <json-data> [id]");
+				return { shouldReset: false };
+			}
+
+			const [, method, path, jsonData, providedId] = match;
+			const data = JSON.parse(jsonData);
+			const sendPayload = {
+				id: providedId ? Guid.ParseOrThrow(providedId) : Guid.NewGuid(),
+				path,
+				method: method.toUpperCase() as VttOperationMethod,
+				data,
+			};
+			console.log(sendPayload);
+			send(sendPayload);
+		} catch (error) {
+			console.error("Failed to parse /debug-send command:", error);
+		}
 		return { shouldReset: true };
 	}
 	if (text.startsWith("/r")) {
