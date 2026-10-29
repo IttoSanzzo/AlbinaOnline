@@ -2,6 +2,7 @@
 	position: absolute;
 	outline: 6px solid transparent;
 	transition: 0.25s linear outline;
+	transform-origin: center center;
 
 	&.activeLayer {
 		outline: 6px solid var(--cl-gray-300);

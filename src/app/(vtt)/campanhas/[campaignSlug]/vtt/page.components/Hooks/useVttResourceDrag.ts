@@ -12,7 +12,7 @@ import { useVttInteractionContext } from "../Contexts/VttInteractionContextProvi
 import { VttCursorInteractionType } from "../Types/Classes/VttMouseState";
 import { VttResourceLockDto } from "../Types/Classes/VttResourceLock";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { useCurrentUser } from "@/libs/stp@hooks";
+import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 
 const DRAG_THRESHOLD = 5;
 const LONG_PRESS_DURATION = 500;
@@ -20,14 +20,8 @@ const DRAG_UPDATE_INTERVAL = 1000 / 10;
 const REMOTE_INTERPOLATION_DURATION = 100;
 
 export type VttResourceDragSnapOptions =
-	| {
-			type: "vertex";
-			cellSize?: number;
-	  }
-	| {
-			type: "center";
-			cellSize?: number;
-	  }
+	| { type: "vertex"; cellSize?: number }
+	| { type: "center"; cellSize?: number }
 	| {
 			type: "centered";
 			cellSize?: number;
@@ -161,15 +155,17 @@ export function useVttResourceDrag({
 	const setEdgeScrollOverride = useVttInteractionContext(
 		(state) => state.setEdgeScrollOverride,
 	);
-	const { user } = useCurrentUser();
+	const userId = useCurrentCampaignMemberStore((state) => state.member?.userId);
 
 	const [dragCoordinates, setDragCoordinates] = useState(sourceCoordinates);
 	const [visualCoordinates, setVisualCoordinates] = useState(sourceCoordinates);
-	const [isDragging, setIsDragging] = useState(false);
+	const [isPointerDragging, setIsPointerDragging] = useState(false);
 
 	const sourceCoordinatesRef = useRef(sourceCoordinates);
 	const enabledRef = useRef(enabled);
 	const snapRef = useRef(snap);
+	const resourceLockRef = useRef(resourceLock);
+	const userIdRef = useRef(userId);
 	const onDragStartRef = useRef(onDragStart);
 	const onDragUpdateRef = useRef(onDragUpdate);
 	const onDragEndRef = useRef(onDragEnd);
@@ -179,6 +175,8 @@ export function useVttResourceDrag({
 	sourceCoordinatesRef.current = sourceCoordinates;
 	enabledRef.current = enabled;
 	snapRef.current = snap;
+	resourceLockRef.current = resourceLock;
+	userIdRef.current = userId;
 	onDragStartRef.current = onDragStart;
 	onDragUpdateRef.current = onDragUpdate;
 	onDragEndRef.current = onDragEnd;
@@ -209,10 +207,13 @@ export function useVttResourceDrag({
 
 	screenToWorldRef.current = screenToWorld;
 
+	const hasDragLock = resourceLock?.lockType === "drag";
 	const isLocalDragging =
-		resourceLock?.lockType == "drag" && resourceLock.userId == user?.id;
+		hasDragLock && userId != null && resourceLock.userId === userId;
 	const isRemoteDragging =
-		resourceLock?.lockType == "drag" && resourceLock.userId != user?.id;
+		hasDragLock && userId != null && resourceLock.userId !== userId;
+
+	const isDragging = isPointerDragging || isLocalDragging || isRemoteDragging;
 
 	const snapCoordinates = useCallback(
 		(
@@ -222,11 +223,176 @@ export function useVttResourceDrag({
 			applySnap(coordinates, snapOverride ?? snapRef.current),
 		[],
 	);
+
 	const clearLongPress = useCallback(() => {
 		if (longPressTimeoutRef.current === null) return;
 		clearTimeout(longPressTimeoutRef.current);
 		longPressTimeoutRef.current = null;
 	}, []);
+
+	function setDragMousePosition(clientX: number, clientY: number) {
+		dragMousePositionRef.current = { x: clientX, y: clientY };
+	}
+
+	function getDragCoordinates(clientX: number, clientY: number) {
+		const worldPosition = screenToWorldRef.current({
+			x: clientX,
+			y: clientY,
+		});
+		return {
+			x: Math.round(worldPosition.x + dragOffsetRef.current.x),
+			y: Math.round(worldPosition.y + dragOffsetRef.current.y),
+		};
+	}
+
+	function preventNativeSelection(event: Event) {
+		if (!dragStartedRef.current) return;
+		event.preventDefault();
+		window.getSelection()?.removeAllRanges();
+	}
+
+	function preventNativeDrag(event: DragEvent) {
+		if (!dragStartedRef.current) return;
+		event.preventDefault();
+	}
+
+	function preventSelection() {
+		if (previousDocumentUserSelectRef.current !== null) return;
+
+		previousDocumentUserSelectRef.current =
+			document.documentElement.style.userSelect;
+		previousBodyUserSelectRef.current = document.body.style.userSelect;
+		document.documentElement.style.userSelect = "none";
+		document.body.style.userSelect = "none";
+		window.addEventListener("selectstart", preventNativeSelection);
+		window.addEventListener("dragstart", preventNativeDrag);
+		window.getSelection()?.removeAllRanges();
+	}
+
+	function restoreUserSelect() {
+		if (previousDocumentUserSelectRef.current === null) return;
+
+		document.documentElement.style.userSelect =
+			previousDocumentUserSelectRef.current;
+		document.body.style.userSelect = previousBodyUserSelectRef.current ?? "";
+		window.removeEventListener("selectstart", preventNativeSelection);
+		window.removeEventListener("dragstart", preventNativeDrag);
+		previousDocumentUserSelectRef.current = null;
+		previousBodyUserSelectRef.current = null;
+		window.getSelection()?.removeAllRanges();
+	}
+
+	function updateDrag(clientX: number, clientY: number, force = false) {
+		const nextCoordinates = getDragCoordinates(clientX, clientY);
+		setDragCoordinates(nextCoordinates);
+
+		const now = performance.now();
+		if (!force && now - lastDragUpdateRef.current < DRAG_UPDATE_INTERVAL)
+			return;
+
+		lastDragUpdateRef.current = now;
+		onDragUpdateRef.current?.(nextCoordinates);
+	}
+
+	function updateDragFromCurrentPointer() {
+		if (!dragStartedRef.current) return;
+
+		updateDrag(dragMousePositionRef.current.x, dragMousePositionRef.current.y);
+		dragAnimationFrameRef.current = requestAnimationFrame(
+			updateDragFromCurrentPointer,
+		);
+	}
+
+	function removeWindowDragListeners() {
+		window.removeEventListener("pointermove", handleWindowPointerMove);
+		window.removeEventListener("pointerup", handleWindowPointerUp);
+		window.removeEventListener("pointercancel", handleWindowPointerCancel);
+	}
+
+	function finishPointer() {
+		clearLongPress();
+		removeWindowDragListeners();
+
+		if (dragAnimationFrameRef.current !== null) {
+			cancelAnimationFrame(dragAnimationFrameRef.current);
+			dragAnimationFrameRef.current = null;
+		}
+
+		pointerIdRef.current = null;
+		dragStartedRef.current = false;
+		setIsPointerDragging(false);
+		longPressTriggeredRef.current = false;
+		setHoverInteractionType(null);
+		setEdgeScrollOverride(null);
+		restoreUserSelect();
+	}
+
+	function startDrag() {
+		clearLongPress();
+		dragStartedRef.current = true;
+		setIsPointerDragging(true);
+		setHoverInteractionType(VttCursorInteractionType.Hand);
+		setEdgeScrollOverride(true);
+
+		dragStartCoordinatesRef.current = {
+			...sourceCoordinatesRef.current,
+		};
+
+		const cursorWorldPosition = screenToWorldRef.current({
+			x: pointerStartRef.current.x,
+			y: pointerStartRef.current.y,
+		});
+
+		dragOffsetRef.current = {
+			x: sourceCoordinatesRef.current.x - cursorWorldPosition.x,
+			y: sourceCoordinatesRef.current.y - cursorWorldPosition.y,
+		};
+
+		lastDragUpdateRef.current = performance.now();
+		preventSelection();
+		onDragStartRef.current?.();
+		setDragCoordinates(dragStartCoordinatesRef.current);
+
+		dragAnimationFrameRef.current = requestAnimationFrame(
+			updateDragFromCurrentPointer,
+		);
+
+		window.addEventListener("pointermove", handleWindowPointerMove);
+		window.addEventListener("pointerup", handleWindowPointerUp);
+		window.addEventListener("pointercancel", handleWindowPointerCancel);
+	}
+
+	function endDrag(clientX: number, clientY: number) {
+		const finalCoordinates = applySnap(
+			getDragCoordinates(clientX, clientY),
+			snapRef.current,
+		);
+
+		setDragCoordinates(finalCoordinates);
+		onDragEndRef.current?.(finalCoordinates);
+	}
+
+	function handleWindowPointerMove(event: PointerEvent) {
+		if (!dragStartedRef.current || event.pointerId !== pointerIdRef.current)
+			return;
+
+		event.preventDefault();
+		setDragMousePosition(event.clientX, event.clientY);
+	}
+
+	function handleWindowPointerUp(event: PointerEvent) {
+		if (!dragStartedRef.current || event.pointerId !== pointerIdRef.current)
+			return;
+
+		endDrag(event.clientX, event.clientY);
+		finishPointer();
+	}
+
+	function handleWindowPointerCancel(event: PointerEvent) {
+		if (event.pointerId !== pointerIdRef.current) return;
+		cancel();
+	}
+
 	const cancel = useCallback(() => {
 		const wasDragging = dragStartedRef.current;
 		finishPointer();
@@ -234,15 +400,18 @@ export function useVttResourceDrag({
 	}, []);
 
 	useEffect(() => {
-		if (dragStartedRef.current) return;
-		setDragCoordinates(sourceCoordinates);
+		if (!dragStartedRef.current) {
+			setDragCoordinates(sourceCoordinates);
+		}
 	}, [sourceCoordinates]);
+
 	useEffect(() => {
 		if (!isRemoteDragging) {
 			if (remoteAnimationFrameRef.current !== null) {
 				cancelAnimationFrame(remoteAnimationFrameRef.current);
 				remoteAnimationFrameRef.current = null;
 			}
+
 			remoteDragInitializedRef.current = false;
 			visualCoordinatesRef.current = sourceCoordinates;
 			setVisualCoordinates(sourceCoordinates);
@@ -269,167 +438,59 @@ export function useVttResourceDrag({
 			const progress = Math.min(elapsed / REMOTE_INTERPOLATION_DURATION, 1);
 			const from = remoteAnimationFromRef.current;
 			const to = remoteAnimationToRef.current;
-			const coordinates = {
+			const nextCoordinates = {
 				x: Math.round(from.x + (to.x - from.x) * progress),
 				y: Math.round(from.y + (to.y - from.y) * progress),
 			};
-			visualCoordinatesRef.current = coordinates;
-			setVisualCoordinates(coordinates);
+
+			visualCoordinatesRef.current = nextCoordinates;
+			setVisualCoordinates(nextCoordinates);
+
 			if (progress >= 1) {
 				remoteAnimationFrameRef.current = null;
 				return;
 			}
+
 			remoteAnimationFrameRef.current = requestAnimationFrame(animate);
 		};
+
 		remoteAnimationFrameRef.current = requestAnimationFrame(animate);
 	}, [sourceCoordinates, isRemoteDragging]);
+
+	useEffect(() => {
+		if (!enabled && pointerIdRef.current !== null) cancel();
+	}, [enabled, cancel]);
+
 	useEffect(() => {
 		return () => {
 			clearLongPress();
 			removeWindowDragListeners();
+
 			if (dragAnimationFrameRef.current !== null)
 				cancelAnimationFrame(dragAnimationFrameRef.current);
 			if (remoteAnimationFrameRef.current !== null)
 				cancelAnimationFrame(remoteAnimationFrameRef.current);
+
 			restoreUserSelect();
 		};
 	}, []);
 
-	function getDragCoordinates(clientX: number, clientY: number) {
-		const worldPosition = screenToWorldRef.current({
-			x: clientX,
-			y: clientY,
-		});
-		return {
-			x: Math.round(worldPosition.x + dragOffsetRef.current.x),
-			y: Math.round(worldPosition.y + dragOffsetRef.current.y),
-		};
-	}
-	function setDragMousePosition(clientX: number, clientY: number) {
-		dragMousePositionRef.current = {
-			x: clientX,
-			y: clientY,
-		};
-	}
-	function updateDragFromCurrentMouse() {
-		if (!dragStartedRef.current) return;
-		updateDrag(dragMousePositionRef.current.x, dragMousePositionRef.current.y);
-		dragAnimationFrameRef.current = requestAnimationFrame(
-			updateDragFromCurrentMouse,
-		);
-	}
-	function preventSelection() {
-		previousDocumentUserSelectRef.current =
-			document.documentElement.style.userSelect;
-		previousBodyUserSelectRef.current = document.body.style.userSelect;
-		document.documentElement.style.userSelect = "none";
-		document.body.style.userSelect = "none";
-		window.addEventListener("selectstart", preventNativeSelection);
-		window.addEventListener("dragstart", preventNativeDrag);
-		window.getSelection()?.removeAllRanges();
-	}
-	function restoreUserSelect() {
-		if (previousDocumentUserSelectRef.current === null) return;
-		document.documentElement.style.userSelect =
-			previousDocumentUserSelectRef.current;
-		document.body.style.userSelect = previousBodyUserSelectRef.current ?? "";
-		window.removeEventListener("selectstart", preventNativeSelection);
-		window.removeEventListener("dragstart", preventNativeDrag);
-		previousDocumentUserSelectRef.current = null;
-		previousBodyUserSelectRef.current = null;
-		window.getSelection()?.removeAllRanges();
-	}
-	function preventNativeSelection(event: Event) {
-		if (!dragStartedRef.current) return;
-		event.preventDefault();
-		window.getSelection()?.removeAllRanges();
-	}
-	function preventNativeDrag(event: DragEvent) {
-		if (!dragStartedRef.current) return;
-		event.preventDefault();
-	}
-	function startDrag() {
-		clearLongPress();
-		dragStartedRef.current = true;
-		setIsDragging(true);
-		setHoverInteractionType(VttCursorInteractionType.Hand);
-		setEdgeScrollOverride(true);
-		dragStartCoordinatesRef.current = {
-			...sourceCoordinatesRef.current,
-		};
-		const cursorWorldPosition = screenToWorldRef.current({
-			x: pointerStartRef.current.x,
-			y: pointerStartRef.current.y,
-		});
-		dragOffsetRef.current = {
-			x: sourceCoordinatesRef.current.x - cursorWorldPosition.x,
-			y: sourceCoordinatesRef.current.y - cursorWorldPosition.y,
-		};
-		lastDragUpdateRef.current = performance.now();
-		preventSelection();
-		onDragStartRef.current?.();
-		setDragCoordinates(dragStartCoordinatesRef.current);
-		dragAnimationFrameRef.current = requestAnimationFrame(
-			updateDragFromCurrentMouse,
-		);
-		addWindowDragListeners();
-	}
-	function updateDrag(clientX: number, clientY: number) {
-		const coordinates = getDragCoordinates(clientX, clientY);
-		setDragCoordinates(coordinates);
-
-		const now = performance.now();
-		if (now - lastDragUpdateRef.current < DRAG_UPDATE_INTERVAL) return;
-		lastDragUpdateRef.current = now;
-		onDragUpdateRef.current?.(coordinates);
-	}
-	function endDrag(clientX: number, clientY: number) {
-		const coordinates = getDragCoordinates(clientX, clientY);
-		const snappedCoordinates = applySnap(coordinates, snapRef.current);
-		setDragCoordinates(snappedCoordinates);
-		onDragEndRef.current?.(snappedCoordinates);
-	}
-	function finishPointer() {
-		clearLongPress();
-		removeWindowDragListeners();
-		if (dragAnimationFrameRef.current !== null) {
-			cancelAnimationFrame(dragAnimationFrameRef.current);
-			dragAnimationFrameRef.current = null;
-		}
-		pointerIdRef.current = null;
-		dragStartedRef.current = false;
-		setIsDragging(false);
-		longPressTriggeredRef.current = false;
-		setHoverInteractionType(null);
-		setEdgeScrollOverride(null);
-		restoreUserSelect();
-	}
-	function handleWindowMouseMove(event: MouseEvent) {
-		if (!dragStartedRef.current) return;
-		event.preventDefault();
-		setDragMousePosition(event.clientX, event.clientY);
-	}
-	function handleWindowMouseUp(event: MouseEvent) {
-		if (!dragStartedRef.current) return;
-		endDrag(event.clientX, event.clientY);
-		finishPointer();
-	}
-	function addWindowDragListeners() {
-		window.addEventListener("mousemove", handleWindowMouseMove);
-		window.addEventListener("mouseup", handleWindowMouseUp);
-	}
-	function removeWindowDragListeners() {
-		window.removeEventListener("mousemove", handleWindowMouseMove);
-		window.removeEventListener("mouseup", handleWindowMouseUp);
-	}
 	const handlePointerDown = useCallback(
 		(event: ReactPointerEvent<HTMLElement>) => {
+			const lock = resourceLockRef.current;
+			const currentUserId = userIdRef.current;
+
 			if (
 				event.button !== 0 ||
 				!enabledRef.current ||
-				(resourceLock && resourceLock.userId != user?.id)
+				pointerIdRef.current !== null ||
+				(lock != null &&
+					(lock.lockType !== "drag" ||
+						currentUserId == null ||
+						lock.userId !== currentUserId))
 			)
 				return;
+
 			pointerIdRef.current = event.pointerId;
 			pointerStartRef.current = {
 				x: event.clientX,
@@ -442,46 +503,56 @@ export function useVttResourceDrag({
 			dragStartedRef.current = false;
 			longPressTriggeredRef.current = false;
 			clearLongPress();
+
 			longPressTimeoutRef.current = setTimeout(() => {
 				if (pointerIdRef.current !== event.pointerId) return;
 				if (dragStartedRef.current) return;
+
 				longPressTriggeredRef.current = true;
 				onLongPressRef.current?.();
 				pointerIdRef.current = null;
 				clearLongPress();
 			}, LONG_PRESS_DURATION);
 		},
-		[resourceLock, user?.id, clearLongPress],
+		[clearLongPress],
 	);
+
 	const handlePointerMove = useCallback(
 		(event: ReactPointerEvent<HTMLElement>) => {
 			if (pointerIdRef.current !== event.pointerId) return;
-			if (dragStartedRef.current) return;
+			if (dragStartedRef.current || longPressTriggeredRef.current) return;
 
 			const distance = Math.hypot(
 				event.clientX - pointerStartRef.current.x,
 				event.clientY - pointerStartRef.current.y,
 			);
 			if (distance < DRAG_THRESHOLD) return;
-			if (longPressTriggeredRef.current) return;
+
 			event.preventDefault();
 			setDragMousePosition(event.clientX, event.clientY);
 			startDrag();
-			updateDrag(event.clientX, event.clientY);
+			updateDrag(event.clientX, event.clientY, true);
 		},
 		[],
 	);
+
 	const handlePointerUp = useCallback(
 		(event: ReactPointerEvent<HTMLElement>) => {
 			if (pointerIdRef.current !== event.pointerId) return;
-			if (dragStartedRef.current) endDrag(event.clientX, event.clientY);
+
+			if (dragStartedRef.current) {
+				endDrag(event.clientX, event.clientY);
+				finishPointer();
+				return;
+			}
+
 			finishPointer();
 		},
 		[],
 	);
 
 	const renderCoordinates =
-		isDragging || isLocalDragging ? dragCoordinates : visualCoordinates;
+		isPointerDragging || isLocalDragging ? dragCoordinates : visualCoordinates;
 
 	return {
 		coordinates: renderCoordinates,

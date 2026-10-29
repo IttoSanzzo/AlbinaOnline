@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useVisibleSections(ids: string[]) {
 	const [visibleId, setVisibleId] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export function useVisibleSections(ids: string[]) {
 			{
 				rootMargin: "0px 0px -80% 0px",
 				threshold: 0.1,
-			}
+			},
 		);
 
 		const elements = ids
@@ -31,4 +31,23 @@ export function useVisibleSections(ids: string[]) {
 	}, [ids]);
 
 	return visibleId;
+}
+
+export function useRendersPerSecond(): number {
+	const renders = useRef<number[]>([]);
+	const [rendersPerSecond, setRendersPerSecond] = useState(0);
+
+	renders.current.push(Date.now());
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			const now = Date.now();
+			renders.current = renders.current.filter((time) => now - time <= 3000);
+			setRendersPerSecond(renders.current.length / 3);
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, []);
+
+	return rendersPerSecond;
 }

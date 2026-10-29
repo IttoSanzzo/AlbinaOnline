@@ -1,33 +1,29 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./VttTokenElement.module.css";
-import { VttToken, VttTokenPlacement } from "../../../Types/Classes/VttToken";
+import {
+	VttToken,
+	vttTokenCanBeOperatedBy,
+	VttTokenPlacement,
+} from "../../../Types/Classes/VttToken";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledViewportContext";
 import { VTTTOKEN_RENDER_THROTTLE } from "./VttTokenElementWrapper";
-import {
-	RadialMenuData,
-	useRadialMenuActions,
-} from "@/components/(SPECIAL)/components/RadialMenu/Context";
+import { useRadialMenuActions } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
 } from "../../../Contexts/VttBoardLayerContext";
 import { useEffect, useRef } from "react";
-import {
-	useVttResourceDrag,
-	VttResourceDragSnap,
-} from "../../../Hooks/useVttResourceDrag";
+import { useVttResourceDrag } from "../../../Hooks/useVttResourceDrag";
 import { Guid } from "@/libs/stp@types";
-import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
-import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { StandartTextColor } from "@/components/(UIBasics)";
-import { RadialMenuOption } from "@/components/(SPECIAL)/components/RadialMenu/types";
-import { StpIcon } from "@/libs/stp@icons";
 import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvider";
 import {
 	setVttElementDataAttributes,
 	VttElementDataAttribute,
 } from "../../../Utils/ElementDataAttributeUtils";
+import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
+import clsx from "clsx";
+import { openVttTokenRadialMenu } from "./VttTokenElement.RadialMenu";
 
 const VttTokenElementContainer = newStyledElement.div(
 	styles.vttTokenElementContainer,
@@ -39,6 +35,10 @@ interface VttTokenElementProps {
 }
 export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 	const { openNew: openNewRadialMenu } = useRadialMenuActions();
+	const isMaster =
+		useCurrentCampaignMemberStore((state) => state.isMaster) ?? false;
+	const userId =
+		useCurrentCampaignMemberStore((state) => state.member?.userId) ?? null;
 	const activeSceneId = useVttContext((store) => store.activeSceneId!);
 	const isActiveLayer = useVttBoardLayerContext((state) =>
 		state.isLayerActive(VttBoardLayer.Token),
@@ -59,10 +59,12 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 		(lock) => lock.lockType == "drag" && lock.sceneId == activeSceneId,
 	);
 
+	const isEditable = vttTokenCanBeOperatedBy(vttToken, userId, isMaster);
+
 	const drag = useVttResourceDrag({
 		coordinates: placement.coordinates,
 		resourceLock: dragResourceLock,
-		enabled: isActiveLayer,
+		enabled: isActiveLayer && isEditable,
 		// snap: useMemo(() => undefined, []),
 		// () =>
 		// 	getTokenSnap(
@@ -116,7 +118,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 			});
 		},
 		onLongPress: () => {
-			openRadialMenu(
+			openVttTokenRadialMenu(
 				vttTokenRef,
 				send,
 				openNewRadialMenu,
@@ -150,7 +152,10 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				VttElementDataAttribute.EventZoom,
 				VttElementDataAttribute.EventMiddleButtonPan,
 			)}
-			className={isActiveLayer ? styles.activeLayer : undefined}
+			className={clsx(
+				isActiveLayer ? styles.activeLayer : undefined,
+				drag.isRemoteDragging ? styles.remoteDragging : undefined,
+			)}
 			style={{
 				left,
 				top,
@@ -168,7 +173,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 			onContextMenu={(event) => {
 				event.preventDefault();
 				drag.clearLongPress();
-				openRadialMenu(
+				openVttTokenRadialMenu(
 					vttTokenRef,
 					send,
 					openNewRadialMenu,
@@ -180,203 +185,3 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 		</VttTokenElementContainer>
 	);
 }
-
-function openRadialMenu(
-	vttTokenRef: React.RefObject<VttToken>,
-	send: (message: VttInputMessage) => void,
-	openNewRadialMenu: (props: RadialMenuData) => void,
-	snapCoordinates: (
-		coordinates: CoordinatePair,
-		snap?: VttResourceDragSnap,
-	) => CoordinatePair,
-	position: CoordinatePair,
-) {
-	const vttToken = vttTokenRef.current;
-	if (!vttToken) return;
-
-	openNewRadialMenu({
-		id: vttToken.id,
-		name: "Token",
-		screenPosition: { x: position.x, y: position.y },
-		actionPosition: { x: 0, y: 0 },
-		seekMouseOutside: false,
-		options: radialMenuOptions,
-		nameColor: StandartTextColor["gray"],
-		ringWidths: [120],
-		onSubmit: (data) => {
-			const currentToken = vttTokenRef.current;
-			if (!currentToken) return;
-
-			// const newVttToken = {
-			// 	...currentToken,
-			// 	// transform: { ...currentToken.transform },
-			// 	// coordinates: { ...currentToken.coordinates },
-			// };
-			// let shouldSnapAfterTransform = false;
-
-			switch (data.option.id) {
-				case "Cancel":
-					data.close();
-					return;
-				case "BringUp":
-					break;
-				case "Opacity+":
-					break;
-				case "Opacity-":
-					break;
-				case "Rotate+":
-					// shouldSnapAfterTransform = true;
-					break;
-				case "Rotate-":
-					// shouldSnapAfterTransform = true;
-					break;
-				case "MirrorX":
-					break;
-				case "MirrorY":
-					break;
-				case "Reset":
-					break;
-				case "Duplicate": {
-					return;
-				}
-				case "Delete": {
-					return;
-				}
-			}
-			// send({
-			// 	id: Guid.NewGuid(),
-			// 	path: "/tokens",
-			// 	method: "Put",
-			// 	data: { vttToken: newVttToken },
-			// });
-		},
-	});
-}
-const radialMenuOptions: RadialMenuOption[] = [
-	{
-		id: "Cancel",
-		name: "Cancelar",
-		nameColor: StandartTextColor["lightGray"],
-		backgroundColor: StandartTextColor["darkerGray"],
-		icon: (
-			<StpIcon
-				name={"XCircle"}
-				color={"gray"}
-			/>
-		),
-		description: "Fecha esse menu radial",
-	},
-	{
-		id: "BringUp",
-		name: "PinUp",
-		icon: (
-			<StpIcon
-				name={"CaretCircleUp"}
-				color={"gray"}
-			/>
-		),
-		description: "Trás esse VttToken para o topo",
-	},
-	{
-		id: "Opacity+",
-		name: "Opacidade +",
-		icon: (
-			<StpIcon
-				name={"Sunglasses"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Aumenta a opacidade do VttToken (max 100%)",
-	},
-	{
-		id: "Opacity-",
-		name: "Opacidade -",
-		icon: (
-			<StpIcon
-				name={"Eyeglasses"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Diminui a opacidade do VttToken (min 0%)",
-	},
-	{
-		id: "Rotate+",
-		name: "Rotacionar +",
-		icon: (
-			<StpIcon
-				name={"ArrowClockwise"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Rotaciona o VttToken em sentido horário",
-	},
-	{
-		id: "Rotate-",
-		name: "Rotacionar -",
-		icon: (
-			<StpIcon
-				name={"ArrowCounterClockwise"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Rotaciona o VttToken em sentido anti-horário",
-	},
-	{
-		id: "MirrorX",
-		name: "Espelhar X",
-		icon: (
-			<StpIcon
-				name={"FlipHorizontal"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Espelha esse VttToken horizontalmente",
-	},
-	{
-		id: "MirrorY",
-		name: "Espelhar Y",
-		icon: (
-			<StpIcon
-				name={"FlipVertical"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Espelha esse VttToken verticalmente",
-	},
-	{
-		id: "Duplicate",
-		name: "Duplicar",
-		icon: (
-			<StpIcon
-				name={"Copy"}
-				color={"gray"}
-				style={"fill"}
-			/>
-		),
-		description: "Duplica esse VttToken",
-	},
-	{
-		id: "Reset",
-		name: "Resetar",
-		icon: (
-			<StpIcon
-				name={"Recycle"}
-				color={"gray"}
-			/>
-		),
-		description: "Remove todas as transformações desse VttToken",
-	},
-	{
-		id: "Delete",
-		name: "Remover",
-		icon: (
-			<StpIcon
-				name={"Trash"}
-				color={"black"}
-			/>
-		),
-		nameColor: StandartTextColor["black"],
-		backgroundColor: StandartTextColor["darkRed"],
-		description: "Remove esse VttToken da cena",
-	},
-];

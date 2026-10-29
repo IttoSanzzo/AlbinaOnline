@@ -53,3 +53,14 @@ export interface VttTokenPlacement {
 	token: VttToken;
 	scene: object;
 }
+
+export function vttTokenCanBeOperatedBy(
+	vttToken: VttToken,
+	userId: Guid | null = null,
+	isMaster: boolean = false,
+) {
+	if (isMaster || (vttToken.ownerId && vttToken.ownerId === userId))
+		return true;
+	if (!userId) return false;
+	return vttToken.permitList.includes(userId);
+}

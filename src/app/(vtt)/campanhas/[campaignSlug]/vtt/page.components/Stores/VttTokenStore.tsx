@@ -7,6 +7,7 @@ import { Guid } from "@/libs/stp@types";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { VttToken } from "../Types/Classes/VttToken";
 import { VttResourceLockDto } from "../Types/Classes/VttResourceLock";
+import { VttLockableResource } from "../Types/Classes/VttLockableResouce";
 
 interface VttTokenDragState {
 	sceneId: Guid;
@@ -84,25 +85,83 @@ function syncTokenSceneIndex(
 	}
 }
 
+function updateToken(
+	state: VttTokenStoreState,
+	id: Guid,
+	update: (token: VttToken) => VttToken,
+): Partial<VttTokenStoreState> {
+	const token = state.tokens.get(id);
+	if (!token) return {};
+	const updatedToken = update(token);
+	const tokens = new Map(state.tokens);
+	tokens.set(id, updatedToken);
+	const tokenIdsPerScene = new Map(state.tokenIdsPerScene);
+	syncTokenSceneIndex(tokenIdsPerScene, id, token, updatedToken);
+	return { tokens, tokenIdsPerScene };
+}
+
 function updatePlacementCoordinates(
-	tokens: Map<Guid, VttToken>,
+	state: VttTokenStoreState,
 	tokenId: Guid,
 	sceneId: Guid,
 	coordinates: CoordinatePair,
-): Map<Guid, VttToken> {
-	const token = tokens.get(tokenId);
-	const placement = token?.placements.get(sceneId);
-	if (!token || !placement) return tokens;
-	const updatedToken = {
-		...token,
-		placements: new Map(token.placements).set(sceneId, {
+): Partial<VttTokenStoreState> {
+	return updateToken(state, tokenId, (token) => {
+		const placement = token.placements.get(sceneId);
+		if (!placement) return token;
+
+		const placements = new Map(token.placements);
+		placements.set(sceneId, {
 			...placement,
-			coordinates,
-		}),
+			coordinates: { ...coordinates },
+		});
+
+		return { ...token, placements };
+	});
+}
+
+function isSameResourceLock(
+	lock: VttLockableResource,
+	resourceLock: VttResourceLockDto,
+): boolean {
+	return (
+		lock.targetType === resourceLock.targetType &&
+		lock.targetId === resourceLock.targetId &&
+		lock.lockType === resourceLock.lockType &&
+		lock.userId === resourceLock.userId &&
+		lock.sceneId === resourceLock.sceneId
+	);
+}
+
+// function removeResourceLock(
+// 	token: VttToken,
+// 	resourceLock: VttResourceLockDto,
+// ): VttToken {
+// 	return {
+// 		...token,
+// 		resourceLocks: token.resourceLocks.filter(
+// 			(lock) => !isSameResourceLock(lock, resourceLock),
+// 		),
+// 	};
+// }
+
+function removeDragLock(
+	token: VttToken,
+	tokenId: Guid,
+	sceneId: Guid,
+): VttToken {
+	return {
+		...token,
+		resourceLocks: token.resourceLocks.filter(
+			(lock) =>
+				!(
+					lock.targetType === "VttToken" &&
+					lock.targetId === tokenId &&
+					lock.lockType === "drag" &&
+					lock.sceneId === sceneId
+				),
+		),
 	};
-	const updatedTokens = new Map(tokens);
-	updatedTokens.set(tokenId, updatedToken);
-	return updatedTokens;
 }
 
 function createVttTokenStore(): VttTokenStore {
@@ -155,46 +214,59 @@ function createVttTokenStore(): VttTokenStore {
 
 		startDrag: (id, resourceLock) =>
 			set((state) => {
-				const placement = state.tokens
-					.get(id)
-					?.placements.get(resourceLock.sceneId);
-				if (!placement || state.activeDrags.has(id)) return state;
+				const token = state.tokens.get(id);
+				const placement = token?.placements.get(resourceLock.sceneId);
+
+				if (
+					!token ||
+					!placement ||
+					resourceLock.targetType !== "VttToken" ||
+					resourceLock.targetId !== id ||
+					resourceLock.lockType !== "drag" ||
+					state.activeDrags.has(id)
+				)
+					return state;
+
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.set(id, {
 					sceneId: resourceLock.sceneId,
 					initialCoordinates: { ...placement.coordinates },
 				});
-				return { activeDrags };
+
+				return {
+					...updateToken(state, id, (currentToken) => ({
+						...currentToken,
+						resourceLocks: [
+							...currentToken.resourceLocks.filter(
+								(lock) => !isSameResourceLock(lock, resourceLock),
+							),
+							resourceLock,
+						],
+					})),
+					activeDrags,
+				};
 			}),
 
 		updateDrag: (id, sceneId, coordinates) =>
 			set((state) => {
 				const drag = state.activeDrags.get(id);
 				if (!drag || drag.sceneId !== sceneId) return state;
-				const tokens = updatePlacementCoordinates(
-					state.tokens,
-					id,
-					sceneId,
-					coordinates,
-				);
-				if (tokens === state.tokens) return state;
-				return { tokens };
+
+				return updatePlacementCoordinates(state, id, sceneId, coordinates);
 			}),
 
 		endDrag: (id, sceneId, coordinates) =>
 			set((state) => {
 				const drag = state.activeDrags.get(id);
 				if (drag && drag.sceneId !== sceneId) return state;
-				const tokens = updatePlacementCoordinates(
-					state.tokens,
-					id,
-					sceneId,
-					coordinates,
-				);
+
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);
 				return {
-					...(tokens !== state.tokens ? { tokens } : {}),
+					...updatePlacementCoordinates(state, id, sceneId, coordinates),
+					...updateToken(state, id, (token) =>
+						removeDragLock(token, id, sceneId),
+					),
 					activeDrags,
 				};
 			}),
@@ -203,16 +275,19 @@ function createVttTokenStore(): VttTokenStore {
 			set((state) => {
 				const drag = state.activeDrags.get(id);
 				if (!drag || drag.sceneId !== sceneId) return state;
-				const tokens = updatePlacementCoordinates(
-					state.tokens,
-					id,
-					sceneId,
-					drag.initialCoordinates,
-				);
+
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);
 				return {
-					...(tokens !== state.tokens ? { tokens } : {}),
+					...updatePlacementCoordinates(
+						state,
+						id,
+						sceneId,
+						drag.initialCoordinates,
+					),
+					...updateToken(state, id, (token) =>
+						removeDragLock(token, id, sceneId),
+					),
 					activeDrags,
 				};
 			}),

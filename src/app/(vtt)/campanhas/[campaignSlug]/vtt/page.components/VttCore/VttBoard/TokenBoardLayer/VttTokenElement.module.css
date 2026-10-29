@@ -1,12 +1,17 @@
 .vttTokenElementContainer {
 	position: absolute;
-	width: 10px;
-	height: 10px;
-	border: 1px solid white;
-	background-color: red;
+	outline: 6px solid transparent;
+	transition: 0.25s linear outline;
+	transform-origin: center center;
 
 	&.activeLayer {
 		outline: 6px solid var(--cl-gray-300);
 		pointer-events: all;
 	}
+	&.remoteDragging {
+		outline: 6px solid var(--cl-yellow-300);
+	}
+
+	border: 1px solid white;
+	background-color: red;
 }
