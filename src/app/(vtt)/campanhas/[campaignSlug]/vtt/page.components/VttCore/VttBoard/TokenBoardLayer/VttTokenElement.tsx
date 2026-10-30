@@ -62,7 +62,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 	const isEditable = vttTokenCanBeOperatedBy(vttToken, userId, isMaster);
 
 	const drag = useVttResourceDrag({
-		coordinates: placement.coordinates,
+		coordinates: placement,
 		resourceLock: dragResourceLock,
 		enabled: isActiveLayer && isEditable,
 		// snap: useMemo(() => undefined, []),
@@ -123,7 +123,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				send,
 				openNewRadialMenu,
 				drag.snapCoordinates,
-				worldToScreen(placement.coordinates),
+				worldToScreen(placement),
 			);
 		},
 	});
@@ -178,7 +178,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 					send,
 					openNewRadialMenu,
 					drag.snapCoordinates,
-					worldToScreen(placement.coordinates),
+					worldToScreen(placement),
 				);
 			}}>
 			{/* {vttToken.id} */}

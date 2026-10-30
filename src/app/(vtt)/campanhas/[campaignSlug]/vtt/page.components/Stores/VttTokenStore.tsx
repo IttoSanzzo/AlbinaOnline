@@ -113,7 +113,8 @@ function updatePlacementCoordinates(
 		const placements = new Map(token.placements);
 		placements.set(sceneId, {
 			...placement,
-			coordinates: { ...coordinates },
+			x: coordinates.x,
+			y: coordinates.y,
 		});
 
 		return { ...token, placements };
@@ -132,18 +133,6 @@ function isSameResourceLock(
 		lock.sceneId === resourceLock.sceneId
 	);
 }
-
-// function removeResourceLock(
-// 	token: VttToken,
-// 	resourceLock: VttResourceLockDto,
-// ): VttToken {
-// 	return {
-// 		...token,
-// 		resourceLocks: token.resourceLocks.filter(
-// 			(lock) => !isSameResourceLock(lock, resourceLock),
-// 		),
-// 	};
-// }
 
 function removeDragLock(
 	token: VttToken,
@@ -230,7 +219,10 @@ function createVttTokenStore(): VttTokenStore {
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.set(id, {
 					sceneId: resourceLock.sceneId,
-					initialCoordinates: { ...placement.coordinates },
+					initialCoordinates: {
+						x: placement.x,
+						y: placement.y,
+					},
 				});
 
 				return {
@@ -258,7 +250,7 @@ function createVttTokenStore(): VttTokenStore {
 		endDrag: (id, sceneId, coordinates) =>
 			set((state) => {
 				const drag = state.activeDrags.get(id);
-				if (drag && drag.sceneId !== sceneId) return state;
+				if (!drag || drag.sceneId !== sceneId) return state;
 
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);

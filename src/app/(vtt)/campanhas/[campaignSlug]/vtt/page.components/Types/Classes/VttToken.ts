@@ -1,7 +1,13 @@
 import { CreatureData, Guid, ItemData } from "@/libs/stp@types";
-import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { VttGenericTransform } from "./VttGenericTransform";
 import { VttLockableResource } from "./VttLockableResouce";
+import { VttGenericTransform } from "./VttGenericTransform";
+
+export enum VttTokenType {
+	None,
+	Character,
+	Creature,
+	Item,
+}
 
 export interface RawVttToken {
 	id: Guid;
@@ -10,6 +16,7 @@ export interface RawVttToken {
 	permitList: Guid[];
 	type: keyof typeof VttTokenType;
 	name?: string;
+	appearance: VttTokenAppearance;
 	placements: VttTokenPlacement[];
 	resourceLocks: VttLockableResource[];
 	createdAt: string;
@@ -35,21 +42,34 @@ export interface VttToken {
 	Target: CharacterData | ItemData | CreatureData;
 }
 
-export enum VttTokenType {
-	None,
-	Character,
-	Creature,
-	Item,
+export enum VttTokenAppearanceImageFit {
+	Cover,
+	Contain,
+	Fill,
+}
+
+export enum VttTokenChipType {
+	Freeform,
+	FramedCircle,
+	UnframedCircle,
+	FramedRectangular,
+	UnframedRectangular,
+}
+
+export interface VttTokenAppearance extends VttGenericTransform {
+	width: number;
+	height: number;
+	imageFitMode: keyof typeof VttTokenAppearanceImageFit;
+	hideImageOverflow: boolean;
+	chipType: keyof typeof VttTokenChipType;
 }
 
 export interface VttTokenPlacement {
 	id: Guid;
 	tokenId: Guid;
 	sceneId: Guid;
-	coordinates: CoordinatePair;
-	transform: VttGenericTransform;
-	createdAt: string;
-	updatedAt?: string;
+	x: number;
+	y: number;
 	token: VttToken;
 	scene: object;
 }

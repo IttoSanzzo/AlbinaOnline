@@ -91,6 +91,7 @@ export function openVttGridMapRadialMenu(
 					break;
 				case "Reset":
 					newVttGridMap.transform = {
+						scale: 100,
 						opacity: 100,
 						rotation: 0,
 						horizontalMirror: false,
