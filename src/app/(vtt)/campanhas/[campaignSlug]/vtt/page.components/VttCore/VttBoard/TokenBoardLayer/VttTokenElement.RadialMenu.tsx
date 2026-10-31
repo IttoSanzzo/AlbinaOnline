@@ -1,11 +1,14 @@
 import { StandartTextColor } from "@/components/(UIBasics)";
 import { StpIcon } from "@/libs/stp@icons";
-import { VttToken } from "../../../Types/Classes/VttToken";
+import { RawVttToken, VttToken } from "../../../Types/Classes/VttToken";
 import { RadialMenuData } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { VttResourceDragSnap } from "../../../Hooks/useVttResourceDrag";
 import { RadialMenuOption } from "@/components/(SPECIAL)/components/RadialMenu/types";
+import { clamp } from "lodash";
+import { Guid } from "@/libs/stp@types";
+import { wrap } from "@/utils/Math";
 
 export function openVttTokenRadialMenu(
 	vttTokenRef: React.RefObject<VttToken>,
@@ -24,7 +27,7 @@ export function openVttTokenRadialMenu(
 		id: vttToken.id,
 		name: "Token",
 		screenPosition: { x: position.x, y: position.y },
-		actionPosition: { x: 0, y: 0 },
+		actionPosition: { x: position.x, y: position.y },
 		seekMouseOutside: false,
 		options: radialMenuOptions,
 		nameColor: StandartTextColor["gray"],
@@ -33,48 +36,82 @@ export function openVttTokenRadialMenu(
 			const currentToken = vttTokenRef.current;
 			if (!currentToken) return;
 
-			// const newVttToken = {
-			// 	...currentToken,
-			// 	// transform: { ...currentToken.transform },
-			// 	// coordinates: { ...currentToken.coordinates },
-			// };
-			// let shouldSnapAfterTransform = false;
+			const newVttToken: RawVttToken = {
+				...currentToken,
+				placements: Array.from(vttToken.placements.values()),
+			};
 
 			switch (data.option.id) {
 				case "Cancel":
 					data.close();
 					return;
-				case "BringUp":
-					break;
 				case "Opacity+":
+					newVttToken.appearance.opacity = clamp(
+						newVttToken.appearance.opacity + 10,
+						0,
+						100,
+					);
 					break;
 				case "Opacity-":
+					newVttToken.appearance.opacity = clamp(
+						newVttToken.appearance.opacity - 10,
+						0,
+						100,
+					);
 					break;
 				case "Rotate+":
-					// shouldSnapAfterTransform = true;
+					newVttToken.appearance.rotation = wrap(
+						newVttToken.appearance.rotation + 45,
+						0,
+						360,
+					);
 					break;
 				case "Rotate-":
-					// shouldSnapAfterTransform = true;
+					newVttToken.appearance.rotation = wrap(
+						newVttToken.appearance.rotation - 45,
+						0,
+						360,
+					);
 					break;
 				case "MirrorX":
+					newVttToken.appearance.horizontalMirror =
+						!newVttToken.appearance.horizontalMirror;
 					break;
 				case "MirrorY":
+					newVttToken.appearance.verticalMirror =
+						!newVttToken.appearance.verticalMirror;
 					break;
 				case "Reset":
+					newVttToken.appearance = {
+						...newVttToken.appearance,
+						horizontalMirror: false,
+						verticalMirror: false,
+						scale: 100,
+						rotation: 0,
+						opacity: 100,
+					};
 					break;
-				case "Duplicate": {
-					return;
-				}
+				// case "Duplicate": {
+				// return;
+				// }
 				case "Delete": {
+					data.close();
+					send({
+						id: Guid.NewGuid(),
+						path: "/tokens",
+						method: "Delete",
+						data: { vttTokenId: vttToken.id },
+					});
 					return;
 				}
 			}
-			// send({
-			// 	id: Guid.NewGuid(),
-			// 	path: "/tokens",
-			// 	method: "Put",
-			// 	data: { vttToken: newVttToken },
-			// });
+
+			send({
+				id: Guid.NewGuid(),
+				path: "/tokens",
+				method: "Put",
+				data: { vttToken: newVttToken },
+			});
 		},
 	});
 }
@@ -91,17 +128,6 @@ const radialMenuOptions: RadialMenuOption[] = [
 			/>
 		),
 		description: "Fecha esse menu radial",
-	},
-	{
-		id: "BringUp",
-		name: "PinUp",
-		icon: (
-			<StpIcon
-				name={"CaretCircleUp"}
-				color={"gray"}
-			/>
-		),
-		description: "Trás esse VttToken para o topo",
 	},
 	{
 		id: "Opacity+",
@@ -169,18 +195,18 @@ const radialMenuOptions: RadialMenuOption[] = [
 		),
 		description: "Espelha esse VttToken verticalmente",
 	},
-	{
-		id: "Duplicate",
-		name: "Duplicar",
-		icon: (
-			<StpIcon
-				name={"Copy"}
-				color={"gray"}
-				style={"fill"}
-			/>
-		),
-		description: "Duplica esse VttToken",
-	},
+	// {
+	// 	id: "Duplicate",
+	// 	name: "Duplicar",
+	// 	icon: (
+	// 		<StpIcon
+	// 			name={"Copy"}
+	// 			color={"gray"}
+	// 			style={"fill"}
+	// 		/>
+	// 	),
+	// 	description: "Duplica esse VttToken",
+	// },
 	{
 		id: "Reset",
 		name: "Resetar",

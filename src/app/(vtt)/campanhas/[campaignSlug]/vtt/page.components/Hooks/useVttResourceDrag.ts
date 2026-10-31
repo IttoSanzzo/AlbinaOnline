@@ -31,7 +31,14 @@ export type VttResourceDragSnapOptions =
 			offsetY?: number;
 	  };
 
-export type VttResourceDragSnap = number | VttResourceDragSnapOptions;
+export type VttResourceDragSnapFunction = (
+	coordinates: CoordinatePair,
+) => CoordinatePair;
+
+export type VttResourceDragSnap =
+	| number
+	| VttResourceDragSnapOptions
+	| VttResourceDragSnapFunction;
 
 export interface UseVttResourceDragOptions {
 	coordinates: CoordinatePair;
@@ -86,6 +93,8 @@ function applySnap(
 	coordinates: CoordinatePair,
 	snap: VttResourceDragSnap,
 ): CoordinatePair {
+	if (typeof snap === "function") return snap(coordinates);
+
 	if (typeof snap === "number") {
 		if (!Number.isFinite(snap) || snap <= 0) return coordinates;
 		return {
@@ -369,6 +378,8 @@ export function useVttResourceDrag({
 		);
 
 		setDragCoordinates(finalCoordinates);
+		visualCoordinatesRef.current = finalCoordinates;
+		setVisualCoordinates(finalCoordinates);
 		onDragEndRef.current?.(finalCoordinates);
 	}
 

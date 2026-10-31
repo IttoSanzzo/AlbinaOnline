@@ -1,17 +1,26 @@
+.vttTokenElementAnchor {
+	position: absolute;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+	touch-action: none;
+}
+
 .vttTokenElementContainer {
 	position: absolute;
-	outline: 6px solid transparent;
-	transition: 0.25s linear outline;
-	transform-origin: center center;
+	transform: translate(-50%, -50%);
+	animation: 0.25s linear fade-in;
+}
 
-	&.activeLayer {
-		outline: 6px solid var(--cl-gray-300);
-		pointer-events: all;
-	}
-	&.remoteDragging {
-		outline: 6px solid var(--cl-yellow-300);
-	}
+.activeLayer {
+	pointer-events: all;
+}
 
-	border: 1px solid white;
-	background-color: red;
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

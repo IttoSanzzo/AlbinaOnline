@@ -33,6 +33,7 @@ export interface VttToken {
 	permitList: Guid[];
 	type: keyof typeof VttTokenType;
 	name?: string;
+	appearance: VttTokenAppearance;
 	placements: Map<Guid, VttTokenPlacement>;
 	resourceLocks: VttLockableResource[];
 	createdAt: string;

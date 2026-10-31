@@ -254,13 +254,27 @@ function createVttTokenStore(): VttTokenStore {
 
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);
-				return {
-					...updatePlacementCoordinates(state, id, sceneId, coordinates),
-					...updateToken(state, id, (token) =>
-						removeDragLock(token, id, sceneId),
-					),
-					activeDrags,
-				};
+
+				return updateToken(
+					{
+						...state,
+						activeDrags,
+					},
+					id,
+					(token) => {
+						const placement = token.placements.get(sceneId);
+						if (!placement) return removeDragLock(token, id, sceneId);
+
+						const placements = new Map(token.placements);
+						placements.set(sceneId, {
+							...placement,
+							x: coordinates.x,
+							y: coordinates.y,
+						});
+
+						return removeDragLock({ ...token, placements }, id, sceneId);
+					},
+				);
 			}),
 
 		cancelDrag: (id, sceneId) =>
@@ -270,18 +284,27 @@ function createVttTokenStore(): VttTokenStore {
 
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);
-				return {
-					...updatePlacementCoordinates(
-						state,
-						id,
-						sceneId,
-						drag.initialCoordinates,
-					),
-					...updateToken(state, id, (token) =>
-						removeDragLock(token, id, sceneId),
-					),
-					activeDrags,
-				};
+
+				return updateToken(
+					{
+						...state,
+						activeDrags,
+					},
+					id,
+					(token) => {
+						const placement = token.placements.get(sceneId);
+						if (!placement) return removeDragLock(token, id, sceneId);
+
+						const placements = new Map(token.placements);
+						placements.set(sceneId, {
+							...placement,
+							x: drag.initialCoordinates.x,
+							y: drag.initialCoordinates.y,
+						});
+
+						return removeDragLock({ ...token, placements }, id, sceneId);
+					},
+				);
 			}),
 	}));
 }

@@ -17,14 +17,14 @@ import { useEffect, useRef } from "react";
 import { useVttResourceDrag } from "../../../Hooks/useVttResourceDrag";
 import { Guid } from "@/libs/stp@types";
 import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvider";
-import {
-	setVttElementDataAttributes,
-	VttElementDataAttribute,
-} from "../../../Utils/ElementDataAttributeUtils";
 import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
-import clsx from "clsx";
 import { openVttTokenRadialMenu } from "./VttTokenElement.RadialMenu";
+import { VttTokenAppearenceRenderer } from "./VttTokenAppearenceRenderer";
+import { getVttTokenSnap } from "./VttTokenElement.utils";
 
+const VttTokenElementAnchor = newStyledElement.div(
+	styles.vttTokenElementAnchor,
+);
 const VttTokenElementContainer = newStyledElement.div(
 	styles.vttTokenElementContainer,
 );
@@ -65,23 +65,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 		coordinates: placement,
 		resourceLock: dragResourceLock,
 		enabled: isActiveLayer && isEditable,
-		// snap: useMemo(() => undefined, []),
-		// () =>
-		// 	getTokenSnap(
-		// 		gridMap,
-		// 		transform.rotation,
-		// 		transform.horizontalMirror,
-		// 		transform.verticalMirror,
-		// 	),
-		// [
-		// 	gridMap.width,
-		// 	gridMap.height,
-		// 	gridMap.offsetX,
-		// 	gridMap.offsetY,
-		// 	transform.rotation,
-		// 	transform.horizontalMirror,
-		// 	transform.verticalMirror,
-		// ],
+		snap: getVttTokenSnap(vttToken.appearance),
 		onDragStart: () => {
 			send({
 				id: Guid.NewGuid(),
@@ -140,48 +124,30 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 
 	const position = worldToScreen(drag.coordinates);
 	const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
-	const width = 100 * pixelScale;
-	const height = 100 * pixelScale;
-	const left = position.x - width / 2;
-	const top = position.y - height / 2;
+	const width =
+		vttToken.appearance.width * (vttToken.appearance.scale / 100) * pixelScale;
+	const height =
+		vttToken.appearance.height * (vttToken.appearance.scale / 100) * pixelScale;
 
 	return (
-		<VttTokenElementContainer
-			{...setVttElementDataAttributes(
-				VttElementDataAttribute.EventPing,
-				VttElementDataAttribute.EventZoom,
-				VttElementDataAttribute.EventMiddleButtonPan,
-			)}
-			className={clsx(
-				isActiveLayer ? styles.activeLayer : undefined,
-				drag.isRemoteDragging ? styles.remoteDragging : undefined,
-			)}
+		<VttTokenElementAnchor
 			style={{
-				left,
-				top,
-				width,
-				height,
-				...(dragResourceLock
-					? drag.isLocalDragging
-						? { outlineColor: "blue", zIndex: 10000 }
-						: { outlineColor: "yellow", zIndex: 9999 }
-					: undefined),
+				left: position.x,
+				top: position.y,
 			}}
 			onPointerDown={drag.onPointerDown}
 			onPointerMove={drag.onPointerMove}
-			onPointerUp={drag.onPointerUp}
-			onContextMenu={(event) => {
-				event.preventDefault();
-				drag.clearLongPress();
-				openVttTokenRadialMenu(
-					vttTokenRef,
-					send,
-					openNewRadialMenu,
-					drag.snapCoordinates,
-					worldToScreen(placement),
-				);
-			}}>
-			{/* {vttToken.id} */}
-		</VttTokenElementContainer>
+			onPointerUp={drag.onPointerUp}>
+			<VttTokenElementContainer
+				style={{
+					width,
+					height,
+				}}>
+				<VttTokenAppearenceRenderer
+					vttToken={vttToken}
+					className={isActiveLayer ? styles.activeLayer : undefined}
+				/>
+			</VttTokenElementContainer>
+		</VttTokenElementAnchor>
 	);
 }
