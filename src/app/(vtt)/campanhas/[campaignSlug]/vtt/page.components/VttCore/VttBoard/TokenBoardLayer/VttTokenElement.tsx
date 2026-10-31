@@ -21,6 +21,7 @@ import { openVttTokenRadialMenu } from "./VttTokenElement.RadialMenu";
 import { VttTokenAppearenceRenderer } from "./VttTokenAppearenceRenderer";
 import { getVttTokenSnap } from "./VttTokenElement.utils";
 import { usePointerInteractionEvents } from "@/libs/stp@hooks/hooks/usePointerInteractionEvents";
+import clsx from "clsx";
 
 const VttTokenElementAnchor = newStyledElement.div(
 	styles.vttTokenElementAnchor,
@@ -168,7 +169,10 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				}}>
 				<VttTokenAppearenceRenderer
 					vttToken={vttToken}
-					className={isActiveLayer ? styles.activeLayer : undefined}
+					className={clsx(
+						isActiveLayer ? styles.activeLayer : undefined,
+						drag.isDragging ? styles.isDragging : styles.notDragging,
+					)}
 				/>
 			</VttTokenElementContainer>
 		</VttTokenElementAnchor>

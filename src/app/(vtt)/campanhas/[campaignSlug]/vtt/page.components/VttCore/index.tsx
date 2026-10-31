@@ -8,7 +8,6 @@ import { CursorSyncronizer } from "./MainPassiveComponents/CursorSyncronizer";
 import { VttMembersContextProvider } from "../Contexts/VttMembersProvider";
 import { Campaign } from "@/libs/stp@types";
 import {
-	PIXELS_PER_CENTIMETER,
 	useVttViewportStore,
 	VttViewportContextProvider,
 } from "../Contexts/VttViewportContextProvider";
@@ -116,8 +115,9 @@ const VttCoreEngine = memo(function VttCoreEngine() {
 const TestContainer = newStyledElement.div(styles.testContainer);
 
 function TestZone() {
-	const camera = useVttViewportStore((state) => state.camera);
-	const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
+	useVttViewportStore((state) => state.camera);
+	// const pixelScale = useVttViewportStore((state) => state.pixelScale);
+	// const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
 	// const { setInteraction } = useVttInteractionContext();
 	// const { subscribe } = useVttContext();
 	// const [vttResultsTest, setVttResultsTest] = useState<string>("");
@@ -135,10 +135,10 @@ function TestZone() {
 	// };
 	// }, []);
 
-	const square1Position = worldToScreen({
-		x: -50,
-		y: -50,
-	});
+	// const square1Position = worldToScreen({
+	// 	x: 0,
+	// 	y: 0,
+	// });
 
 	return (
 		<TestContainer style={{ pointerEvents: "none" }}>
@@ -159,7 +159,7 @@ function TestZone() {
 				</button>
 			))} */}
 
-			<span
+			{/* <span
 				style={{
 					position: "absolute",
 					left: square1Position.x,
@@ -167,7 +167,16 @@ function TestZone() {
 					width: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 					height: 100 * PIXELS_PER_CENTIMETER * camera.zoom,
 				}}
-			/>
+			/> */}
+			{/* <span
+				style={{
+					position: "absolute",
+					left: square1Position.x,
+					top: square1Position.y,
+					width: 1 * pixelScale,
+					height: 1 * pixelScale,
+				}}
+			/> */}
 			{/* <span
 				style={{
 					position: "absolute",

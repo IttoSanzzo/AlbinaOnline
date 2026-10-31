@@ -4,6 +4,9 @@
 	height: 0;
 	pointer-events: none;
 	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
 
 	&.isDragging {
 		transition:
@@ -21,6 +24,13 @@
 
 .activeLayer {
 	pointer-events: all;
+}
+
+.isDragging {
+	outline: 3px solid var(--cl-red-700);
+}
+.notDragging {
+	outline: 3px solid transparent;
 }
 
 @keyframes fade-in {

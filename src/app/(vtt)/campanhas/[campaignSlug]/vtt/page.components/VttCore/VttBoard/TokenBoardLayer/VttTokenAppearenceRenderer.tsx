@@ -6,6 +6,7 @@ import {
 	VttElementDataAttribute,
 } from "../../../Utils/ElementDataAttributeUtils";
 import clsx from "clsx";
+import { VttTokenImageRenderer } from "./VttTokenImageRenderer";
 
 const VttTokenAppearenceRendererContainer = newStyledElement.div(
 	styles.vttTokenAppearenceRendererContainer,
@@ -32,6 +33,11 @@ export function VttTokenAppearenceRenderer({
 				rotate: `${vttToken.appearance.rotation}deg`,
 				opacity: `${vttToken.appearance.opacity / 100}`,
 				overflow: vttToken.appearance.hideImageOverflow ? "hidden" : undefined,
-			}}></VttTokenAppearenceRendererContainer>
+			}}>
+			<VttTokenImageRenderer
+				vttTokenId={vttToken.id}
+				objectFit={vttToken.appearance.imageFitMode}
+			/>
+		</VttTokenAppearenceRendererContainer>
 	);
 }

@@ -30,5 +30,6 @@ export const VttOutputMessageTypes = [
 	"VttTokenDragUpdate",
 	"VttTokenDragEnded",
 	"VttTokenDragCanceled",
+	"VttTokenImageUpdated",
 ] as const;
 export type VttOutputMessageType = (typeof VttOutputMessageTypes)[number];

@@ -218,17 +218,17 @@ const radialMenuOptions: RadialMenuOption[] = [
 		),
 		description: "Remove todas as transformações desse VttToken",
 	},
-	{
-		id: "Delete",
-		name: "Remover",
-		icon: (
-			<StpIcon
-				name={"Trash"}
-				color={"black"}
-			/>
-		),
-		nameColor: StandartTextColor["black"],
-		backgroundColor: StandartTextColor["darkRed"],
-		description: "Remove esse VttToken da cena",
-	},
+	// {
+	// 	id: "Delete",
+	// 	name: "Remover",
+	// 	icon: (
+	// 		<StpIcon
+	// 			name={"Trash"}
+	// 			color={"black"}
+	// 		/>
+	// 	),
+	// 	nameColor: StandartTextColor["black"],
+	// 	backgroundColor: StandartTextColor["darkRed"],
+	// 	description: "Remove esse VttToken da cena",
+	// },
 ];
