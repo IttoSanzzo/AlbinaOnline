@@ -16,11 +16,11 @@ import {
 import { useEffect, useRef } from "react";
 import { useVttResourceDrag } from "../../../Hooks/useVttResourceDrag";
 import { Guid } from "@/libs/stp@types";
-import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvider";
 import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 import { openVttTokenRadialMenu } from "./VttTokenElement.RadialMenu";
 import { VttTokenAppearenceRenderer } from "./VttTokenAppearenceRenderer";
 import { getVttTokenSnap } from "./VttTokenElement.utils";
+import { usePointerInteractionEvents } from "@/libs/stp@hooks/hooks/usePointerInteractionEvents";
 
 const VttTokenElementAnchor = newStyledElement.div(
 	styles.vttTokenElementAnchor,
@@ -49,7 +49,11 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 		(state) => state.worldToScreen,
 		VTTTOKEN_RENDER_THROTTLE,
 	);
-	const camera = useVttThrottledViewportContext(
+	const pixelScale = useVttThrottledViewportContext(
+		(state) => state.pixelScale,
+		VTTTOKEN_RENDER_THROTTLE,
+	);
+	useVttThrottledViewportContext(
 		(state) => state.camera,
 		VTTTOKEN_RENDER_THROTTLE,
 	);
@@ -101,15 +105,21 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				},
 			});
 		},
-		onLongPress: () => {
-			openVttTokenRadialMenu(
-				vttTokenRef,
-				send,
-				openNewRadialMenu,
-				drag.snapCoordinates,
-				worldToScreen(placement),
-			);
-		},
+	});
+
+	const pointerInteraction = usePointerInteractionEvents({
+		onRightPress:
+			isActiveLayer && isEditable
+				? () => {
+						openVttTokenRadialMenu(
+							vttTokenRef,
+							send,
+							openNewRadialMenu,
+							drag.snapCoordinates,
+							worldToScreen(placement),
+						);
+					}
+				: undefined,
 	});
 
 	useEffect(() => {
@@ -123,7 +133,6 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 	}, [subscribe, drag.cancel]);
 
 	const position = worldToScreen(drag.coordinates);
-	const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
 	const width =
 		vttToken.appearance.width * (vttToken.appearance.scale / 100) * pixelScale;
 	const height =
@@ -131,13 +140,27 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 
 	return (
 		<VttTokenElementAnchor
+			className={drag.isDragging ? styles.isDragging : undefined}
 			style={{
 				left: position.x,
 				top: position.y,
 			}}
-			onPointerDown={drag.onPointerDown}
-			onPointerMove={drag.onPointerMove}
-			onPointerUp={drag.onPointerUp}>
+			onPointerDown={(event) => {
+				pointerInteraction.onPointerDown(event);
+				drag.onPointerDown(event);
+			}}
+			onPointerMove={(event) => {
+				pointerInteraction.onPointerMove(event);
+				drag.onPointerMove(event);
+			}}
+			onPointerUp={(event) => {
+				pointerInteraction.onPointerUp(event);
+				drag.onPointerUp(event);
+			}}
+			onPointerCancel={(event) => {
+				pointerInteraction.onPointerCancel(event);
+			}}
+			onContextMenu={(event) => event.preventDefault()}>
 			<VttTokenElementContainer
 				style={{
 					width,

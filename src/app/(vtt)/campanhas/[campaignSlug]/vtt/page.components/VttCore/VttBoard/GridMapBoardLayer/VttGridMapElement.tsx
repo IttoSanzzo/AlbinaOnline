@@ -7,7 +7,6 @@ import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
 } from "../../../Contexts/VttBoardLayerContext";
-import { PIXELS_PER_CENTIMETER } from "../../../Contexts/VttViewportContextProvider";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { BasicMedia } from "@/components/(Design)/components/BasicMedia";
 import { useRadialMenuActions } from "@/components/(SPECIAL)/components/RadialMenu/Context";
@@ -23,6 +22,8 @@ import { useVttThrottledViewportContext } from "../../../Contexts/VttThrottledVi
 import { VTTGRIDMAP_RENDER_THROTTLE } from "./VttGridMapElementWrapper";
 import { openVttGridMapRadialMenu } from "./VttGridMapElement.RadialMenu";
 import { getGridMapSnap } from "./VttGridMapElement.utils";
+import { usePointerInteractionEvents } from "@/libs/stp@hooks/hooks/usePointerInteractionEvents";
+import clsx from "clsx";
 
 const VttGridMapElementContainer = newStyledElement.div(
 	styles.vttGridMapElementContainer,
@@ -45,7 +46,11 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 		(state) => state.worldToScreen,
 		VTTGRIDMAP_RENDER_THROTTLE,
 	);
-	const camera = useVttThrottledViewportContext(
+	const pixelScale = useVttThrottledViewportContext(
+		(state) => state.pixelScale,
+		VTTGRIDMAP_RENDER_THROTTLE,
+	);
+	useVttThrottledViewportContext(
 		(state) => state.camera,
 		VTTGRIDMAP_RENDER_THROTTLE,
 	);
@@ -112,7 +117,10 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 				},
 			});
 		},
-		onLongPress: () => {
+	});
+
+	const pointerInteraction = usePointerInteractionEvents({
+		onRightPress: () => {
 			openVttGridMapRadialMenu(
 				vttGridMapRef,
 				send,
@@ -133,7 +141,6 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 	}, [subscribe, drag.cancel]);
 
 	const position = worldToScreen(drag.coordinates);
-	const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
 	const width = gridMap.width * pixelScale;
 	const height = gridMap.height * pixelScale;
 	const left = position.x - width / 2;
@@ -147,7 +154,10 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 					VttElementDataAttribute.EventZoom,
 					VttElementDataAttribute.EventMiddleButtonPan,
 				)}
-				className={isActiveLayer ? styles.activeLayer : undefined}
+				className={clsx(
+					isActiveLayer ? styles.activeLayer : undefined,
+					drag.isDragging ? styles.isDragging : undefined,
+				)}
 				style={{
 					left,
 					top,
@@ -162,19 +172,22 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 							: { outlineColor: "yellow", zIndex: 9999 }
 						: undefined),
 				}}
-				onPointerDown={drag.onPointerDown}
-				onPointerMove={drag.onPointerMove}
-				onPointerUp={drag.onPointerUp}
-				onContextMenu={(event) => {
-					event.preventDefault();
-					drag.clearLongPress();
-					openVttGridMapRadialMenu(
-						vttGridMapRef,
-						send,
-						openNewRadialMenu,
-						drag.snapCoordinates,
-					);
-				}}>
+				onPointerDown={(event) => {
+					pointerInteraction.onPointerDown(event);
+					drag.onPointerDown(event);
+				}}
+				onPointerMove={(event) => {
+					pointerInteraction.onPointerMove(event);
+					drag.onPointerMove(event);
+				}}
+				onPointerUp={(event) => {
+					pointerInteraction.onPointerUp(event);
+					drag.onPointerUp(event);
+				}}
+				onPointerCancel={(event) => {
+					pointerInteraction.onPointerCancel(event);
+				}}
+				onContextMenu={(event) => event.preventDefault()}>
 				<BasicMedia
 					src={gridMap.imageUrl}
 					alt={gridMap.name}

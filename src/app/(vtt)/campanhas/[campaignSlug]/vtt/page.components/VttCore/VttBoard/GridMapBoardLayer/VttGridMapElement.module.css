@@ -1,8 +1,15 @@
 .vttGridMapElementContainer {
 	position: absolute;
 	outline: 6px solid transparent;
-	transition: 0.25s linear outline;
 	transform-origin: center center;
+	transition: 0.25s linear outline;
+
+	&.isDragging {
+		transition:
+			0.25s linear outline,
+			0.15s linear left,
+			0.15s linear top;
+	}
 
 	&.activeLayer {
 		outline: 6px solid var(--cl-gray-300);

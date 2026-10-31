@@ -4,6 +4,13 @@
 	height: 0;
 	pointer-events: none;
 	touch-action: none;
+
+	&.isDragging {
+		transition:
+			0.25s linear outline,
+			0.1s linear left,
+			0.1s linear top;
+	}
 }
 
 .vttTokenElementContainer {

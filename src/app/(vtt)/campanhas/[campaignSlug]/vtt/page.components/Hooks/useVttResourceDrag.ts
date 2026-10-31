@@ -15,7 +15,6 @@ import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 
 const DRAG_THRESHOLD = 5;
-const LONG_PRESS_DURATION = 500;
 const DRAG_UPDATE_INTERVAL = 1000 / 10;
 const REMOTE_INTERPOLATION_DURATION = 100;
 
@@ -49,7 +48,6 @@ export interface UseVttResourceDragOptions {
 	onDragUpdate?: (coordinates: CoordinatePair) => void;
 	onDragEnd?: (coordinates: CoordinatePair) => void;
 	onDragCancel?: () => void;
-	onLongPress?: () => void;
 }
 
 export interface UseVttResourceDragResult {
@@ -65,7 +63,6 @@ export interface UseVttResourceDragResult {
 		snap?: VttResourceDragSnap,
 	) => CoordinatePair;
 	cancel: () => void;
-	clearLongPress: () => void;
 }
 
 function snapCoordinateToVertex(coordinate: number, cellSize: number) {
@@ -152,7 +149,6 @@ export function useVttResourceDrag({
 	onDragUpdate,
 	onDragEnd,
 	onDragCancel,
-	onLongPress,
 }: UseVttResourceDragOptions): UseVttResourceDragResult {
 	const screenToWorld = useVttThrottledViewportContext(
 		(state) => state.screenToWorld,
@@ -179,7 +175,6 @@ export function useVttResourceDrag({
 	const onDragUpdateRef = useRef(onDragUpdate);
 	const onDragEndRef = useRef(onDragEnd);
 	const onDragCancelRef = useRef(onDragCancel);
-	const onLongPressRef = useRef(onLongPress);
 
 	sourceCoordinatesRef.current = sourceCoordinates;
 	enabledRef.current = enabled;
@@ -190,16 +185,11 @@ export function useVttResourceDrag({
 	onDragUpdateRef.current = onDragUpdate;
 	onDragEndRef.current = onDragEnd;
 	onDragCancelRef.current = onDragCancel;
-	onLongPressRef.current = onLongPress;
 
 	const pointerIdRef = useRef<number | null>(null);
 	const pointerStartRef = useRef({ x: 0, y: 0 });
 	const dragStartCoordinatesRef = useRef(sourceCoordinates);
 	const dragStartedRef = useRef(false);
-	const longPressTriggeredRef = useRef(false);
-	const longPressTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-		null,
-	);
 	const lastDragUpdateRef = useRef(0);
 	const dragMousePositionRef = useRef({ x: 0, y: 0 });
 	const dragOffsetRef = useRef({ x: 0, y: 0 });
@@ -232,12 +222,6 @@ export function useVttResourceDrag({
 			applySnap(coordinates, snapOverride ?? snapRef.current),
 		[],
 	);
-
-	const clearLongPress = useCallback(() => {
-		if (longPressTimeoutRef.current === null) return;
-		clearTimeout(longPressTimeoutRef.current);
-		longPressTimeoutRef.current = null;
-	}, []);
 
 	function setDragMousePosition(clientX: number, clientY: number) {
 		dragMousePositionRef.current = { x: clientX, y: clientY };
@@ -319,7 +303,6 @@ export function useVttResourceDrag({
 	}
 
 	function finishPointer() {
-		clearLongPress();
 		removeWindowDragListeners();
 
 		if (dragAnimationFrameRef.current !== null) {
@@ -330,14 +313,12 @@ export function useVttResourceDrag({
 		pointerIdRef.current = null;
 		dragStartedRef.current = false;
 		setIsPointerDragging(false);
-		longPressTriggeredRef.current = false;
 		setHoverInteractionType(null);
 		setEdgeScrollOverride(null);
 		restoreUserSelect();
 	}
 
 	function startDrag() {
-		clearLongPress();
 		dragStartedRef.current = true;
 		setIsPointerDragging(true);
 		setHoverInteractionType(VttCursorInteractionType.Hand);
@@ -474,7 +455,6 @@ export function useVttResourceDrag({
 
 	useEffect(() => {
 		return () => {
-			clearLongPress();
 			removeWindowDragListeners();
 
 			if (dragAnimationFrameRef.current !== null)
@@ -512,26 +492,14 @@ export function useVttResourceDrag({
 				...sourceCoordinatesRef.current,
 			};
 			dragStartedRef.current = false;
-			longPressTriggeredRef.current = false;
-			clearLongPress();
-
-			longPressTimeoutRef.current = setTimeout(() => {
-				if (pointerIdRef.current !== event.pointerId) return;
-				if (dragStartedRef.current) return;
-
-				longPressTriggeredRef.current = true;
-				onLongPressRef.current?.();
-				pointerIdRef.current = null;
-				clearLongPress();
-			}, LONG_PRESS_DURATION);
 		},
-		[clearLongPress],
+		[],
 	);
 
 	const handlePointerMove = useCallback(
 		(event: ReactPointerEvent<HTMLElement>) => {
 			if (pointerIdRef.current !== event.pointerId) return;
-			if (dragStartedRef.current || longPressTriggeredRef.current) return;
+			if (dragStartedRef.current) return;
 
 			const distance = Math.hypot(
 				event.clientX - pointerStartRef.current.x,
@@ -575,6 +543,5 @@ export function useVttResourceDrag({
 		onPointerUp: handlePointerUp,
 		snapCoordinates,
 		cancel,
-		clearLongPress,
 	};
 }

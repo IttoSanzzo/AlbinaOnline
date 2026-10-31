@@ -106,6 +106,7 @@ export interface VttViewportState {
 	viewport: VttViewportSize;
 	camera: VttCamera;
 	pixelsPerCentimeter: number;
+	pixelScale: number;
 	gridCellSize: number;
 	cullingMargin: number;
 	visibleWorld: VttVisibleWorld;
@@ -172,8 +173,11 @@ function createVttViewportStore(
 
 	return createStore<VttViewportState>()((set, get) => {
 		const updateCamera = (camera: VttCamera) => {
+			const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
+
 			set({
 				camera,
+				pixelScale,
 				visibleWorld: getVisibleWorld(camera, get().viewport),
 			});
 		};
@@ -184,6 +188,7 @@ function createVttViewportStore(
 			viewport: initialViewport,
 			camera: initialCamera,
 			pixelsPerCentimeter: PIXELS_PER_CENTIMETER,
+			pixelScale: PIXELS_PER_CENTIMETER * DEFAULT_ZOOM,
 			gridCellSize: GRID_CELL_SIZE,
 			cullingMargin: 0,
 			visibleWorld: getVisibleWorld(initialCamera, initialViewport),
@@ -192,30 +197,27 @@ function createVttViewportStore(
 				const state = get();
 				const visibilityPadding =
 					mode === "partial-extra"
-						? (padding ??
-							state.cullingMargin / (PIXELS_PER_CENTIMETER * state.camera.zoom))
+						? (padding ?? state.cullingMargin / state.pixelScale)
 						: padding;
 
 				return isVisible(bounds, state.visibleWorld, mode, visibilityPadding);
 			},
 
 			worldToScreen: (position) => {
-				const { camera, viewport } = get();
-				const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+				const { camera, viewport, pixelScale } = get();
 
 				return {
-					x: (position.x - camera.x) * scale + viewport.width / 2,
-					y: (position.y - camera.y) * scale + viewport.height / 2,
+					x: (position.x - camera.x) * pixelScale + viewport.width / 2,
+					y: (position.y - camera.y) * pixelScale + viewport.height / 2,
 				};
 			},
 
 			screenToWorld: (position) => {
-				const { camera, viewport } = get();
-				const scale = PIXELS_PER_CENTIMETER * camera.zoom;
+				const { camera, viewport, pixelScale } = get();
 
 				return {
-					x: (position.x - viewport.width / 2) / scale + camera.x,
-					y: (position.y - viewport.height / 2) / scale + camera.y,
+					x: (position.x - viewport.width / 2) / pixelScale + camera.x,
+					y: (position.y - viewport.height / 2) / pixelScale + camera.y,
 				};
 			},
 
@@ -238,29 +240,27 @@ function createVttViewportStore(
 			},
 
 			zoomAt: (screenPosition, zoom) => {
-				const { camera, viewport } = get();
+				const { camera, viewport, pixelScale } = get();
 				const nextZoom = clampZoom(zoom);
-				const scale = PIXELS_PER_CENTIMETER;
+				const nextPixelScale = PIXELS_PER_CENTIMETER * nextZoom;
 
 				const worldPosition = {
 					x: Math.round(
-						camera.x +
-							(screenPosition.x - viewport.width / 2) / (scale * camera.zoom),
+						camera.x + (screenPosition.x - viewport.width / 2) / pixelScale,
 					),
 					y: Math.round(
-						camera.y +
-							(screenPosition.y - viewport.height / 2) / (scale * camera.zoom),
+						camera.y + (screenPosition.y - viewport.height / 2) / pixelScale,
 					),
 				};
 
 				updateCamera({
 					x: Math.round(
 						worldPosition.x -
-							(screenPosition.x - viewport.width / 2) / (scale * nextZoom),
+							(screenPosition.x - viewport.width / 2) / nextPixelScale,
 					),
 					y: Math.round(
 						worldPosition.y -
-							(screenPosition.y - viewport.height / 2) / (scale * nextZoom),
+							(screenPosition.y - viewport.height / 2) / nextPixelScale,
 					),
 					zoom: nextZoom,
 				});
@@ -349,6 +349,7 @@ export function VttViewportContextProvider({
 
 		store.setState((state) => ({
 			camera,
+			pixelScale: PIXELS_PER_CENTIMETER * camera.zoom,
 			visibleWorld: getVisibleWorld(camera, state.viewport),
 		}));
 		setLoadedStorageKey(storageKey);
