@@ -9,6 +9,7 @@
 	-webkit-user-drag: none;
 
 	&.isDragging {
+		z-index: 1;
 		transition:
 			0.25s linear outline,
 			0.1s linear left,

@@ -60,6 +60,21 @@ function createTokenIdsPerScene(
 	return tokenIdsPerScene;
 }
 
+function hasSamePlacementScenes(
+	previousToken?: VttToken,
+	nextToken?: VttToken,
+): boolean {
+	if (previousToken === nextToken) return true;
+	if (!previousToken || !nextToken) return false;
+	if (previousToken.placements.size !== nextToken.placements.size) return false;
+
+	for (const sceneId of previousToken.placements.keys()) {
+		if (!nextToken.placements.has(sceneId)) return false;
+	}
+
+	return true;
+}
+
 function syncTokenSceneIndex(
 	tokenIdsPerScene: Map<Guid, Set<Guid>>,
 	tokenId: Guid,
@@ -68,6 +83,7 @@ function syncTokenSceneIndex(
 ): void {
 	if (previousToken) {
 		for (const sceneId of previousToken.placements.keys()) {
+			if (nextToken?.placements.has(sceneId)) continue;
 			const existingIds = tokenIdsPerScene.get(sceneId);
 			if (!existingIds?.has(tokenId)) continue;
 			const tokenIds = new Set(existingIds);
@@ -78,11 +94,47 @@ function syncTokenSceneIndex(
 	}
 	if (nextToken) {
 		for (const sceneId of nextToken.placements.keys()) {
+			if (previousToken?.placements.has(sceneId)) continue;
 			const tokenIds = new Set(tokenIdsPerScene.get(sceneId) ?? []);
 			tokenIds.add(tokenId);
 			tokenIdsPerScene.set(sceneId, tokenIds);
 		}
 	}
+}
+
+function promoteTokenInScene(
+	tokenIdsPerScene: Map<Guid, Set<Guid>>,
+	tokenId: Guid,
+	sceneId: Guid,
+): void {
+	const existingIds = tokenIdsPerScene.get(sceneId);
+	if (!existingIds?.has(tokenId)) return;
+
+	let lastId: Guid | undefined;
+	for (const id of existingIds) lastId = id;
+	if (lastId === tokenId) return;
+
+	const tokenIds = new Set(existingIds);
+	tokenIds.delete(tokenId);
+	tokenIds.add(tokenId);
+	tokenIdsPerScene.set(sceneId, tokenIds);
+}
+
+function setToken(
+	state: VttTokenStoreState,
+	token: VttToken,
+): Partial<VttTokenStoreState> {
+	const previousToken = state.tokens.get(token.id);
+	const tokens = new Map(state.tokens);
+	tokens.set(token.id, token);
+
+	let tokenIdsPerScene = state.tokenIdsPerScene;
+	if (!hasSamePlacementScenes(previousToken, token)) {
+		tokenIdsPerScene = new Map(state.tokenIdsPerScene);
+		syncTokenSceneIndex(tokenIdsPerScene, token.id, previousToken, token);
+	}
+
+	return { tokens, tokenIdsPerScene };
 }
 
 function updateToken(
@@ -93,11 +145,8 @@ function updateToken(
 	const token = state.tokens.get(id);
 	if (!token) return {};
 	const updatedToken = update(token);
-	const tokens = new Map(state.tokens);
-	tokens.set(id, updatedToken);
-	const tokenIdsPerScene = new Map(state.tokenIdsPerScene);
-	syncTokenSceneIndex(tokenIdsPerScene, id, token, updatedToken);
-	return { tokens, tokenIdsPerScene };
+	if (updatedToken === token) return {};
+	return setToken(state, updatedToken);
 }
 
 function updatePlacementCoordinates(
@@ -168,25 +217,9 @@ function createVttTokenStore(): VttTokenStore {
 			});
 		},
 
-		add: (token) =>
-			set((state) => {
-				const tokens = new Map(state.tokens);
-				const tokenIdsPerScene = new Map(state.tokenIdsPerScene);
-				const previousToken = tokens.get(token.id);
-				syncTokenSceneIndex(tokenIdsPerScene, token.id, previousToken, token);
-				tokens.set(token.id, token);
-				return { tokens, tokenIdsPerScene };
-			}),
+		add: (token) => set((state) => setToken(state, token)),
 
-		update: (token) =>
-			set((state) => {
-				const tokens = new Map(state.tokens);
-				const tokenIdsPerScene = new Map(state.tokenIdsPerScene);
-				const previousToken = tokens.get(token.id);
-				syncTokenSceneIndex(tokenIdsPerScene, token.id, previousToken, token);
-				tokens.set(token.id, token);
-				return { tokens, tokenIdsPerScene };
-			}),
+		update: (token) => set((state) => setToken(state, token)),
 
 		remove: (id) =>
 			set((state) => {
@@ -255,29 +288,42 @@ function createVttTokenStore(): VttTokenStore {
 				const activeDrags = new Map(state.activeDrags);
 				activeDrags.delete(id);
 
-				return {
-					...updateToken(
-						{
-							...state,
-							activeDrags,
-						},
-						id,
-						(token) => {
-							const placement = token.placements.get(sceneId);
-							if (!placement) return removeDragLock(token, id, sceneId);
+				const token = state.tokens.get(id);
+				const placement = token?.placements.get(sceneId);
+				const positionChanged =
+					!!placement &&
+					(drag.initialCoordinates.x !== coordinates.x ||
+						drag.initialCoordinates.y !== coordinates.y);
 
-							const placements = new Map(token.placements);
-							placements.set(sceneId, {
-								...placement,
-								x: coordinates.x,
-								y: coordinates.y,
-							});
+				const updatedState = updateToken(
+					{
+						...state,
+						activeDrags,
+					},
+					id,
+					(token) => {
+						const placement = token.placements.get(sceneId);
+						if (!placement) return removeDragLock(token, id, sceneId);
 
-							return removeDragLock({ ...token, placements }, id, sceneId);
-						},
-					),
-					activeDrags,
-				};
+						const placements = new Map(token.placements);
+						placements.set(sceneId, {
+							...placement,
+							x: coordinates.x,
+							y: coordinates.y,
+						});
+
+						return removeDragLock({ ...token, placements }, id, sceneId);
+					},
+				);
+
+				if (!positionChanged) return { ...updatedState, activeDrags };
+
+				const tokenIdsPerScene = new Map(
+					updatedState.tokenIdsPerScene ?? state.tokenIdsPerScene,
+				);
+				promoteTokenInScene(tokenIdsPerScene, id, sceneId);
+
+				return { ...updatedState, tokenIdsPerScene, activeDrags };
 			}),
 
 		cancelDrag: (id, sceneId) =>
