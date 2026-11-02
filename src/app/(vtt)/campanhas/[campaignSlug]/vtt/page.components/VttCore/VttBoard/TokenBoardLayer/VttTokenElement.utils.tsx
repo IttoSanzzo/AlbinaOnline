@@ -25,6 +25,12 @@ export function getVttTokenSnap(
 	const rotation = ((appearance.rotation % 360) + 360) % 360;
 	const scale = appearance.scale / 100;
 
+	if (appearance.width == appearance.height)
+		return (coordinates) => ({
+			x: snapTokenAxis(coordinates.x, appearance.width * scale),
+			y: snapTokenAxis(coordinates.y, appearance.height * scale),
+		});
+
 	let width: number;
 	let height: number;
 

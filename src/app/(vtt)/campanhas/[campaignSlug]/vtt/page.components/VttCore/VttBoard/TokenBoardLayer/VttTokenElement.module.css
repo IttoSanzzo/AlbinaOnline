@@ -20,7 +20,7 @@
 .vttTokenElementContainer {
 	position: absolute;
 	transform: translate(-50%, -50%);
-	animation: 0.25s linear fade-in;
+	/* animation: 0.25s linear fade-in; */
 }
 
 .activeLayer {
@@ -34,11 +34,11 @@
 	outline: 3px solid transparent;
 }
 
-@keyframes fade-in {
+/* @keyframes fade-in {
 	0% {
 		opacity: 0;
 	}
 	100% {
 		opacity: 1;
 	}
-}
+} */

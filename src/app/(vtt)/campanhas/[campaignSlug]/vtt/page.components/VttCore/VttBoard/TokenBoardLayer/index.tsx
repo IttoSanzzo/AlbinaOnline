@@ -16,10 +16,9 @@ export const TokenBoardLayer = memo(function TokenBoardLayer() {
 	);
 	const tokenIdsPerScene = useVttTokenStore((store) => store.tokenIdsPerScene);
 
-	if (!activeSceneId) return null;
 	return (
 		<TokenBoardLayerContainer>
-			{[...(tokenIdsPerScene.get(activeSceneId) ?? [])].map((tokenId) => (
+			{(tokenIdsPerScene.get(activeSceneId) ?? []).map((tokenId) => (
 				<VttTokenElementWrapper
 					key={tokenId}
 					vttTokenId={tokenId}

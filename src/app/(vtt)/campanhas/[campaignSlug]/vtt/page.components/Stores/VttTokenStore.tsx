@@ -17,8 +17,8 @@ interface VttTokenDragState {
 interface VttTokenStoreState {
 	/** All VttTokens in the current VTT */
 	tokens: Map<Guid, VttToken>;
-	/** Token IDs indexed by scene ID */
-	tokenIdsPerScene: Map<Guid, Set<Guid>>;
+	/** Token IDs indexed by scene ID, ordered by rendering priority */
+	tokenIdsPerScene: Map<Guid, Guid[]>;
 	/** Coordinates captured when each token started dragging */
 	activeDrags: Map<Guid, VttTokenDragState>;
 	/** Replaces all VttTokens */
@@ -43,18 +43,16 @@ type VttTokenStore = StoreApi<VttTokenStoreState>;
 
 const VttTokenStoreContext = createContext<VttTokenStore | null>(null);
 
-function createTokenIdsPerScene(
-	tokens: Iterable<VttToken>,
-): Map<Guid, Set<Guid>> {
-	const tokenIdsPerScene = new Map<Guid, Set<Guid>>();
+function createTokenIdsPerScene(tokens: Iterable<VttToken>): Map<Guid, Guid[]> {
+	const tokenIdsPerScene = new Map<Guid, Guid[]>();
 	for (const token of tokens) {
 		for (const sceneId of token.placements.keys()) {
 			let tokenIds = tokenIdsPerScene.get(sceneId);
 			if (!tokenIds) {
-				tokenIds = new Set<Guid>();
+				tokenIds = [];
 				tokenIdsPerScene.set(sceneId, tokenIds);
 			}
-			tokenIds.add(token.id);
+			tokenIds.push(token.id);
 		}
 	}
 	return tokenIdsPerScene;
@@ -76,7 +74,7 @@ function hasSamePlacementScenes(
 }
 
 function syncTokenSceneIndex(
-	tokenIdsPerScene: Map<Guid, Set<Guid>>,
+	tokenIdsPerScene: Map<Guid, Guid[]>,
 	tokenId: Guid,
 	previousToken?: VttToken,
 	nextToken?: VttToken,
@@ -85,39 +83,68 @@ function syncTokenSceneIndex(
 		for (const sceneId of previousToken.placements.keys()) {
 			if (nextToken?.placements.has(sceneId)) continue;
 			const existingIds = tokenIdsPerScene.get(sceneId);
-			if (!existingIds?.has(tokenId)) continue;
-			const tokenIds = new Set(existingIds);
-			tokenIds.delete(tokenId);
-			if (tokenIds.size === 0) tokenIdsPerScene.delete(sceneId);
+			if (!existingIds) continue;
+			const tokenIds = existingIds.filter((id) => id !== tokenId);
+			if (tokenIds.length === 0) tokenIdsPerScene.delete(sceneId);
 			else tokenIdsPerScene.set(sceneId, tokenIds);
 		}
 	}
 	if (nextToken) {
 		for (const sceneId of nextToken.placements.keys()) {
 			if (previousToken?.placements.has(sceneId)) continue;
-			const tokenIds = new Set(tokenIdsPerScene.get(sceneId) ?? []);
-			tokenIds.add(tokenId);
+			const tokenIds = [...(tokenIdsPerScene.get(sceneId) ?? []), tokenId];
 			tokenIdsPerScene.set(sceneId, tokenIds);
 		}
 	}
 }
 
-function promoteTokenInScene(
-	tokenIdsPerScene: Map<Guid, Set<Guid>>,
+function hasChangedPlacementCoordinates(
+	previousToken: VttToken | undefined,
+	nextToken: VttToken,
+): Guid[] {
+	if (!previousToken) return [];
+	const changedSceneIds: Guid[] = [];
+	for (const [sceneId, placement] of nextToken.placements) {
+		const previousPlacement = previousToken.placements.get(sceneId);
+		if (
+			previousPlacement &&
+			(previousPlacement.x !== placement.x ||
+				previousPlacement.y !== placement.y)
+		) {
+			changedSceneIds.push(sceneId);
+		}
+	}
+	return changedSceneIds;
+}
+
+function canPromoteTokenInScene(
+	tokenIdsPerScene: Map<Guid, Guid[]>,
 	tokenId: Guid,
 	sceneId: Guid,
-): void {
+): boolean {
+	const tokenIds = tokenIdsPerScene.get(sceneId);
+	if (!tokenIds) return false;
+
+	const index = tokenIds.indexOf(tokenId);
+	return index !== -1 && index !== tokenIds.length - 1;
+}
+
+function promoteTokenInScene(
+	tokenIdsPerScene: Map<Guid, Guid[]>,
+	tokenId: Guid,
+	sceneId: Guid,
+): boolean {
 	const existingIds = tokenIdsPerScene.get(sceneId);
-	if (!existingIds?.has(tokenId)) return;
+	if (!existingIds) return false;
 
-	let lastId: Guid | undefined;
-	for (const id of existingIds) lastId = id;
-	if (lastId === tokenId) return;
+	const index = existingIds.indexOf(tokenId);
+	if (index === -1 || index === existingIds.length - 1) return false;
 
-	const tokenIds = new Set(existingIds);
-	tokenIds.delete(tokenId);
-	tokenIds.add(tokenId);
+	const tokenIds = [...existingIds];
+	tokenIds.splice(index, 1);
+	tokenIds.push(tokenId);
 	tokenIdsPerScene.set(sceneId, tokenIds);
+	return true;
 }
 
 function setToken(
@@ -219,7 +246,31 @@ function createVttTokenStore(): VttTokenStore {
 
 		add: (token) => set((state) => setToken(state, token)),
 
-		update: (token) => set((state) => setToken(state, token)),
+		update: (token) =>
+			set((state) => {
+				const previousToken = state.tokens.get(token.id);
+				const updatedState = setToken(state, token);
+				const changedSceneIds = hasChangedPlacementCoordinates(
+					previousToken,
+					token,
+				);
+				if (changedSceneIds.length === 0) return updatedState;
+				let tokenIdsPerScene =
+					updatedState.tokenIdsPerScene ?? state.tokenIdsPerScene;
+				let orderChanged = false;
+				for (const sceneId of changedSceneIds) {
+					if (!canPromoteTokenInScene(tokenIdsPerScene, token.id, sceneId))
+						continue;
+					if (!orderChanged) {
+						tokenIdsPerScene = new Map(tokenIdsPerScene);
+						orderChanged = true;
+					}
+					promoteTokenInScene(tokenIdsPerScene, token.id, sceneId);
+				}
+				return orderChanged
+					? { ...updatedState, tokenIdsPerScene }
+					: updatedState;
+			}),
 
 		remove: (id) =>
 			set((state) => {
@@ -316,14 +367,21 @@ function createVttTokenStore(): VttTokenStore {
 					},
 				);
 
-				if (!positionChanged) return { ...updatedState, activeDrags };
+				const tokenIdsPerScene =
+					updatedState.tokenIdsPerScene ?? state.tokenIdsPerScene;
 
-				const tokenIdsPerScene = new Map(
-					updatedState.tokenIdsPerScene ?? state.tokenIdsPerScene,
-				);
-				promoteTokenInScene(tokenIdsPerScene, id, sceneId);
-
-				return { ...updatedState, tokenIdsPerScene, activeDrags };
+				if (
+					!positionChanged ||
+					!canPromoteTokenInScene(tokenIdsPerScene, id, sceneId)
+				)
+					return { ...updatedState, activeDrags };
+				const updatedTokenIdsPerScene = new Map(tokenIdsPerScene);
+				promoteTokenInScene(updatedTokenIdsPerScene, id, sceneId);
+				return {
+					...updatedState,
+					tokenIdsPerScene: updatedTokenIdsPerScene,
+					activeDrags,
+				};
 			}),
 
 		cancelDrag: (id, sceneId) =>
