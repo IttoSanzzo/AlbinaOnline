@@ -45,7 +45,7 @@ export const GeneralShortcutsEngine = memo(function GeneralShortcutsEngine() {
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [activeLayer, setActiveLayer]);
+	}, [activeLayer, setActiveLayer, isMaster]);
 	return null;
 });
 
