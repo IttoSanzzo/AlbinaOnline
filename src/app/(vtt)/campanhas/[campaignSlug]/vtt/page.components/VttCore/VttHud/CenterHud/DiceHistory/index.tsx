@@ -2,9 +2,9 @@
 
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
-import { useVttContext } from "../../../Contexts/VttContextProvider";
+import { useVttContext } from "../../../../Contexts/VttContextProvider";
 import { useEffect, useRef, useState } from "react";
-import { VttDiceResult } from "../../../Types/Classes/VttDiceResult";
+import { VttDiceResult } from "../../../../Types/Classes/VttDiceResult";
 import { Guid } from "@/libs/stp@types";
 import Image from "next/image";
 import DiceRollerCrop from "@/../public/general-assets/DiceRollerCrop.png";
@@ -12,11 +12,11 @@ import {
 	setVttElementDataAttributes,
 	setVttElementHoverInteraction,
 	VttElementDataAttribute,
-} from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
+} from "../../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../../Types/Classes/VttMouseState";
 import { useLocalStorageState } from "@/utils/Storage";
 import { VttDiceResultView } from "./VttDiceResultView";
-import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
+import { useVttMembersContext } from "../../../../Contexts/VttMembersProvider";
 import toast, { Toaster } from "react-hot-toast";
 
 const DiceHistoryContainer = newStyledElement.div(styles.diceHistoryContainer);

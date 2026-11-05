@@ -1,8 +1,30 @@
-.vttHudContainer {
+.vttHudFixedContainer {
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
 	left: 0px;
 	top: 0px;
 	pointer-events: none;
+}
+
+.vttHudLayoutContainer {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	/* border: 1px solid red; */
+}
+.vttHudCenterContainer {
+	position: relative;
+	flex: 1;
+	/* border: 1px solid blue; */
+}
+.vttHudSideContainer {
+	position: relative;
+	display: flex;
+	/* min-width: 200px;
+	max-width: 300px;
+	width: 20vw;
+	height: 100%; */
+	/* background-color: green; */
 }

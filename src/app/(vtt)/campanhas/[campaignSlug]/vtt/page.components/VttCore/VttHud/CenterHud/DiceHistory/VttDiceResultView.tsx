@@ -3,7 +3,7 @@ import { CSSProperties } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./VttDiceResultView.module.css";
 import { UIBasics } from "@/components/(UIBasics)";
-import { VttDiceResult } from "../../../Types/Classes/VttDiceResult";
+import { VttDiceResult } from "../../../../Types/Classes/VttDiceResult";
 import Image, { StaticImageData } from "next/image";
 
 const VttDiceResultViewContainer = newStyledElement.div(

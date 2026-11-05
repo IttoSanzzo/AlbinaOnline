@@ -3,7 +3,7 @@
 }
 
 .diceBoxOpenButton {
-	position: fixed;
+	position: absolute;
 	left: 0px;
 	top: 60vh;
 	height: 50px;
@@ -46,8 +46,7 @@
 .diceToasterBox,
 .diceHistoryBox {
 	--diceHistoryWidth: 250px;
-	position: fixed !important;
-	/* max-height: 50vh; */
+	position: absolute !important;
 	height: 50vh;
 	width: var(--diceHistoryWidth);
 	top: 50% !important;
@@ -70,15 +69,18 @@
 	padding: 4px;
 	box-shadow: 0 0 8px 0 var(--cl-black-3);
 	opacity: 0.1;
+	opacity: 0;
 	transition:
 		0.35s linear opacity,
 		0.5s ease-in-out left;
 
 	&.isOpen {
 		left: 40px;
+		display: unset;
 	}
 	&.isClosed {
 		left: calc(-1 * var(--diceHistoryWidth));
+		pointer-events: none;
 	}
 }
 
@@ -86,6 +88,7 @@
 	.diceHistoryBox {
 		opacity: 0.95;
 		left: 40px;
+		pointer-events: unset;
 	}
 	.diceToasterBox {
 		opacity: 0;

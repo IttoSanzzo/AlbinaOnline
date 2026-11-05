@@ -1,13 +1,13 @@
 "use client";
 
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { useVttInteractionContext } from "../../Contexts/VttInteractionContextProvider";
-import { useVttViewportStore } from "../../Contexts/VttViewportContextProvider";
+import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
+import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
 import styles from "./CameraControls.module.css";
-import { DEFAULT_GRID_CELL_SIZE } from "../../Contexts/VttGridProvider";
+import { DEFAULT_GRID_CELL_SIZE } from "../../../Contexts/VttGridProvider";
 import { useEffect } from "react";
-import { setVttElementHoverInteraction } from "../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../Types/Classes/VttMouseState";
+import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
 
 const CameraControlsContainer = newStyledElement.div(
 	styles.cameraControlsContainer,

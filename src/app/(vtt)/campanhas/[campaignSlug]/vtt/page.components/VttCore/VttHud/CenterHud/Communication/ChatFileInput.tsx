@@ -1,7 +1,7 @@
 "use client";
 
 import z from "zod";
-import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
+import { VttInputMessage } from "../../../../Types/Core/VttInputMessage";
 import styles from "./ChatFileInput.module.css";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ import { Dialog } from "@/libs/stp@radix";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { StpIcon } from "@/libs/stp@icons";
-import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
+import { VttChatMessage } from "../../../../Types/Classes/ChatMessage";
 
 const SendImageTrigger = newStyledElement.button(styles.sendImageTrigger);
 

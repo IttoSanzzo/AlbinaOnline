@@ -1,13 +1,13 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
-import { useVttContext } from "../../../Contexts/VttContextProvider";
 import { useEffect, useRef, useState } from "react";
-import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
-import { useVttMembersContext } from "../../../Contexts/VttMembersProvider";
-import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
-import { useVttAudioController } from "../../../Contexts/AudioManager/VttAudioControllerContext";
-import { audioPaths } from "../../../Contexts/AudioManager/audioPaths";
+import { useVttContext } from "../../../../Contexts/VttContextProvider";
+import { VttChatMessage } from "../../../../Types/Classes/ChatMessage";
+import { useVttMembersContext } from "../../../../Contexts/VttMembersProvider";
+import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../../Types/Classes/VttMouseState";
+import { useVttAudioController } from "../../../../Contexts/AudioManager/VttAudioControllerContext";
+import { audioPaths } from "../../../../Contexts/AudioManager/audioPaths";
 import { ChatMessage } from "./ChatMessage";
 import { ChatFileInput, SendDraggedImageToChatHandle } from "./ChatFileInput";
 import { StpIcon } from "@/libs/stp@icons";
@@ -312,6 +312,8 @@ function Chat({ showChat }: ChatProps) {
 			style={{
 				width: `${chatWidth}px`,
 				marginRight: showChat || isChatFocused ? "0px" : `-${chatWidth + 45}px`,
+				pointerEvents: !showChat ? "none" : undefined,
+				opacity: !showChat ? "0" : undefined,
 			}}
 			onMouseEnter={() => {
 				isChatHovered.current = true;

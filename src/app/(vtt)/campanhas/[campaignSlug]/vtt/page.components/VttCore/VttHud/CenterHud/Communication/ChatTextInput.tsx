@@ -10,20 +10,20 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import z from "zod";
 import { CampaignMember, Guid } from "@/libs/stp@types";
 import { CHAT_SUBMIT_COOLDOWN_MS } from ".";
-import { useVttInteractionContext } from "../../../Contexts/VttInteractionContextProvider";
-import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
-import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
+import { useVttInteractionContext } from "../../../../Contexts/VttInteractionContextProvider";
+import { VttCursorInteractionType } from "../../../../Types/Classes/VttMouseState";
+import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
 import { newStyledElement } from "@setsu-tp/styled-components";
-import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
+import { VttChatMessage } from "../../../../Types/Classes/ChatMessage";
 import { VttCommandLineHandler } from "./VttCommandLineHandler";
-import { useVttViewportStore } from "../../../Contexts/VttViewportContextProvider";
+import { useVttViewportStore } from "../../../../Contexts/VttViewportContextProvider";
 import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 import { KlipyGifSelector } from "./KlipyGifSelector";
-import { useVttContext } from "../../../Contexts/VttContextProvider";
+import { useVttContext } from "../../../../Contexts/VttContextProvider";
+import { VttInputMessage } from "../../../../Types/Core/VttInputMessage";
 
 const ChatTextInputContainer = newStyledElement.div(
 	styles.chatTextInputContainer,

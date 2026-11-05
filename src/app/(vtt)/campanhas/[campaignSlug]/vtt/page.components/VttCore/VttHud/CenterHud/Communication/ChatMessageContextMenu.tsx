@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { Guid } from "@/libs/stp@types";
 import { useCurrentCampaignMember } from "@/libs/stp@hooks";
-import { useVttContext } from "../../../Contexts/VttContextProvider";
+import { useVttContext } from "../../../../Contexts/VttContextProvider";
 import clsx from "clsx";
-import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
+import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../../Types/Classes/VttMouseState";
 
 const ChatMessageContextMenuContainer = newStyledElement.div(
 	styles.chatMessageContextMenuContainer,

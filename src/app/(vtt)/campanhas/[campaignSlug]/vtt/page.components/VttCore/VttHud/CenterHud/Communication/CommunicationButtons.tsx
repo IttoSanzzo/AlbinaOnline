@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { VttHudGenericButtonA } from "../../../Components/VttHudGenericButtonA";
-import { useVttLocalSettings } from "../../../Contexts/VttLocalSettings/VttLocalSettingsProvider";
+import { VttHudGenericButtonA } from "../../../../Components/VttHudGenericButtonA";
+import { useVttLocalSettings } from "../../../../Contexts/VttLocalSettings/VttLocalSettingsProvider";
 import styles from "./CommunicationButtons.module.css";
 import { newStyledElement } from "@setsu-tp/styled-components";
 

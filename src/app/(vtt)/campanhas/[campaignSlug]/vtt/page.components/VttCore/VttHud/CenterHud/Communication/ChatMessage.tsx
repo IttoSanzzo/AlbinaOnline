@@ -1,9 +1,9 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./ChatMessage.module.css";
-import { VttChatMessage } from "../../../Types/Classes/ChatMessage";
+import { VttChatMessage } from "../../../../Types/Classes/ChatMessage";
 import { CampaignMember, Guid } from "@/libs/stp@types";
-import { setVttElementHoverInteraction } from "../../../Utils/ElementDataAttributeUtils";
-import { VttCursorInteractionType } from "../../../Types/Classes/VttMouseState";
+import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
+import { VttCursorInteractionType } from "../../../../Types/Classes/VttMouseState";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
