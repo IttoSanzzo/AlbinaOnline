@@ -23,19 +23,36 @@ export const GeneralShortcutsEngine = memo(function GeneralShortcutsEngine() {
 					if (event.ctrlKey) event.preventDefault();
 					break;
 				case "Digit1":
-					if (activeLayer != VttBoardLayer.GridMap && isMaster)
+					if (
+						event.ctrlKey &&
+						event.shiftKey &&
+						isMaster &&
+						activeLayer != VttBoardLayer.GridMap
+					)
 						setActiveLayer(VttBoardLayer.GridMap);
 					break;
 				case "Digit2":
-					if (activeLayer != VttBoardLayer.Image)
+					if (
+						event.ctrlKey &&
+						event.shiftKey &&
+						activeLayer != VttBoardLayer.Image
+					)
 						setActiveLayer(VttBoardLayer.Image);
 					break;
 				case "Digit3":
-					if (activeLayer != VttBoardLayer.Token)
+					if (
+						event.ctrlKey &&
+						event.shiftKey &&
+						activeLayer != VttBoardLayer.Token
+					)
 						setActiveLayer(VttBoardLayer.Token);
 					break;
 				case "Digit4":
-					if (activeLayer != VttBoardLayer.Drawing)
+					if (
+						event.ctrlKey &&
+						event.shiftKey &&
+						activeLayer != VttBoardLayer.Drawing
+					)
 						setActiveLayer(VttBoardLayer.Drawing);
 					break;
 			}

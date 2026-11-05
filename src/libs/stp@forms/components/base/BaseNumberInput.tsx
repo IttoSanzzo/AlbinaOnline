@@ -3,6 +3,7 @@
 import { StpIcon } from "@/libs/stp@icons";
 import {
 	CSSProperties,
+	KeyboardEvent,
 	InputHTMLAttributes,
 	useEffect,
 	useRef,
@@ -49,6 +50,7 @@ export type BaseNumberInputProps<TFormData> = {
 	min?: number;
 	max?: number;
 	step?: number;
+	enforceStep?: boolean;
 	color?: keyof typeof StandartTextColor;
 	useScrollControl?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
@@ -62,9 +64,11 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 	min,
 	max,
 	step,
+	enforceStep = true,
 	className,
 	color,
 	useScrollControl = true,
+	onKeyDown,
 	...rest
 }: BaseNumberInputProps<TFormData>) {
 	const containerRef = useRef<HTMLElement | null>(null);
@@ -101,21 +105,41 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 		} else field.onChange(newValue);
 	}
 
-	function handleDecrement() {
-		const newValue: number =
-			(isNaN(currentValue) ? 0 : currentValue) - (step ?? 1);
-		const finalNewValue =
-			min != undefined ? (newValue < min ? min : newValue) : newValue;
-		setValue(finalNewValue);
+	function handleStep(direction: -1 | 1) {
+		const numericValue = Number(currentValue);
+		const currentNumericValue = isNaN(numericValue) ? 0 : numericValue;
+		const stepValue = step ?? 1;
+		const quotient = currentNumericValue / stepValue;
+		const roundedValue =
+			(direction === 1 ? Math.floor(quotient) + 1 : Math.ceil(quotient) - 1) *
+			stepValue;
+		const finalValue = Math.max(
+			min ?? -Infinity,
+			Math.min(max ?? Infinity, roundedValue),
+		);
+
+		setValue(finalValue);
 		triggerDebounceAction();
 	}
+	function handleDecrement() {
+		handleStep(-1);
+	}
 	function handleIncrement() {
-		const newValue: number =
-			(isNaN(currentValue) ? 0 : currentValue) + (step ?? 1);
-		const finalNewValue =
-			max != undefined ? (newValue > max ? max : newValue) : newValue;
-		setValue(finalNewValue);
-		triggerDebounceAction();
+		handleStep(1);
+	}
+
+	function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+		onKeyDown?.(event);
+		if (event.defaultPrevented || enforceStep) return;
+		if (event.currentTarget.disabled || event.currentTarget.readOnly) return;
+
+		if (event.key === "ArrowUp") {
+			event.preventDefault();
+			handleIncrement();
+		} else if (event.key === "ArrowDown") {
+			event.preventDefault();
+			handleDecrement();
+		}
 	}
 
 	function handleMouseEnter() {
@@ -177,12 +201,13 @@ export function BaseNumberInput<TFormData extends FieldValues>({
 				style={inputStyle}
 				max={max}
 				min={min}
-				step={step}
+				step={enforceStep ? step : "any"}
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}
 				{...field}
 				value={currentValue ?? ""}
 				{...rest}
+				onKeyDown={handleKeyDown}
 				onChange={(event) => {
 					const value =
 						event.target.value === "" ? 0 : Number(event.target.value);

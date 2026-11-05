@@ -213,6 +213,7 @@ function EditorCore({
 									min={100}
 									max={20000}
 									step={50}
+									enforceStep={false}
 									color={
 										sizesAreExact.x == 0
 											? "gray"
@@ -227,6 +228,7 @@ function EditorCore({
 									min={0}
 									max={99}
 									step={1}
+									enforceStep={false}
 								/>
 							</div>
 						}
@@ -238,6 +240,7 @@ function EditorCore({
 									min={100}
 									max={20000}
 									step={50}
+									enforceStep={false}
 									color={
 										sizesAreExact.y == 0
 											? "gray"
@@ -252,6 +255,7 @@ function EditorCore({
 									min={0}
 									max={99}
 									step={1}
+									enforceStep={false}
 								/>
 							</div>
 						}

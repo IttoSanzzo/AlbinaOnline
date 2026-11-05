@@ -128,6 +128,14 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 				drag.snapCoordinates,
 			);
 		},
+		onRightClick: () => {
+			openVttGridMapRadialMenu(
+				vttGridMapRef,
+				send,
+				openNewRadialMenu,
+				drag.snapCoordinates,
+			);
+		},
 	});
 
 	useEffect(() => {
