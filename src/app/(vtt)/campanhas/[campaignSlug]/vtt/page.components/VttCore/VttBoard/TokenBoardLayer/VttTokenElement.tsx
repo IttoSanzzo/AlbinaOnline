@@ -142,7 +142,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 
 	return (
 		<VttTokenElementAnchor
-			className={drag.isDragging ? styles.isDragging : undefined}
+			className={drag.isDragging ? styles.isDraggingAnchor : undefined}
 			style={{
 				left: position.x,
 				top: position.y,

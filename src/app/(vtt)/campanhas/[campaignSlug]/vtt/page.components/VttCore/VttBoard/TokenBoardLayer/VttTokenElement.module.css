@@ -8,7 +8,7 @@
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
 
-	&.isDragging {
+	&.isDraggingAnchor {
 		z-index: 1;
 		transition:
 			0.25s linear outline,
@@ -26,7 +26,6 @@
 .activeLayer {
 	pointer-events: all;
 }
-
 .isDragging {
 	outline: 3px solid var(--cl-yellow-600);
 	box-shadow: 0 0 20px 0 var(--cl-yellow-600) !important;

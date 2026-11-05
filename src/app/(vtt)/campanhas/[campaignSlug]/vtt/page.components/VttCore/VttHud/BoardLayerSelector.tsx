@@ -28,6 +28,7 @@ export function BoardLayerSelector() {
 						event.preventDefault();
 						setActiveLayer(VttBoardLayer.GridMap);
 					}}
+					withRoughBorderRadius
 				/>
 			)}
 			<VttHudGenericButtonA
@@ -37,6 +38,7 @@ export function BoardLayerSelector() {
 					event.preventDefault();
 					setActiveLayer(VttBoardLayer.Image);
 				}}
+				withRoughBorderRadius
 			/>
 			<VttHudGenericButtonA
 				stpIconName={"PokerChip"}
@@ -45,6 +47,7 @@ export function BoardLayerSelector() {
 					event.preventDefault();
 					setActiveLayer(VttBoardLayer.Token);
 				}}
+				withRoughBorderRadius
 			/>
 			<VttHudGenericButtonA
 				stpIconName={"Palette"}
@@ -53,6 +56,7 @@ export function BoardLayerSelector() {
 					event.preventDefault();
 					setActiveLayer(VttBoardLayer.Drawing);
 				}}
+				withRoughBorderRadius
 			/>
 		</BoardLayerSelectorContainer>
 	);
