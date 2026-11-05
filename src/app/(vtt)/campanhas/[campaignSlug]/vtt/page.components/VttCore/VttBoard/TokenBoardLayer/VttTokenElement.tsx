@@ -180,6 +180,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 					vttToken={vttToken}
 					isEditable={isEditable}
 					pixelScale={pixelScale}
+					drag={drag}
 				/>
 			</VttTokenElementContainer>
 		</VttTokenElementAnchor>

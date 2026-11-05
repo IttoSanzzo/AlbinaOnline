@@ -55,6 +55,8 @@ export interface UseVttResourceDragResult {
 	isDragging: boolean;
 	isLocalDragging: boolean;
 	isRemoteDragging: boolean;
+	dragDistanceTravelled: number | null;
+	dragDisplacement: number | null;
 	onPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
 	onPointerMove: (event: ReactPointerEvent<HTMLElement>) => void;
 	onPointerUp: (event: ReactPointerEvent<HTMLElement>) => void;
@@ -204,6 +206,10 @@ export function useVttResourceDrag({
 	const visualCoordinatesRef = useRef(sourceCoordinates);
 	const remoteDragInitializedRef = useRef(false);
 
+	const lastMeasuredCoordinatesRef = useRef(sourceCoordinates);
+	const dragDistanceTravelledRef = useRef(0);
+	const dragDisplacementRef = useRef(0);
+
 	screenToWorldRef.current = screenToWorld;
 
 	const hasDragLock = resourceLock?.lockType === "drag";
@@ -277,6 +283,20 @@ export function useVttResourceDrag({
 
 	function updateDrag(clientX: number, clientY: number, force = false) {
 		const nextCoordinates = getDragCoordinates(clientX, clientY);
+		const previousCoordinates = lastMeasuredCoordinatesRef.current;
+
+		dragDistanceTravelledRef.current += Math.hypot(
+			nextCoordinates.x - previousCoordinates.x,
+			nextCoordinates.y - previousCoordinates.y,
+		);
+
+		dragDisplacementRef.current = Math.hypot(
+			nextCoordinates.x - dragStartCoordinatesRef.current.x,
+			nextCoordinates.y - dragStartCoordinatesRef.current.y,
+		);
+
+		lastMeasuredCoordinatesRef.current = nextCoordinates;
+
 		setDragCoordinates(nextCoordinates);
 
 		const now = performance.now();
@@ -327,6 +347,12 @@ export function useVttResourceDrag({
 		dragStartCoordinatesRef.current = {
 			...sourceCoordinatesRef.current,
 		};
+
+		lastMeasuredCoordinatesRef.current = {
+			...dragStartCoordinatesRef.current,
+		};
+		dragDistanceTravelledRef.current = 0;
+		dragDisplacementRef.current = 0;
 
 		const cursorWorldPosition = screenToWorldRef.current({
 			x: pointerStartRef.current.x,
@@ -538,6 +564,10 @@ export function useVttResourceDrag({
 		isDragging,
 		isLocalDragging,
 		isRemoteDragging,
+		dragDistanceTravelled: isPointerDragging
+			? dragDistanceTravelledRef.current
+			: null,
+		dragDisplacement: isPointerDragging ? dragDisplacementRef.current : null,
 		onPointerDown: handlePointerDown,
 		onPointerMove: handlePointerMove,
 		onPointerUp: handlePointerUp,

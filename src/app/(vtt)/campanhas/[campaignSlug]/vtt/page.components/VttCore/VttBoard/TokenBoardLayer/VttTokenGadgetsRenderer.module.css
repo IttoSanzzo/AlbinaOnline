@@ -30,3 +30,31 @@
 .UnframedRectangular {
 	border-radius: var(--rd-xl);
 }
+
+.dragDistanceDisplayText {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: var(--fs-3xl);
+	font-weight: var(--fw-bold);
+	color: var(--cl-gray-400);
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.85);
+	animation: 0.2s linear fade-in;
+
+	&.distanceTravelledType {
+		bottom: calc(100% + 10px);
+	}
+
+	&.displacementType {
+		top: calc(100% + 10px);
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
