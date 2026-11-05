@@ -320,6 +320,8 @@ export function useVttResourceDrag({
 		window.removeEventListener("pointermove", handleWindowPointerMove);
 		window.removeEventListener("pointerup", handleWindowPointerUp);
 		window.removeEventListener("pointercancel", handleWindowPointerCancel);
+		window.removeEventListener("mousedown", handleWindowMouseDown);
+		window.removeEventListener("contextmenu", handleWindowContextMenu);
 	}
 
 	function finishPointer() {
@@ -376,6 +378,8 @@ export function useVttResourceDrag({
 		window.addEventListener("pointermove", handleWindowPointerMove);
 		window.addEventListener("pointerup", handleWindowPointerUp);
 		window.addEventListener("pointercancel", handleWindowPointerCancel);
+		window.addEventListener("mousedown", handleWindowMouseDown);
+		window.addEventListener("contextmenu", handleWindowContextMenu);
 	}
 
 	function endDrag(clientX: number, clientY: number) {
@@ -409,6 +413,18 @@ export function useVttResourceDrag({
 	function handleWindowPointerCancel(event: PointerEvent) {
 		if (event.pointerId !== pointerIdRef.current) return;
 		cancel();
+	}
+
+	function handleWindowMouseDown(event: MouseEvent) {
+		if (event.button !== 2 || !dragStartedRef.current) return;
+
+		event.preventDefault();
+		cancel();
+	}
+
+	function handleWindowContextMenu(event: MouseEvent) {
+		if (!dragStartedRef.current) return;
+		event.preventDefault();
 	}
 
 	const cancel = useCallback(() => {

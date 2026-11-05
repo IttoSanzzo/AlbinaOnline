@@ -82,6 +82,7 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 				socket.onclose = (event) => {
 					if (get().socket !== socket) return;
 					console.warn(`WebSocket closed. Code: ${event.code}`);
+					console.log(event.reason);
 					const closeMessage =
 						event.reason ||
 						`VTT WebSocket closed unexpectedly (${event.code}). Trying to reconnect in a second...`;
@@ -91,6 +92,7 @@ export const useVttWebSocketStore = create<VttWebSocketState>((set, get) => ({
 						connecting: false,
 						closeMessage,
 					});
+					if (event.reason) return;
 					const currentUrl = window.location.href;
 					window.setTimeout(() => {
 						if (window.location.href === currentUrl) window.location.reload();

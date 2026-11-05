@@ -117,6 +117,16 @@ export function VttGridMapElement({ vttGridMap }: VttGridMapElementProps) {
 				},
 			});
 		},
+		onDragCancel: () => {
+			send({
+				id: Guid.NewGuid(),
+				path: "/scenes/gridmaps/drag",
+				method: "Delete",
+				data: {
+					vttGridMapId: vttGridMapRef.current.id,
+				},
+			});
+		},
 	});
 
 	const pointerInteraction = usePointerInteractionEvents({

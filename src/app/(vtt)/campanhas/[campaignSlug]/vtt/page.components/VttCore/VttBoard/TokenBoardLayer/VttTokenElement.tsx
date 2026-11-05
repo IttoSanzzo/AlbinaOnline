@@ -107,6 +107,17 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				},
 			});
 		},
+		onDragCancel: () => {
+			send({
+				id: Guid.NewGuid(),
+				path: "/tokens/drag",
+				method: "Delete",
+				data: {
+					vttTokenId: vttTokenRef.current.id,
+					sceneId: activeSceneId,
+				},
+			});
+		},
 	});
 
 	const pointerInteraction = usePointerInteractionEvents({
