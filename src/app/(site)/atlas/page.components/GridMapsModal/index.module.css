@@ -19,7 +19,7 @@
 		right: 15px;
 	}
 	&.outsideVtt {
-		bottom: 80px;
+		bottom: 15px;
 		right: 15px;
 	}
 }
@@ -34,8 +34,8 @@
 
 .content {
 	width: 90vw;
-	max-width: 1728;
+	max-width: 1728px !important;
 	height: 90vh;
-	max-height: 972;
+	max-height: 972px !important;
 	overflow: hidden;
 }
