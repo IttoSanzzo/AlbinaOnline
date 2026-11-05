@@ -1,0 +1,10 @@
+.hudVerticalGenericButtonContainer {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+}
+.containerTopRight {
+	top: 10px;
+	right: 10px;
+	gap: var(--sp-3);
+}

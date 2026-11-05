@@ -1,0 +1,12 @@
+.layerContextualButtonsTopRightContainer {
+	width: 25px;
+	display: flex;
+	flex-direction: column;
+	opacity: 0.35;
+	transition: 0.25s linear opacity;
+	pointer-events: all;
+
+	&:hover {
+		opacity: 0.9;
+	}
+}

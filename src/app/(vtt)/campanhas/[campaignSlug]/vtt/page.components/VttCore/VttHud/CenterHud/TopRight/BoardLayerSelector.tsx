@@ -2,9 +2,9 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import {
 	useVttBoardLayerContext,
 	VttBoardLayer,
-} from "../../../Contexts/VttBoardLayerContext";
+} from "../../../../Contexts/VttBoardLayerContext";
 import styles from "./BoardLayerSelector.module.css";
-import { VttHudGenericButtonA } from "../../../Components/VttHudGenericButtonA";
+import { VttHudGenericButtonA } from "../../../../Components/VttHudGenericButtonA";
 import { useCurrentCampaignMember } from "@/libs/stp@hooks";
 
 const BoardLayerSelectorContainer = newStyledElement.div(

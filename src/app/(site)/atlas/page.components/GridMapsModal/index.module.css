@@ -8,24 +8,16 @@
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	bottom: 15px;
+	right: 15px;
 
 	& svg {
 		width: 35px;
 		height: 35px;
 	}
-
-	&.insideVtt {
-		top: 15px;
-		right: 15px;
-	}
-	&.outsideVtt {
-		bottom: 15px;
-		right: 15px;
-	}
 }
 
 .insideVtt {
-	pointer-events: all;
 	&,
 	& * {
 		cursor: none;

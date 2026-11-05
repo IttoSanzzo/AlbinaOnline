@@ -9,6 +9,7 @@ import { Guid } from "@/libs/stp@types";
 import { AllGridMapsViewer } from "./AllGridMapsViewer";
 import { GridMapsEditor } from "./GridMapsEditor";
 import clsx from "clsx";
+import { VttHudGenericButtonA } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Components/VttHudGenericButtonA";
 
 const Trigger = newStyledElement.div(styles.trigger);
 
@@ -32,9 +33,16 @@ export function GridMapsModal({ isInVtt = false }: GridMapsModalProps) {
 			<Dialog.Trigger
 				asChild
 				onClick={() => setOpenState(true)}>
-				<Trigger className={isInVtt ? styles.insideVtt : styles.outsideVtt}>
-					<StpIcon name="MapTrifold" />
-				</Trigger>
+				{isInVtt ? (
+					<VttHudGenericButtonA
+						stpIconName={"Storefront"}
+						stpIconStyle={"duotone"}
+					/>
+				) : (
+					<Trigger>
+						<StpIcon name="MapTrifold" />
+					</Trigger>
+				)}
 			</Dialog.Trigger>
 			<Dialog.Portal>
 				<Dialog.Overlay
@@ -48,7 +56,7 @@ export function GridMapsModal({ isInVtt = false }: GridMapsModalProps) {
 				<Dialog.Content
 					className={clsx(
 						styles.content,
-						isInVtt ? styles.insideVtt : styles.outsideVtt,
+						isInVtt ? styles.insideVtt : undefined,
 					)}>
 					<Dialog.Title />
 					<Dialog.Description />
