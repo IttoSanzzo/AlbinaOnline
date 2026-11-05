@@ -15,13 +15,16 @@ export function useMiddleButtonCameraPan() {
 		(state) => state.setHoverInteractionType,
 	);
 	const moveCamera = useVttViewportStore((state) => state.moveCamera);
+	const isCameraAnimating = useVttViewportStore(
+		(state) => state.isCameraAnimating,
+	);
 	const camera = useVttViewportStore((state) => state.camera);
 	const zoomRef = useRef(camera.zoom);
 
 	zoomRef.current = camera.zoom;
 
 	useEffect(() => {
-		if (!interaction.allowMiddlePan) return;
+		if (isCameraAnimating || !interaction.allowMiddlePan) return;
 		let isPanning = false;
 		let lastMousePosition = {
 			x: 0,
@@ -81,5 +84,5 @@ export function useMiddleButtonCameraPan() {
 			window.removeEventListener("mousemove", handleMouseMove);
 			window.removeEventListener("mouseup", handleMouseUp);
 		};
-	}, [interaction.allowMiddlePan, moveCamera]);
+	}, [interaction.allowMiddlePan, moveCamera, isCameraAnimating]);
 }

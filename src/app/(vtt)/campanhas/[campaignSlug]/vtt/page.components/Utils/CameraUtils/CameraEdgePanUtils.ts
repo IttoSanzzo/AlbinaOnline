@@ -14,6 +14,9 @@ const UPDATE_INTERVAL = 33;
 export function useEdgeCameraPan() {
 	const interaction = useVttInteractionContext((state) => state.interaction);
 	const moveCamera = useVttViewportStore((state) => state.moveCamera);
+	const isCameraAnimating = useVttViewportStore(
+		(state) => state.isCameraAnimating,
+	);
 	const camera = useVttViewportStore((state) => state.camera);
 	const viewport = useVttViewportStore((state) => state.viewport);
 
@@ -38,6 +41,7 @@ export function useEdgeCameraPan() {
 		};
 
 		const handleEdgePan = () => {
+			if (isCameraAnimating) return;
 			const { x, y } = mousePosition.current;
 
 			const viewportWidth = window.innerWidth;
@@ -84,5 +88,10 @@ export function useEdgeCameraPan() {
 			window.removeEventListener("mousemove", handleMouseMove);
 			window.clearInterval(interval);
 		};
-	}, [interaction.allowEdgeScroll, interaction.edgeScrollOverride, moveCamera]);
+	}, [
+		interaction.allowEdgeScroll,
+		interaction.edgeScrollOverride,
+		moveCamera,
+		isCameraAnimating,
+	]);
 }

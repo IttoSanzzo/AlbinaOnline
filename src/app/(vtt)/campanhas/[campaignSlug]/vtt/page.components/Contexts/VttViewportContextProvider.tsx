@@ -34,6 +34,7 @@ export interface VttVisibleWorld {
 }
 
 export type VisibilityMode = "center" | "partial" | "full" | "partial-extra";
+export type CameraAnimationEasing = "linear" | "smooth";
 
 export interface VttBounds {
 	x: number;
@@ -46,6 +47,13 @@ export interface VttCamera {
 	x: number;
 	y: number;
 	zoom: number;
+}
+
+export interface VttCameraAnimationOptions {
+	position: CoordinatePair;
+	zoom?: number;
+	duration?: number;
+	easing?: CameraAnimationEasing;
 }
 
 export function isVisible(
@@ -105,6 +113,7 @@ export interface VttViewportState {
 	sceneId: Guid | null;
 	viewport: VttViewportSize;
 	camera: VttCamera;
+	isCameraAnimating: boolean;
 	pixelsPerCentimeter: number;
 	pixelScale: number;
 	gridCellSize: number;
@@ -121,6 +130,8 @@ export interface VttViewportState {
 	moveCamera: (deltaX: number, deltaY: number) => void;
 	setZoom: (zoom: number) => void;
 	zoomAt: (screenPosition: CoordinatePair, zoom: number) => void;
+	animateCamera: (options: VttCameraAnimationOptions) => void;
+	cancelCameraAnimation: () => void;
 	resetCamera: () => void;
 	resetPosition: () => void;
 	resetZoom: () => void;
@@ -157,6 +168,22 @@ function getVisibleWorld(
 	};
 }
 
+function getCameraAnimationProgress(
+	progress: number,
+	easing: CameraAnimationEasing,
+): number {
+	switch (easing) {
+		case "smooth":
+		default:
+			return progress < 0.5
+				? 4 * progress * progress * progress
+				: 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+		case "linear":
+			return progress;
+	}
+}
+
 function createVttViewportStore(
 	vttId: Guid | null,
 	sceneId: Guid | null,
@@ -172,6 +199,19 @@ function createVttViewportStore(
 	};
 
 	return createStore<VttViewportState>()((set, get) => {
+		let animationFrameId: number | null = null;
+
+		const cancelCameraAnimation = () => {
+			if (animationFrameId !== null) {
+				cancelAnimationFrame(animationFrameId);
+				animationFrameId = null;
+			}
+
+			if (get().isCameraAnimating) {
+				set({ isCameraAnimating: false });
+			}
+		};
+
 		const updateCamera = (camera: VttCamera) => {
 			const pixelScale = PIXELS_PER_CENTIMETER * camera.zoom;
 
@@ -187,6 +227,7 @@ function createVttViewportStore(
 			sceneId,
 			viewport: initialViewport,
 			camera: initialCamera,
+			isCameraAnimating: false,
 			pixelsPerCentimeter: PIXELS_PER_CENTIMETER,
 			pixelScale: PIXELS_PER_CENTIMETER * DEFAULT_ZOOM,
 			gridCellSize: GRID_CELL_SIZE,
@@ -222,10 +263,13 @@ function createVttViewportStore(
 			},
 
 			setCameraPosition: (x, y) => {
+				cancelCameraAnimation();
 				updateCamera({ ...get().camera, x, y });
 			},
 
 			moveCamera: (deltaX, deltaY) => {
+				cancelCameraAnimation();
+
 				const { camera } = get();
 
 				updateCamera({
@@ -236,10 +280,13 @@ function createVttViewportStore(
 			},
 
 			setZoom: (zoom) => {
+				cancelCameraAnimation();
 				updateCamera({ ...get().camera, zoom: clampZoom(zoom) });
 			},
 
 			zoomAt: (screenPosition, zoom) => {
+				cancelCameraAnimation();
+
 				const { camera, viewport, pixelScale } = get();
 				const nextZoom = clampZoom(zoom);
 				const nextPixelScale = PIXELS_PER_CENTIMETER * nextZoom;
@@ -266,13 +313,73 @@ function createVttViewportStore(
 				});
 			},
 
-			resetCamera: () => updateCamera(initialCamera),
+			animateCamera: ({
+				position,
+				zoom,
+				duration = 1000,
+				easing = "smooth",
+			}) => {
+				cancelCameraAnimation();
+
+				const startCamera = get().camera;
+				const targetCamera: VttCamera = {
+					x: position.x,
+					y: position.y,
+					zoom: clampZoom(zoom ?? startCamera.zoom),
+				};
+
+				const animationDuration = Math.max(
+					0,
+					Number.isFinite(duration) ? duration : 0,
+				);
+
+				if (animationDuration === 0) {
+					updateCamera(targetCamera);
+					return;
+				}
+
+				const startTime = performance.now();
+
+				set({ isCameraAnimating: true });
+
+				const animate = (currentTime: number) => {
+					const elapsed = currentTime - startTime;
+					const progress = Math.min(elapsed / animationDuration, 1);
+					const easedProgress = getCameraAnimationProgress(progress, easing);
+
+					updateCamera({
+						x: startCamera.x + (targetCamera.x - startCamera.x) * easedProgress,
+						y: startCamera.y + (targetCamera.y - startCamera.y) * easedProgress,
+						zoom:
+							startCamera.zoom +
+							(targetCamera.zoom - startCamera.zoom) * easedProgress,
+					});
+
+					if (progress < 1) {
+						animationFrameId = requestAnimationFrame(animate);
+					} else {
+						animationFrameId = null;
+						set({ isCameraAnimating: false });
+					}
+				};
+
+				animationFrameId = requestAnimationFrame(animate);
+			},
+
+			cancelCameraAnimation,
+
+			resetCamera: () => {
+				cancelCameraAnimation();
+				updateCamera(initialCamera);
+			},
 
 			resetPosition: () => {
+				cancelCameraAnimation();
 				updateCamera({ ...get().camera, x: 0, y: 0 });
 			},
 
 			resetZoom: () => {
+				cancelCameraAnimation();
 				updateCamera({ ...get().camera, zoom: DEFAULT_ZOOM });
 			},
 		};
@@ -313,6 +420,10 @@ export function VttViewportContextProvider({
 		handleResize();
 		window.addEventListener("resize", handleResize);
 		return () => window.removeEventListener("resize", handleResize);
+	}, [store]);
+
+	useEffect(() => {
+		return () => store.getState().cancelCameraAnimation();
 	}, [store]);
 
 	useEffect(() => {

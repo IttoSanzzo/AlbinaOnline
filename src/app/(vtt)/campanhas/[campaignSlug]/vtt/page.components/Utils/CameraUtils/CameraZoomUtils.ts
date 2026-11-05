@@ -11,11 +11,15 @@ export function useWheelCameraZoom() {
 	const zoomAt = useVttViewportStore((state) => state.zoomAt);
 	const resetZoom = useVttViewportStore((state) => state.resetZoom);
 	const camera = useVttViewportStore((state) => state.camera);
+	const isCameraAnimating = useVttViewportStore(
+		(state) => state.isCameraAnimating,
+	);
 	const resetPosition = useVttViewportStore((state) => state.resetPosition);
 	const zoomRef = useRef(camera.zoom);
 	zoomRef.current = camera.zoom;
 
 	useEffect(() => {
+		if (isCameraAnimating) return;
 		const handleWheel = (event: WheelEvent) => {
 			if (event.ctrlKey) event.preventDefault();
 			if (!hasAttribute(event.target, VttElementDataAttribute.EventZoom))
@@ -49,5 +53,5 @@ export function useWheelCameraZoom() {
 			window.removeEventListener("wheel", handleWheel);
 			window.removeEventListener("keydown", handleKeyDown);
 		};
-	}, [zoomAt, resetPosition]);
+	}, [zoomAt, resetPosition, isCameraAnimating]);
 }

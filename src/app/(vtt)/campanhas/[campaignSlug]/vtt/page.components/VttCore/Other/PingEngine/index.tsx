@@ -150,9 +150,7 @@ export function PingEngine() {
 	const subscribe = useVttContext((state) => state.subscribe);
 	const screenToWorld = useVttViewportStore((state) => state.screenToWorld);
 	const worldToScreen = useVttViewportStore((state) => state.worldToScreen);
-	const setCameraPosition = useVttViewportStore(
-		(state) => state.setCameraPosition,
-	);
+	const animateCamera = useVttViewportStore((state) => state.animateCamera);
 	const { members } = useVttMembersContext();
 	const { play } = useVttAudioController();
 	const [pings, setPings] = useState<Ping[]>([]);
@@ -279,7 +277,9 @@ export function PingEngine() {
 						onClick={
 							offscreen
 								? () => {
-										setCameraPosition(ping.position.x, ping.position.y);
+										animateCamera({
+											position: { x: ping.position.x, y: ping.position.y },
+										});
 									}
 								: undefined
 						}>

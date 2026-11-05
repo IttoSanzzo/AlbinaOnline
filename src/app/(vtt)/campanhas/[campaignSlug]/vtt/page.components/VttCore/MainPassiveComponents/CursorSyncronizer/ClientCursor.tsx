@@ -37,9 +37,7 @@ export function ClientCursor({
 	const isVisible = useVttViewportStore((state) => state.isVisible);
 	const viewport = useVttViewportStore((state) => state.viewport);
 	const camera = useVttViewportStore((state) => state.camera);
-	const setCameraPosition = useVttViewportStore(
-		(state) => state.setCameraPosition,
-	);
+	const animateCamera = useVttViewportStore((state) => state.animateCamera);
 	const hoverInteractionType = useVttInteractionContext(
 		(state) => state.hoverInteractionType,
 	);
@@ -104,7 +102,9 @@ export function ClientCursor({
 			angle={angle}
 			distance={distance}
 			onClick={() => {
-				setCameraPosition(mouseState.x, mouseState.y);
+				animateCamera({
+					position: { x: mouseState.x, y: mouseState.y },
+				});
 			}}
 		/>
 	);
