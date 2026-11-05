@@ -31,7 +31,7 @@ export function openVttTokenRadialMenu(
 		seekMouseOutside: false,
 		options: radialMenuOptions,
 		nameColor: StandartTextColor["gray"],
-		ringWidths: [120],
+		ringWidths: [90, 100],
 		onSubmit: (data) => {
 			const currentToken = vttTokenRef.current;
 			if (!currentToken) return;
@@ -43,45 +43,46 @@ export function openVttTokenRadialMenu(
 
 			switch (data.option.id) {
 				case "Cancel":
+				case "Cancel2":
 					data.close();
 					return;
-				case "Opacity+":
+				case "Appearance-Opacity+":
 					newVttToken.appearance.opacity = clamp(
 						newVttToken.appearance.opacity + 10,
 						0,
 						100,
 					);
 					break;
-				case "Opacity-":
+				case "Appearance-Opacity-":
 					newVttToken.appearance.opacity = clamp(
 						newVttToken.appearance.opacity - 10,
 						0,
 						100,
 					);
 					break;
-				case "Rotate+":
+				case "Appearance-Rotate+":
 					newVttToken.appearance.rotation = wrap(
 						newVttToken.appearance.rotation + 45,
 						0,
 						360,
 					);
 					break;
-				case "Rotate-":
+				case "Appearance-Rotate-":
 					newVttToken.appearance.rotation = wrap(
 						newVttToken.appearance.rotation - 45,
 						0,
 						360,
 					);
 					break;
-				case "MirrorX":
+				case "Appearance-MirrorX":
 					newVttToken.appearance.horizontalMirror =
 						!newVttToken.appearance.horizontalMirror;
 					break;
-				case "MirrorY":
+				case "Appearance-MirrorY":
 					newVttToken.appearance.verticalMirror =
 						!newVttToken.appearance.verticalMirror;
 					break;
-				case "Reset":
+				case "Appearance-Reset":
 					newVttToken.appearance = {
 						...newVttToken.appearance,
 						horizontalMirror: false,
@@ -94,7 +95,7 @@ export function openVttTokenRadialMenu(
 				// case "Duplicate": {
 				// return;
 				// }
-				case "Delete": {
+				case "Danger-Delete": {
 					data.close();
 					send({
 						id: Guid.NewGuid(),
@@ -130,105 +131,145 @@ const radialMenuOptions: RadialMenuOption[] = [
 		description: "Fecha esse menu radial",
 	},
 	{
-		id: "Opacity+",
-		name: "Opacidade +",
+		id: "Duplicate",
+		name: "Duplicar",
 		icon: (
 			<StpIcon
-				name={"Sunglasses"}
-				color={"lightCyan"}
+				name={"Copy"}
+				color={"gray"}
+				style={"fill"}
 			/>
 		),
-		description: "Aumenta a opacidade do VttToken (max 100%)",
+		description: "Duplica esse VttToken",
 	},
 	{
-		id: "Opacity-",
-		name: "Opacidade -",
+		id: "SubMenu-Appearence",
+		name: "Aparência",
+		description: "Opções para alterar a maneira como esse token é reenderizado",
 		icon: (
 			<StpIcon
-				name={"Eyeglasses"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Diminui a opacidade do VttToken (min 0%)",
-	},
-	{
-		id: "Rotate+",
-		name: "Rotacionar +",
-		icon: (
-			<StpIcon
-				name={"ArrowClockwise"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Rotaciona o VttToken em sentido horário",
-	},
-	{
-		id: "Rotate-",
-		name: "Rotacionar -",
-		icon: (
-			<StpIcon
-				name={"ArrowCounterClockwise"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Rotaciona o VttToken em sentido anti-horário",
-	},
-	{
-		id: "MirrorX",
-		name: "Espelhar X",
-		icon: (
-			<StpIcon
-				name={"FlipHorizontal"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Espelha esse VttToken horizontalmente",
-	},
-	{
-		id: "MirrorY",
-		name: "Espelhar Y",
-		icon: (
-			<StpIcon
-				name={"FlipVertical"}
-				color={"lightCyan"}
-			/>
-		),
-		description: "Espelha esse VttToken verticalmente",
-	},
-	// {
-	// 	id: "Duplicate",
-	// 	name: "Duplicar",
-	// 	icon: (
-	// 		<StpIcon
-	// 			name={"Copy"}
-	// 			color={"gray"}
-	// 			style={"fill"}
-	// 		/>
-	// 	),
-	// 	description: "Duplica esse VttToken",
-	// },
-	{
-		id: "Reset",
-		name: "Resetar",
-		icon: (
-			<StpIcon
-				name={"Recycle"}
+				name={"PaintBrush"}
 				color={"gray"}
 			/>
 		),
-		description: "Remove todas as transformações desse VttToken",
+		options: [
+			{
+				id: "Appearance-Reset",
+				name: "Resetar",
+				icon: (
+					<StpIcon
+						name={"Recycle"}
+						color={"gray"}
+					/>
+				),
+				description: "Remove todas as transformações desse VttToken",
+			},
+			{
+				id: "Appearance-Opacity+",
+				name: "Opacidade +",
+				icon: (
+					<StpIcon
+						name={"Sunglasses"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Aumenta a opacidade do VttToken (max 100%)",
+			},
+			{
+				id: "Appearance-Opacity-",
+				name: "Opacidade -",
+				icon: (
+					<StpIcon
+						name={"Eyeglasses"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Diminui a opacidade do VttToken (min 0%)",
+			},
+			{
+				id: "Appearance-Rotate+",
+				name: "Rotacionar +",
+				icon: (
+					<StpIcon
+						name={"ArrowClockwise"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Rotaciona o VttToken em sentido horário",
+			},
+			{
+				id: "Appearance-Rotate-",
+				name: "Rotacionar -",
+				icon: (
+					<StpIcon
+						name={"ArrowCounterClockwise"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Rotaciona o VttToken em sentido anti-horário",
+			},
+			{
+				id: "Appearance-MirrorX",
+				name: "Espelhar X",
+				icon: (
+					<StpIcon
+						name={"FlipHorizontal"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Espelha esse VttToken horizontalmente",
+			},
+			{
+				id: "Appearance-MirrorY",
+				name: "Espelhar Y",
+				icon: (
+					<StpIcon
+						name={"FlipVertical"}
+						color={"lightCyan"}
+					/>
+				),
+				description: "Espelha esse VttToken verticalmente",
+			},
+		],
 	},
-	// {
-	// 	id: "Delete",
-	// 	name: "Remover",
-	// 	icon: (
-	// 		<StpIcon
-	// 			name={"Trash"}
-	// 			color={"black"}
-	// 		/>
-	// 	),
-	// 	nameColor: StandartTextColor["black"],
-	// 	backgroundColor: StandartTextColor["darkRed"],
-	// 	description: "Remove esse VttToken da cena",
-	// },
+	{
+		id: "SubMenu-Danger",
+		name: "Perigo",
+		icon: (
+			<StpIcon
+				name={"WarningCircle"}
+				color={"black"}
+			/>
+		),
+		nameColor: StandartTextColor["darkerGray"],
+		description: "Ações irreversíveis e perigosas",
+		options: [
+			{
+				id: "Cancel2",
+				name: "Cancelar",
+				nameColor: StandartTextColor["lightGray"],
+				backgroundColor: StandartTextColor["darkerGray"],
+				icon: (
+					<StpIcon
+						name={"XCircle"}
+						color={"gray"}
+					/>
+				),
+				description: "Fecha esse menu radial",
+			},
+			{
+				id: "Danger-Delete",
+				name: "Deletar",
+				icon: (
+					<StpIcon
+						name={"Trash"}
+						color={"black"}
+					/>
+				),
+				nameColor: StandartTextColor["black"],
+				backgroundColor: StandartTextColor["evenDarkerRed"],
+				description: "Apaga completamente esse VttToken (Sem Volta)",
+			},
+		],
+	},
 ];

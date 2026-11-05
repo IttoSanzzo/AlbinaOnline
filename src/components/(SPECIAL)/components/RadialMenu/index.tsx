@@ -122,12 +122,21 @@ export function RadialMenu({
 				}
 			}
 			if (targetRingIndex === -1) {
+				const isBetweenRings = ringGeometry.some((ring, index) => {
+					const nextRing = ringGeometry[index + 1];
+					return (
+						nextRing &&
+						distance > ring.outerRadius &&
+						distance < nextRing.innerRadius
+					);
+				});
+				if (isBetweenRings) return;
 				if (
 					seekMouseOutside &&
 					distance > ringGeometry[ringGeometry.length - 1].outerRadius
-				) {
+				)
 					targetRingIndex = ringGeometry.length - 1;
-				} else {
+				else {
 					setActiveOption(undefined);
 					setActiveDepth(0);
 					return;
