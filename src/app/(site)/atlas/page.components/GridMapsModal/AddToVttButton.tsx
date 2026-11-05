@@ -6,9 +6,9 @@ import { GridMap } from "@/libs/stp@types/dataTypes/gridMap";
 import { Dispatch, SetStateAction } from "react";
 import { useVttContext } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Contexts/VttContextProvider";
 import { Guid } from "@/libs/stp@types";
-import { PIXELS_PER_CENTIMETER } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Contexts/VttViewportContextProvider";
-import { DEFAULT_GRID_CELL_SIZE } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Contexts/VttGridProvider";
 import { useVttThrottledViewportContext } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Contexts/VttThrottledViewportContext";
+import { getGridMapSnap } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/VttCore/VttBoard/GridMapBoardLayer/VttGridMapElement.utils";
+import { applySnap } from "@/app/(vtt)/campanhas/[campaignSlug]/vtt/page.components/Hooks/useVttResourceDrag";
 
 const AddToVttButtonCore = newStyledElement.button(styles.addToVttButtonCore);
 
@@ -32,10 +32,7 @@ export function AddToVttButton({
 		(state) => state.viewport,
 		throttleMs,
 	);
-	const camera = useVttThrottledViewportContext(
-		(state) => state.camera,
-		throttleMs,
-	);
+
 	return (
 		<AddToVttButtonCore
 			{...setVttElementHoverInteraction(VttCursorInteractionType.Pointer)}
@@ -43,28 +40,12 @@ export function AddToVttButton({
 				event.preventDefault();
 				if (setCoreModalOpenState) setCoreModalOpenState(false);
 
-				const imageWidth = gridMap.width * PIXELS_PER_CENTIMETER * camera.zoom;
-				const imageHeight =
-					gridMap.height * PIXELS_PER_CENTIMETER * camera.zoom;
-
 				const imageOrigin = screenToWorld({
-					x: viewport.width / 2 - imageWidth / 2,
-					y: viewport.height / 2 - imageHeight / 2,
+					x: viewport.width / 2,
+					y: viewport.height / 2,
 				});
-
-				const snappedOrigin = {
-					x:
-						Math.round(imageOrigin.x / DEFAULT_GRID_CELL_SIZE) *
-						DEFAULT_GRID_CELL_SIZE,
-					y:
-						Math.round(imageOrigin.y / DEFAULT_GRID_CELL_SIZE) *
-						DEFAULT_GRID_CELL_SIZE,
-				};
-
-				const coordinates = {
-					x: snappedOrigin.x + gridMap.offsetX,
-					y: snappedOrigin.y + gridMap.offsetY,
-				};
+				const resourceDragSnap = getGridMapSnap(gridMap, 0, false, false);
+				const snapCoordinates = applySnap(imageOrigin, resourceDragSnap);
 
 				send({
 					id: Guid.NewGuid(),
@@ -74,8 +55,8 @@ export function AddToVttButton({
 						sceneId: activeSceneId,
 						gridMapId: gridMap.id,
 						coordinates: {
-							x: coordinates.x,
-							y: coordinates.y,
+							x: snapCoordinates.x,
+							y: snapCoordinates.y,
 						},
 					},
 				});

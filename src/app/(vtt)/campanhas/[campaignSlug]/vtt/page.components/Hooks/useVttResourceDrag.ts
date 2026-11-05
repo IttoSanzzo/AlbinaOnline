@@ -86,7 +86,7 @@ function snapCoordinateToCenteredArea(
 	);
 }
 
-function applySnap(
+export function applySnap(
 	coordinates: CoordinatePair,
 	snap: VttResourceDragSnap,
 ): CoordinatePair {
