@@ -28,7 +28,8 @@
 }
 
 .isDragging {
-	outline: 3px solid var(--cl-red-700);
+	outline: 3px solid var(--cl-yellow-600);
+	box-shadow: 0 0 20px 0 var(--cl-yellow-600) !important;
 }
 .notDragging {
 	outline: 3px solid transparent;

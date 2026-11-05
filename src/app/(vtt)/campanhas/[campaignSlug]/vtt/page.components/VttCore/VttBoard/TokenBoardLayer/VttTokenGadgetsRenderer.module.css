@@ -1,0 +1,32 @@
+.vttTokenGadgetsRendererContainer {
+	position: relative;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.isEditableIndicator {
+	position: absolute;
+	top: calc(50% + 35.355%);
+	left: calc(50% + 35.355%);
+	transform: translate(-50%, -50%);
+	width: 10px;
+	height: 10px;
+	border-radius: var(--rd-full);
+	background-color: var(--cl-gray-400);
+	outline: 1px solid var(--cl-gray-900);
+}
+
+.Freeform {
+	border-radius: unset;
+}
+
+.FramedCircle,
+.UnframedCircle {
+	border-radius: var(--rd-full);
+}
+.FramedRectangular,
+.UnframedRectangular {
+	border-radius: var(--rd-xl);
+}

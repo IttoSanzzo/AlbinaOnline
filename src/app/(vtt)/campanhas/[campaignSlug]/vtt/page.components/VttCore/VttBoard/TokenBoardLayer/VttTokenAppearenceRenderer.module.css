@@ -5,7 +5,9 @@
 	transform-origin: center center;
 	touch-action: none;
 	background: none;
-	transition: 0.25s linear outline;
+	transition:
+		0.25s linear outline,
+		0.15s linear box-shadow;
 }
 
 .Freeform {
@@ -25,5 +27,6 @@
 .FramedCircle,
 .FramedRectangular {
 	background-color: var(--cl-gray-700);
-	border: 5px solid var(--cl-gray-900);
+	border: 4px solid var(--cl-gray-900);
+	box-shadow: 0 0 10px 0 black;
 }

@@ -22,6 +22,7 @@ import { VttTokenAppearenceRenderer } from "./VttTokenAppearenceRenderer";
 import { getVttTokenSnap } from "./VttTokenElement.utils";
 import { usePointerInteractionEvents } from "@/libs/stp@hooks/hooks/usePointerInteractionEvents";
 import clsx from "clsx";
+import { VttTokenGadgetsRenderer } from "./VttTokenGadgetsRenderer";
 
 const VttTokenElementAnchor = newStyledElement.div(
 	styles.vttTokenElementAnchor,
@@ -173,6 +174,12 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 						isActiveLayer ? styles.activeLayer : undefined,
 						drag.isDragging ? styles.isDragging : styles.notDragging,
 					)}
+					pixelScale={pixelScale}
+				/>
+				<VttTokenGadgetsRenderer
+					vttToken={vttToken}
+					isEditable={isEditable}
+					pixelScale={pixelScale}
 				/>
 			</VttTokenElementContainer>
 		</VttTokenElementAnchor>

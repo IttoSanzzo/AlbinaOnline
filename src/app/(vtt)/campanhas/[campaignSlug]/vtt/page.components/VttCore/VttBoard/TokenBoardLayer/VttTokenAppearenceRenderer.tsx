@@ -15,10 +15,12 @@ const VttTokenAppearenceRendererContainer = newStyledElement.div(
 interface VttTokenAppearenceRendererProps {
 	vttToken: VttToken;
 	className?: string;
+	pixelScale?: number;
 }
 export function VttTokenAppearenceRenderer({
 	vttToken,
 	className,
+	pixelScale,
 }: VttTokenAppearenceRendererProps) {
 	return (
 		<VttTokenAppearenceRendererContainer
@@ -33,6 +35,7 @@ export function VttTokenAppearenceRenderer({
 				rotate: `${vttToken.appearance.rotation}deg`,
 				opacity: `${vttToken.appearance.opacity / 100}`,
 				overflow: vttToken.appearance.hideImageOverflow ? "hidden" : undefined,
+				borderWidth: pixelScale ? 3 * pixelScale : undefined,
 			}}>
 			<VttTokenImageRenderer
 				vttTokenId={vttToken.id}
