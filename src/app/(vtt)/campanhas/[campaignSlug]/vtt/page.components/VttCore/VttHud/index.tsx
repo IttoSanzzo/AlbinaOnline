@@ -9,6 +9,7 @@ import { useLocalStorageState } from "@/utils/Storage";
 import { VttHudGenericButtonA } from "../../Components/VttHudGenericButtonA";
 import clsx from "clsx";
 import { CenterHud } from "./CenterHud";
+import { RightHud } from "./RightHud";
 
 const VttHudFixedContainer = newStyledElement.div(styles.vttHudFixedContainer);
 const VttHudLayoutContainer = newStyledElement.div(
@@ -58,7 +59,9 @@ export const VttHud = memo(function VttHud() {
 					className={styles.rightContainer}
 					style={{
 						margin: isRightContainerOpen ? 0 : undefined,
-					}}></VttHudSideContainer>
+					}}>
+					<RightHud />
+				</VttHudSideContainer>
 			</VttHudLayoutContainer>
 			<Crosshair />
 		</VttHudFixedContainer>
