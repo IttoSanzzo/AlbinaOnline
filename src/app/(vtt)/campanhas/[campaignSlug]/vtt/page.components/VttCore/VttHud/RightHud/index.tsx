@@ -5,6 +5,7 @@ import {
 	VttBoardLayer,
 } from "../../../Contexts/VttBoardLayerContext";
 import { GridMapLayerTab } from "./GridMapLayerTab";
+import { TokenLayerTab } from "./TokenLayerTab";
 
 const RightHudContainer = newStyledElement.div(styles.rightHudContainer);
 
@@ -14,6 +15,7 @@ export function RightHud() {
 	return (
 		<RightHudContainer>
 			{activeLayer == VttBoardLayer.GridMap && <GridMapLayerTab />}
+			{activeLayer == VttBoardLayer.Token && <TokenLayerTab />}
 		</RightHudContainer>
 	);
 }

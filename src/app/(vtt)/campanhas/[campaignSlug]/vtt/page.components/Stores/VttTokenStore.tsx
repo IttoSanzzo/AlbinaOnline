@@ -17,6 +17,8 @@ interface VttTokenDragState {
 interface VttTokenStoreState {
 	/** All VttTokens in the current VTT */
 	tokens: Map<Guid, VttToken>;
+	/** All VttToken IDs in the current VTT */
+	tokenIds: Guid[];
 	/** Token IDs indexed by scene ID, ordered by rendering priority */
 	tokenIdsPerScene: Map<Guid, Guid[]>;
 	/** Coordinates captured when each token started dragging */
@@ -110,9 +112,8 @@ function hasChangedPlacementCoordinates(
 			previousPlacement &&
 			(previousPlacement.x !== placement.x ||
 				previousPlacement.y !== placement.y)
-		) {
+		)
 			changedSceneIds.push(sceneId);
-		}
 	}
 	return changedSceneIds;
 }
@@ -124,7 +125,6 @@ function canPromoteTokenInScene(
 ): boolean {
 	const tokenIds = tokenIdsPerScene.get(sceneId);
 	if (!tokenIds) return false;
-
 	const index = tokenIds.indexOf(tokenId);
 	return index !== -1 && index !== tokenIds.length - 1;
 }
@@ -232,6 +232,7 @@ function removeDragLock(
 function createVttTokenStore(): VttTokenStore {
 	return createStore<VttTokenStoreState>()((set) => ({
 		tokens: new Map(),
+		tokenIds: [],
 		tokenIdsPerScene: new Map(),
 		activeDrags: new Map(),
 
@@ -239,12 +240,22 @@ function createVttTokenStore(): VttTokenStore {
 			const tokens = new Map(items.map((item) => [item.id, item]));
 			set({
 				tokens,
+				tokenIds: [...tokens.keys()],
 				tokenIdsPerScene: createTokenIdsPerScene(tokens.values()),
 				activeDrags: new Map(),
 			});
 		},
 
-		add: (token) => set((state) => setToken(state, token)),
+		add: (token) =>
+			set((state) => {
+				const isNewToken = !state.tokens.has(token.id);
+				return {
+					...setToken(state, token),
+					...(isNewToken && {
+						tokenIds: [...state.tokenIds, token.id],
+					}),
+				};
+			}),
 
 		update: (token) =>
 			set((state) => {
@@ -277,12 +288,13 @@ function createVttTokenStore(): VttTokenStore {
 				const previousToken = state.tokens.get(id);
 				if (!previousToken) return state;
 				const tokens = new Map(state.tokens);
+				const tokenIds = state.tokenIds.filter((tokenId) => tokenId !== id);
 				const tokenIdsPerScene = new Map(state.tokenIdsPerScene);
 				const activeDrags = new Map(state.activeDrags);
 				syncTokenSceneIndex(tokenIdsPerScene, id, previousToken);
 				tokens.delete(id);
 				activeDrags.delete(id);
-				return { tokens, tokenIdsPerScene, activeDrags };
+				return { tokens, tokenIds, tokenIdsPerScene, activeDrags };
 			}),
 
 		startDrag: (id, resourceLock) =>

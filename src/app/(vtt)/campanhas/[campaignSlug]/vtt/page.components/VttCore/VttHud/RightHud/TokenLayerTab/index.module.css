@@ -1,0 +1,59 @@
+.tokenLayerTabContainer {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	animation: 0.25s linear fade-in;
+	pointer-events: all;
+}
+
+.toolSelectionContainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.toolSelectionButton {
+	display: flex;
+	justify-content: center;
+	width: 50%;
+	padding: var(--sp-3);
+	color: var(--cl-gray-500);
+	background-color: rgba(10, 10, 10, 0.75);
+	transition:
+		0.25s linear background-color,
+		0.25s linear color;
+	border: none;
+	font-weight: var(--fw-bold);
+
+	&.Roster {
+		border-bottom-right-radius: var(--rd-md);
+	}
+	&.Create {
+		border-bottom-left-radius: var(--rd-md);
+	}
+
+	&:hover {
+		background-color: rgba(10, 10, 10, 0.55);
+		color: var(--cl-gray-200);
+	}
+
+	&.isActive {
+		background-color: unset;
+		color: var(--cl-gray-300);
+	}
+}
+
+.tabSelectedToolContainer {
+	display: flex;
+	flex: 1;
+	width: 100%;
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
