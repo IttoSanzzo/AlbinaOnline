@@ -50,11 +50,17 @@ export function useRouteScopedStorage<T>(key: string, defaultValue: T) {
 	return [value, setValue] as const;
 }
 
+interface StorageStateOptions<T> {
+	temporaryValue?: T;
+}
 export function useLocalStorageState<T>(
 	key: string,
 	defaultValue: T,
+	options?: StorageStateOptions<T>,
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-	const [value, setValue] = useState<T>(defaultValue);
+	const [value, setValue] = useState<T>(
+		options?.temporaryValue ?? defaultValue,
+	);
 	const [loadedKey, setLoadedKey] = useState<string | null>(null);
 	useEffect(() => {
 		let nextValue = defaultValue;
@@ -75,11 +81,15 @@ export function useLocalStorageState<T>(
 	}, [key, value, loadedKey]);
 	return [value, setValue];
 }
+
 export function useSessionStorageState<T>(
 	key: string,
 	defaultValue: T,
+	options?: StorageStateOptions<T>,
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-	const [value, setValue] = useState<T>(defaultValue);
+	const [value, setValue] = useState<T>(
+		options?.temporaryValue ?? defaultValue,
+	);
 	const [loadedKey, setLoadedKey] = useState<string | null>(null);
 	useEffect(() => {
 		let nextValue = defaultValue;

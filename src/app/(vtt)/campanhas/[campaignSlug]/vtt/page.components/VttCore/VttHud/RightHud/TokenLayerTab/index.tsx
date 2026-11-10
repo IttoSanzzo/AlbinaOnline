@@ -1,7 +1,7 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./index.module.css";
 import { useLocalStorageState } from "@/utils/Storage";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
 import clsx from "clsx";
 import { TokenRosterTabContent } from "./TokenRosterTabContent";
@@ -22,12 +22,9 @@ const TabSelectedToolContainer = newStyledElement.div(
 export function TokenLayerTab() {
 	const toolTypeState = useLocalStorageState<"Roster" | "Create" | null>(
 		"vtt-right-tab-token-layer-tool-selector",
-		null,
+		"Roster",
+		{ temporaryValue: null },
 	);
-
-	useEffect(() => {
-		if (toolTypeState[0] == null) toolTypeState[1]("Roster");
-	}, []);
 
 	if (toolTypeState[0] == null) return null;
 	return (
