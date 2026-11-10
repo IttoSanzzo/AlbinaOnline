@@ -4,7 +4,10 @@ import { Guid } from "@/libs/stp@types";
 import { CSSProperties, useEffect, useState } from "react";
 import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 import { useVttContext } from "../../../Contexts/VttContextProvider";
-import { VttTokenAppearanceImageFit } from "../../../Types/Classes/VttToken";
+import {
+	VttTokenAppearanceImageFit,
+	VttTokenType,
+} from "../../../Types/Classes/VttToken";
 
 const timestamps = new Map<Guid, number>();
 
@@ -77,6 +80,38 @@ export function VttTokenTabEntryImageRenderer({
 	return (
 		<BasicMedia
 			src={`${getAlbinaApiFullAddress(`/tokens/${vttTokenId}/artwork`)}?tmp=${timestamp}`}
+			alt={"?"}
+			className={styles.vttTokenImageRenderer}
+			width={40}
+			height={40}
+		/>
+	);
+}
+
+interface VttTokenCreationTabEntryImageRendererProps {
+	targetId: Guid;
+	type: keyof typeof VttTokenType;
+}
+export function VttTokenCreationTabEntryImageRenderer({
+	targetId,
+	type,
+}: VttTokenCreationTabEntryImageRendererProps) {
+	return (
+		<BasicMedia
+			src={getAlbinaApiFullAddress(
+				(() => {
+					switch (type) {
+						case "Character":
+							return `/favicon/chars/${targetId}`;
+						case "Creature":
+							return `/favicon/bestiary/${targetId}`;
+						case "Item":
+							return `/favicon/items/${targetId}`;
+						default:
+							return `/favicon/default`;
+					}
+				})(),
+			)}
 			alt={"?"}
 			className={styles.vttTokenImageRenderer}
 			width={40}

@@ -4,9 +4,6 @@
 	height: 100%;
 	flex-direction: column;
 	padding: var(--sp-1);
-	user-select: none;
-	-webkit-user-select: none;
-	-webkit-user-drag: none;
 }
 
 .tokenEntriesContainer {

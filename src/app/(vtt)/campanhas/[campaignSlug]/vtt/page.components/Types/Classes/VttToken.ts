@@ -85,3 +85,10 @@ export function vttTokenCanBeOperatedBy(
 	if (!userId) return false;
 	return vttToken.permitList.includes(userId);
 }
+
+export interface VttTokenCreationOption {
+	type: keyof typeof VttTokenType;
+	name: string;
+	targetId: Guid;
+	level: number;
+}

@@ -1,10 +1,10 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./TokenRosterTabContent.module.css";
-import { useVttTokenStore } from "../../../../Stores/VttTokenStore";
+import styles from "./index.module.css";
+import { useVttTokenStore } from "../../../../../Stores/VttTokenStore";
 import { useMemo, useState } from "react";
 import { Guid } from "@/libs/stp@types";
-import { useVttContext } from "../../../../Contexts/VttContextProvider";
-import { TabTokenEntryWrapper } from "./TabTokenEntry";
+import { useVttContext } from "../../../../../Contexts/VttContextProvider";
+import { TabTokenEntryWrapper } from "./TabTokenEntryWrapper";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,7 +85,7 @@ export function TokenRosterTabContent() {
 				<HookedForm.TextInput<FormData>
 					fieldName={"query"}
 					label={""}
-					placeholder={"Filtrar GridMaps"}
+					placeholder={"Filtrar Tokens"}
 					style={{
 						textAlign: "center",
 						paddingTop: "10px",

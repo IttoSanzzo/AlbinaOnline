@@ -52,7 +52,7 @@ export function GridMapLayerTab() {
 						paddingTop: "10px",
 						paddingBottom: "10px",
 						color: "var(--cl-gray-300)",
-						backgroundColor: "var(--cl-gray-900)",
+						backgroundColor: "rgb(from var(--cl-black-3) r g b / 25%)",
 					}}
 				/>
 			</HookedForm.Form>

@@ -1,13 +1,13 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
-import styles from "./TabTokenEntry.module.css";
-import { useVttTokenStore } from "../../../../Stores/VttTokenStore";
+import styles from "./TabTokenEntryWrapper.module.css";
+import { useVttTokenStore } from "../../../../../Stores/VttTokenStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { CharacterData, CreatureData, Guid, ItemData } from "@/libs/stp@types";
-import { useVttContext } from "../../../../Contexts/VttContextProvider";
-import { VttToken } from "../../../../Types/Classes/VttToken";
-import { VttTokenTabEntryImageRenderer } from "../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
-import { useVttThrottledViewportContext } from "../../../../Contexts/VttThrottledViewportContext";
-import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
+import { useVttContext } from "../../../../../Contexts/VttContextProvider";
+import { VttToken } from "../../../../../Types/Classes/VttToken";
+import { VttTokenTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
+import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
+import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { useAuthenticatedFetch } from "@/libs/stp@data-fetching";
 
 interface TabTokenEntryWrapperProps {

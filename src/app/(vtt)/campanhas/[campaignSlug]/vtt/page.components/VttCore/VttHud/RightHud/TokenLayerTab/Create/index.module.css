@@ -1,0 +1,64 @@
+.tokenCreatorTabContent {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	padding: var(--sp-1);
+}
+
+.entryTypeContainer {
+	margin-bottom: var(--sp-8);
+}
+
+.entryTypeTitle {
+	margin-left: var(--sp-6);
+	font-size: var(--fs-lg);
+	color: var(--cl-gray-300);
+}
+
+.tokenOptionsContainer {
+	display: flex;
+	flex-direction: column;
+	overflow-y: scroll;
+	width: 100%;
+}
+
+.entrySeparator {
+	content: "";
+	height: 1px;
+	width: 100%;
+	background: linear-gradient(to right, var(--cl-gray-600), var(--cl-gray-400));
+}
+
+.tokenCreationEntryContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	padding: var(--sp-1) var(--sp-2);
+	color: var(--cl-gray-200);
+	border-radius: var(--rd-md);
+	transition: 0.25s linear background-color;
+
+	&:hover {
+		background-color: var(--cl-gray-900);
+	}
+}
+
+.tokenCreationEntryImageContainer {
+	position: relative;
+	width: 40px;
+	height: 40px;
+	border-radius: var(--rd-md);
+	overflow: hidden;
+}
+
+.media {
+	object-fit: contain;
+}
+
+.tokenCreationEntryName {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+	font-family: "Franklin Gothic Medium";
+}

@@ -4,7 +4,8 @@ import { useLocalStorageState } from "@/utils/Storage";
 import { Dispatch, SetStateAction } from "react";
 import { setVttElementHoverInteraction } from "../../../../Utils/ElementDataAttributeUtils";
 import clsx from "clsx";
-import { TokenRosterTabContent } from "./TokenRosterTabContent";
+import { TokenRosterTabContent } from "./Rooster";
+import { TokenCreatorTabContent } from "./Create";
 
 const TokenLayerTabContainer = newStyledElement.div(
 	styles.tokenLayerTabContainer,
@@ -40,7 +41,11 @@ export function TokenLayerTab() {
 				/>
 			</ToolSelectionContainer>
 			<TabSelectedToolContainer>
-				{toolTypeState[0] == "Roster" ? <TokenRosterTabContent /> : <></>}
+				{toolTypeState[0] == "Roster" ? (
+					<TokenRosterTabContent />
+				) : (
+					<TokenCreatorTabContent />
+				)}
 			</TabSelectedToolContainer>
 		</TokenLayerTabContainer>
 	);
