@@ -1,8 +1,5 @@
-"use client";
-
 import { FullUser } from "@/libs/stp@types";
 import { getAlbinaApiFullAddress } from "./AlbinaApi";
-import toast from "react-hot-toast";
 
 export async function authenticatedFetchAsync(
 	input: RequestInfo | URL,
@@ -14,25 +11,24 @@ export async function authenticatedFetchAsync(
 				? input.toString()
 				: `${getAlbinaApiFullAddress()}${input.toString()}`
 			: input;
-	init.credentials = "include";
-	const response = await fetch(url, init).catch(() => {
-		setTimeout(() => {
-			toast.error("Error while fetching authenticated data");
-		}, 1 * 800);
-	});
-	if (!response) {
-		return new Response(null, { status: 500, statusText: "Fetch failed" });
-	}
 
-	if (response.status === 401) {
-		const refreshed = await tryRefresh();
-		if (!refreshed) return response;
-		return await fetch(url, init);
-	}
-	return response;
+	const requestInit: RequestInit = {
+		...init,
+		credentials: "include",
+	};
+
+	const response = await fetch(url, requestInit);
+
+	if (response.status !== 401) return response;
+
+	const refreshed = await tryRefresh();
+	if (!refreshed) return response;
+
+	return await fetch(url, requestInit);
 }
 
 let refreshingLock: Promise<boolean> | null = null;
+
 async function tryRefresh(): Promise<boolean> {
 	if (!refreshingLock) {
 		refreshingLock = fetch(`${getAlbinaApiFullAddress()}/auth/refresh`, {
@@ -40,14 +36,14 @@ async function tryRefresh(): Promise<boolean> {
 			credentials: "include",
 		})
 			.then((response) => {
-				if (response.status !== 200) {
-					if (typeof window !== "undefined") {
-						const loginPageLink = `/login?redirectTo=${window.location.pathname}`;
-						window.location.href = loginPageLink;
-					}
-					return false;
+				if (response.status === 200) return true;
+
+				if (typeof window !== "undefined") {
+					const loginPageLink = `/login?redirectTo=${window.location.pathname}`;
+					window.location.href = loginPageLink;
 				}
-				return true;
+
+				return false;
 			})
 			.finally(() => {
 				refreshingLock = null;

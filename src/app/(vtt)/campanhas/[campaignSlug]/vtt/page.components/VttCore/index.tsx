@@ -33,6 +33,7 @@ import { VttBoardLayerContextProvider } from "../Contexts/VttBoardLayerContext";
 import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledViewportContext";
 import { memo } from "react";
 import { VttStoreProviders } from "../Contexts/VttStoreProviders";
+import { DataFetchingProvider } from "@/libs/stp@data-fetching";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -49,43 +50,45 @@ export function VttCore({ campaign }: VttCoreProps) {
 
 	return (
 		<VttCoreProvidersContainer>
-			<WindowStates>
-				<AudioManagerProvider>
-					<VttLocalSettingsProvider vttId={vttId}>
-						<VttAudioControllerProvider>
-							<VttContextProvider campaign={campaign}>
-								<VttBoardLayerContextProvider>
-									<VttStoreProviders>
-										<VttMembersContextProvider>
-											<VttViewportContextProvider>
-												<VttThrottledViewportContextProvider>
-													<VttGridContextProvider>
-														<VttInteractionContextProvider>
-															<RadialMenuProvider>
-																<VttCoreEngine />
-																<p
-																	style={{
-																		position: "absolute",
-																		zIndex: "100",
-																		color: "var(--cl-gray-300)",
-																		pointerEvents: "none",
-																		userSelect: "none",
-																	}}>
-																	{`Connected to VttId: |${campaign.name}| |${vttId}|`}
-																</p>
-															</RadialMenuProvider>
-														</VttInteractionContextProvider>
-													</VttGridContextProvider>
-												</VttThrottledViewportContextProvider>
-											</VttViewportContextProvider>
-										</VttMembersContextProvider>
-									</VttStoreProviders>
-								</VttBoardLayerContextProvider>
-							</VttContextProvider>
-						</VttAudioControllerProvider>
-					</VttLocalSettingsProvider>
-				</AudioManagerProvider>
-			</WindowStates>
+			<DataFetchingProvider>
+				<WindowStates>
+					<AudioManagerProvider>
+						<VttLocalSettingsProvider vttId={vttId}>
+							<VttAudioControllerProvider>
+								<VttContextProvider campaign={campaign}>
+									<VttBoardLayerContextProvider>
+										<VttStoreProviders>
+											<VttMembersContextProvider>
+												<VttViewportContextProvider>
+													<VttThrottledViewportContextProvider>
+														<VttGridContextProvider>
+															<VttInteractionContextProvider>
+																<RadialMenuProvider>
+																	<VttCoreEngine />
+																	<p
+																		style={{
+																			position: "absolute",
+																			zIndex: "100",
+																			color: "var(--cl-gray-300)",
+																			pointerEvents: "none",
+																			userSelect: "none",
+																		}}>
+																		{`Connected to VttId: |${campaign.name}| |${vttId}|`}
+																	</p>
+																</RadialMenuProvider>
+															</VttInteractionContextProvider>
+														</VttGridContextProvider>
+													</VttThrottledViewportContextProvider>
+												</VttViewportContextProvider>
+											</VttMembersContextProvider>
+										</VttStoreProviders>
+									</VttBoardLayerContextProvider>
+								</VttContextProvider>
+							</VttAudioControllerProvider>
+						</VttLocalSettingsProvider>
+					</AudioManagerProvider>
+				</WindowStates>
+			</DataFetchingProvider>
 		</VttCoreProvidersContainer>
 	);
 }

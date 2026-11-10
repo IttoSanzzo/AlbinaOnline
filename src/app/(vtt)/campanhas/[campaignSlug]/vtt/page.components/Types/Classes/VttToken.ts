@@ -22,8 +22,8 @@ export interface RawVttToken {
 	createdAt: string;
 	updatedAt?: string;
 
-	TargetId: Guid;
-	Target: CharacterData | ItemData | CreatureData;
+	targetId: Guid;
+	target: CharacterData | ItemData | CreatureData;
 }
 
 export interface VttToken {
@@ -39,8 +39,8 @@ export interface VttToken {
 	createdAt: string;
 	updatedAt?: string;
 
-	TargetId: Guid;
-	Target: CharacterData | ItemData | CreatureData;
+	targetId: Guid;
+	target: CharacterData | ItemData | CreatureData;
 }
 
 export enum VttTokenAppearanceImageFit {
