@@ -102,11 +102,11 @@ export function VttTokenCreationTabEntryImageRenderer({
 				(() => {
 					switch (type) {
 						case "Character":
-							return `/favicon/chars/${targetId}`;
+							return `/chars/${targetId}/token/artwork`;
 						case "Creature":
-							return `/favicon/bestiary/${targetId}`;
+							return `/bestiary/by-id/${targetId}/token/artwork`;
 						case "Item":
-							return `/favicon/items/${targetId}`;
+							return `/items/by-id/${targetId}/token/artwork`;
 						default:
 							return `/favicon/default`;
 					}

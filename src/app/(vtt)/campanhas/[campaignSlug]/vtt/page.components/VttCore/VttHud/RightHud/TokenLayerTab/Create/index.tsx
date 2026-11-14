@@ -9,6 +9,9 @@ import { HookedForm } from "@/libs/stp@forms";
 import { VttTokenCreationOption } from "../../../../../Types/Classes/VttToken";
 import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { VttTokenCreationTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
+import { useVttContext } from "../../../../../Contexts/VttContextProvider";
+import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
+import { Guid } from "@/libs/stp@types";
 
 const TokenCreatorTabContentContainer = newStyledElement.div(
 	styles.tokenCreatorTabContent,
@@ -16,7 +19,7 @@ const TokenCreatorTabContentContainer = newStyledElement.div(
 const TokenOptionsContainer = newStyledElement.div(
 	styles.tokenOptionsContainer,
 );
-const EntryTypeContainer = newStyledElement.p(styles.entryTypeContainer);
+const EntryTypeContainer = newStyledElement.div(styles.entryTypeContainer);
 const EntryTypeTitle = newStyledElement.p(styles.entryTypeTitle);
 
 const schema = z.object({
@@ -160,6 +163,13 @@ interface TokenCreationEntryProps {
 function TokenCreationEntry({
 	vttTokenCreationOption,
 }: TokenCreationEntryProps) {
+	const send = useVttContext((state) => state.send);
+	const sceneId = useVttContext((state) => state.activeSceneId);
+	const visibleWorld = useVttThrottledViewportContext(
+		(state) => state.visibleWorld,
+		500,
+	);
+
 	return (
 		<div>
 			<EntrySeparator />
@@ -167,6 +177,21 @@ function TokenCreationEntry({
 				{...setVttElementHoverInteraction("Pointer")}
 				onClick={() => {
 					console.log(vttTokenCreationOption);
+					send({
+						id: Guid.NewGuid(),
+						method: "Post",
+						path: "/tokens",
+						data: {
+							type: vttTokenCreationOption.type,
+							targetId: vttTokenCreationOption.targetId,
+							ephemeral: false,
+							position: {
+								sceneId: sceneId,
+								x: visibleWorld.left + visibleWorld.width / 2,
+								y: visibleWorld.top + visibleWorld.height / 2,
+							},
+						},
+					});
 				}}>
 				<TokenCreationEntryImageContainer>
 					<VttTokenCreationTabEntryImageRenderer
