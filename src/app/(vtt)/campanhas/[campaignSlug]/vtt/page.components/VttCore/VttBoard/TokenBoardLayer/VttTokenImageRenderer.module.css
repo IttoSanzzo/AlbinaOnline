@@ -1,6 +1,12 @@
-.vttTokenImageRenderer {
+.vttTokenImageRenderer,
+.vttTokenTabImageRenderer {
 	pointer-events: none;
 	user-select: none;
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
+	object-fit: cover !important;
+	overflow: unset !important;
+}
+.vttTokenTabImageRenderer {
+	object-fit: contain !important;
 }

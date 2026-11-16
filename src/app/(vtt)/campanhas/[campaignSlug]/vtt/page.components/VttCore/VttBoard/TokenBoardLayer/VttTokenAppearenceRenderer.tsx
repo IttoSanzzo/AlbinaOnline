@@ -34,7 +34,7 @@ export function VttTokenAppearenceRenderer({
 				scale: `${vttToken.appearance.horizontalMirror ? -1 : 1} ${vttToken.appearance.verticalMirror ? -1 : 1}`,
 				rotate: `${vttToken.appearance.rotation}deg`,
 				opacity: `${vttToken.appearance.opacity / 100}`,
-				overflow: vttToken.appearance.hideImageOverflow ? "hidden" : undefined,
+				overflow: vttToken.appearance.hideImageOverflow ? "hidden" : "visible",
 				borderWidth: pixelScale ? 3 * pixelScale : undefined,
 			}}>
 			<VttTokenImageRenderer

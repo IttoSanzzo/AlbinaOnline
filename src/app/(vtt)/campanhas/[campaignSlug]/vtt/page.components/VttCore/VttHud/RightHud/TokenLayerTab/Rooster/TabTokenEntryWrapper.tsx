@@ -109,6 +109,10 @@ function TabTokenEntry({ vttToken, name }: TabTokenEntryProps) {
 				onClick={() => {
 					const position = vttToken.placements.get(activeSceneId);
 					if (!position) return;
+					const element = document.getElementById(
+						`board-token-anchor-${vttToken.id}`,
+					);
+					if (element) element.focus();
 					animateCamera({
 						position: {
 							x: position?.x ?? 0,

@@ -1,3 +1,14 @@
+.vttTokenOutline {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	box-shadow:
+		0 0 0 1px rgba(0, 0, 0, 0),
+		0 0 0 3px rgba(255, 255, 255, 0);
+	transition: 0.25s linear box-shadow;
+}
+
 .vttTokenElementAnchor {
 	position: absolute;
 	width: 0;
@@ -8,6 +19,26 @@
 	-webkit-user-select: none;
 	-webkit-user-drag: none;
 
+	&:focus-within {
+		z-index: 1;
+	}
+
+	&:hover,
+	&:focus-within {
+		& .vttTokenOutline {
+			box-shadow:
+				0 0 0 1px rgba(0, 0, 0, 0.75),
+				0 0 0 3px rgba(255, 0, 0, 0.75);
+		}
+		&.isEditable {
+			& .vttTokenOutline {
+				box-shadow:
+					0 0 0 1px rgba(0, 0, 0, 0.75),
+					0 0 0 3px rgba(255, 255, 255, 0.75);
+			}
+		}
+	}
+
 	&.isDraggingAnchor {
 		z-index: 1;
 		transition:
@@ -17,27 +48,22 @@
 	}
 }
 
-.vttTokenElementContainer {
-	position: absolute;
-	transform: translate(-50%, -50%);
-	transition: 0.25s linear box-shadow;
-
-	&:hover {
-		box-shadow:
-			0 0 0 1px rgba(0, 0, 0, 0.75),
-			0 0 0 3px rgba(255, 255, 255, 0.75);
-	}
-}
-
 .activeLayer {
 	pointer-events: all;
 }
-.isDragging {
-	outline: 3px solid var(--cl-yellow-600);
-	box-shadow: 0 0 20px 0 var(--cl-yellow-600) !important;
+
+.vttTokenElementContainer {
+	position: absolute;
+	transform: translate(-50%, -50%);
 }
-.notDragging {
-	outline: 3px solid transparent;
+
+.vttTokenOutline {
+	&.isDraggingOutline {
+		outline: 3px solid var(--cl-yellow-600);
+		box-shadow:
+			0 0 0 1px rgba(0, 0, 0, 0.75),
+			0 0 10px 3px var(--cl-yellow-600) !important;
+	}
 }
 
 /* @keyframes fade-in {

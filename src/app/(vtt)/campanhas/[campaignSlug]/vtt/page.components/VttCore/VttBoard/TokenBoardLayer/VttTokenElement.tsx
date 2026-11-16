@@ -30,6 +30,7 @@ const VttTokenElementAnchor = newStyledElement.div(
 const VttTokenElementContainer = newStyledElement.div(
 	styles.vttTokenElementContainer,
 );
+const VttTokenOutline = newStyledElement.span(styles.vttTokenOutline);
 
 interface VttTokenElementProps {
 	vttToken: VttToken;
@@ -153,7 +154,13 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 
 	return (
 		<VttTokenElementAnchor
-			className={drag.isDragging ? styles.isDraggingAnchor : undefined}
+			id={`board-token-anchor-${vttToken.id}`}
+			tabIndex={-1}
+			className={clsx(
+				isActiveLayer ? styles.activeLayer : undefined,
+				drag.isDragging ? styles.isDraggingAnchor : undefined,
+				isEditable ? styles.isEditable : undefined,
+			)}
 			style={{
 				left: position.x,
 				top: position.y,
@@ -173,7 +180,14 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 			onPointerCancel={(event) => {
 				pointerInteraction.onPointerCancel(event);
 			}}
-			onContextMenu={(event) => event.preventDefault()}>
+			onContextMenu={(event) => event.preventDefault()}
+			onClick={(event) => {
+				event.currentTarget.focus();
+			}}
+			onPointerLeave={(event) => {
+				if (document.activeElement == event.currentTarget)
+					event.currentTarget.blur();
+			}}>
 			<VttTokenElementContainer
 				style={{
 					width,
@@ -181,11 +195,10 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				}}>
 				<VttTokenAppearenceRenderer
 					vttToken={vttToken}
-					className={clsx(
-						isActiveLayer ? styles.activeLayer : undefined,
-						drag.isDragging ? styles.isDragging : styles.notDragging,
-					)}
 					pixelScale={pixelScale}
+				/>
+				<VttTokenOutline
+					className={drag.isDragging ? styles.isDraggingOutline : undefined}
 				/>
 				<VttTokenGadgetsRenderer
 					vttToken={vttToken}

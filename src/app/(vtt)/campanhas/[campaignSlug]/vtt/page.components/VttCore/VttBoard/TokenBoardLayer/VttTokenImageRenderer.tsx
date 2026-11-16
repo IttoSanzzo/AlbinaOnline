@@ -81,7 +81,7 @@ export function VttTokenTabEntryImageRenderer({
 		<BasicMedia
 			src={`${getAlbinaApiFullAddress(`/tokens/${vttTokenId}/artwork`)}?tmp=${timestamp}`}
 			alt={"?"}
-			className={styles.vttTokenImageRenderer}
+			className={styles.vttTokenTabImageRenderer}
 			width={40}
 			height={40}
 		/>
@@ -113,7 +113,7 @@ export function VttTokenCreationTabEntryImageRenderer({
 				})(),
 			)}
 			alt={"?"}
-			className={styles.vttTokenImageRenderer}
+			className={styles.vttTokenTabImageRenderer}
 			width={40}
 			height={40}
 		/>
