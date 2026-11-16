@@ -38,7 +38,9 @@ export function openVttTokenRadialMenu(
 
 			const newVttToken: RawVttToken = {
 				...currentToken,
-				placements: Array.from(vttToken.placements.values()),
+				placements: Array.from(vttToken.placements.values()).map(
+					(placement) => ({ ...placement, scene: undefined! }),
+				),
 			};
 
 			switch (data.option.id) {
