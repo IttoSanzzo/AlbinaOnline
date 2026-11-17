@@ -2,7 +2,7 @@ import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./TabTokenEntryWrapper.module.css";
 import { useVttTokenStore } from "../../../../../Stores/VttTokenStore";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { CharacterData, CreatureData, Guid, ItemData } from "@/libs/stp@types";
+import { Guid } from "@/libs/stp@types";
 import { useVttContext } from "../../../../../Contexts/VttContextProvider";
 import { VttToken } from "../../../../../Types/Classes/VttToken";
 import { VttTokenTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
@@ -10,11 +10,12 @@ import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrot
 import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { useAuthenticatedFetch } from "@/libs/stp@data-fetching";
 
+const defaultTargetName = "Nameless";
+
 interface TabTokenEntryWrapperProps {
 	vttTokenId: Guid;
 	setTokenNameMap: Dispatch<SetStateAction<Map<Guid, string>>>;
 }
-
 export function TabTokenEntryWrapper({
 	vttTokenId,
 	setTokenNameMap,
@@ -22,14 +23,14 @@ export function TabTokenEntryWrapper({
 	const vttToken = useVttTokenStore((state) => state.tokens.get(vttTokenId));
 
 	const targetUrl = (() => {
-		if (!vttToken) return null;
+		if (!vttToken || vttToken.name) return null;
 		switch (vttToken.type) {
 			case "Character":
 				return `/chars/${vttToken.targetId}`;
 			case "Creature":
-				return `/creatures/${vttToken.targetId}`;
+				return `/bestiary/by-id/${vttToken.targetId}`;
 			case "Item":
-				return `/items/${vttToken.targetId}`;
+				return `/items/by-id/${vttToken.targetId}`;
 			default:
 				return null;
 		}
@@ -38,9 +39,8 @@ export function TabTokenEntryWrapper({
 	const { data } =
 		targetUrl != null
 			? useAuthenticatedFetch<{
-					character?: CharacterData;
-					creature?: CreatureData;
-					item?: ItemData;
+					name?: string;
+					character?: { name: string };
 				}>({
 					invalidationKeys: targetUrl ?? [],
 					url: targetUrl,
@@ -48,15 +48,16 @@ export function TabTokenEntryWrapper({
 			: {};
 
 	const targetName = (() => {
+		if (vttToken?.name) return vttToken.name;
 		switch (vttToken?.type) {
 			case "Character":
-				return data?.character?.name ?? "";
+				return data?.character?.name ?? defaultTargetName;
 			case "Creature":
-				return data?.creature?.name ?? "";
+				return data?.name ?? defaultTargetName;
 			case "Item":
-				return data?.item?.name ?? "";
+				return data?.name ?? defaultTargetName;
 			default:
-				return vttToken?.name ?? "";
+				return defaultTargetName;
 		}
 	})();
 
