@@ -30,7 +30,6 @@ const VttTokenElementAnchor = newStyledElement.div(
 const VttTokenElementContainer = newStyledElement.div(
 	styles.vttTokenElementContainer,
 );
-const VttTokenOutline = newStyledElement.span(styles.vttTokenOutline);
 
 interface VttTokenElementProps {
 	vttToken: VttToken;
@@ -196,9 +195,8 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				<VttTokenAppearenceRenderer
 					vttToken={vttToken}
 					pixelScale={pixelScale}
-				/>
-				<VttTokenOutline
-					className={drag.isDragging ? styles.isDraggingOutline : undefined}
+					isDragging={drag.isDragging}
+					isActive={isActiveLayer}
 				/>
 				<VttTokenGadgetsRenderer
 					vttToken={vttToken}
