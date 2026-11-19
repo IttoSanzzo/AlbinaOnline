@@ -176,7 +176,7 @@ function TokenCreationEntry({
 			<TokenCreationEntryContainer
 				{...setVttElementHoverInteraction("Pointer")}
 				onClick={() => {
-					console.log(vttTokenCreationOption);
+					// console.log(vttTokenCreationOption);
 					send({
 						id: Guid.NewGuid(),
 						method: "Post",
@@ -192,6 +192,27 @@ function TokenCreationEntry({
 							},
 						},
 					});
+				}}
+				onContextMenu={(event) => {
+					event.preventDefault();
+					const targetUrl = (() => {
+						switch (vttTokenCreationOption.type) {
+							case "Character":
+								return `/chars/${vttTokenCreationOption.targetId}`;
+							case "Creature":
+								return `/bestiario/from-id/${vttTokenCreationOption.targetId}`;
+							case "Item":
+								return `/items/from-id/${vttTokenCreationOption.targetId}`;
+							default:
+								return undefined;
+						}
+					})();
+					if (targetUrl)
+						window.open(
+							targetUrl,
+							"popupWindow",
+							"width=920,height=920,noopener,noreferrer",
+						);
 				}}>
 				<TokenCreationEntryImageContainer>
 					<VttTokenCreationTabEntryImageRenderer
