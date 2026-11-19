@@ -89,7 +89,7 @@ export function VttTokenTabEntryImageRenderer({
 }
 
 interface VttTokenCreationTabEntryImageRendererProps {
-	targetId: Guid;
+	targetId?: Guid;
 	type: keyof typeof VttTokenType;
 }
 export function VttTokenCreationTabEntryImageRenderer({
@@ -100,6 +100,7 @@ export function VttTokenCreationTabEntryImageRenderer({
 		<BasicMedia
 			src={getAlbinaApiFullAddress(
 				(() => {
+					if (!targetId || type == "None") return `/favicon/default`;
 					switch (type) {
 						case "Character":
 							return `/chars/${targetId}/token/artwork`;

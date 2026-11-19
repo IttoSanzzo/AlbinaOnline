@@ -13,7 +13,7 @@ export function RightHud() {
 	const activeLayer = useVttBoardLayerStore((state) => state.activeLayer);
 
 	return (
-		<RightHudContainer>
+		<RightHudContainer id={"VttHud-RightHud"}>
 			{activeLayer == VttBoardLayer.GridMap && <GridMapLayerTab />}
 			{activeLayer == VttBoardLayer.Token && <TokenLayerTab />}
 		</RightHudContainer>

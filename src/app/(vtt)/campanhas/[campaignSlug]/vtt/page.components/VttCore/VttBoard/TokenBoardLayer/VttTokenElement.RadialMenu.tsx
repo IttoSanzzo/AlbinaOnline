@@ -19,6 +19,7 @@ export function openVttTokenRadialMenu(
 		snap?: VttResourceDragSnap,
 	) => CoordinatePair,
 	position: CoordinatePair,
+	sceneId: Guid,
 ) {
 	const vttToken = vttTokenRef.current;
 	if (!vttToken) return;
@@ -94,9 +95,12 @@ export function openVttTokenRadialMenu(
 						opacity: 100,
 					};
 					break;
-				// case "Duplicate": {
-				// return;
-				// }
+				case "RemoveFromScene":
+					data.close();
+					newVttToken.placements = newVttToken.placements.filter(
+						(placement) => placement.sceneId != sceneId,
+					);
+					break;
 				case "Danger-Delete": {
 					data.close();
 					send({
@@ -233,6 +237,17 @@ const radialMenuOptions: RadialMenuOption[] = [
 				description: "Espelha esse VttToken verticalmente",
 			},
 		],
+	},
+	{
+		id: "RemoveFromScene",
+		name: "Guardar",
+		icon: (
+			<StpIcon
+				name={"TrayArrowDown"}
+				color={"darkerCyan"}
+			/>
+		),
+		description: "Remove esse Token da cena atual",
 	},
 	{
 		id: "SubMenu-Danger",

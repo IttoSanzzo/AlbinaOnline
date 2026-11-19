@@ -1,24 +1,34 @@
 import { newStyledElement } from "@setsu-tp/styled-components";
 import styles from "./TabTokenEntryWrapper.module.css";
 import { useVttTokenStore } from "../../../../../Stores/VttTokenStore";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Guid } from "@/libs/stp@types";
 import { useVttContext } from "../../../../../Contexts/VttContextProvider";
-import { VttToken } from "../../../../../Types/Classes/VttToken";
+import {
+	RawVttToken,
+	VttToken,
+	vttTokenCanBeOperatedBy,
+} from "../../../../../Types/Classes/VttToken";
 import { VttTokenTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
 import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
 import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { useAuthenticatedFetch } from "@/libs/stp@data-fetching";
+import { forwardToToken } from "../../../../../Hooks/useVttResourceDrag.utils";
+import { VttTokenPlacementPreview } from "../Components/VttTokenPlacementPreview";
+import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
+import { StpIcon } from "@/libs/stp@icons";
 
 const defaultTargetName = "Nameless";
 
 interface TabTokenEntryWrapperProps {
 	vttTokenId: Guid;
 	setTokenNameMap: Dispatch<SetStateAction<Map<Guid, string>>>;
+	isInScene: boolean;
 }
 export function TabTokenEntryWrapper({
 	vttTokenId,
 	setTokenNameMap,
+	isInScene,
 }: TabTokenEntryWrapperProps) {
 	const vttToken = useVttTokenStore((state) => state.tokens.get(vttTokenId));
 
@@ -78,6 +88,7 @@ export function TabTokenEntryWrapper({
 		<TabTokenEntry
 			vttToken={vttToken}
 			name={targetName}
+			isInScene={isInScene}
 		/>
 	);
 }
@@ -88,44 +99,132 @@ const TabTokenEntryImageContainer = newStyledElement.div(
 	styles.tabTokenEntryImageContainer,
 );
 const TabTokenEntryName = newStyledElement.div(styles.tabTokenEntryName);
+const TabEntryIndicatorsContainer = newStyledElement.div(
+	styles.tabEntryIndicatorsContainer,
+);
+const TabEntryIndicator = newStyledElement.div(styles.tabEntryIndicator);
 
 interface TabTokenEntryProps {
 	vttToken: VttToken;
 	name: string;
+	isInScene: boolean;
 }
-function TabTokenEntry({ vttToken, name }: TabTokenEntryProps) {
+function TabTokenEntry({ vttToken, name, isInScene }: TabTokenEntryProps) {
+	const [isPlacementActive, setPlacementActive] = useState(false);
+	const isMaster =
+		useCurrentCampaignMemberStore((state) => state.isMaster) ?? false;
+	const userId =
+		useCurrentCampaignMemberStore((state) => state.member?.userId) ?? null;
 	const activeSceneId = useVttContext(
 		(state) => state.activeSceneId ?? Guid.Empty,
 	);
+	const send = useVttContext((state) => state.send);
 	const animateCamera = useVttThrottledViewportContext(
 		(state) => state.animateCamera,
 		500,
 	);
 
+	const isEditable = vttTokenCanBeOperatedBy(vttToken, userId, isMaster);
+
 	return (
-		<div>
-			<EntrySeparator />
-			<TabTokenEntryElement
-				{...setVttElementHoverInteraction("Pointer")}
-				onClick={() => {
-					const position = vttToken.placements.get(activeSceneId);
-					if (!position) return;
-					const element = document.getElementById(
-						`board-token-anchor-${vttToken.id}`,
-					);
-					if (element) element.focus();
-					animateCamera({
-						position: {
-							x: position?.x ?? 0,
-							y: position?.y ?? 0,
-						},
-					});
-				}}>
-				<TabTokenEntryImageContainer>
-					<VttTokenTabEntryImageRenderer vttTokenId={vttToken.id} />
-				</TabTokenEntryImageContainer>
-				<TabTokenEntryName>{name}</TabTokenEntryName>
-			</TabTokenEntryElement>
-		</div>
+		<>
+			<div>
+				<EntrySeparator />
+				<TabTokenEntryElement
+					{...setVttElementHoverInteraction("Pointer")}
+					{...(isEditable
+						? isInScene
+							? forwardToToken({ tokenId: vttToken.id })
+							: {
+									onPointerDown: () => {
+										setPlacementActive(true);
+									},
+								}
+						: undefined)}
+					onClick={() => {
+						if (!isInScene) return;
+						const position = vttToken.placements.get(activeSceneId);
+						if (!position) return;
+						const element = document.getElementById(
+							`board-token-anchor-${vttToken.id}`,
+						);
+						if (element) element.focus();
+						animateCamera({
+							position: {
+								x: position.x,
+								y: position.y,
+							},
+						});
+					}}>
+					<TabTokenEntryImageContainer>
+						<VttTokenTabEntryImageRenderer vttTokenId={vttToken.id} />
+					</TabTokenEntryImageContainer>
+					<TabEntryIndicatorsContainer>
+						<TabEntryIndicator>
+							<StpIcon
+								name={"Feather"}
+								color={
+									isMaster ? "yellow" : isEditable ? "lightBlue" : "darkGray"
+								}
+							/>
+						</TabEntryIndicator>
+					</TabEntryIndicatorsContainer>
+					<TabTokenEntryName>{name}</TabTokenEntryName>
+				</TabTokenEntryElement>
+			</div>
+
+			{isPlacementActive && (
+				<VttTokenPlacementPreview
+					tokenId={vttToken.id}
+					appearance={vttToken.appearance}
+					onPlace={(coordinates) => {
+						setPlacementActive(false);
+						const newVttToken: RawVttToken = {
+							...vttToken,
+							placements: Array.from(vttToken.placements.values()).map(
+								(placement) => ({ ...placement, scene: undefined! }),
+							),
+						};
+
+						newVttToken.placements = [
+							...newVttToken.placements.filter(
+								(placement) => placement.sceneId != activeSceneId,
+							),
+							{
+								id:
+									vttToken.placements.get(activeSceneId)?.id ?? Guid.NewGuid(),
+								sceneId: activeSceneId,
+								tokenId: vttToken.id,
+								x: coordinates.x,
+								y: coordinates.y,
+								token: undefined!,
+								scene: undefined!,
+							},
+						];
+
+						send({
+							id: Guid.NewGuid(),
+							path: "/tokens",
+							method: "Put",
+							data: { vttToken: newVttToken },
+						});
+					}}
+					onCancel={() => setPlacementActive(false)}
+					validatePlacement={(pointerPosition) => {
+						const element = document.getElementById("VttHud-RightHud");
+						if (!element) return true;
+
+						const rect = element.getBoundingClientRect();
+
+						return !(
+							pointerPosition.x >= rect.left &&
+							pointerPosition.x <= rect.right &&
+							pointerPosition.y >= rect.top &&
+							pointerPosition.y <= rect.bottom
+						);
+					}}
+				/>
+			)}
+		</>
 	);
 }

@@ -101,12 +101,15 @@ export function TokenRosterTabContent() {
 				)}
 				{presentTokenIds.length > 0 && (
 					<>
-						<EntryTypeTitle>Na Cena</EntryTypeTitle>
+						<EntryTypeTitle style={{ color: "var(--cl-gray-200)" }}>
+							Na Cena
+						</EntryTypeTitle>
 						{presentTokenIds.map((tokenId) => (
 							<TabTokenEntryWrapper
 								key={tokenId}
 								vttTokenId={tokenId}
 								setTokenNameMap={setTokenNameMap}
+								isInScene={true}
 							/>
 						))}
 					</>
@@ -114,12 +117,15 @@ export function TokenRosterTabContent() {
 				<EntryTypeSeparator />
 				{absentTokenIds.length > 0 && (
 					<>
-						<EntryTypeTitle>Ausentes</EntryTypeTitle>
+						<EntryTypeTitle style={{ color: "var(--cl-gray-400)" }}>
+							Ausentes
+						</EntryTypeTitle>
 						{absentTokenIds.map((tokenId) => (
 							<TabTokenEntryWrapper
 								key={tokenId}
 								vttTokenId={tokenId}
 								setTokenNameMap={setTokenNameMap}
+								isInScene={false}
 							/>
 						))}
 					</>

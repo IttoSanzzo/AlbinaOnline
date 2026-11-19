@@ -1,0 +1,37 @@
+.vttTokenPlacementPreviewAnchor {
+	position: fixed;
+	width: 0;
+	height: 0;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	z-index: 1;
+	&,
+	& * {
+		pointer-events: none !important;
+	}
+	animation: 0.35s linear fade-in;
+}
+
+.vttTokenPlacementPreviewContainer {
+	position: absolute;
+	transform: translate(-50%, -50%);
+}
+
+:global(body:has(#VttTokenPlacementPreview):has(#VttHud-RightHud:hover))
+	:global(#VttHud-TokenLayerTab) {
+	opacity: 0.5 !important;
+	:global(#VttHud-TokenLayerTab-CancelTokenDisplay) {
+		opacity: 1 !important;
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

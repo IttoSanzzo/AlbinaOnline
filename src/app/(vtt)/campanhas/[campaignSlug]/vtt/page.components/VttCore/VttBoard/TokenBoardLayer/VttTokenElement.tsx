@@ -130,6 +130,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 							openNewRadialMenu,
 							drag.snapCoordinates,
 							worldToScreen(placement),
+							activeSceneId,
 						);
 					}
 				: undefined,
@@ -193,7 +194,8 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 					height,
 				}}>
 				<VttTokenAppearenceRenderer
-					vttToken={vttToken}
+					vttTokenId={vttToken.id}
+					appearance={vttToken.appearance}
 					pixelScale={pixelScale}
 					isDragging={drag.isDragging}
 					isActive={isActiveLayer}

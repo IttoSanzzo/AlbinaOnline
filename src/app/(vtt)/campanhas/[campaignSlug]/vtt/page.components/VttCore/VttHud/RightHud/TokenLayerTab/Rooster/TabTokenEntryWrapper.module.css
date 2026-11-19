@@ -10,6 +10,7 @@
 }
 
 .tabTokenEntry {
+	position: relative;
 	display: flex;
 	align-items: center;
 	gap: var(--sp-2);
@@ -40,4 +41,17 @@
 	flex: 1;
 	overflow: hidden;
 	font-family: "Franklin Gothic Medium";
+}
+
+.tabEntryIndicatorsContainer {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0.65;
+}
+
+.tabEntryIndicator {
+	width: 10px;
+	height: 10px;
 }

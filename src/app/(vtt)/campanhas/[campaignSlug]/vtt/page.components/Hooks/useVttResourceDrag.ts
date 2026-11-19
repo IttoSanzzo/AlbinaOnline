@@ -18,6 +18,10 @@ const DRAG_THRESHOLD = 5;
 const DRAG_UPDATE_INTERVAL = 1000 / 10;
 const REMOTE_INTERPOLATION_DURATION = 100;
 
+export type VttPointerEvent = PointerEvent & {
+	centerOnPointer?: boolean;
+};
+
 export type VttResourceDragSnapOptions =
 	| { type: "vertex"; cellSize?: number }
 	| { type: "center"; cellSize?: number }
@@ -340,7 +344,7 @@ export function useVttResourceDrag({
 		restoreUserSelect();
 	}
 
-	function startDrag() {
+	function startDrag(centerOnPointer = false) {
 		dragStartedRef.current = true;
 		setIsPointerDragging(true);
 		setHoverInteractionType(VttCursorInteractionType.Hand);
@@ -356,15 +360,19 @@ export function useVttResourceDrag({
 		dragDistanceTravelledRef.current = 0;
 		dragDisplacementRef.current = 0;
 
-		const cursorWorldPosition = screenToWorldRef.current({
-			x: pointerStartRef.current.x,
-			y: pointerStartRef.current.y,
-		});
+		if (centerOnPointer) {
+			dragOffsetRef.current = { x: 0, y: 0 };
+		} else {
+			const cursorWorldPosition = screenToWorldRef.current({
+				x: pointerStartRef.current.x,
+				y: pointerStartRef.current.y,
+			});
 
-		dragOffsetRef.current = {
-			x: sourceCoordinatesRef.current.x - cursorWorldPosition.x,
-			y: sourceCoordinatesRef.current.y - cursorWorldPosition.y,
-		};
+			dragOffsetRef.current = {
+				x: sourceCoordinatesRef.current.x - cursorWorldPosition.x,
+				y: sourceCoordinatesRef.current.y - cursorWorldPosition.y,
+			};
+		}
 
 		lastDragUpdateRef.current = performance.now();
 		preventSelection();
@@ -534,6 +542,14 @@ export function useVttResourceDrag({
 				...sourceCoordinatesRef.current,
 			};
 			dragStartedRef.current = false;
+
+			const centerOnPointer =
+				(event.nativeEvent as VttPointerEvent).centerOnPointer === true;
+
+			if (centerOnPointer) {
+				startDrag(true);
+				updateDrag(event.clientX, event.clientY, true);
+			}
 		},
 		[],
 	);

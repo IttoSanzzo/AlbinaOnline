@@ -15,6 +15,7 @@
 
 .entryTypeTitle {
 	margin-left: var(--sp-6);
+	margin-top: var(--sp-6);
 	font-size: var(--fs-lg);
 	color: var(--cl-gray-400);
 }

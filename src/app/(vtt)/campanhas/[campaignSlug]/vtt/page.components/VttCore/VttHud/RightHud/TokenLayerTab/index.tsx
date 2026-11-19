@@ -19,6 +19,8 @@ const ToolSelectionButtonElement = newStyledElement.button(
 const TabSelectedToolContainer = newStyledElement.div(
 	styles.tabSelectedToolContainer,
 );
+const RetrieveTokenDisplay = newStyledElement.span(styles.retrieveTokenDisplay);
+const CancelTokenDisplay = newStyledElement.span(styles.cancelTokenDisplay);
 
 export function TokenLayerTab() {
 	const toolTypeState = useLocalStorageState<"Roster" | "Create" | null>(
@@ -29,7 +31,7 @@ export function TokenLayerTab() {
 
 	if (toolTypeState[0] == null) return null;
 	return (
-		<TokenLayerTabContainer>
+		<TokenLayerTabContainer id="VttHud-TokenLayerTab">
 			<ToolSelectionContainer>
 				<ToolSelectionButton
 					state={toolTypeState}
@@ -40,13 +42,19 @@ export function TokenLayerTab() {
 					type={"Create"}
 				/>
 			</ToolSelectionContainer>
-			<TabSelectedToolContainer>
+			<TabSelectedToolContainer id={"VttHud-TokenLayerTab-Rooster"}>
 				{toolTypeState[0] == "Roster" ? (
 					<TokenRosterTabContent />
 				) : (
 					<TokenCreatorTabContent />
 				)}
 			</TabSelectedToolContainer>
+			<RetrieveTokenDisplay id="VttHud-TokenLayerTab-RetrieveTokenDisplay">
+				Guardar Token
+			</RetrieveTokenDisplay>
+			<CancelTokenDisplay id="VttHud-TokenLayerTab-CancelTokenDisplay">
+				Cancelar
+			</CancelTokenDisplay>
 		</TokenLayerTabContainer>
 	);
 }

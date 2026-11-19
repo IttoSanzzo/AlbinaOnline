@@ -1,13 +1,20 @@
 import styles from "./VttTokenAppearenceRenderer.module.css";
 import vttTokenElementStyles from "./VttTokenElement.module.css";
-import { VttToken } from "../../../Types/Classes/VttToken";
+import {
+	VttTokenAppearance,
+	VttTokenType,
+} from "../../../Types/Classes/VttToken";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import {
 	setVttElementDataAttributes,
 	VttElementDataAttribute,
 } from "../../../Utils/ElementDataAttributeUtils";
 import clsx from "clsx";
-import { VttTokenImageRenderer } from "./VttTokenImageRenderer";
+import {
+	VttTokenCreationTabEntryImageRenderer,
+	VttTokenImageRenderer,
+} from "./VttTokenImageRenderer";
+import { Guid } from "@/libs/stp@types";
 
 const VttTokenAppearenceRendererContainer = newStyledElement.div(
 	styles.vttTokenAppearenceRendererContainer,
@@ -18,14 +25,20 @@ const VttTokenOutline = newStyledElement.span(
 );
 
 interface VttTokenAppearenceRendererProps {
-	vttToken: VttToken;
+	vttTokenId?: Guid;
+	targetId?: Guid;
+	type?: keyof typeof VttTokenType;
+	appearance: VttTokenAppearance;
 	className?: string;
 	pixelScale?: number;
 	isDragging?: boolean;
 	isActive?: boolean;
 }
 export function VttTokenAppearenceRenderer({
-	vttToken,
+	vttTokenId,
+	targetId,
+	type,
+	appearance,
 	className,
 	pixelScale,
 	isDragging,
@@ -39,23 +52,29 @@ export function VttTokenAppearenceRenderer({
 				VttElementDataAttribute.EventMiddleButtonPan,
 			)}
 			style={{
-				rotate: `${vttToken.appearance.rotation}deg`,
+				rotate: `${appearance.rotation}deg`,
 				pointerEvents: isActive ? "all" : undefined,
 			}}>
 			<ChipLayer
-				className={clsx(className, styles[vttToken.appearance.chipType])}
+				className={clsx(className, styles[appearance.chipType])}
 				style={{
-					scale: `${vttToken.appearance.horizontalMirror ? -1 : 1} ${vttToken.appearance.verticalMirror ? -1 : 1}`,
-					opacity: `${vttToken.appearance.opacity / 100}`,
-					overflow: vttToken.appearance.hideImageOverflow
-						? "hidden"
-						: "visible",
+					scale: `${appearance.horizontalMirror ? -1 : 1} ${appearance.verticalMirror ? -1 : 1}`,
+					opacity: `${appearance.opacity / 100}`,
+					overflow: appearance.hideImageOverflow ? "hidden" : "visible",
 					borderWidth: pixelScale ? 3 * pixelScale : undefined,
 				}}>
-				<VttTokenImageRenderer
-					vttTokenId={vttToken.id}
-					objectFit={vttToken.appearance.imageFitMode}
-				/>
+				{vttTokenId && (
+					<VttTokenImageRenderer
+						vttTokenId={vttTokenId}
+						objectFit={appearance.imageFitMode}
+					/>
+				)}
+				{!vttTokenId && type && (
+					<VttTokenCreationTabEntryImageRenderer
+						type={type}
+						targetId={targetId}
+					/>
+				)}
 			</ChipLayer>
 			<VttTokenOutline
 				className={
