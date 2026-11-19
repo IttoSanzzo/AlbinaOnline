@@ -38,6 +38,7 @@ export type BaseTextInputProps = {
 	lesserPadding?: boolean;
 	textCentered?: boolean;
 	useTextArea?: boolean;
+	styleContainer?: CSSProperties;
 	// ref?: RefObject<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>;
 
@@ -50,6 +51,7 @@ export function BaseTextInput({
 	textCentered = false,
 	style,
 	useTextArea,
+	styleContainer,
 	...rest
 }: BaseTextInputProps) {
 	const inputStyle: CSSProperties = {
@@ -68,7 +70,7 @@ export function BaseTextInput({
 	};
 
 	return (
-		<BaseTextInputContainer>
+		<BaseTextInputContainer style={styleContainer}>
 			<BaseTextInputLabel
 				children={label}
 				style={labelStyle}

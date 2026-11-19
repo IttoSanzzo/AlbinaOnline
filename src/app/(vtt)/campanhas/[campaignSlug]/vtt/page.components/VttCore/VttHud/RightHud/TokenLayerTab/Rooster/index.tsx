@@ -96,7 +96,10 @@ export function TokenRosterTabContent() {
 						paddingTop: "10px",
 						paddingBottom: "10px",
 						color: "var(--cl-gray-300)",
-						backgroundColor: "rgb(from var(--cl-black-3) r g b / 25%)",
+						backgroundColor: "rgb(from var(--cl-black-3) r g b / 50%)",
+					}}
+					styleContainer={{
+						border: "none",
 					}}
 				/>
 			</HookedForm.Form>
