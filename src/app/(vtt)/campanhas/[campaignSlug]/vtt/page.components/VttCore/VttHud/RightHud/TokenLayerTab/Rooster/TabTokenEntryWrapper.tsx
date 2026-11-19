@@ -210,7 +210,7 @@ function TabTokenEntry({ vttToken, name, isInScene }: TabTokenEntryProps) {
 						});
 					}}
 					onCancel={() => setPlacementActive(false)}
-					validatePlacement={(pointerPosition) => {
+					validatePlacement={(_, pointerPosition) => {
 						const element = document.getElementById("VttHud-RightHud");
 						if (!element) return true;
 

@@ -66,7 +66,7 @@ export function VttTokenStoreSync() {
 				const payload = event.data as {
 					vttTokenId: Guid;
 					sceneId: Guid;
-					coordinates: CoordinatePair;
+					coordinates: CoordinatePair | null;
 				};
 				endDrag(payload.vttTokenId, payload.sceneId, payload.coordinates);
 			}),

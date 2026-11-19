@@ -69,11 +69,10 @@
 	}
 }
 
-/* @keyframes fade-in {
-	0% {
-		opacity: 0;
+body:has(.isLocalDragging):global(:has(#VttHud-RightHud:hover))
+	:global(#VttHud-TokenLayerTab) {
+	opacity: 0.5 !important;
+	:global(#VttHud-TokenLayerTab-RetrieveTokenDisplay) {
+		opacity: 1 !important;
 	}
-	100% {
-		opacity: 1;
-	}
-} */
+}

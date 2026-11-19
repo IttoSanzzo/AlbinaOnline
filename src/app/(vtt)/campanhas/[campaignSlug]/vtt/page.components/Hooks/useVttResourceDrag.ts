@@ -50,7 +50,10 @@ export interface UseVttResourceDragOptions {
 	snap?: VttResourceDragSnap;
 	onDragStart?: () => void;
 	onDragUpdate?: (coordinates: CoordinatePair) => void;
-	onDragEnd?: (coordinates: CoordinatePair) => void;
+	onDragEnd?: (
+		coordinates: CoordinatePair,
+		pointerPosition: CoordinatePair,
+	) => void;
 	onDragCancel?: () => void;
 }
 
@@ -399,7 +402,7 @@ export function useVttResourceDrag({
 		setDragCoordinates(finalCoordinates);
 		visualCoordinatesRef.current = finalCoordinates;
 		setVisualCoordinates(finalCoordinates);
-		onDragEndRef.current?.(finalCoordinates);
+		onDragEndRef.current?.(finalCoordinates, { x: clientX, y: clientY });
 	}
 
 	function handleWindowPointerMove(event: PointerEvent) {

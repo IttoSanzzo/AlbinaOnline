@@ -26,8 +26,8 @@ interface VttTokenPlacementPreviewBaseProps {
 	onPlace: (coordinates: CoordinatePair) => void;
 	onCancel: () => void;
 	validatePlacement?: (
-		pointerPosition: CoordinatePair,
 		finalCoordinates: CoordinatePair,
+		pointerPosition: CoordinatePair,
 	) => boolean;
 }
 
@@ -104,7 +104,7 @@ export function VttTokenPlacementPreview({
 
 			if (
 				validatePlacement &&
-				!validatePlacement(pointerPosition, finalCoordinates)
+				!validatePlacement(finalCoordinates, pointerPosition)
 			) {
 				onCancel();
 				return;

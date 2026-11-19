@@ -95,7 +95,19 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				},
 			});
 		},
-		onDragEnd: (coordinates) => {
+		onDragEnd: (coordinates, pointerPosition) => {
+			const retrieveTokenAreaElement =
+				document.getElementById("VttHud-RightHud");
+			if (retrieveTokenAreaElement) {
+				const rect = retrieveTokenAreaElement.getBoundingClientRect();
+				if (
+					pointerPosition.x >= rect.left &&
+					pointerPosition.x <= rect.right &&
+					pointerPosition.y >= rect.top &&
+					pointerPosition.y <= rect.bottom
+				)
+					coordinates = null!;
+			}
 			send({
 				id: Guid.NewGuid(),
 				path: "/tokens/drag",
@@ -160,6 +172,7 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 				isActiveLayer ? styles.activeLayer : undefined,
 				drag.isDragging ? styles.isDraggingAnchor : undefined,
 				isEditable ? styles.isEditable : undefined,
+				drag.isLocalDragging ? styles.isLocalDragging : undefined,
 			)}
 			style={{
 				left: position.x,

@@ -5,7 +5,7 @@ import { createStore, StoreApi } from "zustand/vanilla";
 import { useStore } from "zustand";
 import { Guid } from "@/libs/stp@types";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { VttToken } from "../Types/Classes/VttToken";
+import { VttToken, VttTokenPlacement } from "../Types/Classes/VttToken";
 import { VttResourceLockDto } from "../Types/Classes/VttResourceLock";
 import { VttLockableResource } from "../Types/Classes/VttLockableResouce";
 
@@ -36,7 +36,11 @@ interface VttTokenStoreState {
 	/** Registers a VttToken element drag update */
 	updateDrag: (id: Guid, sceneId: Guid, coordinates: CoordinatePair) => void;
 	/** Registers a VttToken element drag end */
-	endDrag: (id: Guid, sceneId: Guid, coordinates: CoordinatePair) => void;
+	endDrag: (
+		id: Guid,
+		sceneId: Guid,
+		coordinates: CoordinatePair | null,
+	) => void;
 	/** Registers a VttToken element drag cancellation */
 	cancelDrag: (id: Guid, sceneId: Guid) => void;
 }
@@ -354,9 +358,12 @@ function createVttTokenStore(): VttTokenStore {
 				const token = state.tokens.get(id);
 				const placement = token?.placements.get(sceneId);
 				const positionChanged =
-					!!placement &&
-					(drag.initialCoordinates.x !== coordinates.x ||
-						drag.initialCoordinates.y !== coordinates.y);
+					(placement && !coordinates) ||
+					(!placement && coordinates) ||
+					(coordinates &&
+						placement &&
+						(drag.initialCoordinates.x !== coordinates.x ||
+							drag.initialCoordinates.y !== coordinates.y));
 
 				const updatedState = updateToken(
 					{
@@ -365,15 +372,29 @@ function createVttTokenStore(): VttTokenStore {
 					},
 					id,
 					(token) => {
-						const placement = token.placements.get(sceneId);
-						if (!placement) return removeDragLock(token, id, sceneId);
-
 						const placements = new Map(token.placements);
-						placements.set(sceneId, {
-							...placement,
-							x: coordinates.x,
-							y: coordinates.y,
-						});
+
+						if (!coordinates) placements.delete(sceneId);
+						else {
+							if (placement) {
+								placements.set(sceneId, {
+									...placement,
+									x: coordinates.x,
+									y: coordinates.y,
+								});
+							} else {
+								const newPlacement: VttTokenPlacement = {
+									id: Guid.NewGuid(),
+									tokenId: id,
+									sceneId,
+									x: drag.initialCoordinates.x,
+									y: drag.initialCoordinates.y,
+									token,
+									scene: {},
+								};
+								placements.set(sceneId, newPlacement);
+							}
+						}
 
 						return removeDragLock({ ...token, placements }, id, sceneId);
 					},
