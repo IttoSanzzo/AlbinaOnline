@@ -19,11 +19,12 @@
 	transform: translate(-50%, -50%);
 }
 
-:global(body:has(#VttTokenPlacementPreview):has(#VttHud-RightHud:hover))
+:global(body:has(#VttTokenPlacementPreview):has(#VttHud-RightHud))
 	:global(#VttHud-TokenLayerTab) {
 	opacity: 0.5 !important;
 	:global(#VttHud-TokenLayerTab-CancelTokenDisplay) {
 		opacity: 1 !important;
+		pointer-events: all !important;
 	}
 }
 

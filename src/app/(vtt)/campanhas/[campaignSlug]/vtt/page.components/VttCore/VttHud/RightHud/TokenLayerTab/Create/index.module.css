@@ -2,29 +2,52 @@
 	display: flex;
 	width: 100%;
 	height: 100%;
+	min-height: 0;
 	flex-direction: column;
 	padding: var(--sp-1);
-}
-
-.entryTypeContainer {
-	margin-top: var(--sp-6);
-}
-
-.entryTypeTitle {
-	margin-left: var(--sp-6);
-	font-size: var(--fs-lg);
-	color: var(--cl-gray-300);
+	overflow: hidden;
 }
 
 .tokenOptionsContainer {
 	display: flex;
+	flex: 1 1 0;
 	flex-direction: column;
-	overflow-y: scroll;
+	min-height: 0;
+	overflow: hidden;
+	width: 100%;
+}
+
+.entryTypeContainer {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-height: 0;
+	width: 100%;
+	overflow: hidden;
+	margin-top: var(--sp-2);
+}
+
+.entryTypeTitle {
+	flex-shrink: 0;
+	margin-left: var(--sp-6);
+	margin-bottom: var(--sp-2);
+	font-size: var(--fs-lg);
+	color: var(--cl-gray-300);
+	animation: 0.25s linear fade-in;
+}
+
+.tokenOptionsList {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+	min-height: 0;
+	overflow-y: auto;
 	width: 100%;
 }
 
 .entrySeparator {
 	content: "";
+	flex-shrink: 0;
 	height: 1px;
 	width: 100%;
 	background: linear-gradient(to right, var(--cl-gray-600), var(--cl-gray-400));
@@ -38,6 +61,7 @@
 	color: var(--cl-gray-200);
 	border-radius: var(--rd-md);
 	transition: 0.25s linear background-color;
+	animation: 0.25s linear fade-in;
 
 	&:hover {
 		background-color: var(--cl-gray-900);
@@ -61,4 +85,42 @@
 	flex: 1;
 	overflow: hidden;
 	font-family: "Franklin Gothic Medium";
+}
+
+.genericEntry {
+	background-color: rgb(from var(--cl-black-3) r g b / 50%);
+}
+
+.entryTypeContainer.characterType {
+	.tokenOptionsList {
+		background-color: rgb(from var(--cl-blue-500) r g b / 8%);
+	}
+	& p {
+		color: var(--cl-blue-100);
+	}
+}
+.entryTypeContainer.creatureType {
+	.tokenOptionsList {
+		background-color: rgb(from var(--cl-red-500) r g b / 8%);
+	}
+	& p {
+		color: var(--cl-red-100);
+	}
+}
+.entryTypeContainer.itemType {
+	.tokenOptionsList {
+		background-color: rgb(from var(--cl-green-500) r g b / 8%);
+	}
+	& p {
+		color: var(--cl-green-100);
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

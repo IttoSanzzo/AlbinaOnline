@@ -14,10 +14,12 @@ const timestamps = new Map<Guid, number>();
 interface VttTokenImageRendererProps {
 	vttTokenId: Guid;
 	objectFit?: keyof typeof VttTokenAppearanceImageFit;
+	isInSideTab?: boolean;
 }
 export function VttTokenImageRenderer({
 	vttTokenId,
-	objectFit,
+	objectFit = "Cover",
+	isInSideTab = false,
 }: VttTokenImageRendererProps) {
 	const subscribe = useVttContext((state) => state.subscribe);
 	const [timestamp, setTimestamp] = useState<number>(() => {
@@ -42,7 +44,11 @@ export function VttTokenImageRenderer({
 		<BasicMedia
 			src={`${getAlbinaApiFullAddress(`/tokens/${vttTokenId}/artwork`)}?tmp=${timestamp}`}
 			alt={"?"}
-			className={styles.vttTokenImageRenderer}
+			className={
+				isInSideTab
+					? styles.vttTokenTabImageRenderer
+					: styles.vttTokenImageRenderer
+			}
 			fill
 			style={{
 				objectFit: objectFit?.toLocaleLowerCase() as CSSProperties["objectFit"],
@@ -51,72 +57,43 @@ export function VttTokenImageRenderer({
 	);
 }
 
-interface VttTokenTabEntryImageRendererProps {
-	vttTokenId: Guid;
-}
-
-export function VttTokenTabEntryImageRenderer({
-	vttTokenId,
-}: VttTokenTabEntryImageRendererProps) {
-	const subscribe = useVttContext((state) => state.subscribe);
-	const [timestamp, setTimestamp] = useState<number>(() => {
-		const existingTimestamp = timestamps.get(vttTokenId);
-		if (existingTimestamp !== undefined) return existingTimestamp;
-		const newTimestamp = Date.now();
-		timestamps.set(vttTokenId, newTimestamp);
-		return newTimestamp;
-	});
-
-	useEffect(() => {
-		return subscribe("VttTokenImageUpdated", (event) => {
-			const payload = event.data as { vttTokenId: Guid };
-			if (payload.vttTokenId !== vttTokenId) return;
-			const newTimestamp = event.timestamp ?? Date.now();
-			timestamps.set(vttTokenId, newTimestamp);
-			setTimestamp(newTimestamp);
-		});
-	}, [subscribe, vttTokenId]);
-
-	return (
-		<BasicMedia
-			src={`${getAlbinaApiFullAddress(`/tokens/${vttTokenId}/artwork`)}?tmp=${timestamp}`}
-			alt={"?"}
-			className={styles.vttTokenTabImageRenderer}
-			width={40}
-			height={40}
-		/>
-	);
-}
-
 interface VttTokenCreationTabEntryImageRendererProps {
 	targetId?: Guid;
 	type: keyof typeof VttTokenType;
+	objectFit?: keyof typeof VttTokenAppearanceImageFit;
 }
 export function VttTokenCreationTabEntryImageRenderer({
 	targetId,
 	type,
+	objectFit = "Cover",
 }: VttTokenCreationTabEntryImageRendererProps) {
 	return (
 		<BasicMedia
-			src={getAlbinaApiFullAddress(
-				(() => {
-					if (!targetId || type == "None") return `/favicon/default`;
-					switch (type) {
-						case "Character":
-							return `/chars/${targetId}/token/artwork`;
-						case "Creature":
-							return `/bestiary/by-id/${targetId}/token/artwork`;
-						case "Item":
-							return `/items/by-id/${targetId}/token/artwork`;
-						default:
-							return `/favicon/default`;
-					}
-				})(),
-			)}
+			src={getUrl(type, targetId)}
 			alt={"?"}
 			className={styles.vttTokenTabImageRenderer}
-			width={40}
-			height={40}
+			fill
+			style={{
+				objectFit: objectFit?.toLocaleLowerCase() as CSSProperties["objectFit"],
+			}}
 		/>
+	);
+}
+
+function getUrl(type: keyof typeof VttTokenType, targetId?: Guid) {
+	return getAlbinaApiFullAddress(
+		(() => {
+			if (!targetId) return `/images/tokens/None/artwork`;
+			switch (type) {
+				case "Character":
+					return `/chars/${targetId}/token/artwork`;
+				case "Creature":
+					return `/bestiary/by-id/${targetId}/token/artwork`;
+				case "Item":
+					return `/items/by-id/${targetId}/token/artwork`;
+				default:
+					return `/images/tokens/None/artwork`;
+			}
+		})(),
 	);
 }

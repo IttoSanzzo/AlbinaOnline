@@ -10,8 +10,8 @@ import { VttTokenCreationOption } from "../../../../../Types/Classes/VttToken";
 import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { VttTokenCreationTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
 import { useVttContext } from "../../../../../Contexts/VttContextProvider";
-import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
 import { Guid } from "@/libs/stp@types";
+import { VttTokenPlacementPreviewWrapper } from "../Components/VttTokenPlacementPreview";
 
 const TokenCreatorTabContentContainer = newStyledElement.div(
 	styles.tokenCreatorTabContent,
@@ -19,6 +19,8 @@ const TokenCreatorTabContentContainer = newStyledElement.div(
 const TokenOptionsContainer = newStyledElement.div(
 	styles.tokenOptionsContainer,
 );
+const EntryTypeSeparator = newStyledElement.span(styles.entrySeparator);
+const TokenOptionsList = newStyledElement.div(styles.tokenOptionsList);
 const EntryTypeContainer = newStyledElement.div(styles.entryTypeContainer);
 const EntryTypeTitle = newStyledElement.p(styles.entryTypeTitle);
 
@@ -103,44 +105,67 @@ export function TokenCreatorTabContent() {
 			</HookedForm.Form>
 			<TokenOptionsContainer>
 				{characterOptions.length > 0 && (
-					<EntryTypeContainer>
+					<EntryTypeContainer className={styles.characterType}>
 						<EntryTypeTitle style={{ color: "var(--cl-blue-300)" }}>
 							Personagens
 						</EntryTypeTitle>
-						{characterOptions.map((option) => (
-							<TokenCreationEntry
-								key={`${option.type}|${option.targetId}`}
-								vttTokenCreationOption={option}
-							/>
-						))}
+						<TokenOptionsList>
+							{characterOptions.map((option) => (
+								<TokenCreationEntry
+									key={`${option.type}|${option.targetId}`}
+									vttTokenCreationOption={option}
+								/>
+							))}
+						</TokenOptionsList>
 					</EntryTypeContainer>
 				)}
+				{characterOptions.length > 0 && creatureOptions.length > 0 && (
+					<EntryTypeSeparator />
+				)}
 				{creatureOptions.length > 0 && (
-					<EntryTypeContainer>
+					<EntryTypeContainer className={styles.creatureType}>
 						<EntryTypeTitle style={{ color: "var(--cl-red-300)" }}>
 							Criaturas
 						</EntryTypeTitle>
-						{creatureOptions.map((option) => (
-							<TokenCreationEntry
-								key={`${option.type}|${option.targetId}`}
-								vttTokenCreationOption={option}
-							/>
-						))}
+						<TokenOptionsList>
+							{creatureOptions.map((option) => (
+								<TokenCreationEntry
+									key={`${option.type}|${option.targetId}`}
+									vttTokenCreationOption={option}
+								/>
+							))}
+						</TokenOptionsList>
 					</EntryTypeContainer>
 				)}
+				{creatureOptions.length > 0 && itemOptions.length > 0 && (
+					<EntryTypeSeparator />
+				)}
 				{itemOptions.length > 0 && (
-					<EntryTypeContainer>
+					<EntryTypeContainer className={styles.itemType}>
 						<EntryTypeTitle style={{ color: "var(--cl-green-300)" }}>
 							Items
 						</EntryTypeTitle>
-						{itemOptions.map((option) => (
-							<TokenCreationEntry
-								key={`${option.type}|${option.targetId}`}
-								vttTokenCreationOption={option}
-							/>
-						))}
+						<TokenOptionsList>
+							{itemOptions.map((option) => (
+								<TokenCreationEntry
+									key={`${option.type}|${option.targetId}`}
+									vttTokenCreationOption={option}
+								/>
+							))}
+						</TokenOptionsList>
 					</EntryTypeContainer>
 				)}
+				<div style={{ marginTop: "var(--sp-2)" }}>
+					<TokenCreationEntry
+						key={`None|${Guid.Empty}`}
+						vttTokenCreationOption={{
+							level: 0,
+							name: "Genérico",
+							type: "None",
+						}}
+						className={styles.genericEntry}
+					/>
+				</div>
 			</TokenOptionsContainer>
 		</TokenCreatorTabContentContainer>
 	);
@@ -153,45 +178,30 @@ const TokenCreationEntryContainer = newStyledElement.div(
 const TokenCreationEntryImageContainer = newStyledElement.div(
 	styles.tokenCreationEntryImageContainer,
 );
-const TokenCreationEntryName = newStyledElement.div(
+const TokenCreationEntryName = newStyledElement.p(
 	styles.tokenCreationEntryName,
 );
 
 interface TokenCreationEntryProps {
 	vttTokenCreationOption: VttTokenCreationOption;
+	className?: string;
 }
 function TokenCreationEntry({
 	vttTokenCreationOption,
+	className,
 }: TokenCreationEntryProps) {
+	const [isPlacementActive, setPlacementActive] = useState(false);
 	const send = useVttContext((state) => state.send);
 	const sceneId = useVttContext((state) => state.activeSceneId);
-	const visibleWorld = useVttThrottledViewportContext(
-		(state) => state.visibleWorld,
-		500,
-	);
 
 	return (
 		<div>
 			<EntrySeparator />
 			<TokenCreationEntryContainer
+				className={className}
 				{...setVttElementHoverInteraction("Pointer")}
-				onClick={() => {
-					// console.log(vttTokenCreationOption);
-					send({
-						id: Guid.NewGuid(),
-						method: "Post",
-						path: "/tokens",
-						data: {
-							type: vttTokenCreationOption.type,
-							targetId: vttTokenCreationOption.targetId,
-							ephemeral: false,
-							position: {
-								sceneId: sceneId,
-								x: visibleWorld.left + visibleWorld.width / 2,
-								y: visibleWorld.top + visibleWorld.height / 2,
-							},
-						},
-					});
+				onPointerDown={(event) => {
+					if (event.button == 0) setPlacementActive(true);
 				}}
 				onContextMenu={(event) => {
 					event.preventDefault();
@@ -224,6 +234,44 @@ function TokenCreationEntry({
 					{vttTokenCreationOption.name}
 				</TokenCreationEntryName>
 			</TokenCreationEntryContainer>
+			{isPlacementActive && (
+				<VttTokenPlacementPreviewWrapper
+					targetId={vttTokenCreationOption.targetId}
+					targetType={vttTokenCreationOption.type}
+					onPlace={(coordinates) => {
+						setPlacementActive(false);
+						send({
+							id: Guid.NewGuid(),
+							method: "Post",
+							path: "/tokens",
+							data: {
+								type: vttTokenCreationOption.type,
+								targetId: vttTokenCreationOption.targetId,
+								ephemeral: false,
+								position: {
+									sceneId: sceneId,
+									x: coordinates.x,
+									y: coordinates.y,
+								},
+							},
+						});
+					}}
+					onCancel={() => setPlacementActive(false)}
+					validatePlacement={(_, pointerPosition) => {
+						const element = document.getElementById("VttHud-RightHud");
+						if (!element) return true;
+
+						const rect = element.getBoundingClientRect();
+
+						return !(
+							pointerPosition.x >= rect.left &&
+							pointerPosition.x <= rect.right &&
+							pointerPosition.y >= rect.top &&
+							pointerPosition.y <= rect.bottom
+						);
+					}}
+				/>
+			)}
 		</div>
 	);
 }

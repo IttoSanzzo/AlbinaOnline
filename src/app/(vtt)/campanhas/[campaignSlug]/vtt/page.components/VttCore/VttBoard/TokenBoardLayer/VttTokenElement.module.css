@@ -69,10 +69,11 @@
 	}
 }
 
-body:has(.isLocalDragging):global(:has(#VttHud-RightHud:hover))
+body:has(.isLocalDragging):global(:has(#VttHud-RightHud))
 	:global(#VttHud-TokenLayerTab) {
 	opacity: 0.5 !important;
 	:global(#VttHud-TokenLayerTab-RetrieveTokenDisplay) {
 		opacity: 1 !important;
+		pointer-events: all !important;
 	}
 }

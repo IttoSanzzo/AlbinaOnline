@@ -9,7 +9,6 @@ import {
 	VttToken,
 	vttTokenCanBeOperatedBy,
 } from "../../../../../Types/Classes/VttToken";
-import { VttTokenTabEntryImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
 import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
 import { setVttElementHoverInteraction } from "../../../../../Utils/ElementDataAttributeUtils";
 import { useAuthenticatedFetch } from "@/libs/stp@data-fetching";
@@ -17,6 +16,7 @@ import { forwardToToken } from "../../../../../Hooks/useVttResourceDrag.utils";
 import { VttTokenPlacementPreview } from "../Components/VttTokenPlacementPreview";
 import { useCurrentCampaignMemberStore } from "@/libs/stp@hooks";
 import { StpIcon } from "@/libs/stp@icons";
+import { VttTokenImageRenderer } from "../../../../VttBoard/TokenBoardLayer/VttTokenImageRenderer";
 
 const defaultTargetName = "Nameless";
 
@@ -157,7 +157,10 @@ function TabTokenEntry({ vttToken, name, isInScene }: TabTokenEntryProps) {
 						});
 					}}>
 					<TabTokenEntryImageContainer>
-						<VttTokenTabEntryImageRenderer vttTokenId={vttToken.id} />
+						<VttTokenImageRenderer
+							vttTokenId={vttToken.id}
+							isInSideTab
+						/>
 					</TabTokenEntryImageContainer>
 					<TabEntryIndicatorsContainer>
 						<TabEntryIndicator>

@@ -73,6 +73,7 @@ export function VttTokenAppearenceRenderer({
 					<VttTokenCreationTabEntryImageRenderer
 						type={type}
 						targetId={targetId}
+						objectFit={appearance.imageFitMode}
 					/>
 				)}
 			</ChipLayer>

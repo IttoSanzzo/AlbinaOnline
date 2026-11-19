@@ -64,6 +64,18 @@ export interface VttTokenAppearance extends VttGenericTransform {
 	hideImageOverflow: boolean;
 	chipType: keyof typeof VttTokenChipType;
 }
+export const DefaultVttTokenAppearance: VttTokenAppearance = {
+	height: 100,
+	width: 100,
+	chipType: "FramedCircle",
+	hideImageOverflow: true,
+	horizontalMirror: false,
+	verticalMirror: false,
+	imageFitMode: "Cover",
+	opacity: 100,
+	rotation: 0,
+	scale: 100,
+};
 
 export interface VttTokenPlacement {
 	id: Guid;
@@ -89,6 +101,6 @@ export function vttTokenCanBeOperatedBy(
 export interface VttTokenCreationOption {
 	type: keyof typeof VttTokenType;
 	name: string;
-	targetId: Guid;
+	targetId?: Guid;
 	level: number;
 }

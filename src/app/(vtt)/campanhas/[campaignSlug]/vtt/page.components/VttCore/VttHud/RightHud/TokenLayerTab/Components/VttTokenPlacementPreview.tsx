@@ -2,6 +2,7 @@ import styles from "./VttTokenPlacementPreview.module.css";
 import { Guid } from "@/libs/stp@types";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
 import {
+	DefaultVttTokenAppearance,
 	VttTokenAppearance,
 	VttTokenType,
 } from "../../../../../Types/Classes/VttToken";
@@ -10,10 +11,11 @@ import { VttTokenAppearenceRenderer } from "../../../../VttBoard/TokenBoardLayer
 import { useVttThrottledViewportContext } from "../../../../../Contexts/VttThrottledViewportContext";
 import { VTTTOKEN_RENDER_THROTTLE } from "../../../../VttBoard/TokenBoardLayer/VttTokenElementWrapper";
 import { getVttTokenSnap } from "../../../../VttBoard/TokenBoardLayer/VttTokenElement.utils";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { WindowCursorState } from "../../../../../Contexts/WindowStates";
 import { useVttInteractionContext } from "../../../../../Contexts/VttInteractionContextProvider";
 import { createPortal } from "react-dom";
+import { getAlbinaApiFullAddress } from "@/utils/AlbinaApi";
 
 const VttTokenPlacementPreviewAnchor = newStyledElement.div(
 	styles.vttTokenPlacementPreviewAnchor,
@@ -31,21 +33,74 @@ interface VttTokenPlacementPreviewBaseProps {
 	) => boolean;
 }
 
-type VttTokenPlacementPreviewProps = VttTokenPlacementPreviewBaseProps &
-	(
-		| {
-				tokenId: Guid;
-				appearance: VttTokenAppearance;
-				targetType?: never;
-				targetId?: never;
-		  }
-		| {
-				tokenId?: never;
-				appearance: VttTokenAppearance;
-				targetType: keyof typeof VttTokenType;
-				targetId?: Guid;
-		  }
+type VttTokenPlacementPreviewProps = VttTokenPlacementPreviewBaseProps & {
+	appearance: VttTokenAppearance;
+	tokenId?: Guid;
+	targetType?: keyof typeof VttTokenType;
+	targetId?: Guid;
+};
+
+type VttTokenPlacementPreviewWrapperProps = Omit<
+	VttTokenPlacementPreviewProps,
+	"appearance"
+> & {
+	appearance?: VttTokenAppearance;
+};
+
+export function VttTokenPlacementPreviewWrapper({
+	appearance,
+	tokenId,
+	targetType,
+	targetId,
+	...props
+}: VttTokenPlacementPreviewWrapperProps) {
+	const [finalAppearance, setFinalAppearence] =
+		useState<VttTokenAppearance | null>(appearance ?? null);
+
+	useLayoutEffect(() => {
+		if (finalAppearance) return;
+		function stoppedBeforeAppearence() {
+			if (!finalAppearance) props.onCancel();
+		}
+		window.addEventListener("pointerup", stoppedBeforeAppearence);
+		return () => {
+			window.removeEventListener("pointerup", stoppedBeforeAppearence);
+		};
+	}, [finalAppearance]);
+
+	useEffect(() => {
+		(async () => {
+			if (appearance) {
+				if (finalAppearance) setFinalAppearence(null);
+				return;
+			}
+			if (targetType == "None") {
+				setFinalAppearence(DefaultVttTokenAppearance);
+				return;
+			}
+			const response = await fetch(
+				getAlbinaApiFullAddress(
+					tokenId
+						? `/tokens/${tokenId}/appearence`
+						: `/tokens/default/${targetType}/${targetId}/appearence`,
+				),
+			);
+			if (!response.ok) return;
+			setFinalAppearence(await response.json());
+		})();
+	}, [appearance, setFinalAppearence, tokenId, targetType, targetId]);
+
+	if (!appearance && !finalAppearance) return null;
+	return (
+		<VttTokenPlacementPreview
+			{...props}
+			appearance={finalAppearance ?? appearance!}
+			tokenId={tokenId}
+			targetType={targetType}
+			targetId={targetId}
+		/>
 	);
+}
 
 export function VttTokenPlacementPreview({
 	tokenId,

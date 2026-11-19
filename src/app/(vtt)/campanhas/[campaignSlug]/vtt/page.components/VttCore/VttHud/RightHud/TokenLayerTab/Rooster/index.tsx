@@ -18,6 +18,8 @@ const EntryTypeSeparator = newStyledElement.span(styles.entryTypeSeparator);
 const TokenEntriesContainer = newStyledElement.div(
 	styles.tokenEntriesContainer,
 );
+const TokenEntriesGroup = newStyledElement.div(styles.tokenEntriesGroup);
+const TokenEntriesList = newStyledElement.div(styles.tokenEntriesList);
 
 const schema = z.object({
 	query: z.string(),
@@ -76,6 +78,9 @@ export function TokenRosterTabContent() {
 		},
 	});
 
+	const hasPresentTokens = presentTokenIds.length > 0;
+	const hasAbsentTokens = absentTokenIds.length > 0;
+
 	return (
 		<TokenRosterTabContentContainer>
 			<HookedForm.Form
@@ -96,39 +101,43 @@ export function TokenRosterTabContent() {
 				/>
 			</HookedForm.Form>
 			<TokenEntriesContainer>
-				{presentTokenIds.length == 0 && absentTokenIds.length == 0 && (
+				{!hasPresentTokens && !hasAbsentTokens && (
 					<EntryTypeTitle>Sem Tokens</EntryTypeTitle>
 				)}
-				{presentTokenIds.length > 0 && (
-					<>
+				{hasPresentTokens && (
+					<TokenEntriesGroup>
 						<EntryTypeTitle style={{ color: "var(--cl-gray-200)" }}>
 							Na Cena
 						</EntryTypeTitle>
-						{presentTokenIds.map((tokenId) => (
-							<TabTokenEntryWrapper
-								key={tokenId}
-								vttTokenId={tokenId}
-								setTokenNameMap={setTokenNameMap}
-								isInScene={true}
-							/>
-						))}
-					</>
+						<TokenEntriesList className={styles.presentList}>
+							{presentTokenIds.map((tokenId) => (
+								<TabTokenEntryWrapper
+									key={tokenId}
+									vttTokenId={tokenId}
+									setTokenNameMap={setTokenNameMap}
+									isInScene={true}
+								/>
+							))}
+						</TokenEntriesList>
+					</TokenEntriesGroup>
 				)}
-				<EntryTypeSeparator />
-				{absentTokenIds.length > 0 && (
-					<>
+				{hasPresentTokens && hasAbsentTokens && <EntryTypeSeparator />}
+				{hasAbsentTokens && (
+					<TokenEntriesGroup>
 						<EntryTypeTitle style={{ color: "var(--cl-gray-400)" }}>
 							Guardados
 						</EntryTypeTitle>
-						{absentTokenIds.map((tokenId) => (
-							<TabTokenEntryWrapper
-								key={tokenId}
-								vttTokenId={tokenId}
-								setTokenNameMap={setTokenNameMap}
-								isInScene={false}
-							/>
-						))}
-					</>
+						<TokenEntriesList className={styles.absentList}>
+							{absentTokenIds.map((tokenId) => (
+								<TabTokenEntryWrapper
+									key={tokenId}
+									vttTokenId={tokenId}
+									setTokenNameMap={setTokenNameMap}
+									isInScene={false}
+								/>
+							))}
+						</TokenEntriesList>
+					</TokenEntriesGroup>
 				)}
 			</TokenEntriesContainer>
 		</TokenRosterTabContentContainer>

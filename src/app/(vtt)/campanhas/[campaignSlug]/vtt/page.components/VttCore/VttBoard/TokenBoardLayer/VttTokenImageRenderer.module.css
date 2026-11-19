@@ -1,5 +1,6 @@
 .vttTokenImageRenderer,
 .vttTokenTabImageRenderer {
+	position: relative;
 	pointer-events: none;
 	user-select: none;
 	-webkit-user-select: none;
