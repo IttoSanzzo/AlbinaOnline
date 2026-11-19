@@ -71,6 +71,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+	padding: var(--sp-4);
 	background-color: var(--cl-gray-900);
 	color: var(--cl-gray-500);
 	font-size: var(--fs-5xl);

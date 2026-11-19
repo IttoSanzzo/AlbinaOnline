@@ -12,6 +12,7 @@
 	flex-direction: row;
 	width: 100%;
 	height: 100%;
+	--sideBarWidth: 250px;
 }
 .vttHudCenterContainer {
 	position: relative;
@@ -21,9 +22,7 @@
 	position: relative;
 	display: flex;
 	transition: margin 0.25s ease-in-out;
-	min-width: 200px;
-	max-width: 300px;
-	width: clamp(200px, 20vw, 300px);
+	width: var(--sideBarWidth);
 	height: 100%;
 	background: linear-gradient(
 		to bottom,
@@ -33,11 +32,11 @@
 	pointer-events: all;
 
 	&.leftContainer {
-		margin-left: clamp(-300px, -20vw, -200px);
+		margin-left: calc(-1 * var(--sideBarWidth));
 		border-right: 1px solid var(--cl-gray-500);
 	}
 	&.rightContainer {
-		margin-right: clamp(-300px, -20vw, -200px);
+		margin-right: calc(-1 * var(--sideBarWidth));
 		border-left: 1px solid var(--cl-gray-500);
 	}
 }

@@ -27,8 +27,8 @@
 
 .tabTokenEntryImageContainer {
 	position: relative;
-	width: 40px;
-	height: 40px;
+	width: 30px;
+	height: 30px;
 	border-radius: var(--rd-md);
 	overflow: hidden;
 }
@@ -42,11 +42,12 @@
 	flex: 1;
 	overflow: hidden;
 	font-family: "Franklin Gothic Medium";
+	font-size: var(--fs-sm);
 }
 
 .tabEntryIndicatorsContainer {
 	position: absolute;
-	right: 10px;
+	right: 15px;
 	top: 50%;
 	transform: translateY(-50%);
 	opacity: 0.65;
