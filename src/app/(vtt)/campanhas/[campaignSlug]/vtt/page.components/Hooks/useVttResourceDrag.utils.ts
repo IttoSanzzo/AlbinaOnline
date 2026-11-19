@@ -28,7 +28,7 @@ export function forwardToToken({
 			const pointerData = {
 				clientX: event.clientX,
 				clientY: event.clientY,
-				pointerId,
+				pointerId: pointerId,
 				pointerType: event.pointerType,
 				button: event.button,
 				buttons: event.buttons,

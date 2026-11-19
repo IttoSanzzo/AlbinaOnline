@@ -4,30 +4,35 @@ import { RawVttToken, VttToken } from "../../../Types/Classes/VttToken";
 import { RadialMenuData } from "@/components/(SPECIAL)/components/RadialMenu/Context";
 import { VttInputMessage } from "../../../Types/Core/VttInputMessage";
 import { CoordinatePair } from "@/libs/stp@types/utils/CoordinatePair";
-import { VttResourceDragSnap } from "../../../Hooks/useVttResourceDrag";
 import { RadialMenuOption } from "@/components/(SPECIAL)/components/RadialMenu/types";
 import { clamp } from "lodash";
 import { Guid } from "@/libs/stp@types";
 import { wrap } from "@/utils/Math";
 
+const OFFSCREENOFFSET = 200;
+
 export function openVttTokenRadialMenu(
 	vttTokenRef: React.RefObject<VttToken>,
 	send: (message: VttInputMessage) => void,
 	openNewRadialMenu: (props: RadialMenuData) => void,
-	snapCoordinates: (
-		coordinates: CoordinatePair,
-		snap?: VttResourceDragSnap,
-	) => CoordinatePair,
 	position: CoordinatePair,
 	sceneId: Guid,
 ) {
 	const vttToken = vttTokenRef.current;
 	if (!vttToken) return;
 
+	const screenPosition =
+		position.x < OFFSCREENOFFSET ||
+		position.x > window.outerWidth - OFFSCREENOFFSET ||
+		position.y < OFFSCREENOFFSET ||
+		position.y > window.outerHeight - OFFSCREENOFFSET
+			? { x: window.outerWidth / 2, y: window.outerHeight / 2 }
+			: position;
+
 	openNewRadialMenu({
 		id: vttToken.id,
 		name: "Token",
-		screenPosition: { x: position.x, y: position.y },
+		screenPosition: screenPosition,
 		actionPosition: { x: position.x, y: position.y },
 		seekMouseOutside: false,
 		options: radialMenuOptions,

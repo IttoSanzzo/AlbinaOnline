@@ -118,7 +118,7 @@ export function TokenRosterTabContent() {
 				{absentTokenIds.length > 0 && (
 					<>
 						<EntryTypeTitle style={{ color: "var(--cl-gray-400)" }}>
-							Ausentes
+							Guardados
 						</EntryTypeTitle>
 						{absentTokenIds.map((tokenId) => (
 							<TabTokenEntryWrapper

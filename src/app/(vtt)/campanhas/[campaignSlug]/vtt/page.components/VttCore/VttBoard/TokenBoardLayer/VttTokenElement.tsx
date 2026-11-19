@@ -140,7 +140,6 @@ export function VttTokenElement({ vttToken, placement }: VttTokenElementProps) {
 							vttTokenRef,
 							send,
 							openNewRadialMenu,
-							drag.snapCoordinates,
 							worldToScreen(placement),
 							activeSceneId,
 						);

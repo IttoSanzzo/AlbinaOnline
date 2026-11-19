@@ -136,8 +136,8 @@ function TabTokenEntry({ vttToken, name, isInScene }: TabTokenEntryProps) {
 						? isInScene
 							? forwardToToken({ tokenId: vttToken.id })
 							: {
-									onPointerDown: () => {
-										setPlacementActive(true);
+									onPointerDown: (event) => {
+										if (event.button == 0) setPlacementActive(true);
 									},
 								}
 						: undefined)}
