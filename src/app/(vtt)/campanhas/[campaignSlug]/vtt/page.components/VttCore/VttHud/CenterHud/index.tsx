@@ -5,6 +5,7 @@ import { Communication } from "./Communication";
 import { DiceHistory } from "./DiceHistory";
 import { newStyledElement } from "@setsu-tp/styled-components";
 import { LayerContextualButtonsTopRight } from "./TopRight/LayerContextualButtonsTopRight";
+import { HotBar } from "./HotBar";
 
 const HudVerticalGenericButtonContainer = newStyledElement.div(
 	styles.hudVerticalGenericButtonContainer,
@@ -18,6 +19,7 @@ export function CenterHud() {
 				<LayerContextualButtonsTopRight />
 			</HudVerticalGenericButtonContainer>
 			<CameraControls />
+			<HotBar />
 			<Communication />
 			<DiceHistory />
 		</>
