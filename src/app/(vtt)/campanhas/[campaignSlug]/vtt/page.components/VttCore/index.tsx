@@ -34,6 +34,7 @@ import { VttThrottledViewportContextProvider } from "../Contexts/VttThrottledVie
 import { memo } from "react";
 import { VttStoreProviders } from "../Contexts/VttStoreProviders";
 import { DataFetchingProvider } from "@/libs/stp@data-fetching";
+import { VttVoiceContextProvider } from "../Contexts/VttVoiceContextProvider";
 
 const VttCoreProvidersContainer = newStyledElement.div(
 	styles.vttCoreProvidersContainer,
@@ -63,19 +64,21 @@ export function VttCore({ campaign }: VttCoreProps) {
 													<VttThrottledViewportContextProvider>
 														<VttGridContextProvider>
 															<VttInteractionContextProvider>
-																<RadialMenuProvider>
-																	<VttCoreEngine />
-																	<p
-																		style={{
-																			position: "absolute",
-																			zIndex: "100",
-																			color: "var(--cl-gray-300)",
-																			pointerEvents: "none",
-																			userSelect: "none",
-																		}}>
-																		{`Connected to VttId: |${campaign.name}| |${vttId}|`}
-																	</p>
-																</RadialMenuProvider>
+																<VttVoiceContextProvider>
+																	<RadialMenuProvider>
+																		<VttCoreEngine />
+																		<p
+																			style={{
+																				position: "absolute",
+																				zIndex: "100",
+																				color: "var(--cl-gray-300)",
+																				pointerEvents: "none",
+																				userSelect: "none",
+																			}}>
+																			{`Connected to VttId: |${campaign.name}| |${vttId}|`}
+																		</p>
+																	</RadialMenuProvider>
+																</VttVoiceContextProvider>
 															</VttInteractionContextProvider>
 														</VttGridContextProvider>
 													</VttThrottledViewportContextProvider>

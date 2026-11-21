@@ -1,0 +1,9 @@
+.connectedPlayersContainer {
+	position: absolute;
+	left: 10px;
+	/* bottom: 10px; */
+	top: 10px;
+	height: 500px;
+	width: 500px;
+	background-color: red;
+}
