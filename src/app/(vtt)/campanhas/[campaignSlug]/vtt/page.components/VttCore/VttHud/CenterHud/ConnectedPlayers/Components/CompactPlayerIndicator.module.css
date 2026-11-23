@@ -25,6 +25,9 @@
 	overflow: hidden;
 	background-color: var(--cl-gray-900);
 	border: 4px solid var(--cl-gray-600);
+	&.isMaster {
+		border-color: var(--cl-yellow-600);
+	}
 }
 
 .isConnected {
@@ -40,7 +43,7 @@
 	height: 40px;
 	border-radius: var(--rd-full);
 	border: 2px solid transparent;
-	transition: 0.15s linear border;
+	transition: 0.25s linear border;
 
 	&.inCall {
 		border-color: var(--cl-gray-500);

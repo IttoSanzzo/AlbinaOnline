@@ -43,7 +43,7 @@ export function CompactPlayerIndicator({
 
 	return (
 		<CompactPlayerIndicatorContainer
-			title={`${member.user.nickname} (${isConnected ? "Conectado" : "Desconectado"})`}
+			title={`${member.user.nickname} (${isConnected ? "Conectado" : "Desconectado"})\n\n${member.isMaster ? "Mestre" : "Jogador"}`}
 			className={isConnected ? styles.isConnected : undefined}
 			{...setVttElementDataAttributes(
 				VttElementDataAttribute.EventPing,
@@ -58,7 +58,7 @@ export function CompactPlayerIndicator({
 					position,
 				});
 			}}>
-			<ImageContainer>
+			<ImageContainer className={member.isMaster ? styles.isMaster : undefined}>
 				{token ? (
 					<VttTokenImageRenderer
 						vttTokenId={token.id}

@@ -1,3 +1,15 @@
+.centerHudContainer {
+	position: relative;
+	container-name: center-hud-container;
+	container-type: inline-size;
+	height: 100%;
+	width: 100%;
+
+	--hotbar-width: 650px;
+	--hotbar-side-gap: var(--sp-2);
+	--players-indicators-minimum-width: 200px;
+}
+
 .hudVerticalGenericButtonContainer {
 	display: flex;
 	flex-direction: column;

@@ -1,0 +1,94 @@
+.currentPlayerCharacterIndicatorContainer {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	padding: var(--sp-1);
+	gap: var(--sp-1);
+}
+
+.imageContainer {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	background-color: var(--cl-gray-900);
+	border: 2px solid var(--cl-gray-700);
+	border-radius: var(--rd-md);
+	overflow: hidden;
+	pointer-events: all;
+}
+
+.voiceStateIndicatorElement {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 60px;
+	height: 60px;
+	border-radius: var(--rd-md);
+	border: 6px solid transparent;
+	transition: 0.25s linear border;
+
+	&.inCall {
+		border-color: var(--cl-gray-900);
+	}
+	&.notInCall {
+		border-color: var(--cl-gray-900);
+	}
+	&.speaking {
+		border-color: var(--cl-green-400);
+	}
+	&.muted {
+		border-color: var(--cl-red-900);
+	}
+	&.deafened {
+		border-color: var(--cl-violet-900);
+	}
+}
+
+.characterInfoContainer {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--sp-1);
+	height: 100%;
+	background-color: var(--cl-gray-800);
+	border-radius: var(--rd-md);
+	padding: var(--sp-1);
+}
+
+.withoutToken {
+	justify-content: center;
+	align-items: center;
+	color: var(--cl-gray-300);
+	font-size: var(--fs-lg);
+	font-weight: var(--fw-bold);
+}
+
+.gaugeBarContainer {
+	position: relative;
+	width: 100%;
+	height: 7px;
+	background-color: var(--cl-black-3);
+	border-radius: var(--rd-md);
+	padding: 1px;
+	box-shadow: 0 0 4px black;
+}
+
+.gaugeBarElement {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	height: 5px;
+	border-radius: var(--rd-md);
+	transition: 1s ease-in-out width;
+}
+
+.characterName {
+	font-family: "Franklin Gothic Medium";
+	color: var(--cl-gray-300);
+	text-shadow: 0 0 3px var(--cl-gray-900);
+	overflow: hidden;
+	text-align: center;
+}

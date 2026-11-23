@@ -8,13 +8,14 @@ import { LayerContextualButtonsTopRight } from "./TopRight/LayerContextualButton
 import { HotBar } from "./HotBar";
 import { ConnectedPlayers } from "./ConnectedPlayers";
 
+const CenterHudContainer = newStyledElement.div(styles.centerHudContainer);
 const HudVerticalGenericButtonContainer = newStyledElement.div(
 	styles.hudVerticalGenericButtonContainer,
 );
 
 export function CenterHud() {
 	return (
-		<>
+		<CenterHudContainer>
 			<HudVerticalGenericButtonContainer className={styles.containerTopRight}>
 				<BoardLayerSelector />
 				<LayerContextualButtonsTopRight />
@@ -24,6 +25,6 @@ export function CenterHud() {
 			<Communication />
 			<ConnectedPlayers />
 			<DiceHistory />
-		</>
+		</CenterHudContainer>
 	);
 }

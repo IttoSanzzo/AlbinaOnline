@@ -69,7 +69,6 @@ export async function VttCommandLineHandler({
 				method: method.toUpperCase() as VttOperationMethod,
 				data,
 			};
-			console.log(sendPayload);
 			send(sendPayload);
 		} catch (error) {
 			console.error("Failed to parse /debug-send command:", error);
